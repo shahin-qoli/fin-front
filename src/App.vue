@@ -1,12 +1,15 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer">
-
+    <v-navigation-drawer  v-model="drawer" right app>
+    <!-- app bar start -->
+   
+    <the-drawer></the-drawer>
     </v-navigation-drawer>
-    <v-app-bar>
+     <!-- app bar end -->
+    <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>منو</v-toolbar-title>
     </v-app-bar>
     <v-main>
       <router-view/>
@@ -15,8 +18,11 @@
 </template>
 
 <script>
-
+import TheDrawer from "./components/TheDrawer.vue";
 export default {
+  components:{
+    TheDrawer
+  },
   name: 'App',
 
   data: () => ({
