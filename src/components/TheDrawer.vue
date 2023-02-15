@@ -16,11 +16,11 @@
 
     <v-divider class="mb-1" />
     <v-col cols="9">
-    <p>کارت به کارت</p> 
+    <h3>کارت به کارت</h3> 
 </v-col>
     <v-divider class="mb-1" />
     <v-col cols="9">
-   <p>کارتخوان</p> 
+   <h3>کارتخوان</h3> 
 </v-col>
    <v-divider class="mb-1" />
 
