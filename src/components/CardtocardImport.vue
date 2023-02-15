@@ -35,7 +35,7 @@
                 > 
                 <v-card-item>
                     <v-card-title class="justify-center">لیست کارت به کارت ها</v-card-title>
-                    <v-btn href="#">مشاهده</v-btn>
+                    <v-btn href="/cardtocardlist" >مشاهده</v-btn>
                 </v-card-item>
                 
                 

@@ -16,11 +16,11 @@
 
     <v-divider class="mb-1" />
     <v-col cols="9">
-    <h3>کارت به کارت</h3> 
+    <router-link to='/cardtocard'><h3>کارت به کارت</h3></router-link>
 </v-col>
     <v-divider class="mb-1" />
     <v-col cols="9">
-   <h3>کارتخوان</h3> 
+        <router-link to='/cardtocard'><h3>کارتخوان</h3></router-link> 
 </v-col>
    <v-divider class="mb-1" />
 
