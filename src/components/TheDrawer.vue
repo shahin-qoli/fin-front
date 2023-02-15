@@ -1,5 +1,5 @@
 <template>
-<v-contaimer class="grey lighten-5">
+<v-contaimer class="grey lighten-5" >
     <v-divider class="mb-1" />
         <v-row>
 
@@ -15,11 +15,15 @@
 
 
     <v-divider class="mb-1" />
-    <p>"number0"</p> 
+    <v-col cols="9">
+    <p>کارت به کارت</p> 
+</v-col>
     <v-divider class="mb-1" />
-   <p>"number1"</p> 
+    <v-col cols="9">
+   <p>کارتخوان</p> 
+</v-col>
    <v-divider class="mb-1" />
-   <p>"number2"</p> 
+
 </v-row>
 </v-contaimer>
 
