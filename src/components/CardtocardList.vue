@@ -1,31 +1,25 @@
 <template>
-  <div>
+  <v-card outlined>
+    <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="جستجو"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
     <v-data-table
+      fixed-header
       dense
       :headers="headers"
-      :items="desserts"
-      item-key="name"
-      class="elevation-2"
+      :items="cardtocards"
+      item-key="id"
+      class=""
       :search="search"
     >
-      <template v-slot:[`body.prepend`] = "{ }">
-        <tr>
-          <td>
-            <v-text-field v-model="name" type="text" label="Dessert name"></v-text-field>
-          </td>
-          <td>
-            <v-text-field v-model="calories" type="number" label="Less than"></v-text-field>
-          </td>
-           <td>
-            <v-text-field v-model="fat" type="number" label="Less than"></v-text-field>
-          </td>
-          <td>
-            <v-text-field v-model="carbs" type="number" label="Exact number"></v-text-field>
-          </td>
-        </tr>
-      </template>
     </v-data-table>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -33,109 +27,80 @@
     data() {
     return {
       search: "",
-      name: "",
-      calories: "",
-      fat: "",
-      carbs: "",
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65
-        }
-      ]
+      transaction_date: "",
+      transaction_time: "",
+      description: "",
+      amount: "",
+      from_card: "",
+      to_card: "",
+      peygiri_number: "",
+      serial_number: "",
+      job_id: "",
+      loading: true
     };
   },
   computed: {
     headers() {
       return [
         {
-          text: "Dessert (100g serving)",
-          align: "left",
-          sortable: false,
-          value: "name",
-          filter: f => { return ( f + '' ).toLowerCase().includes( this[ 'name' ].toLowerCase() ) }
+          text: "تاریخ تراکنش",
+          align: "center",
+          //sortable: false,
+          value: "transaction_date",
         },
         {
-          text: "Calories",
-          value: "calories",
-          filter: value => {
-            if (!this.calories) return true;
-            return value < parseInt(this.calories);
-          }
+          text: "ساعت تراکنش",
+          value: "transaction_time",
+          align: "center",
+          filterable: false,
         },
         {
-          text: "Fat (g)",
-          value: "fat",
-          filter: value => {
-            if (!this.fat) return true;
-            return value < parseInt(this.fat);
-          }
+          text: "توضیحات",
+          value: "description",
+          align: "center",
+          filterable: false
+
         },
         {
-          text: "Carbs (g)",
-          value: "carbs",
-          filter: value => {
-            if (!this.carbs) return true;
-            return value == parseInt(this.carbs);
-          }
+          text: "مبلغ",
+          align: "center",
+          value: "amount",
+        },
+        {
+          text: "کارت مبدا",
+          align: "center",
+          value: "from_card",
+
+        },
+        {
+          text: "کارت مقصد",
+          align: "center",
+          value: "to_card",
+
+        },
+        {
+          text: "شماره پیگیری",
+          align: "center",
+          value: "peygiri_number",
+
+        },
+        {
+          text: "شماره سریال",
+          align: "center",
+          value: "serial_number",
+          
+        },
+        {
+          text: "شماره فایل",
+          align: "center",
+          value: "job_id"
         }
       ];
+    },
+    cardtocards(){
+      //console.log(this.$store.getters.cardtocards)
+      return this.$store.getters.cardtocards
+      
     }
   },
     methods: {
@@ -149,3 +114,7 @@
     }
 }
 </script>
+
+<style scoped>
+
+</style>

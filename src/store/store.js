@@ -9,10 +9,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-      cardtocards
-        
+      cardtocards       
     },
     state(){
-      return{ apiUrl: 'http://192.168.142.128:3400/api'};
-    }
+      return{ 
+              apiUrl: 'http://192.168.142.128:3400/api',
+               };
+    },
+
+    
 });

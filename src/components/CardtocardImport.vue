@@ -3,30 +3,33 @@
         <v-row >
             <v-col cols="9">
                 <v-card
-                class="mx-auto"
-                prepend-icon="mdi-home"      
-                name="main"    
+                d
+                class="mx-auto"      
                 >
                         <v-card-title class="justify-center">ورود اطلاعات کارت به کارت</v-card-title>
-                        <v-btn href="https://burux.ir">دانلود نمونه فایل</v-btn>
-                        <v-form >
-                                <v-container>
-                                    <v-row>
-                                        <v-col
-                                        cols="12">
-                                        <v-file-input
-                                            accept="excel/*"
-                                            label="File input"
-                                        />
-                                       </v-col>
-                                        <v-card-actions class="justify-center">
-                                            <v-btn text>Submit</v-btn>
-                                        </v-card-actions>
-                                    </v-row>
-                                </v-container>
-                        </v-form>  
+                        <v-divider/>
+                        <v-col col="3">
+                        <v-card-actions class="justify-center">
+                        <v-btn dark color="gold" href="https://burux.ir">دانلود نمونه فایل</v-btn>
+                         </v-card-actions>
+                       </v-col>
+                       <v-divider/>
+                        <v-form > 
+                            <v-col
+                            cols="12">
+                            <v-file-input
+                                accept="excel/*"
+                                label="بارگذاری فایل"
+                            />
+                            </v-col>
+                            <v-card-actions class="justify-center">
+                                <v-btn dark color="green">ارسال</v-btn>
+                            </v-card-actions>                
+                    </v-form>  
                 </v-card>    
             </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="9">
                 <v-card
                 class="mx-auto"
@@ -34,7 +37,9 @@
                 name="list"        
                 > 
                     <v-card-title class="justify-center">لیست کارت به کارت ها</v-card-title>
-                    <v-btn href="/cardtocardlist" >مشاهده</v-btn>            
+                    <v-card-actions class="justify-center">
+                    <v-btn dark color="green" href="/cardtocardlist" >مشاهده</v-btn>            
+                </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>

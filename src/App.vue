@@ -1,16 +1,12 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer  v-model="drawer" right app>
+  
     <!-- app bar start -->
    
     <the-drawer></the-drawer>
-    </v-navigation-drawer>
-     <!-- app bar end -->
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>منو</v-toolbar-title>
-    </v-app-bar>
+     <!-- app bar end -->
+
     <v-main>
       <router-view/>
     </v-main>
@@ -26,10 +22,13 @@ export default {
   name: 'App',
 
   data: () => ({
-    drawer: null
+
   }),
-  created(){
-    //console.log(this)
+  methods:{
+    setDrawer(){
+      this.$store.dispatch('mainDrawer')
+    }
   }
+
 };
 </script>
