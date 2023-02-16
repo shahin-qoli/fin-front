@@ -137,6 +137,15 @@
         }
       ];
     }
-  }
+  },
+    methods: {
+      loadCardtocards() {
+        // console.log(this)
+        this.$store.dispatch('loadCardtocards')
+      }
+    },
+    created() {
+      this.loadCardtocards ();
+    }
 }
 </script>

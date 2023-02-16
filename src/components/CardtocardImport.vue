@@ -4,12 +4,12 @@
             <v-col cols="9">
                 <v-card
                 class="mx-auto"
-                prepend-icon="mdi-home"          
+                prepend-icon="mdi-home"      
+                name="main"    
                 >
-                    <v-card-item>
                         <v-card-title class="justify-center">ورود اطلاعات کارت به کارت</v-card-title>
                         <v-btn href="https://burux.ir">دانلود نمونه فایل</v-btn>
-                        <v-form v-model="valid">
+                        <v-form >
                                 <v-container>
                                     <v-row>
                                         <v-col
@@ -20,25 +20,21 @@
                                         />
                                        </v-col>
                                         <v-card-actions class="justify-center">
-                                            <v-btn flat>Submit</v-btn>
+                                            <v-btn text>Submit</v-btn>
                                         </v-card-actions>
                                     </v-row>
                                 </v-container>
-                        </v-form>
-                    </v-card-item>    
+                        </v-form>  
                 </v-card>    
             </v-col>
             <v-col cols="9">
                 <v-card
                 class="mx-auto"
-                prepend-icon="mdi-home"          
+                prepend-icon="mdi-home"  
+                name="list"        
                 > 
-                <v-card-item>
                     <v-card-title class="justify-center">لیست کارت به کارت ها</v-card-title>
-                    <v-btn href="/cardtocardlist" >مشاهده</v-btn>
-                </v-card-item>
-                
-                
+                    <v-btn href="/cardtocardlist" >مشاهده</v-btn>            
                 </v-card>
             </v-col>
         </v-row>

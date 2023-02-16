@@ -28,5 +28,8 @@ export default {
   data: () => ({
     drawer: null
   }),
+  created(){
+    //console.log(this)
+  }
 };
 </script>

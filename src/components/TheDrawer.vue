@@ -1,5 +1,5 @@
 <template>
-<v-contaimer class="grey lighten-5" >
+<v-container class="grey lighten-5" >
     <v-divider class="mb-1" />
         <v-row>
 
@@ -25,7 +25,7 @@
    <v-divider class="mb-1" />
 
 </v-row>
-</v-contaimer>
+</v-container>
 
 </template>
 
