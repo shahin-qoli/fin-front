@@ -13,16 +13,16 @@
         fixed-header
         dense
         :headers="headers"
-        :items="cardtocards"
+        :items="poses"
         item-key="id"
         class=""
         :search="search"
       >
       </v-data-table>
     </v-card>
-  </template>
+</template>
   
-  <script>
+<script>
     export default {
       data() {
       return {
@@ -31,12 +31,12 @@
         transaction_time: "",
         description: "",
         amount: "",
-        from_card: "",
-        to_card: "",
         peygiri_number: "",
-        serial_number: "",
+        variz_date: "",
+        payane_code: "",
+        erja_code: "",
         job_id: "",
-        loading: true
+        owner_account_number: ""
       };
     },
     computed: {
@@ -67,54 +67,55 @@
             value: "amount",
           },
           {
-            text: "کارت مبدا",
-            align: "center",
-            value: "from_card",
-  
-          },
-          {
-            text: "کارت مقصد",
-            align: "center",
-            value: "to_card",
-  
-          },
-          {
             text: "شماره پیگیری",
             align: "center",
             value: "peygiri_number",
   
           },
           {
-            text: "شماره سریال",
+            text: "تاریخ واریز",
             align: "center",
-            value: "serial_number",
+            value: "variz_date",
+  
+          },
+          {
+            text: "کد پایانه",
+            align: "center",
+            value: "payane_code",
+  
+          },
+          {
+            text: "شماره ارجاع",
+            align: "center",
+            value: "erja_code",
             
           },
           {
             text: "شماره فایل",
             align: "center",
             value: "job_id"
+          },
+          {
+            text: "شماره حساب",
+            align: "center",
+            value: "owner_account_number"
           }
         ];
       },
-      cardtocards(){
+      poses(){
         //console.log(this.$store.getters.cardtocards)
-        return this.$store.getters.usedcardtocards
+        return this.$store.getters.usedposes
         
       }
     },
       methods: {
-        loadCardtocards() {
+        loadPoses() {
           // console.log(this)
-          this.$store.dispatch('loadUsedCardtocards')
+          this.$store.dispatch('loadPoses')
         }
       },
       created() {
-        this.loadCardtocards ();
+        this.loadPoses ();
       }
   }
   </script>
-  
-  <style scoped>
-  
-  </style>

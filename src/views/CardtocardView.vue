@@ -7,7 +7,7 @@
 
 
 <script>
-    import CardtocardImport from '@/components/CardtocardImport.vue';
+    import CardtocardImport from '@/components/cardtocard/CardtocardImport.vue';
     export default {
       components: {
        CardtocardImport

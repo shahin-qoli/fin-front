@@ -20,7 +20,7 @@
             </v-col>
             
             <v-col cols="9">
-            <router-link to='/cardtocard'><h3>کارتخوان</h3></router-link> 
+            <router-link to='/pos'><h3>کارتخوان</h3></router-link> 
             <v-divider/>
             </v-col>
             

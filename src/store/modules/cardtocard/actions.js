@@ -24,7 +24,8 @@ export default {
                     to_card: cardtocardsData[key].to_card,
                     peygiri_number: cardtocardsData[key].peygiri_number,
                     serial_number: cardtocardsData[key].serial_number,
-                    job_id: cardtocardsData[key].job_id
+                    job_id: cardtocardsData[key].job_id,
+                    is_used: cardtocardsData[key].is_used
 				};
 				cardtocards.push(cardtocard);  
               }
