@@ -1,9 +1,9 @@
 export default{
-    cardtocards (state) {
-        return state.cardtocards;
+    poses (state) {
+        return state.poses;
     },
-	usedcardtocards (state){
-		return state.cardtocards.filter(cardtocard => cardtocard.is_used)
+	usedposes (state){
+		return state.poses.filter(pos => pos.is_used)
 	},
     shouldUpdate(state) {
 		const lastFetch = state.lastFetch;

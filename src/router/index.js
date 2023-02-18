@@ -3,6 +3,12 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CardtocardView from '../views/CardtocardView.vue'
 import CardtocardListView from '../views/CardtocardListView.vue'
+import CardtocardUsedListView from '../views/CardtocardUsedListView.vue'
+
+import PosView from '../views/PosView.vue'
+import PosListView from '../views/PosListView.vue'
+import PosUsedListView from '../views/PosUsedListView.vue'
+
 
 Vue.use(VueRouter)
 
@@ -19,7 +25,25 @@ const routes = [
     path: '/cardtocardlist',
     name: 'cardtocardlist',
     component: CardtocardListView
+  },{
+    path: '/cardtocardusedlist',
+    name: 'cardtocardusedlist',
+    component: CardtocardUsedListView
+  },  {
+    path: '/pos',
+    name: 'pos',
+    component: PosView
+  },{
+    path: '/poslist',
+    name: 'poslist',
+    component: PosListView
+  },{
+    path: '/posusedlist',
+    name: 'posusedlist',
+    component: PosUsedListView
   },
+
+
   {
     path: '/about',
     name: 'about',

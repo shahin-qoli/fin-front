@@ -38,7 +38,8 @@
                 > 
                     <v-card-title class="justify-center">لیست کارت به کارت ها</v-card-title>
                     <v-card-actions class="justify-center">
-                    <v-btn dark color="green" href="/cardtocardlist" >مشاهده</v-btn>            
+                    <v-btn dark color="green" href="/cardtocardlist" >مشاهده همه کارت به کارت ها</v-btn>  
+                    <v-btn dark color="green" href="/cardtocardusedlist" > مشاهده کارت به کارت های استفاده شده</v-btn>          
                 </v-card-actions>
                 </v-card>
             </v-col>
