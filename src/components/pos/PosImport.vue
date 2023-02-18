@@ -1,3 +1,4 @@
+
 <template>
     <v-container>
         <v-row >
@@ -10,20 +11,21 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="gold" href="https://burux.ir">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="gold" href="http://192.168.142.128:3400/admin/card_to_card_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
-                        <v-form > 
+                        <v-form @submit.prevent="submit"> 
                             <v-col
                             cols="12">
                             <v-file-input
                                 accept="excel/*"
                                 label="بارگذاری فایل"
+                                v-model="file"
                             />
                             </v-col>
                             <v-card-actions class="justify-center">
-                                <v-btn dark color="green">ارسال</v-btn>
+                                <v-btn type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
@@ -51,12 +53,35 @@
 
 <script>
    // import HelloWorld from '../components/HelloWorld'
-  
-    export default {
-  
-      components: {
-       // HelloWorld,
-      },
+    import axios from 'axios';
+
+    export default {   
+        data(){
+            return{
+                file: null,
+            }
+        },
+        components: {
+        // HelloWorld,
+        },
+        methods: {
+            submit() {
+                console.log(this.file)
+                if (this.file){
+                    let dataImport = new FormData();
+                    dataImport.append("file", this.file, this.file.name);
+                    axios.post(`http://192.168.142.128:3400/api/card_to_card_raws/import_file`,dataImport).then(response => {
+                     console.log("Success!");
+                     console.log({ response });
+                    
+                      }).catch(error => {
+                console.log({ error });
+            });
+            } else {
+        console.log("there are no files.");
     }
+        }
+    }
+}
   </script>
   

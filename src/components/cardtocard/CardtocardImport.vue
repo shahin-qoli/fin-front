@@ -10,7 +10,7 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="gold" href="https://burux.ir">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="gold" href="http://192.168.142.128:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
@@ -23,7 +23,7 @@
                             />
                             </v-col>
                             <v-card-actions class="justify-center">
-                                <v-btn dark color="green">ارسال</v-btn>
+                                <v-btn type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
