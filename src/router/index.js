@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CardtocardView from '../views/CardtocardView.vue'
 import CardtocardListView from '../views/CardtocardListView.vue'
+import CardtocardUsedListView from '../views/CardtocardUsedListView.vue'
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,10 @@ const routes = [
     path: '/cardtocardlist',
     name: 'cardtocardlist',
     component: CardtocardListView
+  },{
+    path: '/cardtocardusedlist',
+    name: 'cardtocardusedlist',
+    component: CardtocardUsedListView
   },
   {
     path: '/about',

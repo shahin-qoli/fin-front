@@ -2,6 +2,9 @@ export default{
     cardtocards (state) {
         return state.cardtocards;
     },
+	usedCardtocards (state){
+		return state.cardtocards.filter(cardtocard => cardtocard.is_used)
+	},
     shouldUpdate(state) {
 		const lastFetch = state.lastFetch;
 		if (!lastFetch) {
