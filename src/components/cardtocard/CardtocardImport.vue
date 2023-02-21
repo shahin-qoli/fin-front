@@ -14,14 +14,16 @@
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
-                        <v-form > 
+                        <v-form @submit.prevent="submitForm"> 
                             <v-col
                             cols="12">
                             <v-file-input
                                 accept="excel/*"
                                 label="بارگذاری فایل"
+                                v-model="file"
                             />
                             </v-col>
+                            <p  class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
                                 <v-btn type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
@@ -50,13 +52,54 @@
 
 
 <script>
+import axios from 'axios';
    // import HelloWorld from '../components/HelloWorld'
-  
+    import FileSaver from 'file-saver'
     export default {
-  
+        data() {
+            return {
+                file: null,
+                uploadError: false
+            }
+        },
+      methods: {
+        async submitForm(){
+            this.uploadError= false
+            if (!this.file) return;
+            let formData = new FormData()
+            formData.append('file', this.file,this.file.name)
+            console.log('start')
+            try {
+                const response = await axios.post('http://192.168.142.128:3400/api/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
+                console.log('finish')
+                console.log(response.data.type)
+                if (response.data.type === 'application/json') {
+                    this.uploadError = true;
+                    this.file = null;
+                } else {
+                    FileSaver.saveAs(response.data, this.file.name)
+                    this.file = null;
+                }
+
+
+            } catch (err){
+                const error = new Error(
+                    
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        }
+      },
       components: {
        // HelloWorld,
       },
     }
   </script>
   
+<style scoped>
+p {
+    color: red;
+    align-self: center;
+}
+</style>
