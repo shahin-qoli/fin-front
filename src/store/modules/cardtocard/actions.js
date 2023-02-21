@@ -13,19 +13,22 @@ export default {
             const cardtocards = [];
             //{ data: cardtocardsData}
             // console.log(cardtocardsData)
-            for (const key in cardtocardsData) {
+            for (const item of cardtocardsData) {
+                
 				const cardtocard = {
-					id: cardtocardsData[key].id,
-                    transaction_date: cardtocardsData[key].transaction_date,
-                    transaction_time: cardtocardsData[key].transaction_time,
-                    description: cardtocardsData[key].description,
-                    amount: cardtocardsData[key].amount,
-                    from_card: cardtocardsData[key].from_card,
-                    to_card: cardtocardsData[key].to_card,
-                    peygiri_number: cardtocardsData[key].peygiri_number,
-                    serial_number: cardtocardsData[key].serial_number,
-                    job_id: cardtocardsData[key].job_id,
-                    is_used: cardtocardsData[key].is_used
+					id: item.id,
+                    transaction_date: item.transaction_date,
+                    transaction_time: item.transaction_time,
+                    description: item.description,
+                    amount: item.amount,
+                    from_card: item.from_card,
+                    to_card: item.to_card,
+                    peygiri_number: item.peygiri_number,
+                    serial_number: item.serial_number,
+                    job_id: item.job_id,
+                    is_used: item.is_used 
+                    // ...item,
+                    // number: 2
 				};
 				cardtocards.push(cardtocard);  
               }
