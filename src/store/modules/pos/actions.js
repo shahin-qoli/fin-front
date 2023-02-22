@@ -6,7 +6,7 @@ export default {
        // const apiUrl = context.rootGetters.apiUrl;
         try {
             
-            const { data: posesData} = await axios.get(`http://192.168.142.128:3400/api/pos_raws`,{headers: {
+            const { data: posesData} = await axios.get(`http://192.168.1.80:3400/api/pos_raws`,{headers: {
                 "Access-Control-Allow-Origin": "*"
             }});
 

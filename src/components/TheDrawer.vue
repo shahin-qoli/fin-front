@@ -23,6 +23,10 @@
             <router-link to='/pos'><h3>کارتخوان</h3></router-link> 
             <v-divider/>
             </v-col>
+            <v-col cols="9">
+            <router-link to='/request'><h3>درخواست ها</h3></router-link> 
+            <v-divider/>
+            </v-col>
             
 
         </v-row>
