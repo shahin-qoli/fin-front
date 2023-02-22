@@ -10,7 +10,7 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="gold" href="http://192.168.142.128:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="gold" href="http://192.168.1.80:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
@@ -23,7 +23,7 @@
                                 v-model="file"
                             />
                             </v-col>
-                            <p  class="text-center">فایل بارگذاری شده مشکل دارد.</p>
+                            <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
                                 <v-btn type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
@@ -70,7 +70,7 @@ import axios from 'axios';
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await axios.post('http://192.168.142.128:3400/api/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await axios.post('http://192.168.1.80:3400/api/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
