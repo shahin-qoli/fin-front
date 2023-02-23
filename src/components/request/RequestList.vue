@@ -1,0 +1,135 @@
+<template>
+    <nav>
+        <template>
+    <v-card outlined>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="جستجو"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        fixed-header
+        dense
+        :headers="headers"
+        :items="requests"
+        item-key="id"
+        class=""
+        :search="search"
+      >
+      <template  v-slot:[`item.amount`]="props">
+        {{ rowAmount(props.item.payfull) }}
+        <!-- <v-btn class="mx-2" fab dark small color="pink" >
+           
+          <v-icon dark>mdi-heart</v-icon>
+        </v-btn> -->
+
+      </template>
+      <template v-slot:[`item.controls`]="props">
+        <v-btn v-if="isRequested(props.item.state)" class="mx-2" small  @click="verifyRequest(props.item)">
+            <v-icon>mdi-check-outline</v-icon>
+        </v-btn>
+
+      </template>
+      </v-data-table>
+    </v-card>
+</template> 
+    </nav>
+</template>
+
+<script>
+    // import TheRequest from "./TheRequest.vue";
+    export default {
+        data(){
+            return {
+                search: ''
+            }
+        },
+        components: {
+            // TheRequest
+        },
+        computed: {
+            requests() {
+                return this.$store.getters.requests
+            },
+            headers() {
+        return [
+          {
+            text: "شماره سند B1",
+            align: "center",
+            //sortable: false,
+            value: "b1_doc",
+          },
+          {
+            text: "اخذ شده توسط",
+            value: "captured_by",
+            align: "center",
+            filterable: false,
+          },
+          {
+            text: "تاریخ درخواست",
+            value: "created_at",
+            align: "center",
+            filterable: false
+  
+          },
+          {
+            text: "نوع",
+            align: "center",
+            value: "name",
+          },          {
+            text: "وضعیت",
+            align: "center",
+            value: "state",
+          },          {
+            text: "کد مشتری",
+            align: "center",
+            value: "used_for",
+          },       {
+            text: "تاریخ تراکنش",
+            align: "center",
+            value: "transaction_date",
+          },          {
+            text: "مبلغ",
+            align: "center",
+            value: "amount",
+          },
+          {
+            text: "",
+            align: "center",
+            value: "controls",
+            sortable: false
+          }
+          
+        ];
+        }
+    },
+        methods:{
+          verifyRequest(item){
+            this.$store.dispatch('verifyRequest',item.id)
+          },
+          isRequested(state){
+            return state=="requested"
+          },
+          rowAmount(payfull){
+                console.log(payfull)
+                if(payfull.type=="pos_raw"){
+                    return payfull.pos_raw.amount
+                }else{
+                    return payfull.card_to_card_raw.amount
+                }
+                
+            },
+            loadRequests(){
+                this.$store.dispatch('loadRequests')
+            }
+        },
+        created(){
+            this.loadRequests()
+            console.log(this.requests)
+        }
+    }
+</script>

@@ -8,7 +8,7 @@ import CardtocardUsedListView from '../views/CardtocardUsedListView.vue'
 import PosView from '../views/PosView.vue'
 import PosListView from '../views/PosListView.vue'
 import PosUsedListView from '../views/PosUsedListView.vue'
-
+import RequestView from '../views/RequestView.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +41,10 @@ const routes = [
     path: '/posusedlist',
     name: 'posusedlist',
     component: PosUsedListView
+  },{
+    path: '/requests',
+    name: 'requests',
+    component: RequestView
   },
 
 
