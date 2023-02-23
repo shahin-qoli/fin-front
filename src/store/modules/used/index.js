@@ -8,7 +8,8 @@ export default {
 
     state() {
         return {
-        requests:[]       
+        requests:[],
+        status: ''       
     }
     },
     mutations:{
@@ -18,10 +19,7 @@ export default {
         verifyRequest(state, reqId){
             const toUpdateIndex=state.requests.findIndex(req => req.id === reqId )
             console.log(state.requests[toUpdateIndex].state.value)
-            state.requests[toUpdateIndex].state.value = "verified"
-            
-
-
+            state.requests[toUpdateIndex].state = "verified"
         }
     },
     getters: {
@@ -30,14 +28,16 @@ export default {
         }
     },
     actions: {
-        async verifyRequest(context, reqId,actions){
+        async verifyRequest(context, reqId){
             try{
                 const {data: requestsData} = await axios.get(`http://192.168.1.80:3400/api/used_payments/${reqId}/verify`);
                 console.log(requestsData)
-                if (requestsData.result.value=='true'){
-                    actions.loadRequests
+                if (requestsData.result){
+                    console.log("111")
+                    context.commit('verifyRequest', reqId) 
                     return true
                 }else {
+                    console.log("222")
                     return false
                 }
 
