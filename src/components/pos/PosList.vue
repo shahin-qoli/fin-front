@@ -7,6 +7,7 @@
           label="جستجو"
           single-line
           hide-details
+          :loading="isLoading"
         ></v-text-field>
       </v-card-title>
       <v-data-table
@@ -103,9 +104,11 @@
         ];
       },
       poses(){
-        //console.log(this.$store.getters.cardtocards)
-        return this.$store.getters.poses
         
+        return this.$store.getters.poses
+      },
+      isLoading(){
+        return this.$store.getters.isLoading;
       }
     },
       methods: {

@@ -7,6 +7,7 @@
         label="جستجو"
         single-line
         hide-details
+        :loading="isLoading"
       ></v-text-field>
     </v-card-title>
     <v-data-table
@@ -27,6 +28,7 @@
     data() {
     return {
       search: "",
+     
       transaction_date: "",
       transaction_time: "",
       description: "",
@@ -99,8 +101,11 @@
     },
     cardtocards(){
       //console.log(this.$store.getters.cardtocards)
+    
       return this.$store.getters.cardtocards
       
+    }, isLoading(){
+      return this.$store.getters.isLoading;
     }
   },
     methods: {

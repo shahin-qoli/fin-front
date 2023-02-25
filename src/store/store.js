@@ -17,8 +17,24 @@ export default new Vuex.Store({
     state(){
       return{ 
               apiUrl: 'http://192.168.1.80:3400/api',
+              isLoading: true
                };
     },
+    actions:{
+      changeIsLoading(context, payload){
+        context.commit('setIsLoading', payload)
+      }
 
+    },
+    mutations:{
+      setIsLoading(state, payload){
+        state.isLoading = payload;
+      }
+    },
+    getters:{
+      isLoading(state){
+        return state.isLoading;
+      }
+    }
     
 });

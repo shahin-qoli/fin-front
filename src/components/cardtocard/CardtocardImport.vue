@@ -65,7 +65,8 @@
 
 
 <script>
-import axios from 'axios';
+
+import {finAgent} from '@/services/agent'
    // import HelloWorld from '../components/HelloWorld'
     import FileSaver from 'file-saver'
     export default {
@@ -83,7 +84,7 @@ import axios from 'axios';
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await axios.post('http://192.168.1.80:3400/api/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await finAgent.post('/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {

@@ -5,6 +5,7 @@ export default {
    
     async loadCardtocards(context) {
         if (!context.getters.shouldUpdate) return;
+        context.commit('setIsLoading', 'true')
         try {
             const {data:cardtocardsData} = await finAgent.get('/card_to_card_raws')
             const cardtocards = [];
@@ -27,6 +28,7 @@ export default {
 				};
 				cardtocards.push(cardtocard);  
               }
+              context.commit('setIsLoading', 'false')
               context.commit('setCardtocards', cardtocards);
               context.commit('setFetchTimestamp');
             //   console.log(cardtocards)

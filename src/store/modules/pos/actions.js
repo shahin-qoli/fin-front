@@ -3,11 +3,9 @@ import  {finAgent} from '@/services/agent'
 export default {
     async loadPoses(context) {
         console.log("step1")
-       // const apiUrl = context.rootGetters.apiUrl;
+        context.commit('setIsLoading', 'true')
         try {
-            
             const { data: posesData} = await finAgent.get(`/pos_raws`);
-
             const poses = [];
             for (const key in posesData) {
 				const pos = {
@@ -26,6 +24,8 @@ export default {
 				};
 				poses.push(pos);  
               }
+              context.commit('setIsLoading', 'false')
+        
               context.commit('setPoses', poses);
               context.commit('setFetchTimestamp');
     

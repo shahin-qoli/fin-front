@@ -68,7 +68,8 @@
 
 <script>
    // import HelloWorld from '../components/HelloWorld'
-    import axios from 'axios';
+   
+    import { finAgent } from '@/services/agent';
     import FileSaver from 'file-saver'
     export default {   
         data(){
@@ -88,7 +89,7 @@
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await axios.post('http://192.168.1.80:3400/api/pos_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await finAgent.post('/pos_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
