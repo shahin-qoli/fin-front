@@ -1,6 +1,6 @@
 const axios = require('axios');
 export const finAgent = axios.create({
-  baseURL: 'http://192.168.1.80:3400/api'
+  baseURL: 'http://192.168.1.80:3400/api/front'
 }
 );
 

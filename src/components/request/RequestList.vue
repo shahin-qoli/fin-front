@@ -20,13 +20,11 @@
         class=""
         :search="search"
       >
+      <template  v-slot:[`item.transaction_date`]="props">
+        {{ transactionDate(props.item.payfull) }}
+      </template>
       <template  v-slot:[`item.amount`]="props">
         {{ rowAmount(props.item.payfull) }}
-        <!-- <v-btn class="mx-2" fab dark small color="pink" >
-           
-          <v-icon dark>mdi-heart</v-icon>
-        </v-btn> -->
-
       </template>
       <template v-slot:[`item.controls`]="props">
         <v-btn v-if="isRequested(props.item.state)" class="mx-2" small  @click="verifyRequest(props.item)">
@@ -113,6 +111,14 @@
           },
           isRequested(state){
             return state=="requested"
+          },
+          transactionDate(payfull){
+            if(payfull.type=="pos_raw"){
+                    console.log(payfull.pos_raw.transaction_date)
+                    return payfull.pos_raw.transaction_date
+                }else{
+                    return payfull.card_to_card_raw.transaction_date
+                }
           },
           rowAmount(payfull){
                 console.log(payfull)

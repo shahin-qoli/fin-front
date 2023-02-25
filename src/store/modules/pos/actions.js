@@ -6,7 +6,7 @@ export default {
        // const apiUrl = context.rootGetters.apiUrl;
         try {
             
-            const { data: posesData} = await finAgent.get(`http://192.168.1.80:3400/api/pos_raws`);
+            const { data: posesData} = await finAgent.get(`/pos_raws`);
 
             const poses = [];
             for (const key in posesData) {
