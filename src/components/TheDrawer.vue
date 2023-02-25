@@ -11,22 +11,32 @@
                 />
             </v-col>
             <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>
-                <v-divider/>
+                
             </v-col>
-
+            <v-col cols="12">
+            <v-divider/>
+          </v-col>
             <v-col cols="9">
-                <router-link to='/cardtocard'><h3>کارت به کارت</h3></router-link>
-                <v-divider/>
+                <router-link  style="text-decoration: none;" to='/cardtocard'><h3>کارت به کارت</h3></router-link>
+               
             </v-col>
+            <v-col cols="12">
+            <v-divider/>
+          </v-col>
+            <v-col cols="9">
+            <router-link style="text-decoration: none;" to='/pos'><h3>کارتخوان</h3></router-link> 
             
-            <v-col cols="9">
-            <router-link to='/pos'><h3>کارتخوان</h3></router-link> 
-            <v-divider/>
             </v-col>
-            <v-col cols="9">
-            <router-link to='/requests'><h3>درخواست ها</h3></router-link> 
+            <v-col cols="12">
             <v-divider/>
+          </v-col>
+            <v-col cols="9">
+            <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
+
             </v-col>
+            <v-col cols="12">
+            <v-divider/>
+          </v-col>
             
 
         </v-row>

@@ -1,7 +1,5 @@
-// import mutations from './mutations'
-// import getters from './getters'
+import  {finAgent} from '@/services/agent'
 
-import axios from "axios";
 
 // import actions from './actions'
 export default {
@@ -30,7 +28,7 @@ export default {
     actions: {
         async verifyRequest(context, reqId){
             try{
-                const {data: requestsData} = await axios.get(`http://192.168.1.80:3400/api/used_payments/${reqId}/verify`);
+                const {data: requestsData} = await finAgent.get(`/used_payments/${reqId}/verify`);
                 console.log(requestsData)
                 if (requestsData.result){
                     console.log("111")
@@ -50,7 +48,7 @@ export default {
         },
         async loadRequests(context) {
             try {
-                const {data: requestsData} = await axios.get('http://192.168.1.80:3400/api/used_payments');
+                const {data: requestsData} = await finAgent.get('/used_payments');
                 const requests = []
                 for (const item of requestsData) {
                     const request= {

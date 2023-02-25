@@ -1,14 +1,12 @@
-import axios from 'axios'
 
+import  {finAgent} from '@/services/agent'
 export default {
     async loadPoses(context) {
         console.log("step1")
        // const apiUrl = context.rootGetters.apiUrl;
         try {
             
-            const { data: posesData} = await axios.get(`http://192.168.1.80:3400/api/pos_raws`,{headers: {
-                "Access-Control-Allow-Origin": "*"
-            }});
+            const { data: posesData} = await finAgent.get(`/pos_raws`);
 
             const poses = [];
             for (const key in posesData) {

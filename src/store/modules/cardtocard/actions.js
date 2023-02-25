@@ -1,18 +1,13 @@
-import axios from 'axios'
 
+// import cardtocardServ from '@/services/cardtocard/index.js'
+import  {finAgent} from '@/services/agent'
 export default {
+   
     async loadCardtocards(context) {
         if (!context.getters.shouldUpdate) return;
-       // const apiUrl = context.rootGetters.apiUrl;
         try {
-       
-            const { data: cardtocardsData} = await axios.get(`http://192.168.1.80:3400/api/card_to_card_raws`,{headers: {
-                "Access-Control-Allow-Origin": "*"
-            }});
-            console.log(cardtocardsData)
+            const {data:cardtocardsData} = await finAgent.get('/card_to_card_raws')
             const cardtocards = [];
-            //{ data: cardtocardsData}
-            // console.log(cardtocardsData)
             for (const item of cardtocardsData) {
                 
 				const cardtocard = {
@@ -38,7 +33,7 @@ export default {
          } catch (err) {
             //console.log(err.response);
             const error = new Error(
-				err.response.data.error || 'Failed to fetch'
+				err || 'Failed to fetch'
 			);
 			throw error;
          } 

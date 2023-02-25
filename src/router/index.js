@@ -9,42 +9,72 @@ import PosView from '../views/PosView.vue'
 import PosListView from '../views/PosListView.vue'
 import PosUsedListView from '../views/PosUsedListView.vue'
 import RequestView from '../views/RequestView.vue'
+import LoginView from '../views/LoginView.vue'
 
 Vue.use(VueRouter)
-
+function guardMyroute(to, from, next)
+{
+ var isAuthenticated= false;
+//this is just an example. You will have to find a better or 
+// centralised way to handle you localstorage data handling 
+if(localStorage.getItem('token'))
+  isAuthenticated = true;
+ else
+  isAuthenticated= false;
+ if(isAuthenticated) 
+ {
+  next(); // allow to enter route
+ } 
+ else
+ {
+  next('/login'); // go to '/login';
+ }
+}
 const routes = [
   {
     path: '/',
     name: 'home',
+    beforeEnter : guardMyroute,
     component: HomeView
   },  {
     path: '/cardtocard',
     name: 'cardtocard',
+    beforeEnter : guardMyroute,
     component: CardtocardView
   },{
     path: '/cardtocardlist',
     name: 'cardtocardlist',
+    beforeEnter : guardMyroute,
     component: CardtocardListView
   },{
     path: '/cardtocardusedlist',
     name: 'cardtocardusedlist',
+    beforeEnter : guardMyroute,
     component: CardtocardUsedListView
   },  {
     path: '/pos',
     name: 'pos',
+    beforeEnter : guardMyroute,
     component: PosView
   },{
     path: '/poslist',
     name: 'poslist',
+    beforeEnter : guardMyroute,
     component: PosListView
   },{
     path: '/posusedlist',
     name: 'posusedlist',
+    beforeEnter : guardMyroute,
     component: PosUsedListView
   },{
     path: '/requests',
     name: 'requests',
+    beforeEnter : guardMyroute,
     component: RequestView
+  },{
+    path: '/login',
+    name: 'login',
+    component: LoginView
   },
 
 
@@ -63,5 +93,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+
 
 export default router
