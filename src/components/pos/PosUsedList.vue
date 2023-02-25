@@ -27,16 +27,16 @@
       data() {
       return {
         search: "",
-        transaction_date: "",
-        transaction_time: "",
-        description: "",
-        amount: "",
-        peygiri_number: "",
-        variz_date: "",
-        payane_code: "",
-        erja_code: "",
-        job_id: "",
-        owner_account_number: ""
+        // transaction_date: "",
+        // transaction_time: "",
+        // description: "",
+        // amount: "",
+        // peygiri_number: "",
+        // variz_date: "",
+        // payane_code: "",
+        // erja_code: "",
+        // job_id: "",
+        // owner_account_number: ""
       };
     },
     computed: {

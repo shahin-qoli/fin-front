@@ -6,7 +6,7 @@ export default {
        // const apiUrl = context.rootGetters.apiUrl;
         try {
        
-            const { data: cardtocardsData} = await axios.get(`http://192.168.142.128:3400/api/card_to_card_raws`,{headers: {
+            const { data: cardtocardsData} = await axios.get(`http://192.168.1.80:3400/api/card_to_card_raws`,{headers: {
                 "Access-Control-Allow-Origin": "*"
             }});
             console.log(cardtocardsData)
