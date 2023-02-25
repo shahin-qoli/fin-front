@@ -6,11 +6,18 @@
                 d
                 class="mx-auto"      
                 >
-                        <v-card-title class="justify-center">ورود اطلاعات کارت به کارت</v-card-title>
+                <v-spacer></v-spacer>
+                        <v-toolbar dark color="gold">
+                            <v-row>
+                            <v-col cols="12">
+                         <h3 class="text-center">ورود اطلاعات کارت به کارت</h3>
+                        </v-col>
+                        </v-row>
+                      </v-toolbar>
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="gold" href="http://192.168.1.80:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="http://192.168.1.80:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
@@ -38,7 +45,13 @@
                 prepend-icon="mdi-home"  
                 name="list"        
                 > 
-                    <v-card-title class="justify-center">لیست کارت به کارت ها</v-card-title>
+                <v-toolbar dark color="gold">
+                            <v-row>
+                            <v-col cols="12">
+                         <h3 class="text-center">لیست کارت به کارت ها</h3>
+                        </v-col>
+                        </v-row>
+                      </v-toolbar>
                     <v-card-actions class="justify-center">
                     <v-btn dark color="green" href="/cardtocardlist" >مشاهده همه کارت به کارت ها</v-btn>  
                     <v-btn dark color="green" href="/cardtocardusedlist" > مشاهده کارت به کارت های استفاده شده</v-btn>          
