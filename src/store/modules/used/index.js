@@ -27,6 +27,7 @@ export default {
     },
     actions: {
         async verifyRequest(context, reqId){
+            
             try{
                 const {data: requestsData} = await finAgent.get(`/used_payments/${reqId}/verify`);
                 console.log(requestsData)
@@ -47,6 +48,7 @@ export default {
             }
         },
         async loadRequests(context) {
+            context.commit('setIsLoading', 'true')
             try {
                 const {data: requestsData} = await finAgent.get('/used_payments');
                 const requests = []
@@ -56,7 +58,9 @@ export default {
                     }
                     requests.push(request); 
                 }
+                
                 context.commit('setRequests', requests)
+                context.commit('setIsLoading', 'false')
  
             } catch (err) {
                 //console.log(err.response);

@@ -9,6 +9,7 @@
           label="جستجو"
           single-line
           hide-details
+          :loading="isLoading"
         ></v-text-field>
       </v-card-title>
       <v-data-table
@@ -50,6 +51,9 @@
             // TheRequest
         },
         computed: {
+            isLoading(){
+        return this.$store.getters.isLoading;
+      },
             requests() {
                 return this.$store.getters.requests
             },

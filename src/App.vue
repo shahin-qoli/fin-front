@@ -32,3 +32,22 @@ export default {
 
 };
 </script>
+
+
+<style scoped>
+@font-face {
+    font-family: iranyekan;
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot');
+    src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot?#iefix') format('embedded-opentype'), /* IE6-8 */
+    url('./assets/fonts/iranyekan/woff2/iranyekanwebregular(fanum).woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/iranyekan/ttf/iranyekanwebregular(fanum).ttf') format('truetype');
+}
+#inspire {
+  font-family: iranyekan;
+}
+
+
+</style>

@@ -18,7 +18,7 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="green" href="http://192.168.142.128:3400/admin/card_to_card_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="http://192.168.1.80:3400/admin/card_to_card_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
@@ -68,7 +68,8 @@
 
 <script>
    // import HelloWorld from '../components/HelloWorld'
-    import axios from 'axios';
+   
+    import { finAgent } from '@/services/agent';
     import FileSaver from 'file-saver'
     export default {   
         data(){
@@ -88,7 +89,7 @@
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await axios.post('http://192.168.1.80:3400/api/pos_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await finAgent.post('/pos_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
