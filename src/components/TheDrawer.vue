@@ -42,10 +42,15 @@
         </v-row>
     </v-container>
 </v-navigation-drawer> 
-<v-app-bar app>
+<v-app-bar color="deep-purple accent-4"
+      dense
+      dark
+      app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>منو</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-app-bar-title> <v-btn dark color="green" @click="exitUser"> خروج از سامانه</v-btn></v-app-bar-title>
 </v-app-bar>
 </div>
 </template>
@@ -66,6 +71,13 @@ export default {
   data: () => ({
     drawer: null
   }),
+  methods:{
+    exitUser(){
+      console.log(localStorage.getItem('token'))
+      localStorage.removeItem('token')
+      this.$router.push('/pos')
+    }
+  },
   computed:{
     // drawer() {
     //    return this.$store.getters.getDrawer

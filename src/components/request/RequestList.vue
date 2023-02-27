@@ -9,7 +9,7 @@
           label="جستجو"
           single-line
           hide-details
-          :loading="isLoadig"
+          :loading="isLoading"
         ></v-text-field>
       </v-card-title>
       <v-data-table
