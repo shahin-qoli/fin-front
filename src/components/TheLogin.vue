@@ -56,7 +56,7 @@
        var data = {"email": email, "password": password}
        try{
         console.log(data)
-        const {data: requestsData} = await finAgent.post('http://192.168.1.80:3400/api/auth/login', data)
+        const {data: requestsData} = await finAgent.post('http://192.168.127.215:3400/api/auth/login', data)
         localStorage.setItem('token', requestsData.token)
         this.$router.replace({name:'home'})
 
