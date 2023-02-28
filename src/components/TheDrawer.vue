@@ -30,14 +30,18 @@
             <v-col cols="12">
             <v-divider/>
           </v-col>
-            <v-col cols="9">
+          <v-col cols="9">
             <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
-
-            </v-col>
-            <v-col cols="12">
+          </v-col>
+          <v-col cols="12">
             <v-divider/>
           </v-col>
-            
+          <v-col cols="9">
+            <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
+          </v-col>
+          <v-col cols="12">
+            <v-divider/>
+          </v-col>            
 
         </v-row>
     </v-container>

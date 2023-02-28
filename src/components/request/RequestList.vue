@@ -9,7 +9,6 @@
           label="جستجو"
           single-line
           hide-details
-          :loading="isLoading"
         ></v-text-field>
       </v-card-title>
       <v-data-table
@@ -20,6 +19,7 @@
         item-key="id"
         class=""
         :search="search"
+        :loading="isLoading"
       >
       <template  v-slot:[`item.transaction_date`]="props">
         {{ transactionDate(props.item.payfull) }}
@@ -31,7 +31,6 @@
         <v-btn v-if="isRequested(props.item.state)" class="mx-2" small  @click="verifyRequest(props.item)">
             <v-icon>mdi-check-outline</v-icon>
         </v-btn>
-
       </template>
       </v-data-table>
     </v-card>
@@ -63,7 +62,7 @@
             text: "شماره سند B1",
             align: "center",
             //sortable: false,
-            value: "b1_doc",
+            value: "b1_docnum",
           },
           {
             text: "اخذ شده توسط",
@@ -76,7 +75,6 @@
             value: "created_at",
             align: "center",
             filterable: false
-  
           },
           {
             text: "نوع",

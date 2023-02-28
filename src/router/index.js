@@ -10,7 +10,7 @@ import PosListView from '../views/PosListView.vue'
 import PosUsedListView from '../views/PosUsedListView.vue'
 import RequestView from '../views/RequestView.vue'
 import LoginView from '../views/LoginView.vue'
-
+import JobListView from '../views/JobListView.vue'
 Vue.use(VueRouter)
 function guardMyroute(to, from, next)
 {
@@ -71,6 +71,11 @@ const routes = [
     name: 'requests',
     beforeEnter : guardMyroute,
     component: RequestView
+  },{
+    path: '/joblist',
+    name: 'jobslist',
+    beforeEnter : guardMyroute,
+    component: JobListView
   },{
     path: '/login',
     name: 'login',
