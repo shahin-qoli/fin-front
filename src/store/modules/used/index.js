@@ -26,8 +26,7 @@ export default {
         }
     },
     actions: {
-        async verifyRequest(context, reqId){
-            
+        async verifyRequest(context, reqId){       
             try{
                 const {data: requestsData} = await finAgent.get(`/used_payments/${reqId}/verify`);
                 console.log(requestsData)
