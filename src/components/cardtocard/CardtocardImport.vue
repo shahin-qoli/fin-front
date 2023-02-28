@@ -17,7 +17,7 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="green" href="http://192.168.1.80:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="http://192.168.127.215:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
