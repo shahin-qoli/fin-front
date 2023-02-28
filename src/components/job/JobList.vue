@@ -12,17 +12,17 @@
                     ></v-text-field>
                 </v-card-title>
                 <v-data-table
-                fixed-header
-                dense
-                :headers="headers"
-                :items="jobs"
-                item-key="id"
-                class=""
-                :search="search"
-                :loading="isLoading"                      
+                    fixed-header
+                    dense
+                    :headers="headers"
+                    :items="jobs"
+                    item-key="id"
+                    class=""
+                    :search="search"
+                    :loading="isLoading"                      
                 >
                 <template v-slot:[`item.controls`]="props">
-                    <v-btn class="mx-2" small  @click="retryJob(props.item)">
+                    <v-btn v-if="needRetry(props.item)" class="mx-2" small  @click="retryJob(props.item)">
                         <v-icon>mdi-check-outline</v-icon>
                     </v-btn>
                </template>
@@ -41,6 +41,9 @@ export default{
         }
     },
     computed:{
+        jobs(){
+            return this.$store.getters.jobs;
+        },
         isLoading(){
             return this.$store.getters.isLoading;
         },
@@ -82,6 +85,9 @@ export default{
         }
     },
     methods:{
+        needRetry(item){
+            return item.jobfull.used_payment.state != "complete"
+        },
         retryJob(item){
             this.$store.dispatch('retryJob', item);
         },

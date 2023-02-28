@@ -24,7 +24,7 @@ export default{
     actions:{
         async retryJob(context, item){
             const itemId = item.id
-            const {data: retryData} = await finAgent.get(`http://192.168.1.80:3400/api/front/job_result/${itemId}/retry`)    
+            const {data: retryData} = await finAgent.get(`http://192.168.1.80:3400/api/front/job_results/${itemId}/retry`)    
             if (retryData.result){
                 context.commit('setRetry',itemId)
             }         

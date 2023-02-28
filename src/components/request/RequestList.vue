@@ -62,7 +62,7 @@
             text: "شماره سند B1",
             align: "center",
             //sortable: false,
-            value: "b1_doc",
+            value: "b1_docnum",
           },
           {
             text: "اخذ شده توسط",
@@ -75,7 +75,6 @@
             value: "created_at",
             align: "center",
             filterable: false
-  
           },
           {
             text: "نوع",
