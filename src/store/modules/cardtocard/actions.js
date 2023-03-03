@@ -5,7 +5,7 @@ export default {
     async useCardtocard(contex, payload){
         try{
             var data ={"used_for": payload.cardcode, "captured_by":""} 
-            const {data:responseData} = await finAgent.post(`/card_to_card_raws/${payload.item.id}/use_payment`,data)
+            const {data:responseData} = await finAgent.post(`/front/card_to_card_raws/${payload.item.id}/use_payment`,data)
             console.log(responseData.result)
             if(responseData.result == true){
                 console.log("going to")
@@ -29,7 +29,7 @@ export default {
         if (!context.getters.shouldUpdate) return;
         context.commit('setIsLoading', 'true')
         try {
-            const {data:cardtocardsData} = await finAgent.get('/card_to_card_raws')
+            const {data:cardtocardsData} = await finAgent.get('/front/card_to_card_raws')
             const cardtocards = [];
             for (const item of cardtocardsData) {
                 

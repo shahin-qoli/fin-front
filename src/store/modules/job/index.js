@@ -24,7 +24,7 @@ export default{
     actions:{
         async retryJob(context, item){
             const itemId = item.id
-            const {data: retryData} = await finAgent.get(`http://192.168.1.80:3400/api/front/job_results/${itemId}/retry`)    
+            const {data: retryData} = await finAgent.get(`/front/job_results/${itemId}/retry`)    
             if (retryData.result){
                 context.commit('setRetry',itemId)
             }         
@@ -32,7 +32,7 @@ export default{
         async loadJobs(context){
             context.commit('setIsLoading', 'true')
             try {
-                const {data: jobsData} = await finAgent.get('/job_results');
+                const {data: jobsData} = await finAgent.get('/front/job_results');
                 const jobs = []
                 for (const item of jobsData) {
                     const job= {

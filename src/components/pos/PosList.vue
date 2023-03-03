@@ -25,29 +25,9 @@
       >
       <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
-      <v-container v-if="item.is_used==true" fluid style="margin: 0px; padding: 0px; width: 100%">
-          <v-row dense >
-            <v-col cols="1" >
-              <p> کد مشتری : </p>
-              <!-- <v-text-field > {{item.transaction_date}}</v-text-field> -->
-            </v-col>
-            <v-col cols="1" >
-            {{ getCardcode(item) }}
-          </v-col>
-          </v-row>
-        </v-container>
-        <v-container v-if="item.is_used==false">
-          <v-form  @submit.prevent="useRow(item,cardcode)">
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="cardcode" hint="c50000" label="کد مشتری"> </v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-btn dark color="green" type="submit">استفاده تراکنش</v-btn>
-              </v-col>
-            </v-row>
-        </v-form>
-        </v-container>
+        <the-row :item="item" @use-row="useRow">
+
+        </the-row>
         </td>
     </template>
     <template v-slot:[`item.is_used`]="{ item }">
@@ -61,11 +41,11 @@
 </template>
   
 <script>
+import TheRow from '../TheRow.vue'
     export default {
       data() {
       return {
         search: "",
-        cardcode: null,
       singleExpand: true,
       expanded: [],
         transaction_date: "",
@@ -80,6 +60,7 @@
         owner_account_number: ""
       };
     },
+    components:{TheRow},
     computed: {
       headers() {
         return [
@@ -164,18 +145,11 @@
       }
     },
       methods: {
-        getCardcode(up){
-        
-        // const ups = JSON.parse(up);
-        console.log("HERE")
-        console.log(up)
-        return up.used_payments[0].used_for
-      },
-      useRow(item, cardcode){
-        console.log(cardcode)
+
+      useRow(data){
+
             var payload = {
-              "item": item,
-              cardcode: cardcode
+            ...data
             }
             this.$store.dispatch('usePos',payload)
             
@@ -183,7 +157,7 @@
         loadPoses() {
           // console.log(this)
           this.$store.dispatch('loadPoses')
-        }
+        } 
       },
       created() {
         this.loadPoses ();

@@ -32,7 +32,7 @@
                             </v-col>
                             <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
-                                <v-btn type="submit" dark color="green">ارسال</v-btn>
+                                <v-btn :loading="isLoading" type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
@@ -73,7 +73,8 @@ import {finAgent} from '@/services/agent'
         data() {
             return {
                 file: null,
-                uploadError: false
+                uploadError: false,
+                isLoading: null
             }
         },
       methods: {
@@ -81,18 +82,21 @@ import {finAgent} from '@/services/agent'
             this.uploadError= false
             if (!this.file) return;
             let formData = new FormData()
+            this.isLoading = true;
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await finAgent.post('/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await finAgent.post('/front/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
                     this.uploadError = true;
                     this.file = null;
+                    this.isLoading = false;
                 } else {
                     FileSaver.saveAs(response.data, this.file.name)
                     this.file = null;
+                    this.isLoading = false;
                 }
 
 
@@ -101,6 +105,9 @@ import {finAgent} from '@/services/agent'
                     
                     err.response.data.error || 'Failed to fetch'
                 );
+                this.uploadError = true;
+                    this.file = null;
+                    this.isLoading = false;
                 throw error;
             }
         }

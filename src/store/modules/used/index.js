@@ -28,7 +28,7 @@ export default {
     actions: {
         async verifyRequest(context, reqId){       
             try{
-                const {data: requestsData} = await finAgent.get(`/used_payments/${reqId}/verify`);
+                const {data: requestsData} = await finAgent.get(`/front/used_payments/${reqId}/verify`);
                 console.log(requestsData)
                 if (requestsData.result){
                     console.log("111")
@@ -49,7 +49,7 @@ export default {
         async loadRequests(context) {
             context.commit('setIsLoading', 'true')
             try {
-                const {data: requestsData} = await finAgent.get('/used_payments');
+                const {data: requestsData} = await finAgent.get('/front/used_payments');
                 const requests = []
                 for (const item of requestsData) {
                     const request= {
