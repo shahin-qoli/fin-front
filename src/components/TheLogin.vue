@@ -56,8 +56,9 @@
        var data = {"email": email, "password": password}
        try{
         console.log(data)
-       
+
         const {data: requestsData} = await finAgent.post('/auth/login', data)
+
         localStorage.setItem('token', requestsData.token)
         this.$router.replace({name:'home'})
 

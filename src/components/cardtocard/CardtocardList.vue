@@ -44,7 +44,7 @@
                 <v-text-field v-model="cardcode" hint="c50000" label="کد مشتری"> </v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-btn dark color="green" type="submit">استفاده تراکنش</v-btn>
+                <v-btn dark color="green" :loading="loading" type="submit">استفاده تراکنش</v-btn>
               </v-col>
             </v-row>
         </v-form>
@@ -78,7 +78,7 @@
       peygiri_number: "",
       serial_number: "",
       job_id: "",
-      loading: true
+      loading: null
     };
   },
   computed: {
@@ -172,7 +172,11 @@
               "item": item,
               cardcode: cardcode
             }
+            this.loading = true
             this.$store.dispatch('useCardtocard',payload)
+              .finally(() => {
+                this.loading = false
+              })
             
           },
       loadCardtocards() {

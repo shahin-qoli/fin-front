@@ -18,7 +18,9 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
+
                         <v-btn dark color="green" href="#">دانلود نمونه فایل</v-btn>
+
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
