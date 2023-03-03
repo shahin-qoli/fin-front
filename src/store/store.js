@@ -18,7 +18,7 @@ export default new Vuex.Store({
     },
     state(){
       return{ 
-              //apiUrl: 'http://192.168.1.80:3400/api',
+              apiUrl: 'http://192.168.127.215:3400',
               isLoading: true
                };
     },

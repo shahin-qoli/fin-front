@@ -18,7 +18,7 @@
                         <v-divider/>
                         <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="green" href="http://192.168.1.80:3400/admin/card_to_card_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="#">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                        </v-col>
                        <v-divider/>
@@ -33,7 +33,7 @@
                             </v-col>
                             <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
-                                <v-btn type="submit" dark color="green">ارسال</v-btn>
+                                <v-btn :loading="isLoading" type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
@@ -75,7 +75,8 @@
         data(){
             return{
                 file: null,
-                uploadError: false
+                uploadError: false,
+                isLoading: null
             }
         },
         components: {
@@ -86,18 +87,21 @@
             this.uploadError= false
             if (!this.file) return;
             let formData = new FormData()
+            this.isLoading= true;
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await finAgent.post('/pos_raws/import_file',formData, {responseType: 'blob'} );
+                const response = await finAgent.post('/front/pos_raws/import_file',formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
                     this.uploadError = true;
                     this.file = null;
+                    this.isLoading = false;
                 } else {
                     FileSaver.saveAs(response.data, this.file.name)
                     this.file = null;
+                    this.isLoading = false
                 }
 
 
@@ -106,7 +110,11 @@
                     
                     err.response.data.error || 'Failed to fetch'
                 );
+                this.uploadError = true;
+                    this.file = null;
+                    this.isLoading = false;
                 throw error;
+
             }
         }
           
@@ -114,3 +122,9 @@
 }
   </script>
   
+  <style scoped>
+p {
+    color: red;
+    align-self: center;
+}
+</style>

@@ -4,7 +4,7 @@ export default {
     async usePos(contex, payload){
         try{
             var data ={"used_for": payload.cardcode, "captured_by":""} 
-            const {data:responseData} = await finAgent.post(`/pos_raws/${payload.item.id}/use_payment`,data)
+            const {data:responseData} = await finAgent.post(`/front/pos_raws/${payload.item.id}/use_payment`,data)
             console.log(responseData.result)
             if(responseData.result == true){
                 console.log("going to")
@@ -27,7 +27,7 @@ export default {
         console.log("step1")
         context.commit('setIsLoading', 'true')
         try {
-            const { data: posesData} = await finAgent.get(`/pos_raws`);
+            const { data: posesData} = await finAgent.get(`/front/pos_raws`);
             const poses = [];
             for (const item of posesData) {
 				const pos = {
