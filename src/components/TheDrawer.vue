@@ -1,6 +1,6 @@
 <template>
 <div>    
-<v-navigation-drawer width="175" v-model="drawer" right app>   
+<v-navigation-drawer v-if="userLoged" width="175" v-model="drawer" right app>   
     <v-container class="grey lighten-5" id="main-container" >
         <v-row align-content="center">
             <v-col cols="3">
@@ -16,33 +16,43 @@
             <v-col cols="12">
             <v-divider/>
           </v-col>
-            <v-col cols="9">
+          <v-col cols="12" v-if="!saleRole">
+            <v-col cols="12">
                 <router-link  style="text-decoration: none;" to='/cardtocard'><h3>کارت به کارت</h3></router-link>
                
             </v-col>
             <v-col cols="12">
             <v-divider/>
           </v-col>
-            <v-col cols="9">
+            <v-col cols="12">
             <router-link style="text-decoration: none;" to='/pos'><h3>کارتخوان</h3></router-link> 
             
             </v-col>
             <v-col cols="12">
             <v-divider/>
           </v-col>
-          <v-col cols="9">
+          <v-col cols="12">
+            <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
+          </v-col>
+          <v-col cols="12">
+            <v-divider/>
+          </v-col>
+        </v-col>
+      
+          <v-col cols="12">
             <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
           </v-col>
           <v-col cols="12">
             <v-divider/>
           </v-col>
-          <v-col cols="9">
-            <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
-          </v-col>
+          <v-col cols="12" v-if="saleRole">
+          <v-col  cols="12">
+            <router-link style="text-decoration: none;" to='/usetransaction'><h3>درخواست ثبت سند</h3></router-link> 
+          </v-col>   
           <v-col cols="12">
             <v-divider/>
-          </v-col>            
-
+          </v-col>         
+        </v-col>
         </v-row>
     </v-container>
 </v-navigation-drawer> 
@@ -54,7 +64,7 @@
 
       <v-toolbar-title>منو</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-title> <v-btn dark color="green" @click="exitUser"> خروج از سامانه</v-btn></v-app-bar-title>
+      <v-app-bar-title v-if="userLoged"> <v-btn dark color="green" @click="exitUser"> خروج از سامانه</v-btn></v-app-bar-title>
 </v-app-bar>
 </div>
 </template>
@@ -73,20 +83,30 @@
 <script>
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
   }),
   methods:{
     exitUser(){
-      console.log(localStorage.getItem('token'))
-      localStorage.removeItem('token')
-      this.$router.push('/pos')
+      this.$store.dispatch('cleanUser')
+      this.$router.push('/')
     }
   },
   computed:{
-    // drawer() {
-    //    return this.$store.getters.getDrawer
-    // }
-  }
+    saleRole(){
+      
+      const user = this.$store.getters.getUser;
+      return user.role == 'sale'
+    },adminRole(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'admin'
+
+    },
+    userLoged(){
+      console.log(this.$store.getters.getUser !={})
+      return this.$store.getters.isLogged 
+    }
+
+  },
 };
 </script>
 

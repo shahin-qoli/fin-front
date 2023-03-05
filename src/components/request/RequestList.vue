@@ -27,8 +27,11 @@
       <template  v-slot:[`item.amount`]="props">
         {{ rowAmount(props.item.payfull) }}
       </template>
+      <template  v-slot:[`item.image`]="props">
+        <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
+      </template>
       <template v-slot:[`item.controls`]="props">
-        <v-btn v-if="isRequested(props.item.state)" class="mx-2" small  @click="verifyRequest(props.item)">
+        <v-btn v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="verifyRequest(props.item)">
             <v-icon>mdi-check-outline</v-icon>
         </v-btn>
       </template>
@@ -50,11 +53,14 @@
             // TheRequest
         },
         computed: {
+          saleRole(){
+            return this.$store.getters.getUser.role === 'sale';
+          },
             isLoading(){
         return this.$store.getters.isLoading;
       },
             requests() {
-                return this.$store.getters.requests
+             return this.$store.getters.requests
             },
             headers() {
         return [
@@ -96,6 +102,16 @@
             text: "مبلغ",
             align: "center",
             value: "amount",
+          },
+          {
+            text: "ثبت توسط",
+            align: "center",
+            value: "created_by_name",
+          },
+          {
+            text: "دانلود عکس",
+            align: "center",
+            value: "image",
           },
           {
             text: "",
