@@ -3,7 +3,7 @@
   
     <!-- app bar start -->
    
-    <the-drawer></the-drawer>
+    <the-drawer ></the-drawer>
 
      <!-- app bar end -->
 
@@ -24,11 +24,12 @@ export default {
   data: () => ({
 
   }),
-  methods:{
-    setDrawer(){
-      this.$store.dispatch('mainDrawer')
-    }
+  
+  created(){
+    this.$store.dispatch('initUser')
   }
+
+  
 
 };
 </script>

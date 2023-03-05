@@ -6,6 +6,7 @@ import cardtocards from './modules/cardtocard/index.js';
 import poses from './modules/pos/index.js'
 import requests from './modules/used/index.js'
 import jobs from './modules/job/index.js'
+import user from './modules/user/index.js'
 
 Vue.use(Vuex);
 
@@ -14,12 +15,14 @@ export default new Vuex.Store({
       cardtocards,
       poses,
       requests,
-      jobs       
+      jobs,
+      user       
     },
     state(){
       return{ 
-              apiUrl: 'http://192.168.127.215:3400',
-              isLoading: true
+              apiUrl: 'http://192.168.1.80:3400',
+              isLoading: true,
+              userLogged: false
                };
     },
     actions:{

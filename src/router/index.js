@@ -11,9 +11,11 @@ import PosUsedListView from '../views/PosUsedListView.vue'
 import RequestView from '../views/RequestView.vue'
 import LoginView from '../views/LoginView.vue'
 import JobListView from '../views/JobListView.vue'
+import SaleUseTransaction from '../views/SaleUseTransaction.vue'
 Vue.use(VueRouter)
-function guardMyroute(to, from, next)
+function guardMyrouteAdmin(to, from, next)
 {
+  console.log (to)
  var isAuthenticated= false;
 //this is just an example. You will have to find a better or 
 // centralised way to handle you localstorage data handling 
@@ -21,7 +23,28 @@ if(localStorage.getItem('token'))
   isAuthenticated = true;
  else
   isAuthenticated= false;
- if(isAuthenticated) 
+ if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'finance' ) )
+ {
+  next(); // allow to enter route
+ } 
+ else
+ {
+  next('/login'); // go to '/login';
+ }
+}
+function guardMyrouteAdminSale(to, from, next)
+{
+  console.log (to)
+ var isAuthenticated= false;
+//this is just an example. You will have to find a better or 
+// centralised way to handle you localstorage data handling 
+
+if(localStorage.getItem('token'))
+  isAuthenticated = true;
+ else
+  isAuthenticated= false;
+ if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'finance' 
+ || localStorage.getItem('userRole') == 'sale' ) )
  {
   next(); // allow to enter route
  } 
@@ -34,49 +57,59 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdminSale,
     component: HomeView
   },  {
     path: '/cardtocard',
     name: 'cardtocard',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
+    
     component: CardtocardView
   },{
     path: '/cardtocardlist',
     name: 'cardtocardlist',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: CardtocardListView
   },{
     path: '/cardtocardusedlist',
     name: 'cardtocardusedlist',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: CardtocardUsedListView
   },  {
     path: '/pos',
     name: 'pos',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: PosView
   },{
     path: '/poslist',
     name: 'poslist',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: PosListView
   },{
     path: '/posusedlist',
     name: 'posusedlist',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: PosUsedListView
   },{
     path: '/requests',
     name: 'requests',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdminSale,
     component: RequestView
   },{
     path: '/joblist',
     name: 'jobslist',
-    beforeEnter : guardMyroute,
+    beforeEnter : guardMyrouteAdmin,
     component: JobListView
-  },{
+  },
+  {
+    path: '/usetransaction',
+    name: 'usetransaction',
+    beforeEnter : guardMyrouteAdminSale,
+    component: SaleUseTransaction
+  },
+  
+  
+  {
     path: '/login',
     name: 'login',
     component: LoginView

@@ -40,7 +40,7 @@
  </template>
  
  <script>
- import  {finAgent} from '@/services/agent'
+
 
  export default {
    name: "TheLogin",
@@ -51,24 +51,12 @@
      };
    },
    methods: {
-     async login() {
+      async login() {
        const { email, password } = this;
        var data = {"email": email, "password": password}
-       try{
-        console.log(data)
-
-        const {data: requestsData} = await finAgent.post('/auth/login', data)
-
-        localStorage.setItem('token', requestsData.token)
-        this.$router.replace({name:'home'})
-
-       } catch (err) {
-            //console.log(err.response);
-            const error = new Error(
-				err.response.data.error || 'Failed to fetch'
-			);
-			throw error;
-         }
+       await this.$store.dispatch('userLogin', data)
+      if(localStorage.getItem('token'))
+      this.$router.replace({name:'home'})
      },
    },
  };

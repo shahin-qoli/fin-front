@@ -25,7 +25,7 @@
       >
       <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
-        <the-row :item="item" @use-row="useRow">
+        <the-row :item="item" @use-row="useRow" :key="item.id">
 
         </the-row>
         </td>
