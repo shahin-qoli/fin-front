@@ -4,7 +4,6 @@ import HomeView from '../views/HomeView.vue'
 import CardtocardView from '../views/CardtocardView.vue'
 import CardtocardListView from '../views/CardtocardListView.vue'
 import CardtocardUsedListView from '../views/CardtocardUsedListView.vue'
-
 import PosView from '../views/PosView.vue'
 import PosListView from '../views/PosListView.vue'
 import PosUsedListView from '../views/PosUsedListView.vue'
@@ -12,6 +11,8 @@ import RequestView from '../views/RequestView.vue'
 import LoginView from '../views/LoginView.vue'
 import JobListView from '../views/JobListView.vue'
 import SaleUseTransaction from '../views/SaleUseTransaction.vue'
+import BankCardList from '../views/BankCardListView.vue'
+import BankAccountList from '../views/BankAccountListView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -100,6 +101,16 @@ const routes = [
     name: 'jobslist',
     beforeEnter : guardMyrouteAdmin,
     component: JobListView
+  },  {
+    path: '/bankcardlist',
+    name: 'bankcardlist',
+    beforeEnter : guardMyrouteAdmin,
+    component: BankCardList
+  },{
+    path: '/bankaccountlist',
+    name: 'bankaccountlist',
+    beforeEnter : guardMyrouteAdmin,
+    component: BankAccountList
   },
   {
     path: '/usetransaction',
