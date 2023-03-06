@@ -100,6 +100,7 @@ export default{
             this.$store.dispatch('setAccount', item)
             .finally(() => {
                 this.loading = false
+                this.expanded = []
               })
         },
         loadBankCards() {
