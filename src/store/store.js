@@ -7,7 +7,8 @@ import poses from './modules/pos/index.js'
 import requests from './modules/used/index.js'
 import jobs from './modules/job/index.js'
 import user from './modules/user/index.js'
-
+import bankcard from './modules/bankcard/index.js';
+import bankaccount from './modules/bankaccount/index.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -16,7 +17,9 @@ export default new Vuex.Store({
       poses,
       requests,
       jobs,
-      user       
+      user,
+      bankcard,
+      bankaccount       
     },
     state(){
       return{ 

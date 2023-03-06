@@ -45,6 +45,18 @@
           <v-col cols="12">
             <v-divider/>
           </v-col>
+          <v-col cols="12">
+            <router-link style="text-decoration: none;" to='/bankcardlist'><h3>تنظیمات شماره کارت</h3></router-link> 
+          </v-col>
+          <v-col cols="12">
+            <v-divider/>
+          </v-col>
+          <v-col cols="12">
+            <router-link style="text-decoration: none;" to='/bankaccountlist'><h3>تنظیمات شماره حساب</h3></router-link> 
+          </v-col>
+          <v-col cols="12">
+            <v-divider/>
+          </v-col>
           <v-col cols="12" v-if="saleRole">
           <v-col  cols="12">
             <router-link style="text-decoration: none;" to='/usetransaction'><h3>درخواست ثبت سند</h3></router-link> 
@@ -88,7 +100,7 @@ export default {
   methods:{
     exitUser(){
       this.$store.dispatch('cleanUser')
-      this.$router.push('/')
+      this.$router.push('/login')
     }
   },
   computed:{

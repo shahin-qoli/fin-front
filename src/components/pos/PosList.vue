@@ -152,6 +152,9 @@ import TheRow from '../TheRow.vue'
             ...data
             }
             this.$store.dispatch('usePos',payload)
+            .finally(() => {
+                this.loading = false
+              })
             
           },
         loadPoses() {
