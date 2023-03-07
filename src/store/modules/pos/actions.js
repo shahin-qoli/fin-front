@@ -23,12 +23,14 @@ export default {
 			throw error;
          } 
     },
-    async loadPoses(context) {
+    async loadPoses(context,payload) {
         console.log("step1")
         context.commit('setIsLoading', 'true')
         try {
-            const { data: posesData} = await finAgent.get(`/front/pos_raws`);
+            const { data: responseData} = await finAgent.get(`/front/pos_raws?page=${payload.page}&per_page=${payload.itemsPerPage}`);
             const poses = [];
+            var posesData = responseData.data;
+            var itemCount = responseData.options.count;
             for (const item of posesData) {
 				const pos = {
 					// id: posesData[key].id,
@@ -48,9 +50,8 @@ export default {
 				poses.push(pos);  
               }
               context.commit('setIsLoading', 'false')
-        
               context.commit('setPoses', poses);
-              context.commit('setFetchTimestamp');
+              context.commit('setItemCount', itemCount);
     
          } catch (err) {
             //console.log(err.response);

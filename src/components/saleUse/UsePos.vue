@@ -8,14 +8,6 @@
             </v-col>
             <v-col cols="12">
                 <v-form @submit.prevent="submitForm">
-                    <!-- <v-row>
-                        <v-col cols="6">
-                            <v-text-field v-model="cardStart" hint="6273" label="چهار رقم اول کارت واریزکننده"></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field v-model="cardEnd" hint="6273" label="چهار رقم آخر کارت واریزکننده"></v-text-field>
-                        </v-col>
-                    </v-row> -->
                     <v-row>
                         <v-col cols="6">
                             <v-text-field v-model="amount" hint="120000000" label="مبلغ"></v-text-field>
@@ -44,14 +36,6 @@
             </v-col>
             <v-form @submit.prevent="useTransaction">
             <v-col cols="12">
-                <!-- <v-row>
-                    <v-col cols="6">
-                        <v-text-field v-model="toUseData.from_card"  label="شماره کارت مبدا" disabled></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                        <v-text-field v-model="toUseData.to_card"   label="شماره کارت مقصد" disabled></v-text-field>           
-                    </v-col>
-                </v-row> -->
                 <v-row>
                     <v-col cols="6">
                         <v-text-field v-model="toUseData.amount"  label="مبلغ" disabled></v-text-field>
@@ -152,9 +136,7 @@ export default{
             console.log("starting")
             console.log(this.data)
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?
-           q[transaction_date_matches]=${this.transactionDate}
-           &q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_matches]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
            console.log(responseData)
            this.isLoading= false
            if(responseData)

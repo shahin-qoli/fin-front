@@ -1,4 +1,7 @@
 export default{
+    getPosItemCount(state){
+		return state.itemCount;
+	},
     poses (state) {
         return state.poses;
     },

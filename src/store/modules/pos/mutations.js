@@ -1,4 +1,7 @@
 export default{
+    setItemCount(state, payload){
+        state.itemCount = payload
+    },
     setPoses(state, payload) {
         state.poses = payload;
     },
