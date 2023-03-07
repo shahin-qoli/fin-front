@@ -40,7 +40,8 @@
 <script>
 
 export default{
-    emits:['ret-date'],
+    props:['modelValue'],
+    emits:['update:modelValue'],
     data(){
         return{
             menu: false,
@@ -50,8 +51,11 @@ export default{
     methods:{
         submit(){
             this.$refs.menu.save(this.date)
-            this.$emit('ret-date',this.date)
+            this.$emit('update:modelValue', this.date)
         }
+    },
+    beforeMount () {
+        this.$emit('update:modelValue', this.date )
     }
 }
 </script>

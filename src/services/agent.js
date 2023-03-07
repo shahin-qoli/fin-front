@@ -1,8 +1,7 @@
 
-const baseUrl = 'http://172.31.55.73:3400'
+const baseUrl = 'http://192.168.1.80:3400'
 const axios = require('axios');
 export const finAgent = axios.create({
-
   baseURL: `${baseUrl}/api`
 }
 );

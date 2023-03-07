@@ -24,7 +24,8 @@
                             <v-text-field v-model="peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
                         </v-col>
                         <v-col cols="6">
-                            <date-picker @ret-date="setDate"></date-picker>
+                            <date-picker v-model="transactionDate"></date-picker>
+                            <!-- <date-picker :value="toUseData.transaction_date" @input="toUseData.transaction_date = $event"></date-picker> -->
                         </v-col>
                         <v-col cols="9">
                             <v-btn dark color="green" type="submit">جستجو</v-btn>
@@ -44,14 +45,6 @@
             </v-col>
             <v-form @submit.prevent="useTransaction">
             <v-col cols="12">
-                <!-- <v-row>
-                    <v-col cols="6">
-                        <v-text-field v-model="toUseData.from_card"  label="شماره کارت مبدا" disabled></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                        <v-text-field v-model="toUseData.to_card"   label="شماره کارت مقصد" disabled></v-text-field>           
-                    </v-col>
-                </v-row> -->
                 <v-row>
                     <v-col cols="6">
                         <v-text-field v-model="toUseData.amount"  label="مبلغ" disabled></v-text-field>
@@ -82,7 +75,7 @@
                         </v-col>
                     </v-row>
             </v-col>
-        </v-form>
+            </v-form>
             <p>{{ useMessage }}</p>
         </v-row>
     </v-container>
@@ -141,10 +134,6 @@ export default{
         }
             }
         },
-        setDate(date){
-            console.log(date)
-            this.transactionDate = date;
-        },
         async submitForm(){
             this.errorMessage= null
             this.toUseData={}
@@ -152,9 +141,7 @@ export default{
             console.log("starting")
             console.log(this.data)
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?
-           q[transaction_date_matches]=${this.transactionDate}
-           &q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
            console.log(responseData)
            this.isLoading= false
            if(responseData)

@@ -37,14 +37,6 @@
           <v-col cols="12">
             <v-divider/>
           </v-col>
-        </v-col>
-      
-          <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
-          </v-col>
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>
           <v-col cols="12">
             <router-link style="text-decoration: none;" to='/bankcardlist'><h3>تنظیمات شماره کارت</h3></router-link> 
           </v-col>
@@ -53,6 +45,14 @@
           </v-col>
           <v-col cols="12">
             <router-link style="text-decoration: none;" to='/bankaccountlist'><h3>تنظیمات شماره حساب</h3></router-link> 
+          </v-col>
+          <v-col cols="12">
+            <v-divider/>
+          </v-col>
+        </v-col>
+      
+          <v-col cols="12">
+            <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
           </v-col>
           <v-col cols="12">
             <v-divider/>
