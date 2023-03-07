@@ -15,14 +15,15 @@
       :headers="headers"
       :items="cardtocards"
       item-key="id"
-      class=""
       :search="search"
       :loading="isLoading"
       :single-expand="singleExpand"
       :expanded.sync="expanded"
       show-expand
+      :options.sync="options"
+      :server-items-length="itemCount"
+      class="elevation-1"
     >
-
     <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
         <the-row :item="item" @use-row="useRow" :key="item.id">
@@ -37,6 +38,7 @@
         ></v-simple-checkbox>
       </template>
     </v-data-table>
+
   </v-card>
 </template>
 
@@ -46,6 +48,9 @@ import TheRow from '../TheRow.vue'
     components:{TheRow},
     data() {
     return {
+      options: {
+        itemsPerPage: 10
+      },
       search: "",
       cardcode: null,
       singleExpand: true,
@@ -61,6 +66,14 @@ import TheRow from '../TheRow.vue'
       job_id: "",
       loading: null
     };
+  },watch:{
+    options:{
+      handler(){
+      
+      this.loadCardtocards();    
+ 
+      },  deep: true
+    }
   },
   computed: {
     headers() {
@@ -130,21 +143,16 @@ import TheRow from '../TheRow.vue'
           sortable: false
         }
       ];
-    },
-    cardtocards(){
-      //console.log(this.$store.getters.cardtocards)
-    
-      return this.$store.getters.cardtocards
-      
     }, isLoading(){
       return this.$store.getters.isLoading;
+    }, cardtocards(){
+      return this.$store.getters.cardtocards;
+    }, itemCount(){
+      return this.$store.getters.getCardItemCount;
     }
   },
     methods: {
       getCardcode(up){
-        
-        // const ups = JSON.parse(up);
-        // console.log(ups)
         return up.used_payments[0].used_for
       },
       useRow(data){
@@ -158,13 +166,12 @@ import TheRow from '../TheRow.vue'
             
           },
       loadCardtocards() {
-        // console.log(this)
-        this.$store.dispatch('loadCardtocards')
-      }
+        this.$store.dispatch('loadCardtocards',this.options)
+      },
     },
-    created() {
-      this.loadCardtocards ();
-    }
+    // created() {
+    //   this.loadCardtocards();
+    // }
 }
 </script>
 

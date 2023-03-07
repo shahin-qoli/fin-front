@@ -6,7 +6,8 @@ export default {
     state() {
         return {
         cardtocards:[],
-        lastFetch: null        
+        lastFetch: null  ,
+        itemCount: null      
     }
     },
     mutations,

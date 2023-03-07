@@ -1,4 +1,7 @@
 export default{
+	getCardItemCount(state){
+		return state.itemCount;
+	},
     cardtocards (state) {
         return state.cardtocards;
     },

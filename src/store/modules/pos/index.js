@@ -6,7 +6,8 @@ export default {
     state() {
         return {
         poses:[],
-        lastFetch: null        
+        lastFetch: null,
+        itemCount: null  
     }
     },
     mutations,

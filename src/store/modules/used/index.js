@@ -6,11 +6,15 @@ export default {
 
     state() {
         return {
+            itemCount:null,
         requests:[],
         status: ''       
     }
     },
     mutations:{
+        setItemCount(state, payload){
+            state.itemCount = payload;
+        },
         setRequests(state, payload){
             state.requests = payload;
         },
@@ -21,6 +25,9 @@ export default {
         }
     },
     getters: {
+        getRequestItemCount(state){
+            return state.itemCount;
+        },
         requests(state) {
             return state.requests;
         }
@@ -46,11 +53,13 @@ export default {
                 throw error;
             }
         },
-        async loadRequests(context) {
+        async loadRequests(context, payload) {
             context.commit('setIsLoading', 'true')
             try {
-                const {data: requestsData} = await finAgent.get('/front/used_payments');
+                const {data: responseData} = await finAgent.get(`/front/used_payments?page=${payload.page}&per_page=${payload.itemsPerPage}`);
                 const requests = []
+                var requestsData = responseData.data;
+                var itemCount = responseData.options.count;
                 for (const item of requestsData) {
                     const request= {
                         ...item
@@ -60,6 +69,7 @@ export default {
                 
                 context.commit('setRequests', requests)
                 context.commit('setIsLoading', 'false')
+                context.commit('setItemCount', itemCount);
  
             } catch (err) {
                 //console.log(err.response);

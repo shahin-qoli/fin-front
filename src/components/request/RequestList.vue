@@ -17,15 +17,17 @@
         :headers="headers"
         :items="requests"
         item-key="id"
-        class=""
         :search="search"
         :loading="isLoading"
+        :options.sync="options"
+        :server-items-length="itemCount"
+        class="elevation-1"
       >
       <template  v-slot:[`item.transaction_date`]="props">
-        {{ transactionDate(props.item.payfull) }}
+        {{ props.item.payfull.transaction_date }}
       </template>
       <template  v-slot:[`item.amount`]="props">
-        {{ rowAmount(props.item.payfull) }}
+        {{ props.item.payfull.amount }}
       </template>
       <template  v-slot:[`item.image`]="props">
         <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
@@ -46,13 +48,25 @@
     export default {
         data(){
             return {
+              options: {
+        itemsPerPage: 10
+      },
                 search: ''
             }
-        },
+        },    watch:{
+    options:{
+      handler(){   
+      this.loadRequests();    
+      },  deep: true
+    }
+  },
         components: {
             // TheRequest
         },
         computed: {
+          itemCount(){
+      return this.$store.getters.getRequestItemCount;
+    },
           saleRole(){
             return this.$store.getters.getUser.role === 'sale';
           },
@@ -130,30 +144,26 @@
           isRequested(state){
             return state=="requested"
           },
-          transactionDate(payfull){
-            if(payfull.type=="pos_raw"){
-                    console.log(payfull.pos_raw.transaction_date)
-                    return payfull.pos_raw.transaction_date
-                }else{
-                    return payfull.card_to_card_raw.transaction_date
-                }
-          },
-          rowAmount(payfull){
-                console.log(payfull)
-                if(payfull.type=="pos_raw"){
-                    return payfull.pos_raw.amount
-                }else{
-                    return payfull.card_to_card_raw.amount
-                }
+          // transactionDate(payfull){
+          //   if(payfull.type=="pos_raw"){
+          //           console.log(payfull.pos_raw.transaction_date)
+          //           return payfull.pos_raw.transaction_date
+          //       }else{
+          //           return payfull.card_to_card_raw.transaction_date
+          //       }
+          // },
+          // rowAmount(payfull){
+          //       console.log(payfull)
+          //       if(payfull.type=="pos_raw"){
+          //           return payfull.pos_raw.amount
+          //       }else{
+          //           return payfull.card_to_card_raw.amount
+          //       }
                 
-            },
+          //   },
             loadRequests(){
-                this.$store.dispatch('loadRequests')
+                this.$store.dispatch('loadRequests',this.options)
             }
-        },
-        created(){
-            this.loadRequests()
-            console.log(this.requests)
         }
     }
 </script>

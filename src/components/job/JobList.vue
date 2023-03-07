@@ -17,9 +17,12 @@
                     :headers="headers"
                     :items="jobs"
                     item-key="id"
-                    class=""
+            
                     :search="search"
-                    :loading="isLoading"                      
+                    :loading="isLoading"   
+                    :options.sync="options"
+                    :server-items-length="itemCount"
+                    class="elevation-1"                   
                 >
                 <template v-slot:[`item.controls`]="props">
                     <v-btn v-if="needRetry(props.item)" class="mx-2" small  @click="retryJob(props.item)">
@@ -37,10 +40,21 @@ export default{
     data() {
         return {
             search: "",
+            options: {
+        itemsPerPage: 10
+      },
 
         }
-    },
+    },watch:{
+    options:{
+      handler(){   
+      this.loadJobs();    
+      },  deep: true
+    }},
     computed:{
+        itemCount(){
+      return this.$store.getters.getRequestItemCount;
+    },
         jobs(){
             return this.$store.getters.jobs;
         },
@@ -86,17 +100,14 @@ export default{
     },
     methods:{
         needRetry(item){
-            return item.jobfull.used_payment.state != "complete"
+            return item.jobfull.state != "complete"
         },
         retryJob(item){
             this.$store.dispatch('retryJob', item);
         },
             loadJobs(){
-            this.$store.dispatch('loadJobs')
+            this.$store.dispatch('loadJobs',this.options)
         }
-    },
-    created(){
-        this.loadJobs()
     }
 }
 </script>

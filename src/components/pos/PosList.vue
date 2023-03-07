@@ -16,12 +16,14 @@
         :headers="headers"
         :items="poses"
         item-key="id"
-        class=""
         :search="search"
         :loading="isLoading"
         :single-expand="singleExpand"
         :expanded.sync="expanded"
         show-expand
+        :options.sync="options"
+        :server-items-length="itemCount"
+        class="elevation-1"
       >
       <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
@@ -45,6 +47,9 @@ import TheRow from '../TheRow.vue'
     export default {
       data() {
       return {
+        options: {
+        itemsPerPage: 10
+      },
         search: "",
       singleExpand: true,
       expanded: [],
@@ -61,7 +66,17 @@ import TheRow from '../TheRow.vue'
       };
     },
     components:{TheRow},
+    watch:{
+    options:{
+      handler(){   
+      this.loadPoses();    
+      },  deep: true
+    }
+  },
     computed: {
+       itemCount(){
+      return this.$store.getters.getPosItemCount;
+    },
       headers() {
         return [
           {
@@ -136,8 +151,7 @@ import TheRow from '../TheRow.vue'
         }
         ];
       },
-      poses(){
-        
+      poses(){    
         return this.$store.getters.poses
       },
       isLoading(){
@@ -159,11 +173,8 @@ import TheRow from '../TheRow.vue'
           },
         loadPoses() {
           // console.log(this)
-          this.$store.dispatch('loadPoses')
+          this.$store.dispatch('loadPoses',this.options)
         } 
-      },
-      created() {
-        this.loadPoses ();
       }
   }
   </script>

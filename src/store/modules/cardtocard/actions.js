@@ -25,34 +25,29 @@ export default {
          } 
     },
    
-    async loadCardtocards(context) {
-        if (!context.getters.shouldUpdate) return;
+    async loadCardtocards(context, payload) {
+  
         context.commit('setIsLoading', 'true')
         try {
-            const {data:cardtocardsData} = await finAgent.get('/front/card_to_card_raws')
+            console.log(payload)
+            const {data:responseData} = await finAgent.get(`/front/card_to_card_raws?page=${payload.page}&per_page=${payload.itemsPerPage}`)
+            var cardtocardsData = responseData.data;
+            var itemCount = responseData.options.count;
             const cardtocards = [];
             for (const item of cardtocardsData) {
                 
 				const cardtocard = {
-					// id: item.id,
-                    // transaction_date: item.transaction_date,
-                    // transaction_time: item.transaction_time,
-                    // description: item.description,
-                    // amount: item.amount,
-                    // from_card: item.from_card,
-                    // to_card: item.to_card,
-                    // peygiri_number: item.peygiri_number,
-                    // serial_number: item.serial_number,
-                    // job_id: item.job_id,
-                    // is_used: item.is_used 
+ 
                      ...item
                     // number: 2
 				};
 				cardtocards.push(cardtocard);  
               }
+          
               context.commit('setIsLoading', 'false')
               context.commit('setCardtocards', cardtocards);
-              context.commit('setFetchTimestamp');
+              context.commit('setItemCount', itemCount);
+              
             //   console.log(cardtocards)
          } catch (err) {
             //console.log(err.response);

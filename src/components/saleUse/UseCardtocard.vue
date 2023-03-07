@@ -148,9 +148,7 @@ export default{
             console.log("starting")
             console.log(this.data)
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/card_to_card_raws/find_payment?
-           q[from_card_start]=${this.cardStart}&q[from_card_end]=${this.cardEnd}&q[transaction_date_matches]=${this.transactionDate}
-           &q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/card_to_card_raws/find_payment?q[from_card_start]=${this.cardStart}&q[from_card_end]=${this.cardEnd}&q[transaction_date_matches]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
            console.log(responseData)
            this.isLoading= false
            if(responseData)
