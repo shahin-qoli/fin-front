@@ -40,17 +40,19 @@
 <script>
 
 export default{
-    emits:['ret-date'],
+    // emits:['ret-date'],
+    props:['value'],
     data(){
         return{
             menu: false,
             date: new Date().toISOString().substr(0, 10),
+            content: this.value
         }
     },
     methods:{
         submit(){
             this.$refs.menu.save(this.date)
-            this.$emit('ret-date',this.date)
+            this.$emit('input',this.date)
         }
     }
 }
