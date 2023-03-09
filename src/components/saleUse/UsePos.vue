@@ -16,7 +16,7 @@
                             <v-text-field v-model="peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
                         </v-col>
                         <v-col cols="6">
-                            <date-picker @ret-date="setDate"></date-picker>
+                            <date-picker v-model="transactionDate"></date-picker>
                         </v-col>
                         <v-col cols="9">
                             <v-btn dark color="green" type="submit">جستجو</v-btn>
@@ -89,7 +89,7 @@ export default{
             isSuccess: null,
             cardStart: '',
             cardEnd: '',
-            transactionDate: '',
+            transactionDate: new Date().toISOString().substr(0, 10),
             peygiriNumber: null,
             amount: null,
             toUseData:{
