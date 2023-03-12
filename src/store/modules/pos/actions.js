@@ -27,24 +27,17 @@ export default {
         console.log("step1")
         context.commit('setIsLoading', 'true')
         try {
-            const { data: responseData} = await finAgent.get(`/front/pos_raws?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+            const config = {
+                params: {
+                    'q[transaction_date_matches]': payload.transactionDate,
+                }
+            }
+            const { data: responseData} = await finAgent.get(`/front/pos_raws?page=${payload.page}&per_page=${payload.itemsPerPage}&q[transaction_date_matches]=${payload.transactionDate}&q[amount_matches]=${payload.amount}&q[peygiri_number_matches]=${payload.peygiriNumber}&q[erja_code_mathces]=${payload.erjaCode}&q[payane_code_matches]=${payload.payaneCode}`, config);
             const poses = [];
             var posesData = responseData.data;
             var itemCount = responseData.options.count;
             for (const item of posesData) {
 				const pos = {
-					// id: posesData[key].id,
-                    // transaction_date: posesData[key].transaction_date,
-                    // transaction_time: posesData[key].transaction_time,
-                    // description: posesData[key].description,
-                    // amount: posesData[key].amount,
-                    // peygiri_number: posesData[key].peygiri_number,
-                    // variz_date: posesData[key].variz_date,
-                    // payane_code: posesData[key].payane_code,
-                    // erja_code: posesData[key].erja_code,
-                    // job_id: posesData[key].job_id,
-                    // is_used: posesData[key].is_used,
-                    // owner_account_number: posesData[key].owner_account_number
                     ...item
 				};
 				poses.push(pos);  

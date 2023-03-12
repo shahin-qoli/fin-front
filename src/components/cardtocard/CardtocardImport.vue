@@ -53,7 +53,7 @@
                         </v-row>
                       </v-toolbar>
                     <v-card-actions class="justify-center">
-                    <v-btn dark color="green" href="/cardtocardlist" >مشاهده همه کارت به کارت ها</v-btn>  
+                    <v-btn dark color="green" to="/cardtocardlist" >مشاهده همه کارت به کارت ها</v-btn>  
                     <v-btn dark color="green" href="/cardtocardusedlist" > مشاهده کارت به کارت های استفاده شده</v-btn>          
                 </v-card-actions>
                 </v-card>
