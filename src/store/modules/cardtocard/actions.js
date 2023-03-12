@@ -30,7 +30,7 @@ export default {
         context.commit('setIsLoading', 'true')
         try {
             console.log(payload)
-            const {data:responseData} = await finAgent.get(`/front/card_to_card_raws?page=${payload.page}&per_page=${payload.itemsPerPage}&q[transaction_date_matches]=${payload.transactionDate}&q[amount_matches]=${payload.amount}&q[peygiri_number_matches]=${payload.peygiriNumber}&q[from_card_start]=${payload.fromCard}&q[to_card_start]=${payload.toCard}&q[serial_number_matches]=${payload.serialNumber}`)
+            const {data:responseData} = await finAgent.get(`/front/card_to_card_raws?page=${payload.page}&per_page=${payload.itemsPerPage}&q[transaction_date_matches]=${payload.transactionDate}&q[amount_matches]=${payload.amount}&q[peygiri_number_matches]=${payload.peygiriNumber}&q[from_card_start]=${payload.fromCard}&q[to_card_start]=${payload.toCard}&q[serial_number_matches]=${payload.serialNumber}&q[is_used_eq]=${payload.isUsed}`)
             var cardtocardsData = responseData.data;
             var itemCount = responseData.options.count;
             const cardtocards = [];

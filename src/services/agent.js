@@ -1,5 +1,5 @@
 
-const baseUrl = 'http://192.168.10.51:3400'
+const baseUrl = 'http://192.168.20.251:3400'
 const axios = require('axios');
 export const finAgent = axios.create({
 
@@ -14,6 +14,7 @@ finAgent.interceptors.request.use(
       config.headers = { 
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Accept': 'application/json',
+        'Content-Type': 'application/json'
        
       }
       return config;

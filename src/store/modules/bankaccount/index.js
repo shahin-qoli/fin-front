@@ -20,6 +20,23 @@ export default {
         }
     },
     actions:{
+        async editBankAccount(context, payload,actions){
+            try{
+                var data = {bank_account: payload}
+                console.log(data)
+                const {data:responseData} = await finAgent.put(`/front/bank_accounts/${payload.id}`, data)
+                if (responseData.result){
+                    actions.loadBankAccounts
+                }
+            } catch (err) {
+                //console.log(err.response);
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+             }
+
+        },
         async createBankAccount(context,payload){
             try{
                 var data = {bank_account: payload}
@@ -28,7 +45,6 @@ export default {
                 if (responseData){
                     context.commit('createBankAccount', payload)
                 }
-
             } catch (err) {
                 //console.log(err.response);
                 const error = new Error(

@@ -11,14 +11,14 @@
                         <v-col cols="6">
                             <v-text-field v-model="options.toCard" hint="8787656" label="به شماره کارت"></v-text-field>
                         </v-col>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <v-text-field v-model="options.amount" hint="120000000" label="مبلغ"></v-text-field>
                         </v-col>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <v-text-field v-model="options.peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
                         </v-col>
 
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <v-text-field v-model="options.serialNumber" hint="8787656" label="شماره سریال"></v-text-field>
                         </v-col>
                         <v-col cols="3">
@@ -51,12 +51,18 @@
       :server-items-length="itemCount"
       class="elevation-1"
     >
+    <template v-slot:top>
+      <v-switch
+        v-model="options.isUsed"
+        label="تراکنش های استفاده شده"
+        class="pa-3"
+      ></v-switch>
+    </template>
     <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
         <the-row :item="item" @use-row="useRow" :key="item.id">
-
-</the-row>
-        </td>
+        </the-row>
+      </td>
     </template>
     <template v-slot:[`item.is_used`]="{ item }">
         <v-simple-checkbox
@@ -83,7 +89,8 @@ import TheRow from '../TheRow.vue'
         fromCard: "",
         toCard: "",
         peygiriNumber: "",
-        serialNumber:""
+        serialNumber:"",
+        isUsed: false
       },
       cardcode: null,
       singleExpand: true,
@@ -184,7 +191,8 @@ import TheRow from '../TheRow.vue'
         fromCard: "",
         toCard: "",
         peygiriNumber: "",
-        serialNumber:""
+        serialNumber:"",
+        isUsed:false
       };
           await this.$store.dispatch('loadPoses',this.options)
         },

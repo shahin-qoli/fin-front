@@ -15,12 +15,8 @@
         :headers="headers"
         :items="bankAccounts"
         item-key="id"
-        class=""
         :search="search"
         :loading="isLoading"
-        :single-expand="singleExpand"
-        :expanded.sync="expanded"
-        show-expand
           >
             <template v-slot:top>
                 <v-toolbar flat color="white">
@@ -37,7 +33,7 @@
                     </template>
                     <v-card>
                         <v-card-title>
-                        <span class="headline">جدید</span>
+                        <span class="headline"><span class="text-h5">{{ formTitle }}</span></span>
                         </v-card-title>
                         <v-card-text>
                         <v-container>
@@ -54,7 +50,6 @@
                             </v-row>
                         </v-container>
                         </v-card-text>
-
                         <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
@@ -64,7 +59,15 @@
                     </v-dialog>
                 </v-toolbar>
             </template>
-          
+            <template v-slot:[`item.actions`]="{ item }">
+              <v-icon
+                small
+                class="mr-2"
+                @click="editItem(item)"
+              >
+                mdi-pencil
+              </v-icon>
+            </template>
           </v-data-table>      
     </v-card>
 </template>
@@ -74,8 +77,6 @@ export default{
     data(){
         return{
             dialog: false,
-            expanded:[],
-            singleExpand: true,
             isLoading:null,
             search: '',
             editedIndex: -1,
@@ -116,12 +117,19 @@ export default{
                 align: "center",
                 //sortable: false,
                 value: "b1_account_code",
+                },             {
+                text: "",
+                align: "center",
+                //sortable: false,
+                value: "actions",
                 }
             ]
         },
         bankAccounts(){
             return this.$store.getters.getBankAccounts
-        }
+        },      formTitle () {
+        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      }
     },
     methods:{
       close () {
@@ -131,10 +139,14 @@ export default{
           this.editedIndex = -1
         })
       },
-
+      editItem(item){
+        this.editedItem = item
+        this.editedIndex = item.id
+        this.dialog = true
+      },
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+          this.$store.dispatch('editBankAccount', this.editedItem)
         } else {
           this.$store.dispatch('createBankAccount',this.editedItem)
         }
