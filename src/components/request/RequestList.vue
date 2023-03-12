@@ -23,6 +23,13 @@
         :server-items-length="itemCount"
         class="elevation-1"
       >
+      <template v-slot:top>
+      <v-switch
+        v-model="isAll"
+        label="همه درخواست ها"
+        class="pa-3"
+      ></v-switch>
+    </template>
       <template  v-slot:[`item.transaction_date`]="props">
         {{ props.item.payfull.transaction_date }}
       </template>
@@ -34,9 +41,13 @@
       </template>
       <template v-slot:[`item.controls`]="props">
         <v-btn v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="verifyRequest(props.item)">
-            <v-icon>mdi-check-outline</v-icon>
+            تایید
+        </v-btn>
+        <v-btn style="color: red" v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="denyRequest(props.item)">
+            عدم تایید
         </v-btn>
       </template>
+      
       </v-data-table>
     </v-card>
 </template> 
@@ -48,36 +59,54 @@
     export default {
         data(){
             return {
-              options: {
-        itemsPerPage: 10
-      },
-                search: ''
+            isAll: true,
+            options: {
+            itemsPerPage: 10,
+            state: ''
+            },
+            search: ''
             }
-        },    watch:{
-    options:{
-      handler(){   
-      this.loadRequests();    
-      },  deep: true
-    }
-  },
+        },
+        watch:{
+          isAll:{
+            handler(){
+              if(!this.isAll)
+                this.options.state= 'requested'
+              else
+              this.options.state= ''
+              
+            }
+          },
+          options:{
+            handler(){   
+            this.loadRequests();    
+            },  deep: true
+          }, 
+        },
         components: {
             // TheRequest
         },
         computed: {
           itemCount(){
-      return this.$store.getters.getRequestItemCount;
-    },
+          return this.$store.getters.getRequestItemCount;
+        },
           saleRole(){
             return this.$store.getters.getUser.role === 'sale';
           },
             isLoading(){
-        return this.$store.getters.isLoading;
-      },
+            return this.$store.getters.isLoading;
+          },
             requests() {
              return this.$store.getters.requests
             },
             headers() {
-        return [
+        return [       
+             {
+            text: "شماره درخواست",
+            align: "center",
+            //sortable: false,
+            value: "id",
+          },
           {
             text: "شماره سند B1",
             align: "center",
@@ -138,29 +167,15 @@
         }
     },
         methods:{
+          denyRequest(item){
+            this.$store.dispatch('denyRequest',item.id)
+          },
           verifyRequest(item){
             this.$store.dispatch('verifyRequest',item.id)
           },
           isRequested(state){
             return state=="requested"
           },
-          // transactionDate(payfull){
-          //   if(payfull.type=="pos_raw"){
-          //           console.log(payfull.pos_raw.transaction_date)
-          //           return payfull.pos_raw.transaction_date
-          //       }else{
-          //           return payfull.card_to_card_raw.transaction_date
-          //       }
-          // },
-          // rowAmount(payfull){
-          //       console.log(payfull)
-          //       if(payfull.type=="pos_raw"){
-          //           return payfull.pos_raw.amount
-          //       }else{
-          //           return payfull.card_to_card_raw.amount
-          //       }
-                
-          //   },
             loadRequests(){
                 this.$store.dispatch('loadRequests',this.options)
             }

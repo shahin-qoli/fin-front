@@ -18,6 +18,11 @@ export default {
         setRequests(state, payload){
             state.requests = payload;
         },
+        denyRequest(state,reqId){
+            const toUpdateIndex=state.requests.findIndex(req => req.id === reqId )
+            console.log(state.requests[toUpdateIndex].state.value)
+            state.requests[toUpdateIndex].state = "denied"
+        },
         verifyRequest(state, reqId){
             const toUpdateIndex=state.requests.findIndex(req => req.id === reqId )
             console.log(state.requests[toUpdateIndex].state.value)
@@ -33,6 +38,24 @@ export default {
         }
     },
     actions: {
+        async denyRequest(context, reqId){
+            try{
+                const {data: requestsData} = await finAgent.get(`/front/used_payments/${reqId}/deny`);
+                console.log(requestsData)
+                if (requestsData.result){
+                    context.commit('denyRequest', reqId) 
+                    return true
+                }else {
+                    return false
+                }
+
+            } catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
         async verifyRequest(context, reqId){       
             try{
                 const {data: requestsData} = await finAgent.get(`/front/used_payments/${reqId}/verify`);
@@ -56,7 +79,7 @@ export default {
         async loadRequests(context, payload) {
             context.commit('setIsLoading', 'true')
             try {
-                const {data: responseData} = await finAgent.get(`/front/used_payments?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+                const {data: responseData} = await finAgent.get(`/front/used_payments?page=${payload.page}&per_page=${payload.itemsPerPage}&q[state_matches]=${payload.state}`);
                 const requests = []
                 var requestsData = responseData.data;
                 var itemCount = responseData.options.count;
