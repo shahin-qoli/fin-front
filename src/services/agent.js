@@ -14,6 +14,7 @@ finAgent.interceptors.request.use(
       config.headers = { 
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Accept': 'application/json',
+        'Content-Type': 'application/json'
        
       }
       return config;
