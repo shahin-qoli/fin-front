@@ -47,10 +47,16 @@
         :server-items-length="itemCount"
         class="elevation-1"
       >
+      <template v-slot:top>
+      <v-switch
+        v-model="options.isUsed"
+        label="تراکنش های استفاده شده"
+        class="pa-3"
+      ></v-switch>
+    </template>
       <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
         <the-row :item="item" @use-row="useRow" :key="item.id">
-
         </the-row>
         </td>
     </template>
@@ -82,7 +88,8 @@ import TheRow from '../TheRow.vue'
         amount: "",
         peygiriNumber:"",
         payaneCode: "",
-        erjaCode: ""
+        erjaCode: "",
+        isUsed:false
       },
       loading: null,
       isLoading: null,
@@ -188,7 +195,8 @@ import TheRow from '../TheRow.vue'
         amount: "",
         peygiriNumber:"",
         payaneCode: "",
-        erjaCode: ""
+        erjaCode: "",
+        isUsed:false
       }
           await this.$store.dispatch('loadPoses',this.options)
         },

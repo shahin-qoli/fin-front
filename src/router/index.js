@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CardtocardView from '../views/CardtocardView.vue'
 import CardtocardListView from '../views/CardtocardListView.vue'
-import CardtocardUsedListView from '../views/CardtocardUsedListView.vue'
+
 import PosView from '../views/PosView.vue'
 import PosListView from '../views/PosListView.vue'
-import PosUsedListView from '../views/PosUsedListView.vue'
+
 import RequestView from '../views/RequestView.vue'
 import LoginView from '../views/LoginView.vue'
 import JobListView from '../views/JobListView.vue'
@@ -71,11 +71,6 @@ const routes = [
     name: 'cardtocardlist',
     beforeEnter : guardMyrouteAdmin,
     component: CardtocardListView
-  },{
-    path: '/cardtocardusedlist',
-    name: 'cardtocardusedlist',
-    beforeEnter : guardMyrouteAdmin,
-    component: CardtocardUsedListView
   },  {
     path: '/pos',
     name: 'pos',
@@ -86,11 +81,6 @@ const routes = [
     name: 'poslist',
     beforeEnter : guardMyrouteAdmin,
     component: PosListView
-  },{
-    path: '/posusedlist',
-    name: 'posusedlist',
-    beforeEnter : guardMyrouteAdmin,
-    component: PosUsedListView
   },{
     path: '/requests',
     name: 'requests',
