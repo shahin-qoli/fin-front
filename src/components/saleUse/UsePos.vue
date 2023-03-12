@@ -105,8 +105,6 @@ export default{
         async useTransaction(){
             var payload = this.toUseData;
             const responseData= await finAgent.post('/v1/pos_raws/use_payment',payload)
-            console.log(responseData)
-            console.log(this.file)
             if (responseData){
                 if(responseData.data.error){
                 this.useMessage = responseData.data.error}
@@ -120,8 +118,6 @@ export default{
                 if(imageData.data.result)
 
                  this.useMessage = `با موفقیت انجام شد، شماره درخواست : ${usedId}` 
-                 console.log(this.useMessage)
-
         }
             }
         },
@@ -134,20 +130,17 @@ export default{
             this.toUseData={}
             this.isSuccess = null;
             this.isLoading= true;
-            const { data: responseData}=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_matches]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
-           const poses = [];
-            var posesData = responseData.data;
-            var itemCount = responseData.options.count;
-            for (const item of posesData) {
-				const pos = {
-                    ...item
-				};
-				poses.push(pos);  
-              }
-             this.isLoading= false
-             this.$store.dispatch('setPoses', poses);
-             this.$store.dispatch('setItemCount', itemCount);}
-        
+           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           this.isLoading= false
+           if(responseData)
+            if(responseData.data.error){
+                this.errorMessage = responseData.data.error}
+            else{
+                this.toUseData = responseData.data[0]
+                this.isSuccess = true
+                }
+
+        }
     }
 }
 
