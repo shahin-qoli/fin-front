@@ -105,8 +105,6 @@ export default{
         async useTransaction(){
             var payload = this.toUseData;
             const responseData= await finAgent.post('/v1/pos_raws/use_payment',payload)
-            console.log(responseData)
-            console.log(this.file)
             if (responseData){
                 if(responseData.data.error){
                 this.useMessage = responseData.data.error}
@@ -120,8 +118,6 @@ export default{
                 if(imageData.data.result)
 
                  this.useMessage = `با موفقیت انجام شد، شماره درخواست : ${usedId}` 
-                 console.log(this.useMessage)
-
         }
             }
         },
@@ -133,11 +129,8 @@ export default{
             this.errorMessage= null
             this.toUseData={}
             this.isSuccess = null;
-            console.log("starting")
-            console.log(this.data)
             this.isLoading= true;
            const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
-           console.log(responseData)
            this.isLoading= false
            if(responseData)
             if(responseData.data.error){
@@ -145,7 +138,7 @@ export default{
             else{
                 this.toUseData = responseData.data[0]
                 this.isSuccess = true
-                console.log(this.toUseData)}
+                }
 
         }
     }

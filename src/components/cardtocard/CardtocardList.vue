@@ -1,21 +1,48 @@
 <template>
   <v-card outlined>
     <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="جستجو"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
+        <v-row >
+            <v-col cols="12">
+                <v-form @submit.prevent="submitForm">
+                    <v-row>
+                      <v-col cols="6">
+                            <v-text-field v-model="options.fromCard" hint="8787656" label="از شماره کارت"></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field v-model="options.toCard" hint="8787656" label="به شماره کارت"></v-text-field>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-text-field v-model="options.amount" hint="120000000" label="مبلغ"></v-text-field>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-text-field v-model="options.peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
+                        </v-col>
+
+                        <v-col cols="2">
+                            <v-text-field v-model="options.serialNumber" hint="8787656" label="شماره سریال"></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                            <date-picker v-model="options.transactionDate"></date-picker>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn dark color="green" type="submit">جستجو</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn dark color="red" @click="clearForm">پاک کردن</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-form>
+
+            </v-col>
+        </v-row>
+      </v-card-title>
+      <v-divider></v-divider>
     <v-data-table
       fixed-header
       dense
       :headers="headers"
       :items="cardtocards"
       item-key="id"
-      :search="search"
       :loading="isLoading"
       :single-expand="singleExpand"
       :expanded.sync="expanded"
@@ -43,27 +70,24 @@
 </template>
 
 <script>
+import DatePicker from '../DatePicker.vue'
 import TheRow from '../TheRow.vue'
   export default {
-    components:{TheRow},
+    components:{TheRow, DatePicker},
     data() {
     return {
       options: {
-        itemsPerPage: 10
+        itemsPerPage: 10,
+        transactioDate: "",
+        amount: "",
+        fromCard: "",
+        toCard: "",
+        peygiriNumber: "",
+        serialNumber:""
       },
-      search: "",
       cardcode: null,
       singleExpand: true,
       expanded: [],
-      transaction_date: "",
-      transaction_time: "",
-      description: "",
-      amount: "",
-      from_card: "",
-      to_card: "",
-      peygiri_number: "",
-      serial_number: "",
-      job_id: "",
       loading: null
     };
   },watch:{
@@ -152,10 +176,23 @@ import TheRow from '../TheRow.vue'
     }
   },
     methods: {
+      async clearForm(){
+          this.options =  {
+        itemsPerPage: 10,
+        transactioDate: "",
+        amount: "",
+        fromCard: "",
+        toCard: "",
+        peygiriNumber: "",
+        serialNumber:""
+      };
+          await this.$store.dispatch('loadPoses',this.options)
+        },
       getCardcode(up){
         return up.used_payments[0].used_for
       },
       useRow(data){
+        this.loading = true
         var payload = {
             ...data
             }
