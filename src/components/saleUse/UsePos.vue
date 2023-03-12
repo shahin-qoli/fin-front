@@ -136,7 +136,7 @@ export default{
             console.log("starting")
             console.log(this.data)
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_matches]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
            console.log(responseData)
            this.isLoading= false
            if(responseData)
