@@ -1,5 +1,5 @@
 
-const baseUrl = 'http://192.168.20.251:3400'
+const baseUrl = process.env.BACKEND_URL
 const axios = require('axios');
 export const finAgent = axios.create({
 
