@@ -15,56 +15,53 @@
             </v-col>
             <v-col cols="12">
             <v-divider/>
-          </v-col>
-          <v-col cols="12" v-if="!saleRole">
-            <v-col cols="12">
-                <router-link  style="text-decoration: none;" to='/cardtocard'><h3>کارت به کارت</h3></router-link>
-               
             </v-col>
-            <v-col cols="12">
-            <v-divider/>
-          </v-col>
-            <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/pos'><h3>کارتخوان</h3></router-link> 
-            
-            </v-col>
-            <v-col cols="12">
-            <v-divider/>
-          </v-col>
-          <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
-          </v-col>
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>
-        </v-col>
-      
-          <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
-          </v-col>
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>
-          <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/bankcardlist'><h3>تنظیمات شماره کارت</h3></router-link> 
-          </v-col>
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>
-          <v-col cols="12">
-            <router-link style="text-decoration: none;" to='/bankaccountlist'><h3>تنظیمات شماره حساب</h3></router-link> 
-          </v-col>
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>
+            <v-col cols="12" v-if="!saleRole">
+              <v-col cols="12">
+                  <router-link  style="text-decoration: none;" to='/cardtocard'><h3>کارت به کارت</h3></router-link>           
+              </v-col>
+              <v-col cols="12">
+              <v-divider/>
+              </v-col>
+              <v-col cols="12">
+              <router-link style="text-decoration: none;" to='/pos'><h3>کارتخوان</h3></router-link>              
+              </v-col>
+              <v-col cols="12">
+              <v-divider/>
+              </v-col>
+              <v-col cols="12">
+                <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
+              </v-col>
+              <v-col cols="12">
+                <v-divider/>
+              </v-col>
+              <v-col cols="12">
+                <router-link style="text-decoration: none;" to='/bankcardlist'><h3>تنظیمات شماره کارت</h3></router-link> 
+              </v-col>
+              <v-col cols="12">
+                <v-divider/>
+              </v-col>
+              <v-col cols="12">
+                <router-link style="text-decoration: none;" to='/bankaccountlist'><h3>تنظیمات شماره حساب</h3></router-link> 
+              </v-col>
+              <v-col cols="12">
+                <v-divider/>
+              </v-col>
+            </v-col>    
+              <v-col cols="12">
+                <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
+              </v-col>
+              <v-col cols="12">
+                <v-divider/>
+              </v-col>
           <v-col cols="12" v-if="saleRole">
-          <v-col  cols="12">
-            <router-link style="text-decoration: none;" to='/usetransaction'><h3>درخواست ثبت سند</h3></router-link> 
-          </v-col>   
+            <v-col  cols="12">
+              <router-link style="text-decoration: none;" to='/usetransaction'><h3>درخواست ثبت سند</h3></router-link> 
+            </v-col>   
           <v-col cols="12">
             <v-divider/>
           </v-col>         
-        </v-col>
+          </v-col>
         </v-row>
     </v-container>
 </v-navigation-drawer> 
