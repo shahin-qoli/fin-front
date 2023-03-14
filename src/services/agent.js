@@ -1,5 +1,5 @@
 
-const baseUrl = process.env.BACKEND_URL
+const baseUrl = process.env.VUE_APP_BACKEND_URL
 const axios = require('axios');
 export const finAgent = axios.create({
 
