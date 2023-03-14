@@ -8,4 +8,4 @@ services:
       - .:/app
       - /app/node_modules
     environment:
-      BACKEND_URL: http://192.168.10.51:3400
+      VUE_APP_BACKEND_URL: http://192.168.10.51:3400
