@@ -33,7 +33,7 @@
                 </v-form>
             </v-col>
         </v-row>
-        <p :v-if="errorMessage">{{ errorMessage }}</p>
+        <p  :v-if="errorMessage">{{ errorMessage }}</p>
         <v-row v-if="isSuccess">
             <v-divider></v-divider>
             <v-col cols="12">
@@ -165,3 +165,9 @@ export default{
 
 </script>
 
+<style scoped>
+p {
+    color: red;
+    align-self: center;
+}
+</style>

@@ -101,17 +101,17 @@ import TheRow from '../TheRow.vue'
     watch:{
     options:{
       handler(){   
-        debugger
+    
       this.loadPoses();    
       },  deep: true
     }, 
     isUsedFilter:{
       handler(){
-        debugger
+        
         this.options.page =1 
-        debugger
+        
         this.options.isUsed = this.isUsedFilter
-        debugger
+        
       }
     }
   },
