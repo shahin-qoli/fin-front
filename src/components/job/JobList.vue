@@ -41,7 +41,8 @@ export default{
         return {
             search: "",
             options: {
-        itemsPerPage: 10
+        itemsPerPage: 10,
+        page: 1
       },
 
         }

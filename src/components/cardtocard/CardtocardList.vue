@@ -84,6 +84,7 @@ import TheRow from '../TheRow.vue'
     return {
       options: {
         itemsPerPage: 10,
+        page:1,
         transactioDate: "",
         amount: "",
         fromCard: "",
@@ -100,9 +101,7 @@ import TheRow from '../TheRow.vue'
   },watch:{
     options:{
       handler(){
-      
       this.loadCardtocards();    
- 
       },  deep: true
     }
   },
@@ -126,7 +125,6 @@ import TheRow from '../TheRow.vue'
           value: "description",
           align: "center",
           filterable: false
-
         },
         {
           text: "مبلغ",
@@ -158,6 +156,12 @@ import TheRow from '../TheRow.vue'
           
         },
         {
+          text: "کد پایانه",
+          align: "center",
+          value: "payane_code",
+          
+        },
+        {
           text: "شماره فایل",
           align: "center",
           value: "job_id"
@@ -186,6 +190,7 @@ import TheRow from '../TheRow.vue'
       async clearForm(){
           this.options =  {
         itemsPerPage: 10,
+        page:1,
         transactioDate: "",
         amount: "",
         fromCard: "",

@@ -39,6 +39,11 @@
       <template  v-slot:[`item.image`]="props">
         <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
       </template>
+      <template  v-slot:[`item.state`]="props">
+        <v-chip small dark :color="getColorRequestStatus(props.item.state)">
+          {{ transformRequestStatus(props.item.state) }}
+        </v-chip>
+      </template>
       <template v-slot:[`item.controls`]="props">
         <v-btn v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="verifyRequest(props.item)">
             تایید
@@ -46,8 +51,7 @@
         <v-btn style="color: red" v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="denyRequest(props.item)">
             عدم تایید
         </v-btn>
-      </template>
-      
+      </template>    
       </v-data-table>
     </v-card>
 </template> 
@@ -55,13 +59,16 @@
 </template>
 
 <script>
+import {TheStatus} from '../../mixins/TheStatus.js'
     // import TheRequest from "./TheRequest.vue";
     export default {
+      mixins:[TheStatus],
         data(){
             return {
             isAll: true,
             options: {
             itemsPerPage: 10,
+            page:1,
             state: ''
             },
             search: ''
@@ -70,11 +77,12 @@
         watch:{
           isAll:{
             handler(){
-              if(!this.isAll)
+              if(!this.isAll){
                 this.options.state= 'requested'
+                this.options.page = 1
+            }
               else
-              this.options.state= ''
-              
+              this.options.state= ''            
             }
           },
           options:{
