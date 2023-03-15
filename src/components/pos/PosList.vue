@@ -49,7 +49,7 @@
       >
       <template v-slot:top>
       <v-switch
-        v-model="options.isUsed"
+        v-model="isUsedFilter"
         label="تراکنش های استفاده شده"
         class="pa-3"
       ></v-switch>
@@ -95,16 +95,30 @@ import TheRow from '../TheRow.vue'
       isLoading: null,
       singleExpand: true,
       expanded: [],
+      isUsedFilter: false
       };
     },
     watch:{
     options:{
       handler(){   
+        debugger
       this.loadPoses();    
       },  deep: true
+    }, 
+    isUsedFilter:{
+      handler(){
+        debugger
+        this.options.page =1 
+        debugger
+        this.options.isUsed = this.isUsedFilter
+        debugger
+      }
     }
   },
     computed: {
+      isUsed(){
+        return this.options.isUsed;
+      },
        itemCount(){
       return this.$store.getters.getPosItemCount;
     },
