@@ -53,7 +53,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="6">
-                            <v-text-field v-model="toUseData.amount"  label="مبلغ" disabled></v-text-field>
+                            <v-text-field precision v-model="toUseData.amount"  label="مبلغ" disabled></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-text-field v-model="toUseData.peygiri_number" label="شماره پیگیری" disabled></v-text-field>

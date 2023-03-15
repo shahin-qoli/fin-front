@@ -40,7 +40,7 @@
         <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
       </template>
       <template  v-slot:[`item.state`]="props">
-        <v-chip dark :color="getColorRequestStatus(props.item.state)">
+        <v-chip small dark :color="getColorRequestStatus(props.item.state)">
           {{ transformRequestStatus(props.item.state) }}
         </v-chip>
       </template>

@@ -156,6 +156,12 @@ import TheRow from '../TheRow.vue'
           
         },
         {
+          text: "کد پایانه",
+          align: "center",
+          value: "payane_code",
+          
+        },
+        {
           text: "شماره فایل",
           align: "center",
           value: "job_id"
