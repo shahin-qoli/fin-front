@@ -13,7 +13,7 @@
                             <v-text-field v-model="amount" hint="120000000" label="مبلغ"></v-text-field>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field v-model="peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
+                            <v-text-field v-model="erjaCode" hint="8787656" label="شماره مرجع"></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <date-picker v-model="transactionDate"></date-picker>
@@ -41,7 +41,7 @@
                         <v-text-field v-model="toUseData.amount"  label="مبلغ" disabled></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field v-model="toUseData.peygiri_number" label="شماره پیگیری" disabled></v-text-field>
+                        <v-text-field v-model="toUseData.erja_code" label="شماره مرجع" disabled></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-text-field v-model="toUseData.transaction_date" label="تاریخ" disabled></v-text-field>
@@ -90,10 +90,10 @@ export default{
             cardStart: '',
             cardEnd: '',
             transactionDate: new Date().toISOString().substr(0, 10),
-            peygiriNumber: null,
+            erjaCode: null,
             amount: null,
             toUseData:{
-                peygiri_number: null,
+                erja_code: null,
                 amount: null,
                 transaction_date: "",
                 used_for:"",
@@ -130,7 +130,7 @@ export default{
             this.toUseData={}
             this.isSuccess = null;
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[erja_code_eq]=${this.erjaCode}`)
            this.isLoading= false
            if(responseData)
             if(responseData.data.error){
@@ -146,3 +146,9 @@ export default{
 
 </script>
 
+<style scoped>
+p {
+    color: red;
+    align-self: center;
+}
+</style>

@@ -57,7 +57,7 @@
                       </v-toolbar>
                   
                     <v-card-actions class="justify-center">
-                    <v-btn dark color="green" href="/poslist" >مشاهده همه کارتخوان ها</v-btn>          
+                    <v-btn dark color="green" to="/poslist" >مشاهده همه کارتخوان ها</v-btn>          
                 </v-card-actions>
                 </v-card>
             </v-col>
