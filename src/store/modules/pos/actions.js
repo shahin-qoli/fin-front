@@ -32,7 +32,7 @@ export default {
             //         'q[transaction_date_matches]': payload.transactionDate,
             //     }
             // }
-            const { data: responseData} = await finAgent.get(`/front/pos_raws?page=${payload.page}&per_page=${payload.itemsPerPage}&q[transaction_date_matches]=${payload.transactionDate}&q[amount_matches]=${payload.amount}&q[peygiri_number_matches]=${payload.peygiriNumber}&q[erja_code_mathces]=${payload.erjaCode}&q[payane_code_matches]=${payload.payaneCode}&q[is_used_eq]=${payload.isUsed}`);
+            const { data: responseData} = await finAgent.get(`/front/pos_raws?page=${payload.page}&per_page=${payload.itemsPerPage}&q[transaction_date_eq]=${payload.transactionDate}&q[amount_eq]=${payload.amount}&q[peygiri_number_matches]=${payload.peygiriNumber}&q[erja_code_mathces]=${payload.erjaCode}&q[payane_code_matches]=${payload.payaneCode}&q[is_used_eq]=${payload.isUsed}`);
             const poses = [];
             var posesData = responseData.data;
             var itemCount = responseData.options.count;
