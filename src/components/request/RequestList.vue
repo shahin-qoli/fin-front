@@ -65,11 +65,11 @@ import {TheStatus} from '../../mixins/TheStatus.js'
       mixins:[TheStatus],
         data(){
             return {
-            isAll: true,
+            isAll: false,
             options: {
             itemsPerPage: 10,
             page:1,
-            state: ''
+            state: 'requested'
             },
             search: ''
             }
