@@ -69,7 +69,10 @@
           v-model="item.is_used"
           disabled
         ></v-simple-checkbox>
-      </template>
+    </template>
+    <template v-slot:[`item.amount`]="{ item }">
+      <p>{{ item.amount | formatAmount }}</p>
+    </template>
     </v-data-table>
 
   </v-card>
@@ -104,7 +107,14 @@ import TheRow from '../TheRow.vue'
       this.loadCardtocards();    
       },  deep: true
     }
-  },
+  },filters:{
+    formatAmount(value){
+      const stringVlue = String(value)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+    }
+  }
+  ,
   computed: {
     headers() {
       return [

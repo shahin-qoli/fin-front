@@ -34,7 +34,7 @@
         {{ props.item.payfull.transaction_date }}
       </template>
       <template  v-slot:[`item.amount`]="props">
-        {{ props.item.payfull.amount }}
+        {{ props.item.payfull.amount | formatAmount }}
       </template>
       <template  v-slot:[`item.image`]="props">
         <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
@@ -51,7 +51,7 @@
         <v-btn style="color: red" v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="denyRequest(props.item)">
             عدم تایید
         </v-btn>
-      </template>    
+      </template> 
       </v-data-table>
     </v-card>
 </template> 
@@ -73,7 +73,13 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             },
             search: ''
             }
-        },
+        },filters:{
+        formatAmount(value){
+          const stringVlue = String(value)
+          const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return formattedIntegerPart
+        }
+         },
         watch:{
           isAll:{
             handler(){
