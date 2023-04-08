@@ -19,7 +19,8 @@
         item-key="id"
         :search="search"
         :loading="isLoading"
-        :options.sync="options"
+        :options="options"
+        @update:options="onOptionsUpdate"
         :server-items-length="itemCount"
         class="elevation-1"
       >
@@ -78,15 +79,19 @@ import {TheStatus} from '../../mixins/TheStatus.js'
           isAll:{
             handler(){
               if(!this.isAll){
-                this.options.state= 'requested'
-                this.options.page = 1
+                Object.assign(this.options, {
+                  state: 'requested',
+                  page: 1
+                })
+                // this.options.state= 'requested'
+                // this.options.page = 1
             }
               else
               this.options.state= ''            
             }
           },
           options:{
-            handler(){   
+            handler() {   
             this.loadRequests();    
             },  deep: true
           }, 
@@ -185,7 +190,10 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             return state=="requested"
           },
             loadRequests(){
-                this.$store.dispatch('loadRequests',this.options)
+                this.$store.dispatch('loadRequests', {
+                  isAll: this.isAll,
+                  options: JSON.parse(JSON.stringify(this.options))
+                })
             }
         }
     }
