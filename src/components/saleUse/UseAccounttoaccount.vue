@@ -97,7 +97,7 @@ export default{
     methods:{
         async useTransaction(){
             var payload = this.toUseData;
-            const responseData= await finAgent.post('/v1/pos_raws/use_payment',payload)
+            const responseData= await finAgent.post('/v1/account_to_account_raws/use_payment',payload)
             if (responseData){
                 if(responseData.data.error){
                 this.useMessage = responseData.data.error}
@@ -123,7 +123,7 @@ export default{
             this.toUseData={}
             this.isSuccess = null;
             this.isLoading= true;
-           const responseData=await finAgent.get(`/v1/pos_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
+           const responseData=await finAgent.get(`/v1/account_to_account_raws/find_payment?q[transaction_date_eq]=${this.transactionDate}&q[amount_eq]=${this.amount}&q[peygiri_number_eq]=${this.peygiriNumber}`)
            this.isLoading= false
            if(responseData)
             if(responseData.data.error){

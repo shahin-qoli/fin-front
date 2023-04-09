@@ -13,6 +13,8 @@ import JobListView from '../views/JobListView.vue'
 import SaleUseTransaction from '../views/SaleUseTransaction.vue'
 import BankCardList from '../views/BankCardListView.vue'
 import BankAccountList from '../views/BankAccountListView.vue'
+import AccounttoaccountListView from '../views/AccounttoaccountListView.vue'
+
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -77,11 +79,17 @@ const routes = [
     beforeEnter : guardMyrouteAdmin,
     component: PosView
   },{
+    path: '/accounttoaccountlist',
+    name: 'accounttoaccountlist',
+    beforeEnter : guardMyrouteAdmin,
+    component: AccounttoaccountListView
+  },{
     path: '/poslist',
     name: 'poslist',
     beforeEnter : guardMyrouteAdmin,
     component: PosListView
-  },{
+  }
+  ,{
     path: '/requests',
     name: 'requests',
     beforeEnter : guardMyrouteAdminSale,

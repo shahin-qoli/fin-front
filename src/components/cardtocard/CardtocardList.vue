@@ -165,12 +165,7 @@ import TheRow from '../TheRow.vue'
           value: "serial_number",
           
         },
-        {
-          text: "کد پایانه",
-          align: "center",
-          value: "payane_code",
-          
-        },
+
         {
           text: "شماره فایل",
           align: "center",

@@ -30,6 +30,12 @@
               <v-divider/>
               </v-col>
               <v-col cols="12">
+              <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h3>حساب به حساب</h3></router-link>              
+              </v-col>
+              <v-col cols="12">
+              <v-divider/>
+              </v-col>
+              <v-col cols="12">
                 <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
               </v-col>
               <v-col cols="12">
