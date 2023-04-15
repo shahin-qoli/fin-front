@@ -60,6 +60,9 @@
         </the-row>
         </td>
     </template>
+    <template v-slot:[`item.amount`]="{ item }">
+      <p>{{ item.amount | formatAmount }}</p>
+    </template>
     <template v-slot:[`item.is_used`]="{ item }">
         <v-simple-checkbox
           v-model="item.is_used"
@@ -97,7 +100,13 @@ import TheRow from '../TheRow.vue'
       expanded: [],
       isUsedFilter: false
       };
-    },
+    },filters:{
+    formatAmount(value){
+      const stringVlue = String(value)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+    }
+  },
     watch:{
     options:{
       handler(){   

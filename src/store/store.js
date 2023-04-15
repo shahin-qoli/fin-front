@@ -9,6 +9,7 @@ import jobs from './modules/job/index.js'
 import user from './modules/user/index.js'
 import bankcard from './modules/bankcard/index.js';
 import bankaccount from './modules/bankaccount/index.js';
+import accounttoaccount from './modules/accounttoaccount/index.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -19,7 +20,8 @@ export default new Vuex.Store({
       jobs,
       user,
       bankcard,
-      bankaccount       
+      bankaccount,
+      accounttoaccount       
     },
     state(){
       return{ 

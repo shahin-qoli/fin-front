@@ -87,8 +87,6 @@ export default{
             errorMessage: '',
             useMessage:'',
             isSuccess: null,
-            cardStart: '',
-            cardEnd: '',
             transactionDate: new Date().toISOString().substr(0, 10),
             erjaCode: null,
             amount: null,

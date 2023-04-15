@@ -29,7 +29,17 @@
                                 label="بارگذاری فایل"
                                 v-model="file"
                             />
-                            </v-col>
+                            </v-col><v-col cols="12" >
+                                    <v-select
+                                    :items="bankAccounts"
+                                    name="bankAccount"
+                                    label="شماره حساب"
+                                    solo
+                                    item-text="owner_name"
+                                    item-value="account_number"
+                                    v-model="account_number"
+                                    ></v-select>
+                                </v-col>
                             <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
                                 <v-btn :loading="isLoading" type="submit" dark color="green">ارسال</v-btn>
@@ -73,7 +83,8 @@ import {finAgent} from '@/services/agent'
             return {
                 file: null,
                 uploadError: false,
-                isLoading: null
+                isLoading: null,
+                account_number: ''
             }
         },
       methods: {
@@ -85,7 +96,8 @@ import {finAgent} from '@/services/agent'
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await finAgent.post('/front/card_to_card_raws/import_file',formData, {responseType: 'blob'} );
+                console.log(this.account_number)
+                const response = await finAgent.post(`/front/card_to_card_raws/import_file?account_number=${this.account_number}`,formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
@@ -109,6 +121,10 @@ import {finAgent} from '@/services/agent'
                     this.isLoading = false;
                 throw error;
             }
+        }
+      },computed:{
+        bankAccounts(){
+            return this.$store.getters.getBankAccounts;
         }
       },
       components: {

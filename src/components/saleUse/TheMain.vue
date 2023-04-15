@@ -1,24 +1,44 @@
 <template>
     <v-container>
-    <v-row>  
-        <v-col cols="6">
-    <use-cardtocard></use-cardtocard>
-</v-col>
-<v-col cols="6">
-    <use-pos></use-pos>
-    </v-col>
-</v-row>  
-</v-container>
-</template>
+      <v-select
+        v-model="selectedValue"
+        :items="displayNames"
+        :menu-props="{ maxHeight: '200px' }"
+        label="انتخاب نوع تراکنش"
+      ></v-select>
+      <v-card>
+        <v-card-text>
+          <component :is="componentMap[selectedValue]"></component>
+          <!-- Render different components based on selectedValue -->
+        </v-card-text>
+      </v-card>
+      </v-container>
+  </template>
+  
+  <script>
+  import UseCardtocard from './UseCardtocard.vue'
+  import UsePos from "./UsePos.vue"
+  import UseAccounttoaccount from "./UseAccounttoaccount.vue"
+  
+  export default {
+    data() {
+      return {
+        selectedValue: 'کارتخوان',
+        displayNames: ['کارت به کارت', 'کارتخوان','انتقال حساب به حساب'], // Display names for v-select
+        componentMap: { // Mapping between display names and component names
+          'کارت به کارت': 'UseCardtocard',
+          'کارتخوان': 'UsePos',
+          'انتقال حساب به حساب': 'UseAccounttoaccount',
 
 
-<script>
-import UseCardtocard from './UseCardtocard.vue'
-import UsePos from "./UsePos.vue"
-export default{
-    components:{
+        }
+      };
+    },
+    components: {
         UseCardtocard,
-        UsePos
+        UsePos,
+        UseAccounttoaccount
+
     }
-}
-</script>
+  };
+  </script>
