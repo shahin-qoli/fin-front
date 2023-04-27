@@ -10,64 +10,67 @@
                 src = "../assets/logo.png"
                 />
             </v-col>
-            <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>
-                
+            <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>               
             </v-col>
             <v-col cols="12">
             <v-divider/>
             </v-col>
-            <v-col cols="12" v-if="!saleRole">
-              <v-col cols="12">
-                  <router-link  style="text-decoration: none;" to='/cardtocard'><h3>کارت به کارت</h3></router-link>           
+            <v-col cols="12">
+            <v-expansion-panels accordion class="grey lighten-5">
+              <v-col cols="12" v-if="!saleRole">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>تراکنش ها</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">            
+                  <v-col cols="12">
+                      <router-link  style="text-decoration: none;" to='/cardtocard'><h5>کارت به کارت</h5></router-link>           
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/pos'><h5>کارتخوان</h5></router-link>              
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
+                  </v-col>
+                
+                </v-expansion-panel-content>
+                </v-expansion-panel>
               </v-col>
               <v-col cols="12">
-              <v-divider/>
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>درخواست ها</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                     <router-link style="text-decoration: none;" to='/requests'><h5>درخواست ها</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12" v-if="!saleRole">
+                      <router-link style="text-decoration: none;" to='/joblist'><h5>همگام سازی</h5></router-link> 
+                    </v-col>    
+                    <v-col cols="12" v-if="saleRole">
+                        <router-link style="text-decoration: none;" to='/usetransaction'><h5>درخواست ثبت سند</h5></router-link>  
+                    </v-col> 
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
               </v-col>
-              <v-col cols="12">
-              <router-link style="text-decoration: none;" to='/pos'><h3>کارتخوان</h3></router-link>              
+              <v-col cols="12" v-if="!saleRole">
+              <v-expansion-panel class="grey lighten-5">
+                <v-expansion-panel-header class="grey lighten-5">
+                <h3>تنظیمات</h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="grey lighten-5">
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/bankcardlist'><h5>تنظیمات شماره کارت</h5></router-link> 
+                  </v-col>
+                  <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
+                  </v-col>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
               </v-col>
-              <v-col cols="12">
-              <v-divider/>
-              </v-col>
-              <v-col cols="12">
-              <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h3>حساب به حساب</h3></router-link>              
-              </v-col>
-              <v-col cols="12">
-              <v-divider/>
-              </v-col>
-              <v-col cols="12">
-                <router-link style="text-decoration: none;" to='/joblist'><h3>همگام سازی</h3></router-link> 
-              </v-col>
-              <v-col cols="12">
-                <v-divider/>
-              </v-col>
-              <v-col cols="12">
-                <router-link style="text-decoration: none;" to='/bankcardlist'><h3>تنظیمات شماره کارت</h3></router-link> 
-              </v-col>
-              <v-col cols="12">
-                <v-divider/>
-              </v-col>
-              <v-col cols="12">
-                <router-link style="text-decoration: none;" to='/bankaccountlist'><h3>تنظیمات شماره حساب</h3></router-link> 
-              </v-col>
-              <v-col cols="12">
-                <v-divider/>
-              </v-col>
-            </v-col>    
-              <v-col cols="12">
-                <router-link style="text-decoration: none;" to='/requests'><h3>درخواست ها</h3></router-link> 
-              </v-col>
-              <v-col cols="12">
-                <v-divider/>
-              </v-col>
-          <v-col cols="12" v-if="saleRole">
-            <v-col  cols="12">
-              <router-link style="text-decoration: none;" to='/usetransaction'><h3>درخواست ثبت سند</h3></router-link> 
-            </v-col>   
-          <v-col cols="12">
-            <v-divider/>
-          </v-col>         
-          </v-col>
+            </v-expansion-panels>
+            </v-col>
         </v-row>
     </v-container>
 </v-navigation-drawer> 
