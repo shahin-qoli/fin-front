@@ -78,7 +78,7 @@
             search: '',
             editedIndex: -1,
             editedItem: {
-                name: '',
+                payane_code: '',
                 b1_slpcode: '',
             },
             defaultItem: {
@@ -118,15 +118,20 @@
         headers(){
             return [
                 {
-                    text: "نام",
+                    text: "نام ویزیتور",
                     align: "center",
-                    value: "name",
-                },
-                {
+                    value: "visitor_name",
+                },                {
                     text: "کد بی وان",
                     align: "center",
-                    value: "b1_code",
-                },             {
+                    value: "b1_slpcode",
+                },
+                {
+                    text: "کد پایانه",
+                    align: "center",
+                    value: "payane_code",
+                },
+                {
                 text: "",
                 align: "center",
                 //sortable: false,

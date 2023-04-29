@@ -9,6 +9,9 @@ export default {
     mutations:{
         setSalePersons(state, payload){
             state.salePersons = payload;
+        },
+        createSalePerson(state, payload){
+            state.salePersons.push(payload)
         }
     },
     getters:{
@@ -17,6 +20,39 @@ export default {
         }
     },
     actions:{
+        async editSalePerson(context, payload,actions){
+            try{
+                var data = {SalePerson: payload}
+                console.log(data)
+                const {data:responseData} = await finAgent.put(`/front/sale_persons/${payload.id}`, data)
+                if (responseData.result){
+                    actions.loadSalePersons
+                }
+            } catch (err) {
+                //console.log(err.response);
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+             }
+
+        },
+        async createSalePerson(context,payload){
+            try{
+                var data = {SalePerson: payload}
+                console.log(data)
+                const {data:responseData} = await finAgent.post('/front/sale_persons', data)
+                if (responseData){
+                    context.commit('createSalePerson', payload)
+                }
+            } catch (err) {
+                //console.log(err.response);
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+             }
+        },
         async loadSalePersons(context){
             try{
                 context.commit('setIsLoading', 'true')
