@@ -20,7 +20,8 @@ export default {
         async loadSalePersons(context){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: salePersonData} = await finAgent.get('/front/sale_persons');
+                const {data: responseData} = await finAgent.get('/front/sale_persons');
+                var salePersonData = responseData.data;
                 const salePersons = []
                 for (const item of salePersonData) {
                     const salePerson= {

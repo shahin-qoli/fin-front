@@ -67,7 +67,7 @@
                     <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
                   </v-col>
                   <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/saleperonlist'><h5>تنظیمات ویزیتور</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/salepersonlist'><h5>تنظیمات ویزیتور</h5></router-link> 
                   </v-col>
                   <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات پایانه ویزیتور</h5></router-link> 

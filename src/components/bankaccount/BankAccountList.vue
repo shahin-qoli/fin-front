@@ -81,16 +81,12 @@ export default{
             search: '',
             editedIndex: -1,
             editedItem: {
-                owner_name: '',
-                account_number: '',
-                b1_account_code: '',
-                bank_id: 1
+                name: '',
+                b1_slpcode: '',
             },
             defaultItem: {
-                owner_name: '',
-                account_number: '',
-                b1_account_code: '',
-                bank_id : 1
+              name: '',
+                b1_slpcode: '',
             },
         }
     },    watch: {
@@ -128,7 +124,7 @@ export default{
         bankAccounts(){
             return this.$store.getters.getBankAccounts
         },      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'حساب جدید' : 'ویرایش حساب'
       }
     },
     methods:{
