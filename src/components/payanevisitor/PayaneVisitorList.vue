@@ -13,11 +13,20 @@
         fixed-header
         dense
         :headers="headers"
-        :items="salePersons"
+        :items="payaneVisitors"
         item-key="id"
         :search="search"
         :loading="isLoading"
           >
+        <template  v-slot:[`item.payane_code`]="props">
+        {{ props.item.bank_payane.payane_code }}
+        </template>
+        <template  v-slot:[`item.visitor_name`]="props">
+        {{ props.item.sale_person.name }}
+        </template>
+        <template  v-slot:[`item.b1_slpcode`]="props">
+        {{ props.item.sale_person.b1_slpcode }}
+        </template>
           <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-spacer></v-spacer>
@@ -82,8 +91,8 @@
                 b1_slpcode: '',
             },
             defaultItem: {
-              name: '',
-                b1_slpcode: '',
+              payane_code: '',
+              b1_slpcode: '',
             },
         }
     }
@@ -103,15 +112,15 @@
       },
       save () {
         if (this.editedIndex > -1) {
-          this.$store.dispatch('editSalePerson', this.editedItem)
+          this.$store.dispatch('editPayaneVisitor', this.editedItem)
         } else {
-          this.$store.dispatch('createSalePerson',this.editedItem)
+          this.$store.dispatch('createPayaneVisitor',this.editedItem)
         }
         this.close()
       },
-            loadSalePersons() {
+            loadPayaneVisitors() {
                 // console.log(this)
-                this.$store.dispatch('loadSalePersons')
+                this.$store.dispatch('loadPayaneVisitors')
             }
         },
         computed:{
@@ -140,14 +149,14 @@
 
             ]
         },
-        salePersons(){
-            return this.$store.getters.getSalePersons
+        payaneVisitors(){
+            return this.$store.getters.getPayaneVisitors
         },formTitle () {
         return this.editedIndex === -1 ? 'ویزیتور جدید' : 'ویرایش ویزیتور'
       }
     },
     created(){
-        this.loadSalePersons();
+        this.loadPayaneVisitors();
     }
     }
 
