@@ -24,13 +24,11 @@
           <p>{{ item.sum | formatAmount }}</p>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-
               <v-dialog
                 v-model="dialog"
                 fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-             
+                hide-overlay
+                transition="dialog-bottom-transition"
                 >
                 <template v-slot:activator="{ on, attrs }">
                     <v-icon
@@ -48,18 +46,18 @@
                     <span class="text-h5">لیست واریزهای کارتخوان</span>
                     </v-card-title>
                     <v-data-table
-        fixed-header
-        dense
-        :headers="detailHeaders"
-        :items="posRawsDetails"
-        item-key="id"
-          >
+                fixed-header
+                dense
+                :headers="detailHeaders"
+                :items="posRawsDetails"
+                item-key="id"
+                     >
           <template v-slot:[`item.is_used`]="{ item }">
-        <v-simple-checkbox
-          v-model="item.is_used"
-          disabled
-        ></v-simple-checkbox>
-      </template>
+            <v-simple-checkbox
+            v-model="item.is_used"
+            disabled
+            ></v-simple-checkbox>
+             </template>
           </v-data-table>
                     <v-card-actions>
                     <v-spacer></v-spacer>
@@ -72,8 +70,11 @@
                     </v-btn>
                     </v-card-actions>
                 </v-card>
-                </v-dialog>
-            </template>
+              </v-dialog>
+              <v-btn class="mx-2" small  @click="userPoses(item)">
+                        <v-icon>mdi-check-outline</v-icon>
+                    </v-btn>
+        </template>
         </v-data-table>
     </v-card>
 </template>
