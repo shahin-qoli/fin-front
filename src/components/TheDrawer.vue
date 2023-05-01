@@ -55,25 +55,37 @@
                 </v-expansion-panel>
               </v-col>
               <v-col cols="12" v-if="!saleRole">
-              <v-expansion-panel class="grey lighten-5">
+                <v-expansion-panel class="grey lighten-5">
                 <v-expansion-panel-header class="grey lighten-5">
-                <h3>تنظیمات</h3>
+                <h3>صندوق</h3>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="grey lighten-5">
                   <v-col cols="12">
-                  <router-link style="text-decoration: none;" to='/bankcardlist'><h5>تنظیمات شماره کارت</h5></router-link> 
-                  </v-col>
-                  <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
-                  </v-col>
-                  <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/salepersonlist'><h5>تنظیمات ویزیتور</h5></router-link> 
-                  </v-col>
-                  <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>تنظیمات پایانه ویزیتور</h5></router-link> 
+                  <router-link style="text-decoration: none;" to='/payanereport'><h5>گزارشات صندوق</h5></router-link> 
                   </v-col>
                 </v-expansion-panel-content>
               </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="!saleRole">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                  <h3>تنظیمات</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/bankcardlist'><h5>تنظیمات شماره کارت</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/salepersonlist'><h5>تنظیمات ویزیتور</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>تنظیمات پایانه ویزیتور</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
               </v-col>
             </v-expansion-panels>
             </v-col>
