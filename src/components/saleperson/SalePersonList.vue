@@ -21,7 +21,40 @@
           <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-spacer></v-spacer>
-                    <v-dialog v-model="dialog" max-width="500px">
+                    <v-dialog v-model="dialogNew" max-width="500px">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                        color="primary"
+                        dark
+                        class="mb-2"
+                        v-bind="attrs"
+                        v-on="on"
+                        >جدید</v-btn>
+                    </template>
+                    <v-card>
+                        <v-card-title>
+                        <span class="headline"><span class="text-h5">{{ formTitle }}</span></span>
+                        </v-card-title>
+                        <v-card-text>
+                        <v-container>
+                            <v-row>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.name" label="نام ویزیتور"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.b1_slpcode" label="کد بی وان"></v-text-field>
+                            </v-col>
+                            </v-row>
+                        </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
+                        <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-dialog>
+                    <v-dialog v-model="dialogEdit" max-width="500px">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         color="primary"
@@ -73,7 +106,8 @@
     export default{
         data(){
         return{
-            dialog: false,
+            dialogNew: false,
+            dialogEdit: false,
             isLoading:null,
             search: '',
             editedIndex: -1,
@@ -125,7 +159,7 @@
                 {
                     text: "کد بی وان",
                     align: "center",
-                    value: "b1_code",
+                    value: "b1_slpcode",
                 },             {
                 text: "",
                 align: "center",

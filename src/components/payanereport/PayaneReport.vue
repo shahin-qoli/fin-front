@@ -108,6 +108,9 @@
             loadPayaneReports() {
                 // console.log(this)
                 this.$store.dispatch('loadPayaneReports',this.options)
+            },
+            userPoses(){
+                
             }
         },filters:{
     formatAmount(value){
