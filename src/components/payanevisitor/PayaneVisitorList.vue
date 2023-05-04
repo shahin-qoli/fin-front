@@ -75,11 +75,11 @@
                         <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
-                        <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
+                        <v-btn color="blue darken-1" text @click="saveNew">ذخیره</v-btn>
                         </v-card-actions>
                     </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogEdit" max-width="500px">
+                    <!-- <v-dialog v-model="dialogEdit" max-width="500px">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         color="primary"
@@ -111,7 +111,7 @@
                         <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
                         </v-card-actions>
                     </v-card>
-                    </v-dialog>
+                    </v-dialog> -->
                 </v-toolbar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
@@ -153,7 +153,7 @@
         ,
         methods:{
             close () {
-        this.dialog = false
+        this.dialogNew = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -164,18 +164,15 @@
         this.editedIndex = item.id
         this.dialog = true
       },
-      save () {
-        if (this.editedIndex > -1) {
-          this.$store.dispatch('editPayaneVisitor', this.editedItem)
-        } else {
-          this.$store.dispatch('createPayaneVisitor',this.editedItem)
-        }
+      saveNew () {
+        this.$store.dispatch('createPayaneVisitor', this.newItem)
         this.close()
       },
             loadPayaneVisitors() {
                 // console.log(this)
                 this.$store.dispatch('loadPayaneVisitors')
                 this.$store.dispatch('loadFreeSalePersons')
+                this.$store.dispatch('loadFreePayaneCodes')
             }
         },
         computed:{
@@ -212,6 +209,9 @@
       },
       salePersons(){
         return this.$store.getters.getFreeSalePersons
+      },
+      payaneCodes(){
+        return this.$store.getters.getFreePayaneCodes
       }
     },
     created(){
