@@ -88,6 +88,11 @@ import {finAgent} from '@/services/agent'
             }
         },
       methods: {
+        
+        loadBankAccounts() {
+        // console.log(this)
+        this.$store.dispatch('loadBankAccounts')
+      },
         async submitForm(){
             this.uploadError= false
             if (!this.file) return;
@@ -130,6 +135,9 @@ import {finAgent} from '@/services/agent'
       components: {
        // HelloWorld,
       },
+    created(){
+        this.loadBankAccounts();
+    }
     }
   </script>
   
