@@ -24,11 +24,18 @@
         class="elevation-1"
       >
       <template v-slot:top>
-      <v-switch
-        v-model="isAll"
-        label="همه درخواست ها"
-        class="pa-3"
-      ></v-switch>
+
+      <v-radio-group inline v-model="options.state">
+        <v-row>
+          <v-col cols="12" class="text-right">
+        <v-radio label="همه" value="" class="d-inline-block radio-with-margin"></v-radio>
+        <v-radio label="درخواست شده" value="requested" class="d-inline-block radio-with-margin"></v-radio>
+        <v-radio label="رد شده" value="denied" class="d-inline-block radio-with-margin"></v-radio>
+        <v-radio label="تایید شده" value="verified" class="d-inline-block radio-with-margin"></v-radio>
+     
+    </v-col>
+    </v-row>
+  </v-radio-group>
     </template>
       <template  v-slot:[`item.transaction_date`]="props">
         {{ props.item.payfull.transaction_date }}
@@ -65,7 +72,6 @@ import {TheStatus} from '../../mixins/TheStatus.js'
       mixins:[TheStatus],
         data(){
             return {
-            isAll: false,
             options: {
             itemsPerPage: 10,
             page:1,
@@ -81,16 +87,6 @@ import {TheStatus} from '../../mixins/TheStatus.js'
         }
          },
         watch:{
-          isAll:{
-            handler(){
-              if(!this.isAll){
-                this.options.state= 'requested'
-                this.options.page = 1
-            }
-              else
-              this.options.state= ''            
-            }
-          },
           options:{
             handler(){   
             this.loadRequests();    
@@ -196,3 +192,9 @@ import {TheStatus} from '../../mixins/TheStatus.js'
         }
     }
 </script>
+
+<style>
+  .radio-with-margin {
+    margin-right: 10px;
+  }
+</style>
