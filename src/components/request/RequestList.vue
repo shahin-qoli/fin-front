@@ -31,8 +31,10 @@
         <v-radio label="همه" value="" class="d-inline-block radio-with-margin"></v-radio>
         <v-radio label="درخواست شده" value="requested" class="d-inline-block radio-with-margin"></v-radio>
         <v-radio label="رد شده" value="denied" class="d-inline-block radio-with-margin"></v-radio>
+        <v-radio label="تکمیل شده" value="complete" class="d-inline-block radio-with-margin"></v-radio>
+        <v-radio label="تلاش مجدد شده" value="retried" class="d-inline-block radio-with-margin"></v-radio>
         <v-radio label="تایید شده" value="verified" class="d-inline-block radio-with-margin"></v-radio>
-     
+        <v-radio label="خطا در همگام سازی" value="api_error" class="d-inline-block radio-with-margin"></v-radio>
     </v-col>
     </v-row>
   </v-radio-group>
