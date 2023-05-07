@@ -27,6 +27,7 @@
                                placeholder="password"
                                required
                             ></v-text-field>
+                            <v-alert v-if="loginError" type="error" class="mt-4">{{ loginError }}</v-alert>
                             <v-btn type="submit" class="mt-4" color="primary" value="log in">ورود</v-btn>
                        </form>
                       </v-card-text>
@@ -48,16 +49,22 @@
      return {
        email: "",
        password: "",
+       loginError: "",
      };
    },
    methods: {
       async login() {
        const { email, password } = this;
        var data = {"email": email, "password": password}
+       try{
        await this.$store.dispatch('userLogin', data)
-      if(localStorage.getItem('token'))
+      if(localStorage.getItem('token')){
       this.$router.replace({name:'home'})
-     },
+   }
+     }catch (error) {
+        this.loginError = "نام کاربری یا رمز عبور اشتباه است.";
+      }
+   },
    },
  };
  </script>
