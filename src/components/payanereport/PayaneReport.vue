@@ -20,8 +20,17 @@
         :options.sync="options"
       :server-items-length="itemCount"
           >
-        <template v-slot:[`item.sum`]="{ item }">
-          <p>{{ item.sum | formatAmount }}</p>
+        <template v-slot:[`item.amount`]="{ item }">
+          <p>{{ item.amount | formatAmount }}</p>
+        </template>
+        <template v-slot:[`item.payane_code`]="{ item }">
+          <p>{{ item.bank_payane.payane_code }}</p>
+        </template>
+        <template v-slot:[`item.visitor_name`]="{ item }">
+          <p>{{ item.active_payane_person?.sale_person_name }}</p>
+        </template>
+        <template v-slot:[`item.visitor_b1_slpcode`]="{ item }">
+          <p>{{ item.active_payane_person?.sale_person_code }}</p>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
               <v-dialog
@@ -71,7 +80,7 @@
                     </v-card-actions>
                 </v-card>
               </v-dialog>
-              <v-btn class="mx-2" small  @click="userPoses(item)">
+              <v-btn class="mx-2" small  @click="usePoses(item)">
                         <v-icon>mdi-check-outline</v-icon>
                     </v-btn>
         </template>
@@ -86,6 +95,7 @@
             dialog: false,
             isLoading:null,
             search: '',
+            posRawsDetails: [],
             options: {
         itemsPerPage: 10,
         page:1,
@@ -103,13 +113,13 @@
         methods:{
             viewMore(item) {
                 console.log(item)
-                this.$store.dispatch('loadPosRawsDetails', {payaneCode:item.payane_code, transactionDate: item.transaction_date})
+                this.posRawsDetails = item.pos_raws
             },
             loadPayaneReports() {
                 // console.log(this)
                 this.$store.dispatch('loadPayaneReports',this.options)
             },
-            userPoses(){
+            usePoses(){
                 
             }
         },filters:{
@@ -216,7 +226,7 @@
                 {
                     text: "مبلغ تجمیعی",
                     align: "center",
-                    value: "sum",
+                    value: "amount",
                 },
                 {
                 text: "",
@@ -229,8 +239,6 @@
         },
         payaneReports(){
             return this.$store.getters.getPayaneReports
-        },posRawsDetails(){
-            return this.$store.getters.getPosRawsDetails
         }
     },
     created(){
