@@ -80,9 +80,9 @@
                     </v-card-actions>
                 </v-card>
               </v-dialog>
-              <v-btn class="mx-2" small  @click="usePoses(item)">
+              <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
                         <v-icon>mdi-check-outline</v-icon>
-                    </v-btn>
+              </v-btn>
         </template>
         </v-data-table>
     </v-card>
@@ -119,19 +119,35 @@
                 // console.log(this)
                 this.$store.dispatch('loadPayaneReports',this.options)
             },
-            usePoses(){
-                
+            usePoses(item){
+                this.loading = true;
+            var payload = {
+            ...item
             }
-        },filters:{
+            this.$store.dispatch('usePayaneReport',payload)
+            .finally(() => {
+                this.loading = false;
+              })
+            },
+            isUsed(isUsed){
+                return isUsed != true;
+            },
+            noSalePerson(salePerson){
+                return salePerson == null;
+            }
+            },
+            filters:{
     formatAmount(value){
       const stringVlue = String(value)
       const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return formattedIntegerPart
     }
-  },
-        computed:{itemCount(){
-      return this.$store.getters.getPosReportItemCount;
-    },
+             },
+        computed:{
+
+            itemCount(){
+            return this.$store.getters.getPosReportItemCount;
+            },
             detailHeaders(){
                 
                 return [
@@ -202,45 +218,45 @@
                 ];
       
             },
-        headers(){
-            return [
-                {
-                    text: "تاریخ",
+            headers(){
+                return [
+                    {
+                        text: "تاریخ",
+                        align: "center",
+                        value: "transaction_date",
+                    },
+                    {
+                        text: "کد پایانه",
+                        align: "center",
+                        value: "payane_code",
+                    },                {
+                        text: "نام ویزیتور",
+                        align: "center",
+                        value: "visitor_name",
+                    },
+                    {
+                        text: "کد ویزیتور",
+                        align: "center",
+                        value: "visitor_b1_slpcode",
+                    },
+                    {
+                        text: "مبلغ تجمیعی",
+                        align: "center",
+                        value: "amount",
+                    },
+                    {
+                    text: "",
                     align: "center",
-                    value: "transaction_date",
-                },
-                {
-                    text: "کد پایانه",
-                    align: "center",
-                    value: "payane_code",
-                },                {
-                    text: "نام ویزیتور",
-                    align: "center",
-                    value: "visitor_name",
-                },
-                {
-                    text: "کد ویزیتور",
-                    align: "center",
-                    value: "visitor_b1_slpcode",
-                },
-                {
-                    text: "مبلغ تجمیعی",
-                    align: "center",
-                    value: "amount",
-                },
-                {
-                text: "",
-                align: "center",
-                //sortable: false,
-                value: "actions",
-                }
+                    //sortable: false,
+                    value: "actions",
+                    }
 
-            ]
-        },
-        payaneReports(){
-            return this.$store.getters.getPayaneReports
-        }
-    },
+                ]
+            },
+            payaneReports(){
+                return this.$store.getters.getPayaneReports
+            }
+         },
     created(){
         this.loadPayaneReports();
     }
