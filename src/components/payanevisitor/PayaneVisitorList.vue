@@ -114,7 +114,7 @@
                     </v-dialog> -->
                 </v-toolbar>
             </template>
-            <template v-slot:[`item.actions`]="{ item }">
+            <!-- <template v-slot:[`item.actions`]="{ item }">
               <v-icon
                 small
                 class="mr-2"
@@ -122,7 +122,7 @@
               >
                 mdi-pencil
               </v-icon>
-            </template>
+            </template> -->
         </v-data-table>
     </v-card>
 </template>
@@ -166,6 +166,7 @@
       },
       saveNew () {
         this.$store.dispatch('createPayaneVisitor', this.newItem)
+        this.loadPayaneVisitors();
         this.close()
       },
             loadPayaneVisitors() {
