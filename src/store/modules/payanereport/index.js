@@ -33,7 +33,7 @@ export default {
         async loadPayaneReports(context,payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&`);
+                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}`);
                 var payaneReportData = responseData.data;
                 const payaneReports = []
                 var itemCount = responseData.options.count;

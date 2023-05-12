@@ -1,13 +1,40 @@
 <template>
     <v-card outlined>
         <v-card-title>
-            <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="جستجو"
-            single-line
-            hide-details
-            ></v-text-field>
+            <v-form @submit.prevent="searchReport">
+                <v-row>
+        <v-col
+          cols="3"
+        >
+       
+          <v-select
+            v-model="searchReportOptions.selectedPayaneCodes"
+            :items="payaneCodes"
+            item-value="payane_code"
+            item-text="customItemText"
+            label="پایانه"
+            multiple
+            filled
+            outlined
+            small-chips
+          >   
+           <template v-slot:item="{ item }">
+            <div>{{ displayText(item) }}</div>
+         </template>
+         <template v-slot:selection="{ item }">
+            <div>{{ displayText(item) }}</div>
+         </template>
+        </v-select>
+        </v-col>
+        <v-col
+          cols="3"
+        ><date-picker v-model="searchReportOptions.selectedDate"></date-picker>
+        </v-col>
+        <v-col cols="3">
+                            <v-btn dark color="green" type="submit">جستجو</v-btn>
+        </v-col>
+    </v-row>
+    </v-form>
         </v-card-title>
         <v-data-table
         fixed-header
@@ -15,10 +42,9 @@
         :headers="headers"
         :items="payaneReports"
         item-key="id"
-        :search="search"
         :loading="isLoading"
         :options.sync="options"
-      :server-items-length="itemCount"
+        :server-items-length="itemCount"
           >
         <template v-slot:[`item.amount`]="{ item }">
           <p>{{ item.amount | formatAmount }}</p>
@@ -89,18 +115,26 @@
 </template>
 
 <script>
+import DatePicker from '../DatePicker.vue'
     export default{
+        components:{
+        DatePicker
+    },
         data(){
         return{
             dialog: false,
             isLoading:null,
-            search: '',
             posRawsDetails: [],
             options: {
-        itemsPerPage: 10,
-        page:1,
-      }
-            
+            itemsPerPage: 10,
+            page:1,
+            },
+            searchReportOptions: {
+                itemsPerPage: 10,
+            page:1,
+            selectedPayaneCodes: '',
+            selectedDate:''
+            }            
         }
     }
         ,watch:{
@@ -111,6 +145,16 @@
     }
   },
         methods:{
+            searchReport(){
+                this.$store.dispatch('loadPayaneReports',this.searchReportOptions)
+            },
+            displayText(item) {
+            if (item.active_payane_person && item.active_payane_person.sale_person_name) {
+                return item.active_payane_person.sale_person_name;
+            } else {
+                return item.payane_code;
+            }
+                    },
             viewMore(item) {
                 console.log(item)
                 this.posRawsDetails = item.pos_raws
@@ -118,6 +162,10 @@
             loadPayaneReports() {
                 // console.log(this)
                 this.$store.dispatch('loadPayaneReports',this.options)
+            },
+            loadBankPayanes() {
+                 console.log("this is going to loading")
+                this.$store.dispatch('loadBankPayanes')
             },
             usePoses(item){
                 this.loading = true;
@@ -144,7 +192,9 @@
     }
              },
         computed:{
-
+            customItemText() {
+            return this.payaneCodes.map((item) => this.displayText(item));
+            },
             itemCount(){
             return this.$store.getters.getPosReportItemCount;
             },
@@ -255,10 +305,22 @@
             },
             payaneReports(){
                 return this.$store.getters.getPayaneReports
-            }
+            },
+    salePersons(){
+      return this.$store.getters.getSalePersons
+    },
+    payaneCodes(){
+      return this.$store.getters.getBankPayanes.map((item) => {
+        return {
+          payane_code: item.payane_code,
+          active_payane_person: item.active_payane_person,
+        };
+      });
+    }
          },
     created(){
         this.loadPayaneReports();
+        this.loadBankPayanes();
     }
     }
 

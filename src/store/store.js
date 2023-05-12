@@ -14,6 +14,7 @@ import saleperson from './modules/saleperson/index.js';
 import payanevisitor from './modules/payanevisitor/index.js';
 import payanereport from './modules/payanereport/index.js';
 import posrawdetails from './modules/posrawdetails/index.js';
+import bankpayane from './modules/bankpayane/index.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -29,7 +30,8 @@ export default new Vuex.Store({
       saleperson,
       payanevisitor,
       payanereport,
-      posrawdetails,       
+      posrawdetails,
+      bankpayane       
     },
     state(){
       return{ 

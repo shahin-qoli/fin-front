@@ -26,6 +26,7 @@
                 class="mt-4"
                 locale="fa-IR"
                 :first-day-of-week="6"
+                :first-day-of-year="70"
                 v-model="date"
                 hint="6273" 
                 label="تاریخ تراکنش">
