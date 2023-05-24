@@ -5,9 +5,13 @@ export default {
         return {
         payaneVisitors: [],
         payaneCodes: [],
+        itemCount: null,
     }
     },
     mutations:{
+        setItemCount(state, payload){
+            state.itemCount = payload
+        },
         setPayaneVisitors(state, payload){
             state.payaneVisitors = payload;
         },
@@ -20,6 +24,9 @@ export default {
         }
     },
     getters:{
+        getPayaneVisitorItemCount(state){
+            return state.itemCount;
+        },
         getPayaneVisitors(state){
             return state.payaneVisitors;
         },
@@ -28,11 +35,12 @@ export default {
         }
     },
     actions:{
-        async loadPayaneVisitors(context){
+        async loadPayaneVisitors(context, payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get('/front/payane_persons');
+                const {data: responseData} = await finAgent.get(`/front/payane_persons?page=${payload.page}&per_page=${payload.itemsPerPage}`);
                 var payaneVisitorData = responseData.data;
+                var itemCount = responseData.options.count;
                 const payaneVisitors = []
                 for (const item of payaneVisitorData) {
                     const payaneVisitor= {
@@ -42,6 +50,7 @@ export default {
                 }
                 context.commit('setIsLoading', 'false')
                 context.commit('setPayaneVisitors', payaneVisitors)
+                context.commit('setItemCount', itemCount);
 
             } catch (err) {
                 //console.log(err.response);

@@ -118,7 +118,7 @@
       },
             loadSalePersons() {
                 // console.log(this)
-                this.$store.dispatch('loadSalePersons',this.options)
+                this.$store.dispatch('loadSalePersons', this.options)
             }
         },
         computed:{

@@ -17,6 +17,8 @@
       item-key="id"
       :search="search"
       :loading="isLoading"
+      :options.sync="options"
+        :server-items-length="itemCount"
         >
       <template  v-slot:[`item.payane_code`]="props">
       {{ props.item.bank_payane.payane_code }}
@@ -131,6 +133,10 @@
   export default{
       data(){
       return{
+        options: {
+            itemsPerPage: 10,
+            page:1,
+            },
         dialogNew: false,
         dialogEdit: false,
           isLoading:null,
@@ -171,7 +177,7 @@
     },
           loadPayaneVisitors() {
               // console.log(this)
-              this.$store.dispatch('loadPayaneVisitors')
+              this.$store.dispatch('loadPayaneVisitors',this.options)
               this.$store.dispatch('loadFreeSalePersons')
               this.$store.dispatch('loadFreePayaneCodes')
           }
@@ -213,11 +219,16 @@
     },
     payaneCodes(){
       return this.$store.getters.getFreePayaneCodes
+    }, itemCount(){
+      return this.$store.getters.getPayaneVisitorItemCount;
     }
   },
-  created(){
-      this.loadPayaneVisitors();
-
+  watch:{
+    options:{
+      handler(){
+      this.loadPayaneVisitors();    
+      },  deep: true
+    }
   }
   }
 
