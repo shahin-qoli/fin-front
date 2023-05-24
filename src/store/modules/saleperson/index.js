@@ -4,10 +4,14 @@ export default {
     state(){
         return {
         salePersons: [],
-        FreeSalePersons: []
+        FreeSalePersons: [],
+        itemCount: null 
     }
     },
     mutations:{
+        setItemCount(state, payload){
+            state.itemCount = payload
+        },
         setSalePersons(state, payload){
             state.salePersons = payload;
         },
@@ -20,6 +24,9 @@ export default {
         }
     },
     getters:{
+        getSalePersonItemCount(state){
+            return state.itemCount;
+        },
         getSalePersons(state){
             return state.salePersons;
         },
@@ -61,11 +68,12 @@ export default {
                 throw error;
              }
         },
-        async loadSalePersons(context){
+        async loadSalePersons(context,payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get('/front/sale_persons');
+                const {data: responseData} = await finAgent.get(`/front/sale_persons?page=${payload.page}&per_page=${payload.itemsPerPage}`);
                 var salePersonData = responseData.data;
+                var itemCount = responseData.options.count;
                 const salePersons = []
                 for (const item of salePersonData) {
                     const salePerson= {
@@ -75,7 +83,7 @@ export default {
                 }
                 context.commit('setIsLoading', 'false')
                 context.commit('setSalePersons', salePersons)
-
+                context.commit('setItemCount', itemCount);
             } catch (err) {
                 //console.log(err.response);
                 const error = new Error(

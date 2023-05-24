@@ -17,6 +17,8 @@
         item-key="id"
         :search="search"
         :loading="isLoading"
+        :options.sync="options"
+        :server-items-length="itemCount"
           >
           <template v-slot:top>
                 <v-toolbar flat color="white">
@@ -73,6 +75,10 @@
     export default{
         data(){
         return{
+            options: {
+            itemsPerPage: 10,
+            page:1,
+            },
             dialogNew: false,
             dialogEdit: false,
             isLoading:null,
@@ -112,7 +118,7 @@
       },
             loadSalePersons() {
                 // console.log(this)
-                this.$store.dispatch('loadSalePersons')
+                this.$store.dispatch('loadSalePersons',this.options)
             }
         },
         computed:{
@@ -140,11 +146,17 @@
             return this.$store.getters.getSalePersons
         },formTitle () {
         return this.editedIndex === -1 ? 'ویزیتور جدید' : 'ویرایش ویزیتور'
-      }
-    },
-    created(){
-        this.loadSalePersons();
+      }, itemCount(){
+      return this.$store.getters.getSalePersonItemCount;
     }
+    },watch:{
+    options:{
+      handler(){
+      this.loadSalePersons();    
+      },  deep: true
+    }
+  }
+  
     }
 
 </script>
