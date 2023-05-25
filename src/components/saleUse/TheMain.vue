@@ -24,10 +24,9 @@
     data() {
       return {
         selectedValue: 'کارتخوان',
-        displayNames: ['کارت به کارت', 'کارتخوان','انتقال حساب به حساب'], // Display names for v-select
+        displayNames: ['کارت به کارت','انتقال حساب به حساب'], // Display names for v-select
         componentMap: { // Mapping between display names and component names
           'کارت به کارت': 'UseCardtocard',
-          'کارتخوان': 'UsePos',
           'انتقال حساب به حساب': 'UseAccounttoaccount',
 
 

@@ -40,9 +40,7 @@
         :items="poses"
         item-key="id"
         :loading="isLoading"
-        :single-expand="singleExpand"
-        :expanded.sync="expanded"
-        show-expand
+
         :options.sync="options"
         :server-items-length="itemCount"
         class="elevation-1"
@@ -53,13 +51,19 @@
         label="تراکنش های استفاده شده"
         class="pa-3"
       ></v-switch>
+      <v-switch
+        v-model="isReportedFilter"
+        label="تراکنش های گزارش شده"
+        class="pa-3"
+      ></v-switch>
     </template>
-      <template v-slot:expanded-item="{ headers,item}">
+    
+      <!-- <template v-slot:expanded-item="{ headers,item}">
       <td :colspan="headers.length">
         <the-row :item="item" @use-row="useRow" :key="item.id">
         </the-row>
         </td>
-    </template>
+    </template> -->
     <template v-slot:[`item.amount`]="{ item }">
       <p>{{ item.amount | formatAmount }}</p>
     </template>
@@ -67,8 +71,16 @@
         <v-simple-checkbox
           v-model="item.is_used"
           disabled
+          class="used-checkbox"
         ></v-simple-checkbox>
-      </template>
+     </template>
+     <template v-slot:[`item.is_reported`]="{ item }">
+        <v-simple-checkbox
+          v-model="item.is_reported"
+          disabled
+          class="reported-checkbox"
+        ></v-simple-checkbox>
+     </template>
       </v-data-table>
     </v-card>
 </template>
@@ -76,11 +88,11 @@
 <script>
 
 import DatePicker from '../DatePicker.vue'
-import TheRow from '../TheRow.vue'
+// import TheRow from '../TheRow.vue'
     export default {
       components:{
         DatePicker,
-        TheRow
+        // TheRow
     },
       data() {
       return {
@@ -92,13 +104,15 @@ import TheRow from '../TheRow.vue'
         peygiriNumber:"",
         payaneCode: "",
         erjaCode: "",
-        isUsed:false
+        isUsed:false,
+        isReported : false,
       },
       loading: null,
       isLoading: null,
-      singleExpand: true,
-      expanded: [],
-      isUsedFilter: false
+      // singleExpand: true,
+      // expanded: [],
+      isUsedFilter: false,
+      isReportedFilter: false,
       };
     },filters:{
     formatAmount(value){
@@ -120,6 +134,15 @@ import TheRow from '../TheRow.vue'
         this.options.page =1 
         
         this.options.isUsed = this.isUsedFilter
+        
+      }
+    },
+    isReportedFilter:{
+      handler(){
+        
+        this.options.page =1 
+        
+        this.options.isReported = this.isReportedFilter
         
       }
     }
@@ -196,6 +219,10 @@ import TheRow from '../TheRow.vue'
           text: "استفاده شده",
           align: "center",
           value: "is_used"
+        },        {
+          text: "گزارش شده",
+          align: "center",
+          value: "is_reported"
         },
         {
           text: "",
@@ -230,17 +257,17 @@ import TheRow from '../TheRow.vue'
            await this.$store.dispatch('loadPoses',this.options)
            this.isLoading= false;
         },
-      useRow(data){
-        this.loading = true
-            var payload = {
-            ...data
-            }
-            this.$store.dispatch('usePos',payload)
-            .finally(() => {
-                this.loading = false
-              })
+      // useRow(data){
+      //   this.loading = true
+      //       var payload = {
+      //       ...data
+      //       }
+      //       this.$store.dispatch('usePos',payload)
+      //       .finally(() => {
+      //           this.loading = false
+      //         })
             
-          },
+      //     },
         loadPoses() {
           // console.log(this)
           this.$store.dispatch('loadPoses',this.options)

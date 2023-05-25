@@ -57,7 +57,13 @@
                       </v-toolbar>
                   
                     <v-card-actions class="justify-center">
-                    <v-btn dark color="green" to="/poslist" >مشاهده همه کارتخوان ها</v-btn>          
+                    <v-btn dark color="green" to="/poslist" >مشاهده همه کارتخوان ها</v-btn>
+                    <v-btn dark color="green" @click="updateReport" >به‌روزرسانی گزارش صندوق
+                        <v-progress-circular
+      v-if="loadingUpdate"
+      indeterminate
+      color="primary"
+    ></v-progress-circular></v-btn>           
                 </v-card-actions>
                 </v-card>
             </v-col>
@@ -77,7 +83,8 @@
             return{
                 file: null,
                 uploadError: false,
-                isLoading: null
+                isLoading: null,
+                loadingUpdate: false,
             }
         },
         components: {
@@ -106,6 +113,27 @@
                 }
 
 
+            } catch (err){
+                const error = new Error(
+                    
+                    err.response.data.error || 'Failed to fetch'
+                );
+                this.uploadError = true;
+                    this.file = null;
+                    this.isLoading = false;
+                throw error;
+
+            }
+        },
+        async updateReport(){
+            try {
+                this.loadingUpdate = true;
+                const {data:responseData} = await finAgent.get('/front/pos_payane_reports/update_report' );
+                console.log('finish')
+                console.log(responseData.error)
+                if (responseData.error == "") {
+                    this.loadingUpdate = false;
+                }
             } catch (err){
                 const error = new Error(
                     

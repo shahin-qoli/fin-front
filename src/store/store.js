@@ -10,6 +10,11 @@ import user from './modules/user/index.js'
 import bankcard from './modules/bankcard/index.js';
 import bankaccount from './modules/bankaccount/index.js';
 import accounttoaccount from './modules/accounttoaccount/index.js';
+import saleperson from './modules/saleperson/index.js';
+import payanevisitor from './modules/payanevisitor/index.js';
+import payanereport from './modules/payanereport/index.js';
+import posrawdetails from './modules/posrawdetails/index.js';
+import bankpayane from './modules/bankpayane/index.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -21,7 +26,12 @@ export default new Vuex.Store({
       user,
       bankcard,
       bankaccount,
-      accounttoaccount       
+      accounttoaccount,
+      saleperson,
+      payanevisitor,
+      payanereport,
+      posrawdetails,
+      bankpayane       
     },
     state(){
       return{ 

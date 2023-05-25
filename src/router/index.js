@@ -14,6 +14,9 @@ import SaleUseTransaction from '../views/SaleUseTransaction.vue'
 import BankCardList from '../views/BankCardListView.vue'
 import BankAccountList from '../views/BankAccountListView.vue'
 import AccounttoaccountListView from '../views/AccounttoaccountListView.vue'
+import SalePersonListView from '../views/SalePersonListView.vue'
+import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
+import payanereportView from '../views/PayaneReportsView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -109,6 +112,21 @@ const routes = [
     name: 'bankaccountlist',
     beforeEnter : guardMyrouteAdmin,
     component: BankAccountList
+  },{
+    path: '/salepersonlist',
+    name: 'salepersonlist',
+    beforeEnter : guardMyrouteAdmin,
+    component: SalePersonListView
+  },{
+    path: '/payanevisitorlist',
+    name: 'payanevisitorlist',
+    beforeEnter : guardMyrouteAdmin,
+    component: PayaneVisitorListView
+  },{
+    path: '/payanereport',
+    name: 'payanereport',
+    beforeEnter : guardMyrouteAdmin,
+    component: payanereportView
   },
   {
     path: '/usetransaction',
