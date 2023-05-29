@@ -5,8 +5,7 @@
                 <v-row>
         <v-col
           cols="3"
-        >
-       
+        >    
           <v-select
             v-model="searchReportOptions.selectedPayaneCodes"
             :items="payaneCodes"
