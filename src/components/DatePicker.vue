@@ -18,43 +18,47 @@
                 v-on="on"
                 ></v-text-field>
             </template>
-            <v-date-picker
-                no-title
-                scrollable
-                close
-                width="190"
-                class="mt-4"
-                locale="fa-IR"
-                :first-day-of-week="6"
-                :first-day-of-year="70"
+            <date-picker
+                @change="submit"
                 v-model="date"
-                hint="6273" 
+                append-to="body"
+                format="YYYY-MM-DD"
+                input-format="jYYYY/jMM/jDD"
                 label="تاریخ تراکنش">
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                 <v-btn text color="primary" @click="submit">OK</v-btn>
-            </v-date-picker>
+            </date-picker>
         </v-menu>
     </div>
 </template>
 
 <script>
-
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 export default{
     // emits:['ret-date'],
     props:['value'],
     data(){
         return{
             menu: false,
-            date: new Date().toISOString().substr(0, 10),
+            date: this.value,
             content: this.value
         }
     },
     methods:{
         submit(){
             this.$refs.menu.save(this.date)
-            this.$emit('input',this.date)
+            this.$emit('input', this.date)
         }
-    }
+    },
+  components: {
+    datePicker: VuePersianDatetimePicker
+  }
 }
 </script>
+
+<style scoped>
+.custom-date-picker {
+  height: 300px; /* Adjust the height as per your requirement */
+}
+</style>

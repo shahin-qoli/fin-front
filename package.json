@@ -13,6 +13,7 @@
     "core-js": "^3.8.3",
     "file-saver": "^2.0.5",
     "vue": "^2.7.14",
+    "vue-persian-datetime-picker": "^2.10.4",
     "vue-router": "^3.5.1",
     "vuetify": "^2.6.0",
     "vuex": "^3.0.1"
@@ -24,13 +25,14 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-service": "^5.0.8",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.0",
+    "webpack": "^5.84.1"
   }
 }
