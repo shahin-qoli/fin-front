@@ -46,6 +46,15 @@
                             <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.b1_slpcode" label="کد بی وان"></v-text-field>
                             </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                                <v-select 
+                                v-model="editedItem.person_type" 
+                                label="نوع"
+                                :items="personTypes"
+                                item-text="type_name"
+                                item-value="type"
+                                ></v-select>
+                            </v-col>
                             </v-row>
                         </v-container>
                         </v-card-text>
@@ -87,11 +96,17 @@
             editedItem: {
                 name: '',
                 b1_slpcode: '',
+                person_type: '',
             },
             defaultItem: {
               name: '',
                 b1_slpcode: '',
             },
+            personTypes: [
+              {type: 'sale_person', type_name: 'ویزیتور'},
+              {type: 'driver', type_name: 'راننده'},
+              {type: 'customer', type_name: 'مشتری'},
+          ]
         }
     }
         ,
@@ -133,7 +148,13 @@
                     text: "کد بی وان",
                     align: "center",
                     value: "b1_slpcode",
-                },             {
+                },
+                {
+                    text: "نوع",
+                    align: "center",
+                    value: "person_type",
+                },
+                {
                 text: "",
                 align: "center",
                 //sortable: false,
