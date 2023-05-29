@@ -31,7 +31,16 @@
         ><date-picker v-model="searchReportOptions.selectedDate"></date-picker>
         </v-col>
         <v-col cols="3">
-                            <v-btn dark color="green" type="submit">جستجو</v-btn>
+            <v-select 
+                v-model="searchReportOptions.selectedType" 
+                label="نوع"
+                :items="personTypes"
+                item-text="type_name"
+                item-value="type"
+             ></v-select>
+        </v-col>
+        <v-col cols="3">
+            <v-btn dark color="green" type="submit">جستجو</v-btn>
         </v-col>
     </v-row>
     </v-form>
@@ -127,14 +136,23 @@ import DatePicker from '../DatePicker.vue'
             posRawsDetails: [],
             options: {
             itemsPerPage: 10,
-            page:1,
+            page:1, 
+            selectedPayaneCodes: '',
+            selectedDate:'',
+            selectedType: ''
             },
             searchReportOptions: {
-                itemsPerPage: 10,
+            itemsPerPage: 10,
             page:1,
             selectedPayaneCodes: '',
-            selectedDate:''
-            }            
+            selectedDate:'',
+            selectedType: '',
+            },
+            personTypes: [
+              {type: 'sale_person', type_name: 'ویزیتور'},
+              {type: 'driver', type_name: 'راننده'},
+              {type: 'customer', type_name: 'مشتری'},  
+        ]          
         }
     }
         ,watch:{
@@ -319,7 +337,7 @@ import DatePicker from '../DatePicker.vue'
     }
          },
     created(){
-        this.loadPayaneReports();
+
         this.loadBankPayanes();
     }
     }
