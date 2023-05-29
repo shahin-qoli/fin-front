@@ -63,6 +63,9 @@
         <template v-slot:[`item.visitor_name`]="{ item }">
           <p>{{ item.active_payane_person?.sale_person_name }}</p>
         </template>
+        <template v-slot:[`item.sale_person_type`]="{ item }">
+            <p>{{ item.active_payane_person?.sale_person_type }}</p>
+        </template>
         <template v-slot:[`item.visitor_b1_slpcode`]="{ item }">
           <p>{{ item.active_payane_person?.sale_person_code }}</p>
         </template>
@@ -153,14 +156,14 @@ import DatePicker from '../DatePicker.vue'
               {type: 'customer', type_name: 'مشتری'},  
         ]          
         }
-    }
-        ,watch:{
-    options:{
+    },
+        watch:{
+        options:{
       handler(){
       this.loadPayaneReports();    
       },  deep: true
-    }
-  },
+         }
+    },
         methods:{
             searchReport(){
                 this.$store.dispatch('loadPayaneReports',this.searchReportOptions)
@@ -200,14 +203,14 @@ import DatePicker from '../DatePicker.vue'
             noSalePerson(salePerson){
                 return salePerson == null;
             }
-            },
-            filters:{
+    },
+        filters:{
     formatAmount(value){
       const stringVlue = String(value)
       const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return formattedIntegerPart
     }
-             },
+    },
         computed:{
             customItemText() {
             return this.payaneCodes.map((item) => this.displayText(item));
@@ -297,15 +300,20 @@ import DatePicker from '../DatePicker.vue'
                         align: "center",
                         value: "payane_code",
                     },                {
-                        text: "نام ویزیتور",
+                        text: "نام صاحب کارتخوان",
                         align: "center",
                         value: "visitor_name",
                     },
                     {
-                        text: "کد ویزیتور",
+                        text: "کد صاحب کارتخوان",
                         align: "center",
                         value: "visitor_b1_slpcode",
                     },
+                    {
+                        text: "نوع صاحب کارتخوان",
+                        align: "center",
+                        value: "sale_person_type",
+                    },                   
                     {
                         text: "مبلغ تجمیعی",
                         align: "center",
@@ -334,8 +342,8 @@ import DatePicker from '../DatePicker.vue'
         };
       });
     }
-         },
-    created(){
+    },
+        created(){
 
         this.loadBankPayanes();
     }
