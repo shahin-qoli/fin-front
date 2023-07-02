@@ -17,7 +17,7 @@
             </v-col>
             <v-col cols="12">
             <v-expansion-panels accordion class="grey lighten-5">
-              <v-col cols="12" v-if="!saleRole">
+              <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                     <h3>تراکنش ها</h3>
@@ -36,7 +36,7 @@
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="12" v-if="requestAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                     <h3>درخواست ها</h3>
@@ -54,7 +54,7 @@
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
-              <v-col cols="12" v-if="!saleRole">
+              <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                 <v-expansion-panel-header class="grey lighten-5">
                 <h3>صندوق</h3>
@@ -66,7 +66,7 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
               </v-col>
-              <v-col cols="12" v-if="!saleRole">
+              <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                   <h3>تنظیمات</h3>
@@ -83,6 +83,18 @@
                     </v-col>
                     <v-col cols="12">
                       <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>تنظیمات پایانه</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="chequeAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                  <h3>چک</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/cheque'><h5>داشبود چک</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -136,6 +148,18 @@ export default {
       const user = this.$store.getters.getUser;
       return user.role == 'admin'
 
+    },
+    chequeAccess(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'finance' || user.role == 'admin' || user.role == 'credit'
+    },
+    requestAccess(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'sale' || user.role == 'admin' || user.role == 'finance'
+    },
+    transactionsAccess(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'finance' || user.role == 'admin' 
     },
     userLoged(){
       console.log(this.$store.getters.getUser !={})
