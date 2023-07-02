@@ -1,5 +1,6 @@
 
-const baseUrl =  "http://192.168.2.108:3400" //process.env.VUE_APP_BACKEND_URL
+const baseUrl =  "http://192.168.20.215:3400" //process.env.VUE_APP_BACKEND_URL
+const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
 const axios = require('axios');
 export const finAgent = axios.create({
 
@@ -20,3 +21,7 @@ finAgent.interceptors.request.use(
     error => {
       Promise.reject(error)
   });
+
+export const cheqAgent = axios.create({
+  baseURL: cheqUrl
+});
