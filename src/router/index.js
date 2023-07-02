@@ -17,6 +17,7 @@ import AccounttoaccountListView from '../views/AccounttoaccountListView.vue'
 import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
+import chequeView from '../views/ChequeView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -72,6 +73,13 @@ const routes = [
     
     component: CardtocardView
   },{
+    path: '/cheque',
+    name: 'cheque',
+    beforeEnter : guardMyrouteAdmin,
+    
+    component: chequeView
+  },
+  {
     path: '/cardtocardlist',
     name: 'cardtocardlist',
     beforeEnter : guardMyrouteAdmin,
