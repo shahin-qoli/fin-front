@@ -17,6 +17,7 @@ import AccounttoaccountListView from '../views/AccounttoaccountListView.vue'
 import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
+import chequeView from '../views/ChequeView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -59,6 +60,25 @@ if(localStorage.getItem('token'))
   next('/login'); // go to '/login';
  }
 }
+function guardMyrouteCheque(to, from, next){
+  var isAuthenticated= false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you localstorage data handling 
+  
+  if(localStorage.getItem('token'))
+    isAuthenticated = true;
+   else
+    isAuthenticated= false;
+   if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'finance' 
+   || localStorage.getItem('userRole') == 'credit' ) )
+   {
+    next(); // allow to enter route
+   } 
+   else
+   {
+    next('/login'); // go to '/login';
+   }
+}
 const routes = [
   {
     path: '/',
@@ -72,6 +92,13 @@ const routes = [
     
     component: CardtocardView
   },{
+    path: '/cheque',
+    name: 'cheque',
+    beforeEnter : guardMyrouteCheque,
+    
+    component: chequeView
+  },
+  {
     path: '/cardtocardlist',
     name: 'cardtocardlist',
     beforeEnter : guardMyrouteAdmin,

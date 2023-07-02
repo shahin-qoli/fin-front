@@ -12,10 +12,10 @@
             <template v-slot:activator="{on, attrs}">
                 <v-text-field
                 v-model="date"
-                label="تاریخ تراکنش"
                 readonly
                 v-bind="attrs"
                 v-on="on"
+                :label="label"
                 ></v-text-field>
             </template>
             <date-picker
@@ -24,7 +24,7 @@
                 append-to="body"
                 format="YYYY-MM-DD"
                 input-format="jYYYY/jMM/jDD"
-                label="تاریخ تراکنش">
+                :label="label">
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                 <v-btn text color="primary" @click="submit">OK</v-btn>
@@ -37,7 +37,7 @@
 import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 export default{
     // emits:['ret-date'],
-    props:['value'],
+    props:['value', 'label'],
     data(){
         return{
             menu: false,

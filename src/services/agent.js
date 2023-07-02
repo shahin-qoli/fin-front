@@ -1,5 +1,6 @@
 
 const baseUrl =  process.env.VUE_APP_BACKEND_URL
+const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
 const axios = require('axios');
 export const finAgent = axios.create({
 
@@ -20,3 +21,7 @@ finAgent.interceptors.request.use(
     error => {
       Promise.reject(error)
   });
+
+export const cheqAgent = axios.create({
+  baseURL: cheqUrl
+});
