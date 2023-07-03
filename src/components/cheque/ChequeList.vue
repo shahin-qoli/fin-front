@@ -58,10 +58,9 @@
         class="elevation-1"
         :search="searchLoaded">
         </v-data-table>
-
         <v-row v-if="isSelectedCheque">
             <v-col cols="12">
-                عملیات
+                <p>عملیات</p>
                 <v-form @submit.prevent="submitAction">
                     <v-row>
                         <v-col cols="12">
@@ -69,6 +68,44 @@
                             item-text="title"
                             item-value="state"
                             v-model="selectedAction"></v-select>
+                        </v-col>
+                        <v-col v-if="isNeedDeposit" cols="12">
+                            <v-text-field 
+                            v-model="depositeDetails.bankAccount"
+                            append-icon="mdi-magnify"
+                            label="حساب بانک"
+                            single-line
+                            hide-details></v-text-field>
+                            <v-text-field 
+                            v-model="depositeDetails.payer"
+                            append-icon="mdi-magnify"
+                            label="پرداخت کننده"
+                            single-line
+                            hide-details></v-text-field>
+                            <v-text-field 
+                            v-model="depositeDetails.bank"
+                            append-icon="mdi-magnify"
+                            label="بانک"
+                            single-line
+                            hide-details></v-text-field>
+                            <v-text-field 
+                            v-model="depositeDetails.branch"
+                            append-icon="mdi-magnify"
+                            label="شعبه بانک"
+                            single-line
+                            hide-details></v-text-field>
+                            <v-text-field 
+                            v-model="depositeDetails.depositedAccount"
+                            append-icon="mdi-magnify"
+                            label="حساب دپوزیت شده"
+                            single-line
+                            hide-details></v-text-field>
+                            <v-text-field 
+                            v-model="depositeDetails.reference"
+                            append-icon="mdi-magnify"
+                            label="رفرنس"
+                            single-line
+                            hide-details></v-text-field>
                         </v-col>
                         <v-col cols="3">
                             <v-btn :disabled="isSelectedAction" color="green" type="submit">به روزرسانی</v-btn>
@@ -84,14 +121,14 @@
     <!-- Modal -->
     <v-dialog v-model="showModal" max-width="500">
         <v-card>
-            <v-card-title class="text-h5">Result</v-card-title>
+            <v-card-title class="text-h5">نتیجه</v-card-title>
             <v-card-text>
             <div class="modal-scroll">
                 <p v-html="reportResult"></p>
             </div>
             </v-card-text>
             <v-card-actions>
-            <v-btn color="primary" text @click="showModal = false">Close</v-btn>
+            <v-btn color="primary" text @click="showModal = false">بستن</v-btn>
             </v-card-actions>
         </v-card>
         </v-dialog>
@@ -235,6 +272,15 @@ export default {
             selectedItems: [],
             possibleNextStates:'',
             selectedAction:'',
+            depositeDetails : {
+                bankAccount: "",
+                payer: "",
+                bank: "",
+                branch: "",
+                depositedAccount: "",
+                reference: "",
+                depositDate:"",
+            },
             showModal: false,
             reportResult: '',
         }
@@ -344,6 +390,10 @@ export default {
     },
     isSelectedAction(){
         return this.selectedAction == ''
+    },    
+    isNeedDeposit(){
+        let selected = this.possibleNextStates.find(opt => opt.state == this.selectedAction)
+        return selected.isNeedDeposit
     },
     isSelectedCheque(){
         return this.selectedItems.length > 0
@@ -370,13 +420,23 @@ export default {
         console.log("start")
         const selectedCheques = this.selectedItems.map(item => item.checkKey)
         let payload = {check_keys: selectedCheques,
-                     next_state: this.selectedAction}
+                     next_state: this.selectedAction,
+                    deposite_details: this.depositeDetails}
         this.$store.dispatch('updateCheques', payload).then((response) => {this.loadCheques(); this.showModal=true;
-        this.reportResult = `کد چک های درخواست شده: ${response.request}, کد چک های موفق: ${response.success_results}, کد چک های ناموفق: ${response.faild_results}`
+        this.reportResult = response;
         })            
         this.selectedAction = ''
         this.selectedItems =[]
-        this.possibleNextStates =''
+        this.possibleNextStates ='',
+        this.depositeDetails = {
+                bankAccount: "",
+                payer: "",
+                bank: "",
+                branch: "",
+                depositedAccount: "",
+                reference: "",
+                depositDate:"",
+            }
       }
     }
 }
