@@ -12,6 +12,9 @@ export default{
             state.cheques = cheques;
         },setError(state, err){
             state.errorResponse = err
+        },
+        nillError(state){
+            state.errorResponse = null
         }
         // updateCheques(state, checkKeys){
             
@@ -60,6 +63,9 @@ export default{
             }
             
   
+        },
+        nillError(context){
+            context.commit('nillError') 
         }
     }
 }
