@@ -79,7 +79,7 @@
                                         <v-col cols="6">
                                             <v-text-field 
                                             v-model="depositeDetails.bankAccount"
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules= "[requiredRule]"
                                             label="حساب بانک"
                                             single-line
                                             required
@@ -87,9 +87,8 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules= "[requiredRule]"
                                             v-model="depositeDetails.payer"
-                                            append-icon="mdi-magnify"
                                             label="پرداخت کننده"
                                             single-line
                                             required
@@ -97,7 +96,7 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules= "[requiredRule]"
                                             v-model="depositeDetails.bank"
                                             label="بانک"
                                             required
@@ -105,9 +104,8 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules= "[requiredRule]"
                                             v-model="depositeDetails.branch"
-                                            append-icon="mdi-magnify"
                                             label="شعبه بانک"
                                             single-line
                                             required
@@ -115,9 +113,8 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules="[requiredRule]"
                                             v-model="depositeDetails.depositedAccount"
-                                            append-icon="mdi-magnify"
                                             label="حساب دپوزیت شده"
                                             single-line
                                             required
@@ -125,7 +122,7 @@
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
-                                            :rules="[v => !!v || 'Item is required']"
+                                            :rules="[requiredRule]"
                                             v-model="depositeDetails.reference"
                                             label="رفرنس"
                                             single-line
@@ -428,6 +425,9 @@ export default {
     },
     isSelectedCheque(){
         return this.selectedItems.length > 0
+    },
+    requiredRule(){
+        return [(v) => !!v || "این فیلد اجباری است"]
     }
     },
     methods:{
