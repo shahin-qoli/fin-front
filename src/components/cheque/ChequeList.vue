@@ -58,6 +58,12 @@
                 @input="handleTableSelectionChange"
                 class="elevation-1"
                 :search="searchLoaded">
+                    <template v-slot:[`item.state`]="{ item }">
+                        <p>{{ item.state | formatState(chequeStates) }}</p>
+                    </template>
+                    <template v-slot:[`item.regSate`]="{ item }">
+                        <p>{{ item.regSate | formatState(regStates) }}</p>
+                    </template>
                 </v-data-table>
             </v-card-text>
         </v-card>
@@ -68,11 +74,20 @@
                     <v-col cols="12">
                         <v-form @submit.prevent="submitAction" ref="form">
                             <v-row>
-                                <v-col cols="12">
+                                <v-col cols="2"><p>انتخاب وضعیت چک:</p></v-col>
+                                <v-col cols="3">
                                     <v-select :items="possibleNextStates"
                                     item-text="title"
                                     item-value="state"
-                                    v-model="selectedAction"></v-select>
+                                    v-model="selectedState"></v-select>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <v-col cols="2"><p>انتخاب وضعیت ثبت چک:</p></v-col>
+                                <v-col cols="3">
+                                    <v-select :items="possibleNextReg"
+                                    item-text="text"
+                                    item-value="value"
+                                    v-model="selectedReg"></v-select>
                                 </v-col>
                                 <v-col v-if="isNeedDeposit" cols="12">
                                     <v-row>
@@ -129,13 +144,13 @@
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
+                                        <v-col cols="6">
+                                            <date-picker v-model="depositeDetails.depositDate" label="تاریخ واگذاری"></date-picker>
+                                         </v-col>
                                     </v-row>
                                 </v-col>
                                 <v-col cols="3">
                                     <v-btn :disabled="isSelectedAction" color="green" type="submit">به روزرسانی</v-btn>
-                                </v-col>
-                                <v-col cols=4 v-if="errorUpdate" >
-                                    {{ errorUpdate }}
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -143,14 +158,28 @@
                 </v-row>
            </v-card-text>
         </v-card>
+        <v-col cols=4 v-if="errorUpdate" >
+                {{ errorUpdate }}
+        </v-col>
     <!-- Modal -->
         <v-dialog v-model="showModal" max-width="500">
             <v-card>
                 <v-card-title class="text-h5">نتیجه</v-card-title>
                 <v-card-text>
-                <div class="modal-scroll">
-                    <p v-html="reportResult"></p>
-                </div>
+                    <v-row>
+                        <v-col cols="12"><p>نتایج موفق</p></v-col>
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="reportResult.sucess_results"></p>
+                            </div>
+                        </v-col>
+                        <v-col cols="12"><p>نتایج ناموفق</p></v-col>
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="reportResult.failed_results"></p>
+                            </div>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
                 <v-card-actions>
                 <v-btn color="primary" text @click="showModal = false">بستن</v-btn>
@@ -174,129 +203,166 @@ export default {
             },
             chequeStates: [
                 {
-                    stateName: 'نزد مشتری',
-                    stateId: '100'
+                    text: "نزد مشتری",
+                    value: 100
                 },
                 {
-                    stateName: 'نزد ویزیتور',
-                    stateId: '110'
+                    text: "نزد ویزیتور",
+                    value: 110
                 },
                 {
-                    stateName: 'نزد راننده',
-                    stateId: '120'
+                    text: "نزد راننده",
+                    value: 120
                 },
                 {
-                    stateName: 'نزد توزیع',
-                    stateId: '130'
+                    text: "نزد توزیع",
+                    value: 130
                 },
                 {
-                    stateName: 'نزد واحد فروش',
-                    stateId: '140'
+                    text: "نزد واحد فروش",
+                    value: 140
                 },
                 {
-                    stateName: 'نزد ثبت چک',
-                    stateId: '200'
+                    text: "نزد ثبت چک",
+                    value: 200
                 },
                 {
-                    stateName: 'نزد گاوصندوق',
-                    stateId: '210'
+                    text: "نزد گاوصندوق",
+                    value: 210
                 },
                 {
-                    stateName: 'نزد تحصیل دار',
-                    stateId: '220'
+                    text: "نزد تحصیل دار",
+                    value: 220
                 },
                 {
-                    stateName: 'واگذار به بانک',
-                    stateId: '300'
+                    text: "واگذار به بانک",
+                    value: 300
+                },                {
+                    text: "وصول شده",
+                    value: 310
                 },
                 {
-                    stateName: 'وصول شده',
-                    stateId: '310'
+                    text: "برگشت شده نزد بانک",
+                    value: 320
                 },
                 {
-                    stateName: 'برگشت شده نزد بانک',
-                    stateId: '320'
+                    text: "واگذار مجدد نزد بانک",
+                    value: 330
                 },
                 {
-                    stateName: 'واگذار مجدد نزد بانک',
-                    stateId: '330'
+                    text: "وصول شده بعد از واگذار مجدد",
+                    value: 340
+                },                {
+                    text: "برگشت شده بعد از واگذار مجدد",
+                    value: 350
                 },
                 {
-                    stateName: 'وصول شده بعد از واگذار مجدد',
-                    stateId: '340'
+                    text: "برگشت شده نزد شرکت",
+                    value: 400
                 },
                 {
-                    stateName: 'برگشت شده بعد از واگذار مجدد',
-                    stateId: '350'
+                    text: "برگشت شده بعد از واگذار مجدد نزد شرکت",
+                    value: 410
                 },
                 {
-                    stateName: 'برگشت شده نزد شرکت',
-                    stateId: '400'
+                    text: "تسویه شده بعد از برگشتی نزد شرکت",
+                    value: 420
                 },
                 {
-                    stateName: 'برگشت شده بعد از واگذار مجدد نزد شرکت',
-                    stateId: '410'
+                    text: "مسترد شده بعد از تسویه به مشتری",
+                    value: 430
                 },
                 {
-                    stateName: 'تسویه شده بعد از برگشتی نزد شرکت',
-                    stateId: '420'
+                    text: "مشکوک الوصول",
+                    value: 500
                 },
                 {
-                    stateName: 'مسترد شده بعد از تسویه به مشتری',
-                    stateId: '430'
+                    text: "سوخت شده",
+                    value: 510
                 },
                 {
-                    stateName: 'مشکوک الوصول',
-                    stateId: '500'
+                    text: "اقدام حقوقی",
+                    value: 520
                 },
                 {
-                    stateName: 'سوخت شده',
-                    stateId: '510'
+                    text: "سوختی کسر شده از واحد فروش",
+                    value: 530
                 },
                 {
-                    stateName: 'اقدام حقوقی',
-                    stateId: '520'
+                    text: "چک صادر شده نزد شرکت",
+                    value: 600
                 },
                 {
-                    stateName: 'سوختی کسر شده از واحد فروش',
-                    stateId: '530'
+                    text: "چک صادر شده نزد بازرگانی",
+                    value: 610
                 },
                 {
-                    stateName: "چک صادر شده نزد شرکت",
-                    stateId: '600'
+                    text: "چک صادر شده نزد تامین کننده",
+                    value: 620
                 },
                 {
-                    stateName: "چک صادر شده نزد بازرگانی",
-                    stateId: '610'
+                    text: "چک صادر شده برگشتی نزد تامین کننده",
+                    value: 630
                 },
                 {
-                    stateName: 'چک صادر شده نزد تامین کننده',
-                    stateId: '620'
+                    text: "چک صادر وصول شده نزد تامین کننده",
+                    value: 640
                 },
                 {
-                    stateName: "چک صادره برگشتی نزد تامین کننده",
-                    stateId: '630'
+                    text: "چک صادره وصول مجدد شده",
+                    value: 650
                 },
                 {
-                    stateName: 'چک صادره وصول شده نزد تامین کننده',
-                    stateId: '640'
+                    text: "چک صادره برگشت خورده عودت شده",
+                    value: 660
                 },
                 {
-                    stateName: 'چک صادره وصول مجدد شده',
-                    stateId: '650'
+                    text: "چک صادره وصول نشده عودت شده",
+                    value: 670
+                },
+            ],
+            regStates: [
+                {
+                    text: 'ثبت نشده توسط مشتری',
+                    value: 10
                 },
                 {
-                    stateName: 'چک صادره برگشت خورده عودت شده',
-                    stateId: '660'
+                    text: 'ثبت شده توسط مشتری و تایید نشده توسط شرکت',
+                    value: 20
                 },
                 {
-                    stateName: 'چک صادره وصول نشده عودت شده',
-                    stateId: '670'
+                    text: 'ثبت شده توسط مشتری و تایید شده توسط شرکت',
+                    value: 30
+                },
+                {
+                    text: 'انتقال شده به مشتری پس از استرداد',
+                    value: 40
+                },
+                {
+                    text: 'قفل شده در بانک',
+                    value: 50
+                },
+                {
+                    text: 'صادره شده توسط شرکت',
+                    value: 60
+                },
+                {
+                    text: 'ثبت شده در سامانه',
+                    value: 70
+                },
+                {
+                    text: 'تاییدی شده توسط تامین کننده',
+                    value: 80
+                },
+                {
+                    text: 'انتقال داده شده از تامین کننده',
+                    value: 90
                 }
             ],
             selectedItems: [],
             possibleNextStates:'',
-            selectedAction:'',
+            selectedState:'',
+            selectedReg:'',
             depositeDetails : {
                 bankAccount: "",
                 payer: "",
@@ -307,10 +373,11 @@ export default {
                 depositDate:"",
             },
             showModal: false,
-            reportResult: '',
+            reportResult: ''
         }
     },
     computed:{
+
         headers(){
             return [
                 {
@@ -335,11 +402,6 @@ export default {
                     align: "center",
                     //sortable: false,
                     value: "cardName",
-                },{
-                    text: "چک خروجی",
-                    align: "center",
-                    //sortable: false,
-                    value: "isOutgoing",
                 },{
                     text: "تاریخ چک",
                     align: "center",
@@ -410,37 +472,78 @@ export default {
         }, 
         cheques(){
       return this.$store.getters.getCheques;
-    }, errorUpdate(){
+        }, 
+        errorUpdate(){
         return this.$store.getters.getError;
-    },
-    isSelectedAction(){
-        return this.selectedAction == ''
-    },    
-    isNeedDeposit(){
-            if (this.selectedAction == ''){
+        },
+        isSelectedAction(){
+            return this.selectedState == ''
+        },    
+        isNeedDeposit(){
+            if (this.selectedState == ''){
                 return false;
             }
-            let selected = this.possibleNextStates.find(opt => opt.state == this.selectedAction)
+            let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
             return selected.isNeedDeposit
-    },
-    isSelectedCheque(){
-        return this.selectedItems.length > 0
-    },
-    requiredRule(){
-        return [(v) => !!v || "این فیلد اجباری است"]
-    }
+        },
+        isSelectedCheque(){
+            return this.selectedItems.length > 0
+        },
+        requiredRule(){
+            return [(v) => !!v || "این فیلد اجباری است"]
+        },
+        possibleNextReg(){
+            return [
+                {
+                    text: "10 ثبت نشده توسط مشتری",
+                    value: 10
+                },
+                {
+                    text: "20 ثبت شده توسط مشتری و تایید نشده توسط شرکت",
+                    value: 20
+                },
+                {
+                    text: "30 ثبت شده توسط مشتری و تایید شده توسط شرکت",
+                    value: 30
+                },
+                {
+                    text: "40 انتقال شده به مشتری پس از استرداد",
+                    value: 40
+                },
+                {
+                    text: "50 قفل شده در بانک",
+                    value: 50
+                },
+                {
+                    text: "60 صادره شده توسط شرکت",
+                    value: 60
+                },
+                {
+                    text: "70 ثبت شده در سامانه",
+                    value: 70
+                },
+                {
+                    text: "80 تاییدی شده توسط تامین کننده",
+                    value: 80
+                },
+                {
+                    text: "90 انتقال داده شده از تامین کننده",
+                    value: 90
+                },
+            ]
+        }, 
+
     },
     methods:{
         handleTableSelectionChange() {
-        const commonNextStates = this.selectedItems[0].nextStates;
-        const possibleNextStates = commonNextStates.filter(nextState => {
-        return this.selectedItems.every(item => {
-            return item.nextStates.some(state => state.state === nextState.state);
-        });
-        });
-        this.possibleNextStates = possibleNextStates
-
-  },
+            const commonNextStates = this.selectedItems[0].nextStates;
+            const possibleNextStates = commonNextStates.filter(nextState => {
+            return this.selectedItems.every(item => {
+                return item.nextStates.some(state => state.state === nextState.state);
+            });
+            });
+            this.possibleNextStates = possibleNextStates
+        },
         loadCheques() {
         this.$store.dispatch('loadCheques', this.search)
       },
@@ -451,15 +554,19 @@ export default {
         console.log("start")
         const selectedCheques = this.selectedItems.map(item => item.checkKey)
         let payload = {check_keys: selectedCheques,
-                     next_state: this.selectedAction,
+                     next_state: this.selectedState,
+                     reg_state: this.selectedReg,
                     deposite_details: this.depositeDetails}
-        this.$store.dispatch('updateCheques', payload).then((response) => {this.loadCheques(); this.showModal=true;
+        this.$store.dispatch('updateCheques', payload).then((response) => {
+        this.loadCheques(); 
+        this.showModal=true;
         this.reportResult = response;
         })
         this.$store.dispatch('nillError')            
-        this.selectedAction = ''
+        this.selectedState = ''
         this.selectedItems =[]
-        this.possibleNextStates ='',
+        this.selectedReg= ''
+        this.possibleNextStates =''
         this.depositeDetails = {
                 bankAccount: "",
                 payer: "",
@@ -470,6 +577,16 @@ export default {
                 depositDate:"",
             }
       }
+    },
+    filters:{
+        formatState(state, chequeStates){
+            let index = chequeStates.findIndex(stat => stat.value == state )
+            return chequeStates[index].text
+        },
+        formatRegState(state, regStates){
+            let index = regStates.findIndex(stat => stat.value == state )
+            return regStates[index].text            
+        }
     }
 }
 </script>

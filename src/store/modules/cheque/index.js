@@ -14,6 +14,7 @@ export default{
             state.errorResponse = err
         },
         nillError(state){
+            console.log("NILLLL")
             state.errorResponse = null
         }
         // updateCheques(state, checkKeys){
@@ -55,6 +56,7 @@ export default{
         },
         async updateCheques(context, payload){
             context.commit('setError', null)
+            console.log(payload)
             try {
                 const {data:resp} = await finAgent.post(`/front/cheques/update_check`, payload)
                 return resp
