@@ -179,6 +179,11 @@
                             <p v-html="reportResult.failed_results"></p>
                             </div>
                         </v-col>
+                        <v-col cols="12"><p>خطا</p>
+                            <div class="modal-scroll">
+                            <p v-html="reportResult?.error"></p>
+                            </div>
+                        </v-col>
                     </v-row>
                 </v-card-text>
                 <v-card-actions>
