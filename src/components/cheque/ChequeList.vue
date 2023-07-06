@@ -16,8 +16,8 @@
                                     :items="chequeStates"
                                     name="chequeStates"
                                     label="وضعیت چک"
-                                    item-text="stateName"
-                                    item-value="stateId"
+                                    item-text="text"
+                                    item-value="value"
                                     v-model="search.CheckState"
                                     multiple
                                 ></v-select>
