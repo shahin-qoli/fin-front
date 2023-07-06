@@ -51,7 +51,7 @@ if(localStorage.getItem('token'))
  else
   isAuthenticated= false;
  if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'finance' 
- || localStorage.getItem('userRole') == 'sale' ) )
+ || localStorage.getItem('userRole') == 'sale' || localStorage.getItem('userRole') == 'credit' ) )
  {
   next(); // allow to enter route
  } 
