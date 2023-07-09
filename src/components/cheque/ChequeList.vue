@@ -64,6 +64,15 @@
                     <template v-slot:[`item.regSate`]="{ item }">
                         <p>{{ item.regSate | formatState(regStates) }}</p>
                     </template>
+                    <template v-slot:[`item.value`]="{ item }">
+                        <p>{{ item.value | formatAmount }}</p>
+                    </template>
+                    <template v-slot:[`item.dueDate`]="{ item }">
+                        <p>{{ item.dueDate | formatDate }}</p>
+                    </template>
+                    <template v-slot:[`item.receiptDate`]="{ item }">
+                        <p>{{ item.receiptDate | formatDate }}</p>
+                    </template>
                 </v-data-table>
             </v-card-text>
         </v-card>
@@ -195,7 +204,9 @@
 </template>
 
 <script>
+
 import DatePicker from '../DatePicker.vue'
+var jalaali = require('jalaali-js')
 export default {
     components:{ DatePicker},
     data() {
@@ -591,6 +602,17 @@ export default {
         formatRegState(state, regStates){
             let index = regStates.findIndex(stat => stat.value == state )
             return regStates[index].text            
+        },
+        formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+        },
+        formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
     }
 }
