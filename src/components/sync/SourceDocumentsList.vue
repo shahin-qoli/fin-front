@@ -8,7 +8,7 @@
                             <v-col cols="4">
                                 <v-select
                                 v-model="selectedOption"
-                                :items="jobList"
+                                :items="templates"
                                 item-text="title"
                                 item-value="document.title"
                                 label="لیست کارها"
@@ -144,7 +144,18 @@ export default{
           }
         
             ]
+        },
+        templates(){
+            return this.$store.getters.getSyncTemplates;
         }
+    },
+    methods:{
+        loadTemplates(){
+            this.$store.dispatch('loadSyncTemplates')
+        }
+    },
+    created() {
+      this.loadCardtocards();
     }
 }
 </script>
