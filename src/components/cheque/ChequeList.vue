@@ -100,7 +100,7 @@
                                 </v-col>
                                 <v-col v-if="isNeedDeposit" cols="12">
                                     <v-row>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-select 
                                             :items="possibleBankAccounts"
                                             v-model="depositeDetails.bankAccount"
@@ -110,7 +110,7 @@
                                             required
                                             ></v-select>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules= "[requiredRule]"
                                             v-model="depositeDetails.payer"
@@ -119,7 +119,7 @@
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules= "[requiredRule]"
                                             v-model="depositeDetails.bank"
@@ -127,7 +127,7 @@
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules= "[requiredRule]"
                                             v-model="depositeDetails.branch"
@@ -136,7 +136,7 @@
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules="[requiredRule]"
                                             v-model="depositeDetails.depositedAccount"
@@ -145,7 +145,7 @@
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col  cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules="[requiredRule]"
                                             v-model="depositeDetails.reference"
@@ -556,6 +556,12 @@ export default {
             let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
             return selected.bankAccounts;
         },
+        is310State(){
+            return this.selectedState == '310'
+
+            // let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+            // return selected.
+        }
 
     },
     methods:{
