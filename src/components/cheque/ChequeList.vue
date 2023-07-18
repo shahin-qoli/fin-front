@@ -101,19 +101,20 @@
                                 <v-col v-if="isNeedDeposit" cols="12">
                                     <v-row>
                                         <v-col cols="6">
-                                            <v-text-field 
+                                            <v-select 
+                                            :items="possibleBankAccounts"
                                             v-model="depositeDetails.bankAccount"
-                                            :rules= "[requiredRule]"
-                                            label="حساب بانک"
-                                            single-line
+                                            label="انتخاب بانک"
+                                            item-text="acctName"
+                                            item-value="accountCode"
                                             required
-                                            hide-details></v-text-field>
+                                            ></v-select>
                                         </v-col>
                                         <v-col cols="6">
                                             <v-text-field 
                                             :rules= "[requiredRule]"
                                             v-model="depositeDetails.payer"
-                                            label="پرداخت کننده"
+                                            label="نام شخص تحویلدار"
                                             single-line
                                             required
                                             hide-details></v-text-field>
@@ -122,7 +123,7 @@
                                             <v-text-field 
                                             :rules= "[requiredRule]"
                                             v-model="depositeDetails.bank"
-                                            label="بانک"
+                                            label="نام بانک"
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
@@ -139,22 +140,22 @@
                                             <v-text-field 
                                             :rules="[requiredRule]"
                                             v-model="depositeDetails.depositedAccount"
-                                            label="حساب دپوزیت شده"
+                                            label="شماره حساب دپوزیت شده"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col  cols="6">
                                             <v-text-field 
                                             :rules="[requiredRule]"
                                             v-model="depositeDetails.reference"
-                                            label="رفرنس"
+                                            label="رفرنس(شماره سند بانکی)"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
                                         <v-col cols="6">
-                                            <date-picker v-model="depositeDetails.depositDate" label="تاریخ واگذاری"></date-picker>
+                                            <date-picker v-model="depositeDetails.depositDate" label="تاریخ عملیات"></date-picker>
                                          </v-col>
                                     </v-row>
                                 </v-col>
@@ -548,6 +549,13 @@ export default {
                 },
             ]
         }, 
+        possibleBankAccounts(){
+            if (this.selectedState == ''){
+                return null;
+            }
+            let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+            return selected.bankAccounts;
+        },
 
     },
     methods:{
