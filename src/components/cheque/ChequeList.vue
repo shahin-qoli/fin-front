@@ -138,15 +138,6 @@
                                         <v-col cols="6">
                                             <v-text-field 
                                             :rules="[requiredRule]"
-                                            v-model="depositeDetails.depositedAccount"
-                                            label="حساب دپوزیت شده"
-                                            single-line
-                                            required
-                                            hide-details></v-text-field>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <v-text-field 
-                                            :rules="[requiredRule]"
                                             v-model="depositeDetails.reference"
                                             label="رفرنس"
                                             single-line

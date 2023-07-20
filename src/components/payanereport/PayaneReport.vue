@@ -54,6 +54,9 @@
         :options.sync="options"
         :server-items-length="itemCount"
           >
+        <template v-slot:[`item.transaction_date`]="{item}">
+            <p>{{ item.transaction_date | formatDate }}</p>
+        </template>  
         <template v-slot:[`item.amount`]="{ item }">
           <p>{{ item.amount | formatAmount }}</p>
         </template>
@@ -127,6 +130,7 @@
 
 <script>
 import DatePicker from '../DatePicker.vue'
+var jalaali = require('jalaali-js')
     export default{
         components:{
         DatePicker
@@ -209,7 +213,13 @@ import DatePicker from '../DatePicker.vue'
       const stringVlue = String(value)
       const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return formattedIntegerPart
-    }
+    },
+    formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
     },
         computed:{
             customItemText() {
