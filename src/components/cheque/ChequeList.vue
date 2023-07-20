@@ -139,15 +139,6 @@
                                         <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
                                             :rules="[requiredRule]"
-                                            v-model="depositeDetails.depositedAccount"
-                                            label="شماره حساب دپوزیت شده"
-                                            single-line
-                                            required
-                                            hide-details></v-text-field>
-                                        </v-col>
-                                        <v-col v-if="!is310State" cols="6">
-                                            <v-text-field 
-                                            :rules="[requiredRule]"
                                             v-model="depositeDetails.reference"
                                             label="رفرنس(شماره سند بانکی)"
                                             single-line
