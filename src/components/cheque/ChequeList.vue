@@ -560,8 +560,8 @@ export default {
             return this.reportResult.faild_results.length > 0 
     },  isResultError(){
             return this.reportResult.hasOwnProperty('error') 
-    },
     }
+    },
     methods:{
         handleTableSelectionChange() {
             const commonNextStates = this.selectedItems[0].nextStates;
