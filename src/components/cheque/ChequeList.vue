@@ -559,7 +559,7 @@ export default {
         isResultFailed(){
             return this.reportResult.faild_results.length > 0 
     },  isResultError(){
-            return this.reportResult.hasOwnProperty('error') 
+            return this.reportResult.prototype.hasOwnProperty.call(reportResult, "error");
     }
     },
     methods:{
