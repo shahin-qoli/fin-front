@@ -554,12 +554,12 @@ export default {
             // return selected.
         },
         isResultSuccess(){
-            return this.reportResult.sucess_results.length > 0 
+            return this.reportResult?.sucess_results.length > 0 
     },
         isResultFailed(){
-            return this.reportResult.faild_results.length > 0 
+            return this.reportResult?.faild_results.length > 0 
     },  isResultError(){
-            return this.reportResult.prototype.hasOwnProperty.call(this.reportResult, "error");
+            return this.reportResult?.prototype.hasOwnProperty.call(this.reportResult, "error");
     }
     },
     methods:{
