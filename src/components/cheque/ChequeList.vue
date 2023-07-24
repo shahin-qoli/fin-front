@@ -381,7 +381,10 @@ export default {
                 depositDate:"",
             },
             showModal: false,
-            reportResult: ''
+            reportResult: {
+                "sucess_results" : [],
+                "faild_results" : []
+            }
         }
     },
     computed:{
