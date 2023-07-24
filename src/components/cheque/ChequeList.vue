@@ -168,19 +168,19 @@
                 <v-card-title class="text-h5">نتیجه</v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col cols="12"><p>نتایج موفق</p></v-col>
+                        <v-col v-if="isResultSuccess" cols="12"><p>نتایج موفق</p></v-col>
                         <v-col cols="12">                
                             <div class="modal-scroll">
                             <p v-html="reportResult.sucess_results"></p>
                             </div>
                         </v-col>
-                        <v-col cols="12"><p>نتایج ناموفق</p></v-col>
+                        <v-col v-if="isResultFailed" cols="12"><p>نتایج ناموفق</p></v-col>
                         <v-col cols="12">                
                             <div class="modal-scroll">
                             <p v-html="reportResult.failed_results"></p>
                             </div>
                         </v-col>
-                        <v-col cols="12"><p>خطا</p>
+                        <v-col v-if="isResultError" cols="12"><p>خطا</p>
                             <div class="modal-scroll">
                             <p v-html="reportResult?.error"></p>
                             </div>
@@ -552,9 +552,16 @@ export default {
 
             // let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
             // return selected.
-        }
-
+        },
+        isResultSuccess(){
+            return this.reportResult.sucess_results.length > 0 
     },
+        isResultFailed(){
+            return this.reportResult.faild_results.length > 0 
+    },  isResultError(){
+            return this.reportResult.hasOwnProperty('error') 
+    },
+    }
     methods:{
         handleTableSelectionChange() {
             const commonNextStates = this.selectedItems[0].nextStates;
