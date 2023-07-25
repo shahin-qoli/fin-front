@@ -3,14 +3,12 @@
 <v-navigation-drawer v-if="userLoged" width="175" v-model="drawer" right app>   
     <v-container class="grey lighten-5" id="main-container" >
         <v-row align-content="center">
-            <v-col cols="6">
+            <v-col cols="12">
                 <v-img
                 max-width="192"
                 max-height="192"
                 src = "../assets/android-chrome-192x192.png"
                 />
-            </v-col>
-            <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>               
             </v-col>
             <v-col cols="12">
             <v-divider/>
