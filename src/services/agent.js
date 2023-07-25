@@ -1,6 +1,8 @@
 
 const baseUrl =  process.env.VUE_APP_BACKEND_URL
 const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
+const spreeUrl = "https://shopback.miarze.com/api/v2"
+const spreeToken = "f13d8dc23f4e4d8b1798199b21b112d8f567c95248d8729bbaac96acefec6852"
 const axios = require('axios');
 export const finAgent = axios.create({
 
@@ -25,3 +27,19 @@ finAgent.interceptors.request.use(
 export const cheqAgent = axios.create({
   baseURL: cheqUrl
 });
+
+export const spreeAgent = axios.create({
+  baseURL: spreeUrl
+});
+
+spreeAgent.interceptors.request.use(
+    async config => {
+      config.headers = {
+        'Authorization': `Bearer ${spreeToken}`,
+        'Accept': 'application/json'
+      }
+    },
+    error => {
+      Promise.reject(error)
+  }
+)
