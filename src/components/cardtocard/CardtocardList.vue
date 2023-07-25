@@ -100,21 +100,22 @@ import TheRow from '../TheRow.vue'
       expanded: [],
       loading: null
     };
-  },watch:{
+    },
+    watch:{
     options:{
       handler(){
       this.loadCardtocards();    
       },  deep: true
     }
-  },filters:{
+    },
+    filters:{
     formatAmount(value){
       const stringVlue = String(value)
       const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return formattedIntegerPart
     }
-  }
-  ,
-  computed: {
+    },
+    computed: {
     headers() {
       return [
         {
@@ -189,7 +190,7 @@ import TheRow from '../TheRow.vue'
     }, itemCount(){
       return this.$store.getters.getCardItemCount;
     }
-  },
+    },
     methods: {
       async clearForm(){
           this.options =  {
@@ -222,10 +223,7 @@ import TheRow from '../TheRow.vue'
       loadCardtocards() {
         this.$store.dispatch('loadCardtocards',this.options)
       },
-    },
-    // created() {
-    //   this.loadCardtocards();
-    // }
+    }
 }
 </script>
 
