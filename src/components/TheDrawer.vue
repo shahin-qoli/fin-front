@@ -7,7 +7,7 @@
                 <v-img
                 max-width="50"
                 max-height="50"
-                src = "../assets/logo.png"
+                src = "../assets/android-chrome-192x192.png"
                 />
             </v-col>
             <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>               
