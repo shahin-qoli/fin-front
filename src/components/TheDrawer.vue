@@ -5,8 +5,8 @@
         <v-row align-content="center">
             <v-col cols="3">
                 <v-img
-                max-width="50"
-                max-height="50"
+                max-width="192"
+                max-height="192"
                 src = "../assets/android-chrome-192x192.png"
                 />
             </v-col>
