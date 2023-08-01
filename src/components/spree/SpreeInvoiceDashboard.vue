@@ -3,17 +3,18 @@
         <v-card outlined>
             <v-card-title>
                 <v-row>
-                    <v-col cols="12">
-                        <v-col cols="3">
-                            <date-picker v-model="options.completedAt"></date-picker>
-                        </v-col>
-                        <v-col cols="3">
-                            <v-switch
-                                v-model="options.hasB1Docs"
-                                label="سفارشات ثبت شده"
-                                class="pa-3"
-                            ></v-switch>
-                        </v-col>
+                    <v-col cols="3">
+                        از تاریخ<date-picker v-model="options.completedAtGteq"></date-picker>
+                    </v-col>
+                    <v-col cols="3">
+                        تا تاریخ<date-picker v-model="options.completedAtLteq"></date-picker>
+                    </v-col>
+                    <v-col cols="3">
+                        <v-switch
+                            v-model="options.hasB1Docs"
+                            label="سفارشات ثبت شده"
+                            class="pa-3"
+                        ></v-switch>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -30,7 +31,11 @@
                 :options.sync="options"
                 :server-items-length="itemCount"
                 class="elevation-1"
-                ></v-data-table>
+                >
+                <template v-slot:[`item.completed_at`]="{item}">
+                    <p>{{ item.completed_at | formatDate }}</p>
+                </template> 
+                </v-data-table>
             </v-card-text>
         </v-card>
         <v-card v-if="selectedInvoice" outlined>
@@ -45,6 +50,7 @@
 </template>
 
 <script>
+var jalaali = require('jalaali-js')
 import DatePicker from '../DatePicker.vue'
 export default {
     components:{DatePicker},
@@ -56,8 +62,8 @@ export default {
                 page:1,
                 state: 'complete',
                 hasB1Docs: false,
-                completedAt:"",
-
+                completedAtGteq:"",
+                completedAtLteq: "",
             },
         }
     },
@@ -69,6 +75,12 @@ export default {
                     align: "center",
                     //sortable: false,
                     value: "number",
+                },
+                {
+                    text: "تاریخ سفارش",
+                    align: "center",
+                    //sortable: false,
+                    value: "completed_at",
                 },
                 {
                     text: "SO DocEntry",
@@ -147,6 +159,13 @@ export default {
         createSo(){
             this.$store.dispatch('createSo', this.selectedItems)
         },
+    },
+    filters:{
+        formatDate(geoDate){
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
     },
     watch:{
     options:{

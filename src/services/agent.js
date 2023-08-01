@@ -31,7 +31,7 @@ export const cheqAgent = axios.create({
 export const spreeAgent = axios.create({
   baseURL: spreeUrl,
   headers: { 
-    'Authorization': 'Bearer f13d8dc23f4e4d8b1798199b21b112d8f567c95248d8729bbaac96acefec6852'
+    'Authorization': 'Bearer 8f1f5beff42e9cefa3a2d75bb29613ad74c5b4bae80ee80e69838dbfbfa08fd2'
   }
 });
 
