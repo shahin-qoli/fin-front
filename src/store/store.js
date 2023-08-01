@@ -16,6 +16,7 @@ import payanereport from './modules/payanereport/index.js';
 import posrawdetails from './modules/posrawdetails/index.js';
 import bankpayane from './modules/bankpayane/index.js';
 import cheque from './modules/cheque/index.js';
+import spree from './modules/spree/index.js'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -33,7 +34,8 @@ export default new Vuex.Store({
       payanereport,
       posrawdetails,
       bankpayane,
-      cheque     
+      cheque,
+      spree     
     },
     state(){
       return{ 

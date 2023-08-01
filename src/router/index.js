@@ -18,6 +18,7 @@ import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
+import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -161,7 +162,12 @@ const routes = [
     beforeEnter : guardMyrouteAdminSale,
     component: SaleUseTransaction
   },
-  
+  {
+    path: '/spree',
+    name: 'spreedashboard',
+    beforeEnter : guardMyrouteAdmin,
+    component: spreeInvoiceDashboardView
+  },
   
   {
     path: '/login',
