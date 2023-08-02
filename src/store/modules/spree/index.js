@@ -28,7 +28,7 @@ export default {
             console.log("lets go")
             try {
                 console.log(payload)
-                const {data: responseData} = await spreeAgent.get(`/platform/orders?page=${payload.page}&per_page=${payload.itemsPerPage}&filter[b1_documented_eq]=${payload.hasB1Docs}&filter[completed_at_lteq]=${payload.completedAtLteq}&filter[completed_at_gteq]=${payload.completedAtGteq}&filter[state_eq]=complete`)
+                const {data: responseData} = await spreeAgent.get(`/platform/orders?page=${payload.page}&per_page=${payload.itemsPerPage}&filter[b1_documented_eq]=${payload.hasB1Docs}&filter[completed_at_lteq]=${payload.completedAtLteq}&filter[completed_at_gteq]=${payload.completedAtGteq}&filter[state_eq]=complete&filter[number_eq]=${payload.number}`)
                 const orders = []
                 const ordersData= responseData.data
                 console.log("after")
@@ -62,7 +62,7 @@ export default {
                 const {data: responseData} = await spreeAgent.post(`/storefront/b1_requests/by_order_numbers`, body)
 
                 const results= responseData.results
-                console.log(results)
+                return results
                 // for (const item of ordersData) {
                 //     const order= {
                 //         ...item.attributes

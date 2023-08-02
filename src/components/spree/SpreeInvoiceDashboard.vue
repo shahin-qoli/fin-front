@@ -10,6 +10,15 @@
                         تا تاریخ<date-picker v-model="options.completedAtLteq"></date-picker>
                     </v-col>
                     <v-col cols="3">
+                        شماره سفارش
+                        <v-text-field 
+                            v-model="options.number"
+                            label="R546415337"
+                            single-line
+                        >
+                        </v-text-field>
+                    </v-col>
+                    <v-col cols="3">
                         <v-switch
                             v-model="options.hasB1Docs"
                             label="سفارشات ثبت شده"
@@ -46,6 +55,25 @@
                 <v-btn @click="createSo">صدور  SO</v-btn>
             </v-card-text>
         </v-card>
+            <!-- Modal -->
+        <v-dialog v-model="showModal" max-width="500">
+            <v-card>
+                <v-card-title class="text-h5">نتیجه</v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="12"><p>نتایج</p></v-col>
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="reportResult"></p>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                <v-btn color="primary" text @click="showModal = false">بستن</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -64,7 +92,10 @@ export default {
                 hasB1Docs: false,
                 completedAtGteq:"",
                 completedAtLteq: "",
+                number: "",
             },
+            showModal: false,
+            reportResult: [],
         }
     },
     computed:{
@@ -153,11 +184,15 @@ export default {
     },
     methods:{
         loadOrders(){
-            console.log('start')
             this.$store.dispatch('loadOrders', this.options)
         },
         createSo(){
-            this.$store.dispatch('createSo', this.selectedItems)
+            this.$store.dispatch('createSo', this.selectedItems).then((response) =>{
+                this.loadOrders();
+                this.showModal=true;
+                this.selectedItems= [];
+                this.reportResult = response;
+            })
         },
     },
     filters:{

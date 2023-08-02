@@ -80,6 +80,26 @@ function guardMyrouteCheque(to, from, next){
     next('/login'); // go to '/login';
    }
 }
+
+function guardMyrouteSpree(to, from, next){
+  var isAuthenticated= false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you localstorage data handling 
+  
+  if(localStorage.getItem('token'))
+    isAuthenticated = true;
+   else
+    isAuthenticated= false;
+   if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'spree') )
+   {
+    next(); // allow to enter route
+   } 
+   else
+   {
+    next('/login'); // go to '/login';
+   }
+}
+
 const routes = [
   {
     path: '/',
@@ -165,7 +185,7 @@ const routes = [
   {
     path: '/spree',
     name: 'spreedashboard',
-    beforeEnter : guardMyrouteAdmin,
+    beforeEnter : guardMyrouteSpree,
     component: spreeInvoiceDashboardView
   },
   
