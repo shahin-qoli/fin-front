@@ -18,6 +18,7 @@ import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
+import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -79,6 +80,26 @@ function guardMyrouteCheque(to, from, next){
     next('/login'); // go to '/login';
    }
 }
+
+function guardMyrouteSpree(to, from, next){
+  var isAuthenticated= false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you localstorage data handling 
+  
+  if(localStorage.getItem('token'))
+    isAuthenticated = true;
+   else
+    isAuthenticated= false;
+   if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'spree') )
+   {
+    next(); // allow to enter route
+   } 
+   else
+   {
+    next('/login'); // go to '/login';
+   }
+}
+
 const routes = [
   {
     path: '/',
@@ -161,7 +182,12 @@ const routes = [
     beforeEnter : guardMyrouteAdminSale,
     component: SaleUseTransaction
   },
-  
+  {
+    path: '/spree',
+    name: 'spreedashboard',
+    beforeEnter : guardMyrouteSpree,
+    component: spreeInvoiceDashboardView
+  },
   
   {
     path: '/login',
