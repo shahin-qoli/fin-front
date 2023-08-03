@@ -112,7 +112,7 @@
                                         </v-col>
                                         <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+        
                                             v-model="depositeDetails.payer"
                                             label="نام شخص تحویلدار"
                                             single-line
@@ -121,7 +121,7 @@
                                         </v-col>
                                         <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+
                                             v-model="depositeDetails.bank"
                                             label="نام بانک"
                                             required
@@ -129,7 +129,7 @@
                                         </v-col>
                                         <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+                            
                                             v-model="depositeDetails.branch"
                                             label="شعبه بانک"
                                             single-line
@@ -138,7 +138,7 @@
                                         </v-col>
                                         <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules="[requiredRule]"
+                             
                                             v-model="depositeDetails.reference"
                                             label="رفرنس(شماره سند بانکی)"
                                             single-line

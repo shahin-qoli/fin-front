@@ -94,6 +94,9 @@
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/cheque'><h5>داشبود چک</h5></router-link> 
                     </v-col>
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/chequelogs'><h5>B1 Logs</h5></router-link> 
+                    </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
