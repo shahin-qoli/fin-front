@@ -1,13 +1,12 @@
 <template>
     <v-card outlined>
         <v-card-title>
-            <v-form @submit.prevent="searchReport">
                 <v-row>
         <v-col
           cols="3"
         >    
           <v-select
-            v-model="searchReportOptions.selectedPayaneCodes"
+            v-model="options.selectedPayaneCodes"
             :items="payaneCodes"
             item-value="payane_code"
             item-text="customItemText"
@@ -27,22 +26,18 @@
         </v-col>
         <v-col
           cols="3"
-        ><date-picker v-model="searchReportOptions.selectedDate"></date-picker>
+        ><date-picker v-model="options.selectedDate"></date-picker>
         </v-col>
         <v-col cols="3">
             <v-select 
-                v-model="searchReportOptions.selectedType" 
+                v-model="options.selectedType" 
                 label="نوع"
                 :items="personTypes"
                 item-text="type_name"
                 item-value="type"
              ></v-select>
         </v-col>
-        <v-col cols="3">
-            <v-btn dark color="green" type="submit">جستجو</v-btn>
-        </v-col>
     </v-row>
-    </v-form>
         </v-card-title>
         <v-data-table
         fixed-header
@@ -147,13 +142,6 @@ var jalaali = require('jalaali-js')
             selectedDate:'',
             selectedType: ''
             },
-            searchReportOptions: {
-            itemsPerPage: 10,
-            page:1,
-            selectedPayaneCodes: '',
-            selectedDate:'',
-            selectedType: '',
-            },
             personTypes: [
               {type: 'sale_person', type_name: 'ویزیتور'},
               {type: 'driver', type_name: 'راننده'},
@@ -169,9 +157,6 @@ var jalaali = require('jalaali-js')
          }
     },
         methods:{
-            searchReport(){
-                this.$store.dispatch('loadPayaneReports',this.searchReportOptions)
-            },
             displayText(item) {
             if (item.active_payane_person && item.active_payane_person.sale_person_name) {
                 return item.active_payane_person.sale_person_name;
