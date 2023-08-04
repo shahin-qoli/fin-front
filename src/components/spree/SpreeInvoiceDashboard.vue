@@ -93,6 +93,7 @@ export default {
                 completedAtGteq:"",
                 completedAtLteq: "",
                 number: "",
+                needB1Docs: true,
             },
             showModal: false,
             reportResult: [],
