@@ -28,7 +28,10 @@ export default {
             console.log("lets go")
             try {
                 console.log(payload)
-                const {data: responseData} = await spreeAgent.get(`/platform/orders?page=${payload.page}&per_page=${payload.itemsPerPage}&filter[b1_documented_eq]=${payload.hasB1Docs}&filter[completed_at_lteq]=${payload.completedAtLteq}&filter[completed_at_gteq]=${payload.completedAtGteq}&filter[state_eq]=complete&filter[number_eq]=${payload.number}`)
+                const {data: responseData} = await spreeAgent.get(`/platform/orders?page=${payload.page}
+                &per_page=${payload.itemsPerPage}&filter[b1_documented_eq]=${payload.hasB1Docs}
+                &filter[completed_at_lteq]=${payload.completedAtLteq}&filter[completed_at_gteq]=${payload.completedAtGteq}
+                &filter[state_eq]=complete&filter[number_eq]=${payload.number}&filter[need_document_eq]=${payload.needB1Docs}`)
                 const orders = []
                 const ordersData= responseData.data
                 console.log("after")
