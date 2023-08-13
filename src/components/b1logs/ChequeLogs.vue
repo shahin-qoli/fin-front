@@ -28,6 +28,7 @@
                 fixed-header
                 dense
                 :headers="headers"
+                :options.sync="options"
                 :items="logs"
                 item-key="id"
                 class="elevation-1"
@@ -45,6 +46,10 @@ export default {
     components:{ DatePicker},
     data(){
         return {
+            options: {
+            itemsPerPage: 10,
+            page:1
+            },
             search:{
                 startDate: '',
                 endDate: '',
@@ -109,15 +114,23 @@ export default {
         this.$store.dispatch('loadLogs',this.search)
       }
     },
+    watch:{
+        options:{
+        handler(){   
+        this.loadLogs();    
+        },  deep: true
+        }, 
+    },
     filters:{
         formatDate(geoDate){          
             var date = new Date(geoDate);
             let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
             return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
-    },
-    created(){
-        this.loadLogs();
     }
+//    ,
+ //   created(){
+ //       this.loadLogs();
+//    }
 }
 </script>
