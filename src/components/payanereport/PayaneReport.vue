@@ -1,134 +1,170 @@
 <template>
-    <v-card outlined>
-        <v-card-title>
-            <v-form @submit.prevent="searchReport">
-                <v-row>
-        <v-col
-          cols="3"
-        >    
-          <v-select
-            v-model="searchReportOptions.selectedPayaneCodes"
-            :items="payaneCodes"
-            item-value="payane_code"
-            item-text="customItemText"
-            label="پایانه"
-            multiple
-            filled
-            outlined
-            small-chips
-          >   
-           <template v-slot:item="{ item }">
-            <div>{{ displayText(item) }}</div>
-         </template>
-         <template v-slot:selection="{ item }">
-            <div>{{ displayText(item) }}</div>
-         </template>
-        </v-select>
-        </v-col>
-        <v-col
-          cols="3"
-        ><date-picker v-model="searchReportOptions.selectedDate"></date-picker>
-        </v-col>
-        <v-col cols="3">
-            <v-select 
-                v-model="searchReportOptions.selectedType" 
-                label="نوع"
-                :items="personTypes"
-                item-text="type_name"
-                item-value="type"
-             ></v-select>
-        </v-col>
-        <v-col cols="3">
-            <v-btn dark color="green" type="submit">جستجو</v-btn>
-        </v-col>
-    </v-row>
-    </v-form>
-        </v-card-title>
-        <v-data-table
-        fixed-header
-        dense
-        :headers="headers"
-        :items="payaneReports"
-        item-key="id"
-        :loading="isLoading"
-        :options.sync="options"
-        :server-items-length="itemCount"
-          >
-        <template v-slot:[`item.transaction_date`]="{item}">
-            <p>{{ item.transaction_date | formatDate }}</p>
-        </template>  
-        <template v-slot:[`item.amount`]="{ item }">
-          <p>{{ item.amount | formatAmount }}</p>
-        </template>
-        <template v-slot:[`item.payane_code`]="{ item }">
-          <p>{{ item.bank_payane.payane_code }}</p>
-        </template>
-        <template v-slot:[`item.visitor_name`]="{ item }">
-          <p>{{ item.active_payane_person?.sale_person_name }}</p>
-        </template>
-        <template v-slot:[`item.sale_person_type`]="{ item }">
-            <p>{{ item.active_payane_person?.sale_person_type }}</p>
-        </template>
-        <template v-slot:[`item.visitor_b1_slpcode`]="{ item }">
-          <p>{{ item.active_payane_person?.sale_person_code }}</p>
-        </template>
-        <template v-slot:[`item.actions`]="{ item }">
-              <v-dialog
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                    small
-                    class="mr-2"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="viewMore(item)"
+    <v-container>
+        <v-card outlined>
+            <v-card-title>
+                    <v-row>
+            <v-col
+            cols="3"
+            >    
+            <v-select
+                v-model="options.selectedPayaneCodes"
+                :items="payaneCodes"
+                item-value="payane_code"
+                item-text="customItemText"
+                label="پایانه"
+                multiple
+                filled
+                outlined
+                small-chips
+            >   
+            <template v-slot:item="{ item }">
+                <div>{{ displayText(item) }}</div>
+            </template>
+            <template v-slot:selection="{ item }">
+                <div>{{ displayText(item) }}</div>
+            </template>
+            </v-select>
+            </v-col>
+            <v-col
+            cols="3"
+            ><date-picker v-model="options.selectedDate"></date-picker>
+            </v-col>
+            <v-col cols="3">
+                <v-select 
+                    v-model="options.selectedType" 
+                    label="نوع"
+                    :items="personTypes"
+                    item-text="type_name"
+                    item-value="type"
+                ></v-select>
+            </v-col>
+        </v-row>
+            </v-card-title>
+            <v-data-table
+            fixed-header
+            dense
+            :headers="headers"
+            :items="payaneReports"
+            item-key="id"
+            :loading="isLoading"
+            :options.sync="options"
+            :server-items-length="itemCount"
+            >
+            <template v-slot:[`item.transaction_date`]="{item}">
+                <p>{{ item.transaction_date | formatDate }}</p>
+            </template>  
+            <template v-slot:[`item.amount`]="{ item }">
+            <p>{{ item.amount | formatAmount }}</p>
+            </template>
+            <template v-slot:[`item.payane_code`]="{ item }">
+            <p>{{ item.bank_payane.payane_code }}</p>
+            </template>
+            <template v-slot:[`item.visitor_name`]="{ item }">
+            <p>{{ item.active_payane_person?.sale_person_name }}</p>
+            </template>
+            <template v-slot:[`item.sale_person_type`]="{ item }">
+                <p>{{ item.active_payane_person?.sale_person_type }}</p>
+            </template>
+            <template v-slot:[`item.visitor_b1_slpcode`]="{ item }">
+            <p>{{ item.active_payane_person?.sale_person_code }}</p>
+            </template>
+            <template v-slot:[`item.actions`]="{ item }">
+                <v-dialog
+                    v-model="dialog"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
                     >
-                    mdi-eye
-                    </v-icon>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                        small
+                        class="mr-2"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="viewMore(item)"
+                        >
+                        mdi-eye
+                        </v-icon>
+                    </template>
+                    <v-card outlined>
+                        <v-card-title>
+                        <span class="text-h5">لیست واریزهای کارتخوان</span>
+                        </v-card-title>
+                        <v-data-table
+                    fixed-header
+                    dense
+                    :headers="detailHeaders"
+                    :items="posRawsDetails"
+                    item-key="id"
+                        >
+            <template v-slot:[`item.is_used`]="{ item }">
+                <v-simple-checkbox
+                v-model="item.is_used"
+                disabled
+                ></v-simple-checkbox>
                 </template>
-                <v-card outlined>
-                    <v-card-title>
-                    <span class="text-h5">لیست واریزهای کارتخوان</span>
-                    </v-card-title>
-                    <v-data-table
-                fixed-header
-                dense
-                :headers="detailHeaders"
-                :items="posRawsDetails"
-                item-key="id"
-                     >
-          <template v-slot:[`item.is_used`]="{ item }">
-            <v-simple-checkbox
-            v-model="item.is_used"
-            disabled
-            ></v-simple-checkbox>
-             </template>
-          </v-data-table>
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="green darken-1"
-                        text
-                        @click="dialog = false"
-                    >
-                        بستن
-                    </v-btn>
-                    </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
-                        <v-icon>mdi-check-outline</v-icon>
-              </v-btn>
-        </template>
-        </v-data-table>
-    </v-card>
+            </v-data-table>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="green darken-1"
+                            text
+                            @click="dialog = false"
+                        >
+                            بستن
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
+                            <v-icon>mdi-check-outline</v-icon>
+                </v-btn>
+            </template>
+            </v-data-table>
+            <v-btn
+        class="mx-2"
+        fab
+        dark
+        color="teal"
+        @click="exportData"
+        >
+        <v-icon dark>
+            mdi-format-list-bulleted-square
+        </v-icon>
+        </v-btn>
+        </v-card>
+       <v-dialog
+       v-model="exportError"
+       > 
+       <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+          Privacy Policy
+        </v-card-title>
+
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            I accept
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+       </v-dialog>
+    </v-container>
 </template>
 
 <script>
+import {finAgent} from '@/services/agent'
+import FileSaver from 'file-saver'
 import DatePicker from '../DatePicker.vue'
 var jalaali = require('jalaali-js')
     export default{
@@ -137,6 +173,7 @@ var jalaali = require('jalaali-js')
     },
         data(){
         return{
+            exportError: false,
             dialog: false,
             isLoading:null,
             posRawsDetails: [],
@@ -146,13 +183,6 @@ var jalaali = require('jalaali-js')
             selectedPayaneCodes: '',
             selectedDate:'',
             selectedType: ''
-            },
-            searchReportOptions: {
-            itemsPerPage: 10,
-            page:1,
-            selectedPayaneCodes: '',
-            selectedDate:'',
-            selectedType: '',
             },
             personTypes: [
               {type: 'sale_person', type_name: 'ویزیتور'},
@@ -169,8 +199,24 @@ var jalaali = require('jalaali-js')
          }
     },
         methods:{
-            searchReport(){
-                this.$store.dispatch('loadPayaneReports',this.searchReportOptions)
+            async exportData(){
+                try{
+                    const response = await finAgent.get(`/front/pos_payane_reports/export_filtered_table?payane_codes=${this.options.selectedPayaneCodes}&report_date=${this.options.selectedDate}&person_type=${this.options.selectedType}`, {responseType: 'blob'} );
+                    if (response.data.type === 'application/json') {
+                    this.exportError = true;
+                     } else {
+                        console.log(response)
+                    FileSaver.saveAs(response.data, "financ-export-data.xlsx")
+                     }    
+                     }
+                    catch(err){
+                        const error = new Error(
+                    
+                    err || 'Failed to fetch'
+                );
+                this.exportError = true;
+                throw error;
+                    }
             },
             displayText(item) {
             if (item.active_payane_person && item.active_payane_person.sale_person_name) {

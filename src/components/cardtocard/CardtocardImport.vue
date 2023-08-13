@@ -99,12 +99,8 @@ import {finAgent} from '@/services/agent'
             let formData = new FormData()
             this.isLoading = true;
             formData.append('file', this.file,this.file.name)
-            console.log('start')
             try {
-                console.log(this.account_number)
                 const response = await finAgent.post(`/front/card_to_card_raws/import_file?account_number=${this.account_number}`,formData, {responseType: 'blob'} );
-                console.log('finish')
-                console.log(response.data.type)
                 if (response.data.type === 'application/json') {
                     this.uploadError = true;
                     this.file = null;
