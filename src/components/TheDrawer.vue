@@ -30,7 +30,9 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
                   </v-col>
-                
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/importtemplate'><h5>ورود اطلاعات با الگو</h5></router-link>              
+                  </v-col>                
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -71,16 +73,19 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/bankcardlist'><h5>تنظیمات شماره کارت</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/bankcardlist'><h5>شماره کارت</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>شماره حساب</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/salepersonlist'><h5>تنظیمات دارنده پایانه</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/salepersonlist'><h5>دارنده پایانه</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>تنظیمات پایانه</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>پایانه</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/banklist'><h5>بانک</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
