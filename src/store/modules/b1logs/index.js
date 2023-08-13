@@ -26,9 +26,11 @@ export default{
     actions:{
         async loadLogs(context,payload){
             try{
+                console.log("SSSSSSSSSSSSSSSSSSSS")
+                console.log(payload)
                 //?page=${payload.page}&per_page=${payload.itemsPerPage} payload
-                const {data:responseData} = await finAgent.get(`/front/b1_cheque_logs?page=${payload.page}
-                &per_page=${payload.itemsPerPage}&q[is_success_eq]=${payload.isSuccess}`)
+                const {data:responseData} = await finAgent.get(`/front/b1_cheque_logs?page=${payload.options.page}
+                &per_page=${payload.options.itemsPerPage}&q[is_success_eq]=${payload.search.isSuccess}`)
 
                 var logsData = responseData.data;
                 
