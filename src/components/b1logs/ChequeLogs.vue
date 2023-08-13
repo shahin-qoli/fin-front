@@ -48,7 +48,7 @@ export default {
         return {
             options: {
             itemsPerPage: 10,
-            page:1
+            page: 1
             },
             search:{
                 startDate: '',
@@ -111,7 +111,8 @@ export default {
         this.loadLogs();
       },
       loadLogs(){
-        this.$store.dispatch('loadLogs',this.search)
+        const payload = {search: this.search, options: this.options}
+        this.$store.dispatch('loadLogs',payload)
       }
     },
     watch:{
