@@ -6,20 +6,20 @@
                 d
                 class="mx-auto"      
                 >
-                <v-spacer></v-spacer>
-                        <v-toolbar dark color="gold">
-                            <v-row>
-                            <v-col cols="12">
-                         <h3 class="text-center">ورود اطلاعات کارت به کارت فقط بانک صادرات</h3>
-                        </v-col>
-                        </v-row>
-                      </v-toolbar>
-                        <v-divider/>
-                        <v-col col="3">
+                    <v-spacer></v-spacer>
+                    <v-toolbar dark color="gold">
+                        <v-row>
+                        <v-col cols="12">
+                        <h3 class="text-center">ورود اطلاعات</h3>
+                    </v-col>
+                    </v-row>
+                    </v-toolbar>
+                    <v-divider/>
+                    <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="green" href="http://192.168.127.215:3400/admin/pos_raws/import/get_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="http://backfinancial.burux.ir/api/front/template_import/export_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
-                       </v-col>
+                     </v-col>
                        <v-divider/>
                         <v-form @submit.prevent="submitForm"> 
                             <v-col
@@ -31,6 +31,16 @@
                             />
                             </v-col><v-col cols="12" >
                                     <v-select
+                                    :items="banks"
+                                    name="bank"
+                                    label="نام بانک"
+                                    solo
+                                    item-text="name"
+                                    item-value="id"
+                                    v-model="bank_id"
+                                    ></v-select>
+                            </v-col>
+                                    <v-select
                                     :items="bankAccounts"
                                     name="bankAccount"
                                     label="شماره حساب"
@@ -39,33 +49,13 @@
                                     item-value="account_number"
                                     v-model="account_number"
                                     ></v-select>
-                                </v-col>
+
                             <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
                                 <v-btn :loading="isLoading" type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="9">
-                <v-card
-                class="mx-auto"
-                prepend-icon="mdi-home"  
-                name="list"        
-                > 
-                <v-toolbar dark color="gold">
-                            <v-row>
-                            <v-col cols="12">
-                         <h3 class="text-center">لیست کارت به کارت ها</h3>
-                        </v-col>
-                        </v-row>
-                      </v-toolbar>
-                    <v-card-actions class="justify-center">
-                    <v-btn dark color="green" to="/cardtocardlist" >مشاهده  کارت به کارت ها</v-btn>           
-                </v-card-actions>
-                </v-card>
             </v-col>
         </v-row>
     </v-container>
@@ -84,14 +74,16 @@ import {finAgent} from '@/services/agent'
                 file: null,
                 uploadError: false,
                 isLoading: null,
-                account_number: ''
+                account_number: '',
+                bank_id : null
             }
         },
       methods: {
         
-        loadBankAccounts() {
+        loadData() {
         // console.log(this)
         this.$store.dispatch('loadBankAccounts')
+        this.$store.dispatch('loadBanks')
       },
         async submitForm(){
             this.uploadError= false
@@ -100,7 +92,7 @@ import {finAgent} from '@/services/agent'
             this.isLoading = true;
             formData.append('file', this.file,this.file.name)
             try {
-                const response = await finAgent.post(`/front/card_to_card_raws/import_file?account_number=${this.account_number}`,formData, {responseType: 'blob'} );
+                const response = await finAgent.post(`/front/template_import/import_file?account_number=${this.account_number}&bank_id=${this.bank_id}`,formData, {responseType: 'blob'} );
                 if (response.data.type === 'application/json') {
                     this.uploadError = true;
                     this.file = null;
@@ -126,13 +118,16 @@ import {finAgent} from '@/services/agent'
       },computed:{
         bankAccounts(){
             return this.$store.getters.getBankAccounts;
+        },
+        banks(){
+            return this.$store.getters.getBanks;
         }
       },
       components: {
        // HelloWorld,
       },
     created(){
-        this.loadBankAccounts();
+        this.loadData();
     }
     }
   </script>

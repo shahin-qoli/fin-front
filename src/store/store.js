@@ -18,6 +18,7 @@ import bankpayane from './modules/bankpayane/index.js';
 import cheque from './modules/cheque/index.js';
 import spree from './modules/spree/index.js'
 import b1logs from './modules/b1logs/index.js';
+import bank from './modules/bank/index.js'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -37,7 +38,8 @@ export default new Vuex.Store({
       bankpayane,
       cheque,
       spree,
-      b1logs     
+      b1logs,
+      bank,     
     },
     state(){
       return{ 

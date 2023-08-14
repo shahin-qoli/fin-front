@@ -20,6 +20,8 @@ import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
 import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
+import BankList from '../views/BankListView.vue'
+import ImportTemplateView from '../views/ImportTemplateView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -163,6 +165,12 @@ const routes = [
     name: 'poslist',
     beforeEnter : guardMyrouteAdmin,
     component: PosListView
+  },
+  {
+    path: '/importtemplate',
+    name: 'importtemplate',
+    beforeEnter : guardMyrouteAdmin,
+    component: ImportTemplateView
   }
   ,{
     path: '/requests',
@@ -174,7 +182,13 @@ const routes = [
     name: 'jobslist',
     beforeEnter : guardMyrouteAdmin,
     component: JobListView
-  },  {
+  }, {
+    path: '/banklist',
+    name: 'banklist',
+    beforeEnter : guardMyrouteAdmin,
+    component: BankList
+  },
+   {
     path: '/bankcardlist',
     name: 'bankcardlist',
     beforeEnter : guardMyrouteAdmin,
