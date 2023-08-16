@@ -5,10 +5,19 @@
             <v-col cols="12">
                 <v-form @submit.prevent="submitForm">
                     <v-row>
-                      <v-col cols="6">
+                        <v-col cols="63">
+                          <v-select
+                          :items="bankAccounts"
+                          v-model="options.bankAccountId"
+                          item-text="owner_name"
+                          item-value="id"
+                          label="انتخاب شماره حساب"
+                          ></v-select>
+                        </v-col>
+                        <v-col cols="3">
                             <v-text-field v-model="options.fromCard" hint="8787656" label="از شماره کارت"></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="3">
                             <v-text-field v-model="options.toCard" hint="8787656" label="به شماره کارت"></v-text-field>
                         </v-col>
                         <v-col cols="3">
@@ -22,14 +31,14 @@
                             <v-text-field v-model="options.serialNumber" hint="8787656" label="شماره سریال"></v-text-field>
                         </v-col>
                         <v-col cols="3">
-                            <date-picker v-model="options.transactionDate"></date-picker>
+                            <date-picker label="تاریخ" v-model="options.transactionDate"></date-picker>
                         </v-col>
-                        <v-col cols="1">
+                        <!-- <v-col cols="1">
                             <v-btn dark color="green" type="submit">جستجو</v-btn>
                         </v-col>
                         <v-col cols="1">
                             <v-btn dark color="red" @click="clearForm">پاک کردن</v-btn>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                 </v-form>
             </v-col>
@@ -93,7 +102,8 @@ import TheRow from '../TheRow.vue'
         toCard: "",
         peygiriNumber: "",
         serialNumber:"",
-        isUsed: false
+        isUsed: false,
+        bankAccountId:""
       },
       cardcode: null,
       singleExpand: true,
@@ -189,6 +199,8 @@ import TheRow from '../TheRow.vue'
       return this.$store.getters.cardtocards;
     }, itemCount(){
       return this.$store.getters.getCardItemCount;
+    },bankAccounts(){
+      return this.$store.getters.getBankAccounts;
     }
     },
     methods: {
@@ -223,6 +235,9 @@ import TheRow from '../TheRow.vue'
       loadCardtocards() {
         this.$store.dispatch('loadCardtocards',this.options)
       },
+    },
+    created(){
+      this.$store.dispatch('loadBankAccounts')
     }
 }
 </script>
