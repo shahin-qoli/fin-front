@@ -24,6 +24,7 @@
                 append-to="body"
                 format="YYYY-MM-DD"
                 input-format="jYYYY/jMM/jDD"
+                displayFormat="jYYYY/jMM/jDD"
                 :label="label">
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>

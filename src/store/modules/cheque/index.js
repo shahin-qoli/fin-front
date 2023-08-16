@@ -68,6 +68,18 @@ export default{
         },
         nillError(context){
             context.commit('nillError') 
+        },
+        async updateChequesAdmin(context, payload){
+            context.commit('setError', null)
+            console.log(payload)
+            try {
+                const {data:resp} = await finAgent.post(`/front/cheques/update_check_admin`, payload)
+                return resp
+            }catch (err){
+                context.commit('setError', err)
+            }
+            
+  
         }
     }
 }
