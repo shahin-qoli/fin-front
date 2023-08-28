@@ -104,7 +104,8 @@ export default{
             return item.jobfull.state != "complete"
         },
         retryJob(item){
-            this.$store.dispatch('retryJob', item);
+          console.log(item)
+            // this.$store.dispatch('retryJob', item);
         },
             loadJobs(){
             this.$store.dispatch('loadJobs',this.options)
