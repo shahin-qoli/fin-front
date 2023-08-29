@@ -21,7 +21,7 @@
                          </v-card-actions>
                      </v-col>
                        <v-divider/>
-                        <v-form @submit.prevent="submitForm"> 
+                        <v-form @submit.prevent="submitForm" @input="isFormReady = isRequiredFieldsFilled"> 
                             <v-col
                             cols="12">
                             <v-file-input
@@ -52,7 +52,7 @@
 
                             <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
                             <v-card-actions class="justify-center">
-                                <v-btn :loading="isLoading" type="submit" dark color="green">ارسال</v-btn>
+                                <v-btn :loading="isLoading" :disabled="!isRequiredFieldsFilled" type="submit" dark color="green">ارسال</v-btn>
                             </v-card-actions>                
                     </v-form>  
                 </v-card>    
@@ -75,7 +75,8 @@ import {finAgent} from '@/services/agent'
                 uploadError: false,
                 isLoading: null,
                 account_number: '',
-                bank_id : null
+                bank_id : null,
+                isFormReady: false
             }
         },
       methods: {
@@ -88,6 +89,7 @@ import {finAgent} from '@/services/agent'
         async submitForm(){
             this.uploadError= false
             if (!this.file) return;
+            if (!this.isRequiredFieldsFilled) return;
             let formData = new FormData()
             this.isLoading = true;
             formData.append('file', this.file,this.file.name)
@@ -97,10 +99,12 @@ import {finAgent} from '@/services/agent'
                     this.uploadError = true;
                     this.file = null;
                     this.isLoading = false;
+                    this.isFormReady = false
                 } else {
                     FileSaver.saveAs(response.data, this.file.name)
                     this.file = null;
                     this.isLoading = false;
+                    this.isFormReady = false
                 }
 
 
@@ -116,6 +120,9 @@ import {finAgent} from '@/services/agent'
             }
         }
       },computed:{
+        isRequiredFieldsFilled() {
+        return this.file && this.bank_id !== null && this.account_number !== '';
+        },
         bankAccounts(){
             return this.$store.getters.getBankAccounts;
         },
