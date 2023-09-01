@@ -18,7 +18,7 @@ import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
-
+import SyncDashboard from '../views/SyncDashboard.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -97,6 +97,11 @@ const routes = [
     beforeEnter : guardMyrouteCheque,
     
     component: chequeView
+  },  {
+    path: '/sync',
+    name: 'sync',
+    beforeEnter : guardMyrouteAdmin,
+    component: SyncDashboard
   },
   {
     path: '/cardtocardlist',

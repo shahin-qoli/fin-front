@@ -4,8 +4,9 @@ export default {
     state(){
         return{
             syncTemplates: [],
-            sourceDocuments:[],
+            syncSourceDocs:[],
             itemCount: null,
+            itemCountSyncSources: null,
         }
     },
     mutations:{
@@ -15,13 +16,22 @@ export default {
         setItemCount(state, payload){
             state.itemCount = payload
         },
+        setItemCountSyncSources(state, payload){
+            state.itemCountSyncSources = payload
+        },
+        setSyncSourceDocs(state, payload){
+            state.syncSourceDocs = payload;
+        }
     },
     getters:{
         getSyncTemplates(state){
             return state.syncTemplates
         },
-        getSourceDocuments(state){
-            return state.sourceDocuments
+        getSyncSourceDocs(state){
+            return state.syncSourceDocs
+        },
+        getItemCountSyncSources(state){
+            return state.itemCountSyncSources;
         }
     },
     actions:{
@@ -41,7 +51,44 @@ export default {
                 context.commit('setSyncTemplates', syncTemplates)
                 context.commit('setItemCount', itemCount);
             }
-            catch (err) {}
+            catch (err) {
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async loadSyncSourceDocuments(context, payload){
+            try{
+                const {data:responseData} = await finAgent.get(`/front/sync_source_documents?page=${payload.page}&per_page=${payload.itemsPerPage}&q[sync_template_id_eq]=${payload.selectedOption}`)
+                var syncSourceDocsData = responseData.data
+                var itemCount = responseData.options.count;
+                const syncSourceDocs =[]
+                for(const item of syncSourceDocsData){
+                    const syncSourceDoc = {
+                        ...item
+                    }
+                    syncSourceDocs.push(syncSourceDoc)
+                }
+                context.commit('setSyncSourceDocs', syncSourceDocs);
+                context.commit('setItemCountSyncSources', itemCount);
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async updateTemplate(context, payload){
+            try{
+                const {data:responseData} = await finAgent.get(`/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}`)
+                return responseData
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
         }
     },
 
