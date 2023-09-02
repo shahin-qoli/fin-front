@@ -89,6 +89,41 @@ export default {
                 );
                 throw error;
             }
+        },
+        async getSyncSources(context, payload){
+            try{
+                let body ={source_ids: payload}
+                const {data:responseData} = await finAgent.post(`/front/sync_source_documents/sync_sources`, body)
+                return responseData
+            }catch (err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async getReadySources(context, payload){
+            try{
+                let body ={source_ids: payload}
+                const {data:responseData} = await finAgent.post(`/front/sync_source_documents/sync_sources_ready`, body)
+                return responseData
+            }catch (err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async updateMasterDataSepidar(){
+            try{
+                const {data:responseData} = await finAgent.get("/front/sync_source_documents/update_master_data")
+                return responseData
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
         }
     },
 
