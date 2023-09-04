@@ -18,6 +18,8 @@ import SalePersonListView from '../views/SalePersonListView.vue'
 import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
+import SyncDashboard from '../views/SyncDashboard.vue'
+
 import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
 import BankList from '../views/BankListView.vue'
@@ -138,6 +140,11 @@ const routes = [
     beforeEnter : guardMyrouteCheque,
     
     component: chequeView
+  },  {
+    path: '/sync',
+    name: 'sync',
+    beforeEnter : guardMyrouteAdmin,
+    component: SyncDashboard
   },
   {
     path: '/chequelogs',

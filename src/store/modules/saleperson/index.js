@@ -55,13 +55,11 @@ export default {
         async createSalePerson(context,payload){
             try{
                 var data = {sale_person: payload}
-                console.log(data)
                 const {data:responseData} = await finAgent.post('/front/sale_persons', data)
                 if (responseData){
                     context.commit('createSalePerson', payload)
                 }
             } catch (err) {
-                //console.log(err.response);
                 const error = new Error(
                     err.response.data.error || 'Failed to fetch'
                 );
