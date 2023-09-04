@@ -3,14 +3,12 @@
 <v-navigation-drawer v-if="userLoged" width="175" v-model="drawer" right app>   
     <v-container class="grey lighten-5" id="main-container" >
         <v-row align-content="center">
-            <v-col cols="3">
+            <v-col cols="12">
                 <v-img
-                max-width="50"
-                max-height="50"
-                src = "../assets/logo.png"
+                max-width="192"
+                max-height="192"
+                src = "../assets/android-chrome-192x192.png"
                 />
-            </v-col>
-            <v-col align-self="center" cols="3"><h2 style="bold center" >بروکس</h2>               
             </v-col>
             <v-col cols="12">
             <v-divider/>
@@ -32,7 +30,9 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
                   </v-col>
-                
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/importtemplate'><h5>ورود اطلاعات با الگو</h5></router-link>              
+                  </v-col>                
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -73,16 +73,19 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/bankcardlist'><h5>تنظیمات شماره کارت</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/bankcardlist'><h5>شماره کارت</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>تنظیمات شماره حساب</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/bankaccountlist'><h5>شماره حساب</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/salepersonlist'><h5>تنظیمات دارنده پایانه</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/salepersonlist'><h5>دارنده پایانه</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
-                      <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>تنظیمات پایانه</h5></router-link> 
+                      <router-link style="text-decoration: none;" to='/payanevisitorlist'><h5>پایانه</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/banklist'><h5>بانک</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -95,6 +98,21 @@
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/cheque'><h5>داشبود چک</h5></router-link> 
+                    </v-col>
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/chequelogs'><h5>B1 Logs</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="spreeAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                  <h3>می‌ارزه!</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/spree'><h5>داشبود فاکتور</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -172,6 +190,10 @@ export default {
     transactionsAccess(){
       const user = this.$store.getters.getUser;
       return user.role == 'finance' || user.role == 'admin' 
+    },
+    spreeAccess(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'spree' || user.role == 'admin'
     },
     userLoged(){
       console.log(this.$store.getters.getUser !={})

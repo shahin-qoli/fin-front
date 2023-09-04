@@ -6,19 +6,22 @@
                   <v-form @submit.prevent="submitForm">
                       <v-row>
                           <v-col cols="3">
+                            <v-select
+                            :items="bankAccounts"
+                            v-model="options.bankAccountId"
+                            item-text="owner_name"
+                            item-value="id"
+                            label="انتخاب شماره حساب"
+                            ></v-select>
+                          </v-col>
+                          <v-col cols="3">
                               <v-text-field v-model="options.amount" hint="120000000" label="مبلغ"></v-text-field>
                           </v-col>
                           <v-col cols="3">
                               <v-text-field v-model="options.peygiriNumber" hint="8787656" label="شماره پیگیری"></v-text-field>
                           </v-col>
                           <v-col cols="3">
-                              <date-picker v-model="options.transactionDate"></date-picker>
-                          </v-col>
-                          <v-col cols="1">
-                              <v-btn dark color="green" type="submit">جستجو</v-btn>
-                          </v-col>
-                          <v-col cols="1">
-                              <v-btn dark color="red" @click="clearForm">پاک کردن</v-btn>
+                              <date-picker label="تاریخ" v-model="options.transactionDate"></date-picker>
                           </v-col>
                       </v-row>
                   </v-form>
@@ -81,7 +84,8 @@
           transactionDate: "",
           amount: "",
           peygiriNumber: "",
-          isUsed: false
+          isUsed: false,
+          bankAccountId: ""
         },
         cardcode: null,
         singleExpand: true,
@@ -158,6 +162,9 @@
         return this.$store.getters.accounttoaccounts;
       }, itemCount(){
         return this.$store.getters.getAccountItemCount;
+      },
+      bankAccounts(){
+        return this.$store.getters.getBankAccounts;
       }
     },
       methods: {
@@ -189,10 +196,8 @@
             loadAccounttoaccounts() {
           this.$store.dispatch('loadAccounttoaccounts',this.options)
         },
-      },
-      // created() {
-      //   this.loadAccounttoaccounts();
-      // }
+      }
+
   }
   </script>
   

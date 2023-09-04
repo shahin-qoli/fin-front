@@ -19,6 +19,12 @@ import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
 import SyncDashboard from '../views/SyncDashboard.vue'
+
+import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
+import chequeLogs from '../views/ChequeLogsView.vue'
+import BankList from '../views/BankListView.vue'
+import ImportTemplateView from '../views/ImportTemplateView.vue'
+
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -79,11 +85,48 @@ function guardMyrouteCheque(to, from, next){
     next('/login'); // go to '/login';
    }
 }
+
+function guardMyrouteSpree(to, from, next){
+  var isAuthenticated= false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you localstorage data handling 
+  
+  if(localStorage.getItem('token'))
+    isAuthenticated = true;
+   else
+    isAuthenticated= false;
+   if(isAuthenticated && (localStorage.getItem('userRole') == 'admin' || localStorage.getItem('userRole') == 'spree') )
+   {
+    next(); // allow to enter route
+   } 
+   else
+   {
+    next('/login'); // go to '/login';
+   }
+}
+function guardMyrouteLoggedIn(to, from, next){
+  var isAuthenticated= false;
+  //this is just an example. You will have to find a better or 
+  // centralised way to handle you localstorage data handling 
+  
+  if(localStorage.getItem('token'))
+    isAuthenticated = true;
+   else
+    isAuthenticated= false;
+   if(isAuthenticated )
+   {
+    next(); // allow to enter route
+   } 
+   else
+   {
+    next('/login'); // go to '/login';
+   }
+}
 const routes = [
   {
     path: '/',
     name: 'home',
-    beforeEnter : guardMyrouteAdminSale,
+    beforeEnter : guardMyrouteLoggedIn,
     component: HomeView
   },  {
     path: '/cardtocard',
@@ -102,6 +145,12 @@ const routes = [
     name: 'sync',
     beforeEnter : guardMyrouteAdmin,
     component: SyncDashboard
+  },
+  {
+    path: '/chequelogs',
+    name: 'chequelogs',
+    beforeEnter : guardMyrouteCheque,
+    component: chequeLogs
   },
   {
     path: '/cardtocardlist',
@@ -123,6 +172,12 @@ const routes = [
     name: 'poslist',
     beforeEnter : guardMyrouteAdmin,
     component: PosListView
+  },
+  {
+    path: '/importtemplate',
+    name: 'importtemplate',
+    beforeEnter : guardMyrouteAdmin,
+    component: ImportTemplateView
   }
   ,{
     path: '/requests',
@@ -134,7 +189,13 @@ const routes = [
     name: 'jobslist',
     beforeEnter : guardMyrouteAdmin,
     component: JobListView
-  },  {
+  }, {
+    path: '/banklist',
+    name: 'banklist',
+    beforeEnter : guardMyrouteAdmin,
+    component: BankList
+  },
+   {
     path: '/bankcardlist',
     name: 'bankcardlist',
     beforeEnter : guardMyrouteAdmin,
@@ -166,7 +227,12 @@ const routes = [
     beforeEnter : guardMyrouteAdminSale,
     component: SaleUseTransaction
   },
-  
+  {
+    path: '/spree',
+    name: 'spreedashboard',
+    beforeEnter : guardMyrouteSpree,
+    component: spreeInvoiceDashboardView
+  },
   
   {
     path: '/login',

@@ -1,70 +1,67 @@
 <template>
-    <nav>
-        <template>
-    <v-card outlined>
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="جستجو"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        fixed-header
-        dense
-        :headers="headers"
-        :items="requests"
-        item-key="id"
-        :search="search"
-        :loading="isLoading"
-        :options.sync="options"
-        :server-items-length="itemCount"
-        class="elevation-1"
-      >
-      <template v-slot:top>
-
-      <v-radio-group inline v-model="options.state">
-        <v-row>
-          <v-col cols="12" class="text-right">
-        <v-radio label="همه" value="" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="درخواست شده" value="requested" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="رد شده" value="denied" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="تکمیل شده" value="complete" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="تلاش مجدد شده" value="retried" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="تایید شده" value="verified" class="d-inline-block radio-with-margin"></v-radio>
-        <v-radio label="خطا در همگام سازی" value="api_error" class="d-inline-block radio-with-margin"></v-radio>
-    </v-col>
-    </v-row>
-  </v-radio-group>
-    </template>
-      <template  v-slot:[`item.transaction_date`]="props">
-        {{ props.item.payfull.transaction_date }}
-      </template>
-      <template  v-slot:[`item.amount`]="props">
-        {{ props.item.payfull.amount | formatAmount }}
-      </template>
-      <template  v-slot:[`item.image`]="props">
-        <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
-      </template>
-      <template  v-slot:[`item.state`]="props">
-        <v-chip small dark :color="getColorRequestStatus(props.item.state)">
-          {{ transformRequestStatus(props.item.state) }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.controls`]="props">
-        <v-btn v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="verifyRequest(props.item)">
-            تایید
-        </v-btn>
-        <v-btn style="color: red" v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="denyRequest(props.item)">
-            عدم تایید
-        </v-btn>
-      </template> 
-      </v-data-table>
-    </v-card>
-</template> 
-    </nav>
+    <v-container>
+          <v-card outlined>
+            <v-card-title>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="جستجو"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              fixed-header
+              dense
+              :headers="headers"
+              :items="requests"
+              item-key="id"
+              :search="search"
+              :loading="isLoading"
+              :options.sync="options"
+              :server-items-length="itemCount"
+              class="elevation-1"
+            >
+              <template v-slot:top>
+              <v-radio-group inline v-model="options.state">
+                <v-row>
+                  <v-col cols="12" class="text-right">
+                    <v-radio label="همه" value="" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="درخواست شده" value="requested" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="رد شده" value="denied" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="تکمیل شده" value="complete" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="تلاش مجدد شده" value="retried" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="تایید شده" value="verified" class="d-inline-block radio-with-margin"></v-radio>
+                    <v-radio label="خطا در همگام سازی" value="api_error" class="d-inline-block radio-with-margin"></v-radio>
+                  </v-col>
+                </v-row>
+              </v-radio-group>
+              </template>
+              <template  v-slot:[`item.transaction_date`]="props">
+                {{ props.item.payfull.transaction_date }}
+              </template>
+              <template  v-slot:[`item.amount`]="props">
+                {{ props.item.payfull.amount | formatAmount }}
+              </template>
+              <template  v-slot:[`item.image`]="props">
+                <v-btn v-if="props.item.image" :href="props.item.image" target="_blank">  <v-icon>mdi-download</v-icon> </v-btn>
+              </template>
+              <template  v-slot:[`item.state`]="props">
+                <v-chip small dark :color="getColorRequestStatus(props.item.state)">
+                  {{ transformRequestStatus(props.item.state) }}
+                </v-chip>
+              </template>
+              <template v-slot:[`item.controls`]="props">
+                <v-btn v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="verifyRequest(props.item)">
+                    تایید
+                </v-btn>
+                <v-btn style="color: red" v-if="isRequested(props.item.state)" :disabled="saleRole" class="mx-2" small  @click="denyRequest(props.item)">
+                    عدم تایید
+                </v-btn>
+              </template> 
+            </v-data-table>
+          </v-card> 
+    </v-container>
 </template>
 
 <script>
@@ -79,7 +76,7 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             page:1,
             state: 'requested'
             },
-            search: ''
+            search: '',
             }
         },filters:{
         formatAmount(value){
@@ -153,6 +150,7 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             text: "تاریخ تراکنش",
             align: "center",
             value: "transaction_date",
+            sortable: true,
           },          {
             text: "مبلغ",
             align: "center",

@@ -100,61 +100,53 @@
                                 </v-col>
                                 <v-col v-if="isNeedDeposit" cols="12">
                                     <v-row>
-                                        <v-col cols="6">
-                                            <v-text-field 
+                                        <v-col v-if="!is310State" cols="6">
+                                            <v-select 
+                                            :items="possibleBankAccounts"
                                             v-model="depositeDetails.bankAccount"
-                                            :rules= "[requiredRule]"
-                                            label="حساب بانک"
-                                            single-line
+                                            label="انتخاب بانک"
+                                            item-text="acctName"
+                                            item-value="accountCode"
                                             required
-                                            hide-details></v-text-field>
+                                            ></v-select>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+        
                                             v-model="depositeDetails.payer"
-                                            label="پرداخت کننده"
+                                            label="نام شخص تحویلدار"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+
                                             v-model="depositeDetails.bank"
-                                            label="بانک"
+                                            label="نام بانک"
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules= "[requiredRule]"
+                            
                                             v-model="depositeDetails.branch"
                                             label="شعبه بانک"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
-                                        <v-col cols="6">
+                                        <v-col v-if="!is310State" cols="6">
                                             <v-text-field 
-                                            :rules="[requiredRule]"
-                                            v-model="depositeDetails.depositedAccount"
-                                            label="حساب دپوزیت شده"
-                                            single-line
-                                            required
-                                            hide-details></v-text-field>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <v-text-field 
-                                            :rules="[requiredRule]"
+                             
                                             v-model="depositeDetails.reference"
-                                            label="رفرنس"
+                                            label="رفرنس(شماره سند بانکی)"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
                                         <v-col cols="6">
-                                            <date-picker v-model="depositeDetails.depositDate" label="تاریخ واگذاری"></date-picker>
+                                            <date-picker v-model="depositeDetails.depositDate" label="تاریخ عملیات"></date-picker>
                                          </v-col>
                                     </v-row>
                                 </v-col>
@@ -176,19 +168,19 @@
                 <v-card-title class="text-h5">نتیجه</v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col cols="12"><p>نتایج موفق</p></v-col>
+                        <v-col v-if="isResultSuccess" cols="12"><p>نتایج موفق</p></v-col>
                         <v-col cols="12">                
                             <div class="modal-scroll">
                             <p v-html="reportResult.sucess_results"></p>
                             </div>
                         </v-col>
-                        <v-col cols="12"><p>نتایج ناموفق</p></v-col>
+                        <v-col v-if="isResultFailed" cols="12"><p>نتایج ناموفق</p></v-col>
                         <v-col cols="12">                
                             <div class="modal-scroll">
                             <p v-html="reportResult.failed_results"></p>
                             </div>
                         </v-col>
-                        <v-col cols="12"><p>خطا</p>
+                        <v-col v-if="isResultError" cols="12"><p>خطا</p>
                             <div class="modal-scroll">
                             <p v-html="reportResult?.error"></p>
                             </div>
@@ -389,7 +381,11 @@ export default {
                 depositDate:"",
             },
             showModal: false,
-            reportResult: ''
+            reportResult: {
+                "sucess_results" : [],
+                "faild_results" : [],
+                "error" : ''
+            }
         }
     },
     computed:{
@@ -548,7 +544,27 @@ export default {
                 },
             ]
         }, 
+        possibleBankAccounts(){
+            if (this.selectedState == ''){
+                return null;
+            }
+            let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+            return selected.bankAccounts;
+        },
+        is310State(){
+            return this.selectedState == '310'
 
+            // let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+            // return selected.
+        },
+        isResultSuccess(){
+            return this.reportResult.sucess_results.length > 0 
+    },
+        isResultFailed(){
+            return this.reportResult.faild_results.length > 0 
+    },  isResultError(){
+            return this.reportResult.error.length > 0 ;
+    }
     },
     methods:{
         handleTableSelectionChange() {

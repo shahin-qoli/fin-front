@@ -91,7 +91,7 @@ export default{
             ]
         },
         bankCards(){
-            return this.$store.getters.getBankCards
+            return this.$store.getters.getBankCards;
         }
     },
     methods:{
