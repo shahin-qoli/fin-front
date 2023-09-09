@@ -27,15 +27,13 @@ export default {
         async loadOrders(context, payload) {
             console.log("lets go")
             try {
-                console.log(payload)
+
                 const {data: responseData} = await spreeAgent.get(`/platform/orders?page=${payload.page}
                 &per_page=${payload.itemsPerPage}&filter[b1_documented_eq]=${payload.hasB1Docs}
                 &filter[completed_at_lteq]=${payload.completedAtLteq}&filter[completed_at_gteq]=${payload.completedAtGteq}
                 &filter[state_eq]=complete&filter[number_eq]=${payload.number}&filter[need_document_eq]=${payload.needB1Docs}`)
                 const orders = []
                 const ordersData= responseData.data
-                console.log("after")
-                console.log(responseData.data)
                 for (const item of ordersData) {
                     const order= {
                         ...item.attributes
@@ -75,8 +73,54 @@ export default {
                 // let itemCount = responseData.meta.total_count
             }
             catch(err){
-                console.log('sssssssssssss222222222')
-                console.log(err);
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async loadOrdersForVendors(context){
+            try{
+
+                const {data: responseData} = await spreeAgent.get(`storefront/dashboard_controller`)
+                const orders = []
+                const ordersData= responseData
+                for (const item of ordersData) {
+                    const order= {
+                        ...item.attributes
+                    }
+                    orders.push(order); 
+                }
+
+                context.commit('setOrders', orders)
+
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async retryOrdersVendor(context, payload){
+            try {
+                let orderIds= []
+                payload.forEach(item => {
+                    orderIds.push(item.id)
+                });
+                const body ={order_ids: orderIds} 
+                const {data: responseData} = await spreeAgent.post(`/storefront/dashboard_controller/retry_by_orders`, body)
+
+                const results= responseData
+                return results
+                // for (const item of ordersData) {
+                //     const order= {
+                //         ...item.attributes
+                //     }
+                //     orders.push(order); 
+                // }
+                // let itemCount = responseData.meta.total_count
+            }
+            catch(err){
                 const error = new Error(
                     err.response.data.error || 'Failed to fetch'
                 );

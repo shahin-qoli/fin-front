@@ -24,6 +24,7 @@ import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
+import spreeInvoiceDashboardView from '../views/spreeInvoiceVendorDashboardView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -232,6 +233,11 @@ const routes = [
     name: 'spreedashboard',
     beforeEnter : guardMyrouteSpree,
     component: spreeInvoiceDashboardView
+  },  {
+    path: '/spree',
+    name: 'spreedashboard',
+    beforeEnter : guardMyrouteSpree,
+    component: spreeInvoiceVendorDashboardView
   },
   
   {
