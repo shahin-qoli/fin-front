@@ -234,8 +234,8 @@ const routes = [
     beforeEnter : guardMyrouteSpree,
     component: spreeInvoiceDashboardView
   },  {
-    path: '/spree',
-    name: 'spreedashboard',
+    path: '/spreevendor',
+    name: 'spreevendor',
     beforeEnter : guardMyrouteSpree,
     component: spreeInvoiceVendorDashboardView
   },
