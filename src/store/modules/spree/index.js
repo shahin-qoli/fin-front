@@ -85,6 +85,7 @@ export default {
                 const {data: responseData} = await spreeAgent.get(`storefront/dashboard_controller`)
                 const orders = []
                 const ordersData= responseData
+                console.log(ordersData)
                 for (const item of ordersData) {
                     const order= {
                         ...item.attributes
