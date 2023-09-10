@@ -15,14 +15,20 @@
                                 solo
                                 ></v-select>
                             </v-col>
-                            <v-col v-if="isSelectedAnyOption" cols="4">
+                            <v-col cols="2">
+                                <v-switch
+                                v-model="options.isSynced"
+                                label="همگام ها را نشان بده"
+                                ></v-switch>
+                            </v-col>
+                            <v-col v-if="isSelectedAnyOption" cols="3">
                                 <v-text-field
                                 :value="mainDocument"
                                 label="سند مادر"
                                 disabled
                                 ></v-text-field>
                             </v-col>
-                            <v-col v-if="isSelectedAnyOption" cols="4">
+                            <v-col v-if="isSelectedAnyOption" cols="3">
                                 <v-text-field
                                 :value="equivalentDocument"
                                 label="سند معادل"
@@ -72,6 +78,18 @@
                                 <th colspan="3" class="text-center custom-header">سند معادل</th>
                             </tr>
                             </thead>
+                        </template>
+                        <template v-slot:[`item.is_synced`]="{ item }">
+                            <v-simple-checkbox
+                            v-model="item.is_synced"
+                            disabled
+                            ></v-simple-checkbox>
+                        </template>
+                        <template v-slot:[`item.equivalent_created`]="{ item }">
+                            <v-simple-checkbox
+                            v-model="item.equivalent_created"
+                            disabled
+                            ></v-simple-checkbox>
                         </template>
                         <!-- <template v-slot:[`item.controls`]="props">
                          <v-btn  class="mx-2" small  @click="retryJob(props.item)">
@@ -134,7 +152,9 @@ export default{
             options: {
           itemsPerPage: 10,
           page:1,
-          selectedOption: 0
+          selectedOption: 1,
+          isSynced: false,
+    
         },selectedDocs: [],
             // selectedOption: null,
             updateStartDate: null,
@@ -236,6 +256,7 @@ export default{
         },
         mainDocument(){
             let selected = this.templates.find(item => item.id == this.options.selectedOption)
+            console.log(this.templates)
             return selected.source_name;
         },
         equivalentDocument(){
