@@ -24,7 +24,7 @@ import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
-import spreeInvoiceVendorDashboardView from '../views/spreeInvoiceVendorDashboardView.vue'
+import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
