@@ -235,9 +235,13 @@ import TheRow from '../TheRow.vue'
       loadCardtocards() {
         this.$store.dispatch('loadCardtocards',this.options)
       },
+      loadBankAccounts(){
+        this.$store.dispatch('loadBankAccounts')
+      },
     },
     created(){
-      this.$store.dispatch('loadBankAccounts')
+      this.loadBankAccounts();
+      
     }
 }
 </script>

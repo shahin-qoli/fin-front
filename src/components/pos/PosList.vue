@@ -271,7 +271,15 @@ import DatePicker from '../DatePicker.vue'
         loadPoses() {
           // console.log(this)
           this.$store.dispatch('loadPoses',this.options)
+        },
+        loadBankAccounts(){
+          this.$store.dispatch('loadBankAccounts');
         } 
-      }
+      },
+      
+    created(){
+      this.loadBankAccounts();
+      
+    }
   }
   </script>

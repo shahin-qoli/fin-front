@@ -196,7 +196,14 @@
             loadAccounttoaccounts() {
           this.$store.dispatch('loadAccounttoaccounts',this.options)
         },
-      }
+            loadBankAccounts(){
+        this.$store.dispatch('loadBankAccounts')
+      },
+      },
+    created(){
+      this.loadBankAccounts();
+      
+    }
 
   }
   </script>
