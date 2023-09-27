@@ -15,10 +15,16 @@
                                 solo
                                 ></v-select>
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="3">
                                 <v-switch
                                 v-model="options.isSynced"
                                 label="همگام ها را نشان بده"
+                                ></v-switch>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-switch
+                                v-model="options.equivalentCreated"
+                                label="آماده شده ها را نشان بده"
                                 ></v-switch>
                             </v-col>
                             <v-col v-if="isSelectedAnyOption" cols="3">
@@ -44,9 +50,9 @@
                                 <v-col cols="3">
                                     <v-btn dark color="green" type="submit">به روزرسانی اسناد</v-btn>
                                 </v-col>
-                                <v-col cols="3">
+                                <!-- <v-col cols="3">
                                     <v-btn dark color="green" @click="updateMasterData">به روزرسانی اطلاعات پایه</v-btn>
-                                </v-col>
+                                </v-col> -->
                             </v-row>
                         </v-form>           
                     </v-card-text>
@@ -154,7 +160,7 @@ export default{
           page:1,
           selectedOption: 1,
           isSynced: false,
-    
+          equivalentCreated: false,
         },selectedDocs: [],
             // selectedOption: null,
             updateStartDate: null,
