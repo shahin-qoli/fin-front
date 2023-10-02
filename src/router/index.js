@@ -22,6 +22,7 @@ import SyncDashboard from '../views/SyncDashboard.vue'
 
 import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
+import ChequeUpdate from '../views/ChequeUpdateView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
 
@@ -140,6 +141,13 @@ const routes = [
     beforeEnter : guardMyrouteCheque,
     
     component: chequeView
+  }
+  ,{
+    path: '/chequeupdate',
+    name: 'chequeupdate',
+    beforeEnter : guardMyrouteCheque,
+    
+    component: ChequeUpdate
   },  {
     path: '/sync',
     name: 'sync',
