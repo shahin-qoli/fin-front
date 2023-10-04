@@ -84,7 +84,7 @@
                                         <date-picker v-model="depositeDetails.depositDate" label="تاریخ عملیات"></date-picker>
                                     </v-col>                                                     
                                     <v-col cols="3">
-                                        <v-btn color="green" type="submit">به روزرسانی</v-btn>
+                                        <v-btn :loading="isLoading" color="green" type="submit">به روزرسانی</v-btn>
                                     </v-col>
                                 </v-row>
                         </v-form>
@@ -121,6 +121,7 @@ export default {
             selectedState:'',
             selectedReg:'',
             checkNum: "",
+            isLoading: null,
             depositeDetails : {
                 bankAccount: "",
                 payer: "",
@@ -337,18 +338,22 @@ export default {
     methods:{
         submitAction(){
         console.log("start")
+        this.isLoading= true;
+        console.log(this.isLoading)
         let payload = {check_num: this.checkNum,
                      next_state: this.selectedState,
                      reg_state: this.selectedReg,
                     deposite_details: this.depositeDetails}
         this.$store.dispatch('updateCheques', payload).then((response) => {
             console.log(response);
+
         this.showModal=true;
         this.reportResult = response;
-        })
-        this.$store.dispatch('nillError')            
+        this.isLoading= false;
+        })          
         this.selectedState = ''
         this.selectedReg= ''
+       
         this.depositeDetails = {
                 bankAccount: "",
                 payer: "",
