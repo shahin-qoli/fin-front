@@ -38,6 +38,13 @@
                     item-value="type"
                 ></v-select>
             </v-col>
+            <v-col cols="3">
+            <v-switch
+                v-model="options.isUsed"
+                label="تراکنش های استفاده شده"
+                class="pa-3"
+            ></v-switch>
+            </v-col>
         </v-row>
             </v-card-title>
             <v-data-table
@@ -182,7 +189,8 @@ var jalaali = require('jalaali-js')
             page:1, 
             selectedPayaneCodes: '',
             selectedDate:'',
-            selectedType: ''
+            selectedType: '',
+            isUsed: false,
             },
             personTypes: [
               {type: 'sale_person', type_name: 'ویزیتور'},
