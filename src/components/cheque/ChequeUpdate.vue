@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card>
+        <!-- <v-card>
             <v-card-title>
                 <h2>به روز رسانی چک با شماره</h2>
             </v-card-title>
@@ -91,6 +91,56 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+        </v-card> -->
+        <v-card>
+            <v-card-title>
+                <h2>به روز رسانی وضعیت چک با شماره</h2>
+                <h4 style="color:crimson">لطفا توجه داشته باشید در این به روز رسانی هیچ سندی صادر یا لغو نخواهد شد.</h4>
+            </v-card-title>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="12">
+                        <v-form @submit.prevent="submitAction" ref="form">
+                            <v-row>
+                                <v-col cols="3">
+                                    <v-text-field                             
+                                    v-model="checkNum"
+                                    label="شماره چک"
+                                    single-line
+                                    required
+                                    hide-details></v-text-field>
+                                </v-col>
+                                <v-col cols="3">
+                                        <date-picker v-model="dueDate" label="تاریخ چک"></date-picker>
+                                    </v-col>
+                            </v-row>
+                            <v-row>
+                            <v-col cols="2"><p>انتخاب وضعیت چک:</p></v-col>
+                            <v-col cols="3">
+                                <v-select :items="possibleNextStates"
+                                item-text="text"
+                                item-value="value"
+                                v-model="selectedState"></v-select>
+                            </v-col>
+                            <v-spacer></v-spacer>
+                            <v-col cols="2"><p>انتخاب وضعیت ثبت چک:</p></v-col>
+                            <v-col cols="3">
+                                <v-select :items="possibleNextReg"
+                                item-text="text"
+                                item-value="value"
+                                v-model="selectedReg"></v-select>
+                            </v-col>   
+ 
+                            </v-row>
+                            <v-row>                                                                         
+                                <v-col cols="3">
+                                    <v-btn :loading="isLoading" color="green" type="submit">به روزرسانی</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-col>
+                </v-row>
+            </v-card-text>
         </v-card>
         <v-dialog v-model="showModal" max-width="500">
             <v-card>
@@ -99,7 +149,14 @@
                     <v-row>
                         <v-col cols="12">                
                             <div class="modal-scroll">
-                            <p v-html="reportResult"></p>
+                            <p v-html="reportResult?.error"></p>
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="reportResult.message"></p>
                             </div>
                         </v-col>
                     </v-row>
@@ -120,6 +177,7 @@ export default {
         return {
             selectedState:'',
             selectedReg:'',
+            dueDate:"",
             checkNum: "",
             isLoading: null,
             depositeDetails : {
@@ -341,6 +399,7 @@ export default {
         this.isLoading= true;
         console.log(this.isLoading)
         let payload = {check_num: this.checkNum,
+                    due_date: this.dueDate,
                      next_state: this.selectedState,
                      reg_state: this.selectedReg,
                     deposite_details: this.depositeDetails}
