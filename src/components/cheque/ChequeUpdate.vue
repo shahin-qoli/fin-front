@@ -1,97 +1,5 @@
 <template>
     <v-container>
-        <!-- <v-card>
-            <v-card-title>
-                <h2>به روز رسانی چک با شماره</h2>
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12">
-                        <v-form @submit.prevent="submitAction" ref="form">
-                                <v-row>
-                                    <v-col cols="3">
-                                        <v-text-field                             
-                                        v-model="checkNum"
-                                        label="شماره چک"
-                                        single-line
-                                        required
-                                        hide-details></v-text-field>
-                                    </v-col>
-                                    </v-row>
-                                    <v-row>
-                                    <v-col cols="2"><p>انتخاب وضعیت چک:</p></v-col>
-                                    <v-col cols="3">
-                                        <v-select :items="possibleNextStates"
-                                        item-text="text"
-                                        item-value="value"
-                                        v-model="selectedState"></v-select>
-                                    </v-col>
-                                    <v-spacer></v-spacer>
-                                    <v-col cols="2"><p>انتخاب وضعیت ثبت چک:</p></v-col>
-                                    <v-col cols="3">
-                                        <v-select :items="possibleNextReg"
-                                        item-text="text"
-                                        item-value="value"
-                                        v-model="selectedReg"></v-select>
-                                    </v-col>   
-                                      </v-row>
-                                    <v-row>                       
-                                    <v-col cols="6">
-                                        <v-select 
-                                        :items="possibleBankAccounts"
-                                        v-model="depositeDetails.bankAccount"
-                                        label="انتخاب بانک"
-                                        item-text="acctName"
-                                        item-value="accountCode"
-                                        required
-                                        ></v-select>
-                                    </v-col>
-                                    <v-col cols="6">
-                                        <v-text-field 
-    
-                                        v-model="depositeDetails.payer"
-                                        label="نام شخص تحویلدار"
-                                        single-line
-                                        required
-                                        hide-details></v-text-field>
-                                    </v-col>
-                                    <v-col cols="6">
-                                        <v-text-field 
-
-                                        v-model="depositeDetails.bank"
-                                        label="نام بانک"
-                                        required
-                                        hide-details></v-text-field>
-                                    </v-col>
-                                    <v-col  cols="6">
-                                        <v-text-field 
-                        
-                                        v-model="depositeDetails.branch"
-                                        label="شعبه بانک"
-                                        single-line
-                                        required
-                                        hide-details></v-text-field>
-                                    </v-col>
-                                    <v-col cols="6">
-                                        <v-text-field  
-                                        v-model="depositeDetails.reference"
-                                        label="رفرنس(شماره سند بانکی)"
-                                        single-line
-                                        required
-                                        hide-details></v-text-field>
-                                    </v-col>
-                                    <v-col cols="6">
-                                        <date-picker v-model="depositeDetails.depositDate" label="تاریخ عملیات"></date-picker>
-                                    </v-col>                                                     
-                                    <v-col cols="3">
-                                        <v-btn :loading="isLoading" color="green" type="submit">به روزرسانی</v-btn>
-                                    </v-col>
-                                </v-row>
-                        </v-form>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card> -->
         <v-card>
             <v-card-title>
                 <h2>به روز رسانی وضعیت چک با شماره</h2>
@@ -100,7 +8,7 @@
             <v-card-text>
                 <v-row>
                     <v-col cols="12">
-                        <v-form @submit.prevent="submitAction" ref="form">
+                        <v-form @submit.prevent="submitSearch" ref="form">
                             <v-row>
                                 <v-col cols="3">
                                     <v-text-field                             
@@ -110,37 +18,80 @@
                                     required
                                     hide-details></v-text-field>
                                 </v-col>
-                                <v-col cols="3">
-                                        <date-picker v-model="dueDate" label="تاریخ چک"></date-picker>
-                                    </v-col>
-                            </v-row>
-                            <v-row>
-                            <v-col cols="2"><p>انتخاب وضعیت چک:</p></v-col>
-                            <v-col cols="3">
-                                <v-select :items="possibleNextStates"
-                                item-text="text"
-                                item-value="value"
-                                v-model="selectedState"></v-select>
-                            </v-col>
-                            <v-spacer></v-spacer>
-                            <v-col cols="2"><p>انتخاب وضعیت ثبت چک:</p></v-col>
-                            <v-col cols="3">
-                                <v-select :items="possibleNextReg"
-                                item-text="text"
-                                item-value="value"
-                                v-model="selectedReg"></v-select>
-                            </v-col>   
- 
                             </v-row>
                             <v-row>                                                                         
                                 <v-col cols="3">
-                                    <v-btn :loading="isLoading" color="green" type="submit">به روزرسانی</v-btn>
+                                    <v-btn :loading="isLoading" color="green" type="submit">جستجو</v-btn>
                                 </v-col>
                             </v-row>
                         </v-form>
                     </v-col>
                 </v-row>
             </v-card-text>
+        </v-card>
+        <v-card v-if="chequesFound">
+            <v-card-text>
+                <v-card-text>
+                <v-data-table
+                fixed-header
+                dense
+                :headers="headers"
+                :items="cheques"
+                item-key="checkKey"
+                show-select
+                item-value="checkKey"
+                v-model="selectedItems"
+                @input="handleTableSelectionChange"
+                class="elevation-1">
+                    <template v-slot:[`item.state`]="{ item }">
+                        <p>{{ item.state | formatState(chequeStates) }}</p>
+                    </template>
+                    <template v-slot:[`item.regSate`]="{ item }">
+                        <p>{{ item.regSate | formatState(regStates) }}</p>
+                    </template>
+                    <template v-slot:[`item.value`]="{ item }">
+                        <p>{{ item.value | formatAmount }}</p>
+                    </template>
+                    <template v-slot:[`item.dueDate`]="{ item }">
+                        <p>{{ item.dueDate | formatDate }}</p>
+                    </template>
+                    <template v-slot:[`item.receiptDate`]="{ item }">
+                        <p>{{ item.receiptDate | formatDate }}</p>
+                    </template>
+                </v-data-table>
+            </v-card-text>
+            </v-card-text>
+        </v-card>
+        <v-card  v-if="isSelectedCheque" outlined>
+            <v-card-title><p>عملیات</p></v-card-title>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="12">
+                        <v-form @submit.prevent="submitAction" ref="form">
+                            <v-row>
+                                <v-col cols="2"><p>انتخاب وضعیت چک:</p></v-col>
+                                <v-col cols="3">
+                                    <v-select :items="possibleNextStates"
+                                    item-text="text"
+                                    item-value="value"
+                                    v-model="selectedState"></v-select>
+                                </v-col>
+                                <v-spacer></v-spacer>
+                                <v-col cols="2"><p>انتخاب وضعیت ثبت چک:</p></v-col>
+                                <v-col cols="3">
+                                    <v-select :items="possibleNextReg"
+                                    item-text="text"
+                                    item-value="value"
+                                    v-model="selectedReg"></v-select>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn :disabled="isSelectedAction" color="green" type="submit">به روزرسانی</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-col>
+                </v-row>
+           </v-card-text>
         </v-card>
         <v-dialog v-model="showModal" max-width="500">
             <v-card>
@@ -149,14 +100,21 @@
                     <v-row>
                         <v-col cols="12">                
                             <div class="modal-scroll">
-                            <p v-html="reportResult?.error"></p>
+                            <p v-html="reportResult.faild_results"></p>
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="reportResult.error != ''">
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="reportResult.error"></p>
                             </div>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">                
                             <div class="modal-scroll">
-                            <p v-html="reportResult.message"></p>
+                            <p v-html="reportResult.sucess_results"></p>
                             </div>
                         </v-col>
                     </v-row>
@@ -166,18 +124,34 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="showModalError" max-width="500">
+            <v-card>
+                <v-card-title class="text-h5">خطا</v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="12">                
+                            <div class="modal-scroll">
+                            <p v-html="error"></p>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                <v-btn color="primary" text @click="showModalError = false, error = ''">بستن</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
-import DatePicker from '../DatePicker.vue'
+
 export default {
-    components: {DatePicker},
     data() {
         return {
+            // chequesFound: true,
             selectedState:'',
             selectedReg:'',
-            dueDate:"",
             checkNum: "",
             isLoading: null,
             depositeDetails : {
@@ -190,10 +164,108 @@ export default {
                 depositDate:"",
             },
             showModal: false,
+            showModalError: false,
             reportResult:"",
+            error: "",
+            selectedItems:[],
         }
     },
     computed:{
+        headers(){
+            return [
+                {
+                    text: "کد چک",
+                    align: "center",
+                    //sortable: false,
+                    value: "checkKey",
+                },
+                {
+                    text: "شماره چک",
+                    align: "center",
+                    //sortable: false,
+                    value: "checkNum",
+                },
+                {
+                    text: "کد مشتری",
+                    align: "center",
+                    //sortable: false,
+                    value: "cardCode",
+                },                {
+                    text: "نام مشتری",
+                    align: "center",
+                    //sortable: false,
+                    value: "cardName",
+                },{
+                    text: "تاریخ چک",
+                    align: "center",
+                    //sortable: false,
+                    value: "dueDate",
+                },{
+                    text: "مبلغ",
+                    align: "center",
+                    //sortable: false,
+                    value: "value",
+                },{
+                    text: "نوع چک",
+                    align: "center",
+                    //sortable: false,
+                    value: "type",
+                },{
+                    text: "وضعیت چک",
+                    align: "center",
+                    //sortable: false,
+                    value: "state",
+                },{
+                    text: "وضعیت ثبت",
+                    align: "center",
+                    //sortable: false,
+                    value: "regSate",
+                },{
+                    text: "قابل انتقال",
+                    align: "center",
+                    //sortable: false,
+                    value: "transferable",
+                },{
+                    text: "کد بانک",
+                    align: "center",
+                    //sortable: false,
+                    value: "bankCode",
+                },{
+                    text: "شعبه",
+                    align: "center",
+                    //sortable: false,
+                    value: "branch",
+                },{
+                    text: "وضعیت واگذاری",
+                    align: "center",
+                    //sortable: false,
+                    value: "deposited",
+                },{
+                    text: "لغو شده",
+                    align: "center",
+                    //sortable: false,
+                    value: "canceled",
+                },{
+                    text: "جابجا شده",
+                    align: "center",
+                    //sortable: false,
+                    value: "transfered",
+                },{
+                    text: "تاریخ رسید",
+                    align: "center",
+                    //sortable: false,
+                    value: "receiptDate",
+                },{
+                    text: "عملیات",
+                    align: "center",
+                    //sortable: false,
+                    value: "actions",
+                },
+            ]
+        },
+        isSelectedCheque(){
+            return this.selectedItems.length > 0
+        },
         possibleNextReg(){
             return [
                 {
@@ -391,38 +463,55 @@ export default {
                         "nextAccntName": "سپه حیدر زاده 3101057536672"
                     }
                 ]
+        },
+        cheques(){
+      return this.$store.getters.getFoundCheques;
+        },
+        chequesFound(){
+            return this.$store.getters.getFoundCheques.length > 0;
+        },
+        isThereError(){
+            return this.error.length > 0;
         }
+
     },
     methods:{
-        submitAction(){
-        console.log("start")
+        submitSearch(){
         this.isLoading= true;
-        console.log(this.isLoading)
-        let payload = {check_num: this.checkNum,
-                    due_date: this.dueDate,
+        let payload =  this.checkNum
+        this.$store.dispatch('searchCheques', payload).then((resp) =>{
+            this.isLoading= false
+            console.log(parseInt(resp,10))
+            if (isNaN(parseInt(resp,10))) {
+                this.error = resp;
+                this.showModalError=true
+            }else if (resp == 0){
+                this.error = "سند یافت نشد";
+                this.showModalError=true
+            }}
+            ).catch(error => {
+                this.isLoading = false
+                this.error = error;
+                console.log("hhhhhhhhhhhhhh")
+            })         
+      },
+      submitAction(){
+        
+        const selectedCheques = this.selectedItems.map(item => item.checkKey)
+        let payload = {check_keys: selectedCheques,
                      next_state: this.selectedState,
-                     reg_state: this.selectedReg,
-                    deposite_details: this.depositeDetails}
-        this.$store.dispatch('updateCheques', payload).then((response) => {
-            console.log(response);
-
+                     reg_state: this.selectedReg}
+        this.$store.dispatch('updateChequeStates', payload).then((response) => {
         this.showModal=true;
-        this.reportResult = response.sucess_results[0][0];
-        console.log(this.reportResult);
-        this.isLoading= false;
-        })          
+        console.log("start")
+        console.log(response)
+        this.reportResult = response;
         this.selectedState = ''
+        this.selectedItems =[]
         this.selectedReg= ''
-       
-        this.depositeDetails = {
-                bankAccount: "",
-                payer: "",
-                bank: "",
-                branch: "",
-                depositedAccount: "",
-                reference: "",
-                depositDate:"",
-            }
+        })
+        this.$store.dispatch('nillError')            
+
       }
     }
 }
