@@ -407,8 +407,8 @@ export default {
             console.log(response);
 
         this.showModal=true;
-        this.reportResult = response.sucess_results;
-        console.log(this.resportResult);
+        this.reportResult = response.sucess_results[0][0];
+        console.log(this.reportResult);
         this.isLoading= false;
         })          
         this.selectedState = ''
