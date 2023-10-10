@@ -408,6 +408,7 @@ export default {
 
         this.showModal=true;
         this.reportResult = response.sucess_results[0];
+        console.log(this.resportResult);
         this.isLoading= false;
         })          
         this.selectedState = ''
