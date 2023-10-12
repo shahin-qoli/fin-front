@@ -152,7 +152,7 @@ const routes = [
   },  {
     path: '/sync',
     name: 'sync',
-    beforeEnter : guardMyrouteAdmin,
+    beforeEnter : guardMyrouteCheque,
     component: SyncDashboard
   },
   {
