@@ -4,10 +4,14 @@ export default{
     state(){
         return {
             cheques:[],
-            errorResponse: null
+            errorResponse: null,
+            foundCheques: [],
         }
     },
-    mutations:{
+    mutations:{  
+              setFoundCheques(state, cheques){
+        state.foundCheques = cheques;
+    },
         setCheques(state, cheques){
             state.cheques = cheques;
         },setError(state, err){
@@ -24,6 +28,9 @@ export default{
     getters:{
         getCheques(state){
             return state.cheques;
+        },       
+        getFoundCheques(state){
+            return state.foundCheques;
         },
         getError(state){
             return state.errorResponse
@@ -32,11 +39,9 @@ export default{
     actions:{
         async loadCheques(context, payload){
             try {
-                console.log(payload)
                 const {data: chequesData} = await cheqAgent.get(`/GetCheckList`,{ params: payload, paramsSerializer: {
                       indexes: null // by default: false
                     } })
-                console.log(chequesData)
                 const cheques = []
                 for (const item of chequesData) {
                     const cheque= {
@@ -62,6 +67,40 @@ export default{
                 return resp
             }catch (err){
                 context.commit('setError', err)
+            }
+            
+  
+        },
+        async updateChequeStates(context, payload){
+            context.commit('setError', null)
+            console.log(payload)
+            try {
+                const {data:resp} = await finAgent.post(`/front/cheques/update_check_state`, payload)
+                context.commit('setFoundCheques',[])
+                return resp
+            }catch (err){
+                context.commit('setError', err)
+            }
+            
+  
+        },
+        async searchCheques(context, payload){
+            context.commit('setError', null)
+            try {
+                var ChecKNum = Number(payload)
+                const {data: chequesData} = await cheqAgent.get(`/GetCheckListByCheckNumber?CheckNum=${ChecKNum}`)
+                const cheques = []
+                for (const item of chequesData) {
+                    const cheque= {
+                        ...item
+                    }
+                    cheques.push(cheque); 
+                }
+                context.commit('setFoundCheques',cheques)
+                return cheques.length
+            }catch (err){
+                context.commit('setError', err)
+                return err
             }
             
   

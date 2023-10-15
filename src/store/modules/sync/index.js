@@ -61,7 +61,7 @@ export default {
         async loadSyncSourceDocuments(context, payload){
             try{
                 const {data:responseData} = await finAgent.get(`/front/sync_source_documents?page=${payload.page}&per_page=${payload.itemsPerPage}&q[sync_template_id_eq]=${payload.selectedOption}
-                &q[is_synced_eq]=${payload.isSynced}&q[equivalent_created_eq]=${payload.equivalentCreated}`)
+                &q[is_synced_eq]=${payload.isSynced}&q[equivalent_created_eq]=${payload.equivalentCreated}&q[source_document_date_lt]=${payload.docsEndDate}&q[source_document_date_gt]=${payload.docsStartDate}`)
                 var syncSourceDocsData = responseData.data
                 var itemCount = responseData.options.count;
                 const syncSourceDocs =[]

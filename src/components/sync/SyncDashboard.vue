@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-card>
+                <v-card outlined>
                     <v-card-text>
                         <v-row>
                             <v-col cols="4">
@@ -41,8 +41,22 @@
                                 disabled
                                 ></v-text-field>
                             </v-col>
+                            <v-col cols="3">
+                                <date-picker v-model="options.docsStartDate" label="تاریخ شروع"></date-picker>
+                            </v-col>
+                            <v-col cols="3">
+                                <date-picker v-model="options.docsEndDate" label="تاریخ پایان"></date-picker>
+                            </v-col>
                         </v-row>                       
-                        <v-form v-if="isSelectedAnyOption" @submit.prevent="submitUpdate">
+                    </v-card-text>
+                </v-card>
+            </v-col>    
+        </v-row>            
+        <v-row>
+            <v-col cols="12">              
+                <v-card outlined>
+                    <v-card-text>
+                        <v-form  @submit.prevent="submitUpdate">
                             <v-row >
                                 <v-col cols="3"  >
                                     <date-picker v-model="updateStartDate" label="تاریخ شروع"></date-picker>
@@ -54,7 +68,7 @@
                                     <v-btn dark color="green" @click="updateMasterData">به روزرسانی اطلاعات پایه</v-btn>
                                 </v-col> -->
                             </v-row>
-                        </v-form>           
+                        </v-form>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -97,6 +111,12 @@
                             disabled
                             ></v-simple-checkbox>
                         </template>
+                        <template v-slot:[`item.source_document_total`]="{ item }">
+                        <p>{{ item.source_document_total | formatAmount }}</p>
+                    </template>
+                    <template v-slot:[`item.source_document_date`]="{ item }">
+                        <p>{{ item.source_document_date | formatDate }}</p>
+                    </template>
                         <!-- <template v-slot:[`item.controls`]="props">
                          <v-btn  class="mx-2" small  @click="retryJob(props.item)">
                         <v-icon>mdi-check-outline</v-icon>
@@ -150,6 +170,7 @@
 </template>
 
 <script>
+var jalaali = require('jalaali-js')
 import DatePicker from '../DatePicker.vue'
 export default{
     components: {DatePicker},
@@ -161,6 +182,8 @@ export default{
           selectedOption: 1,
           isSynced: false,
           equivalentCreated: false,
+          docsStartDate: '',
+            docsEndDate: '',
         },selectedDocs: [],
             // selectedOption: null,
             updateStartDate: null,
@@ -172,6 +195,7 @@ export default{
             showResultModal: false,
             isOkForReady: false,
             isOkForSync: false,
+
         }
     },
 
@@ -348,6 +372,19 @@ export default{
         },
         loadSyncSourceDocs(){
             this.$store.dispatch('loadSyncSourceDocuments', this.options)
+        }
+    },
+    filters:{
+        formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+        },
+        formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
     },
     created() {
