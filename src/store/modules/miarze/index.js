@@ -4,21 +4,31 @@ export default {
     state(){
         return {
             miarzeOrders:[],
-            itemCount: null
+            itemCount: null,
+            itemCountMessageTemplate: null,
+            miarzeMessageTemplates:[]
         }
     },
     mutations:{
         setMiarzeOrders(state, payload){
             state.miarzeOrders = payload;
         },
-        setItemCount(state, payload){
+        setItemCountMiarze(state, payload){
             state.itemCount = payload;
+        },
+        setMiarzeMessageTemplatesItemCount(state,payload){
+            state.itemCountMessageTemplate = payload
+        },
+        setMiarzeMessageTemplates(state,payload){
+         state.miarzeMessageTemplates = payload
         }
     },
-    methods:{
+    actions:{
         async loadMiarzeOrders(context, payload){
             try{
+                console.log("start")
                 const {data: responseData} = await finAgent.get(`/front/miarze_orders?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+                
                 var miarzeOrderData = responseData.data;
                 const miarzeOrders = []
                 var itemCount = responseData.options.count;
@@ -28,9 +38,50 @@ export default {
                     }
                     miarzeOrders.push(miarzeOrder); 
                 }
-                context.commit('setMiarzeOrders', payaneReports)
-                context.commit('setItemCount``', itemCount);
-            }catch(err){}
+
+                context.commit('setMiarzeOrders', miarzeOrders)
+                context.commit('setItemCountMiarze', itemCount);
+            }catch(err){
+            const error = new Error(
+                err.response.data.error || 'Failed to fetch'
+            );
+            throw error;
+            }
+        },
+        async loadMiarzeMessageTemplates(context){
+            try{
+                console.log("start")
+                const {data: responseData} = await finAgent.get(`/front/miarze_message_templates`);
+                var miarzeMessageTemplateData = responseData.data;
+                const miarzeMessageTemplates = []
+                var itemCount = responseData.options.count;
+                for (const item of miarzeMessageTemplateData) {
+                    const miarzeMessageTemplate= {
+                        ...item
+                    }
+                    miarzeMessageTemplates.push(miarzeMessageTemplate); 
+                }
+                context.commit('setMiarzeMessageTemplates', miarzeMessageTemplates)
+                context.commit('setMiarzeMessageTemplatesItemCount', itemCount);
+            }catch(err){
+            const error = new Error(
+                err.response.data.error || 'Failed to fetch'
+            );
+            throw error;
+        }},
+        async sendMessageToOrder(context, payload){
+            try{
+                console.log("start")
+                let data = {order_ids: payload.selectedOrders.map(item=> item.key), template_id: payload.selectedTemplate} 
+                const {data: responseData} = await finAgent.post(`/front/miarze_orders/send_sms`, data);
+                console.log(responseData)
+                return responseData
+            }catch(err){
+            const error = new Error(
+                err.response.data.error || 'Failed to fetch'
+            );
+            throw error;
+        }
         }
     },
     getters:{
@@ -39,6 +90,12 @@ export default {
         },
         getMiarzeOrdersItemCount(state){
             return state.itemCount;
+        },
+        getMiarzeMessageTemplatesItemCount(state){
+            return state.itemCountMessageTemplate;
+        },
+        getMiarzeMessageTemplates(state){
+        return state.miarzeMessageTemplates;
         }
     }
 }

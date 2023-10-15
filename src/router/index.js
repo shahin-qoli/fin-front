@@ -19,11 +19,12 @@ import PayaneVisitorListView from '../views/PayaneVisitorView.vue'
 import payanereportView from '../views/PayaneReportsView.vue'
 import chequeView from '../views/ChequeView.vue'
 import SyncDashboard from '../views/SyncDashboard.vue'
-
+import MiarzeMarketingView from '../views/MiarzeMarketingView.vue'
 import spreeInvoiceDashboardView from '../views/SpreeInvoiceDashboardView.vue'
 import chequeLogs from '../views/ChequeLogsView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
+import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -232,6 +233,16 @@ const routes = [
     name: 'spreedashboard',
     beforeEnter : guardMyrouteSpree,
     component: spreeInvoiceDashboardView
+  },  {
+    path: '/miarzemarketing',
+    name: 'miarzemarketing',
+    beforeEnter : guardMyrouteSpree,
+    component: MiarzeMarketingView
+  },{
+    path: '/miarzemessagetemplates',
+    name: 'miarzemessagetemplates',
+    beforeEnter : guardMyrouteSpree,
+    component: MiarzeMessageTemplateView
   },
   
   {
