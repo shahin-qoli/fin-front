@@ -256,7 +256,7 @@ const routes = [
     name: 'miarzemessagetemplates',
     beforeEnter : guardMyrouteSpree,
     component: MiarzeMessageTemplateView
-
+  },{
     path: '/spreevendor',
     name: 'spreevendor',
     beforeEnter : guardMyrouteSpree,
