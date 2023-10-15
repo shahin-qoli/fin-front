@@ -16,7 +16,7 @@ import payanereport from './modules/payanereport/index.js';
 import posrawdetails from './modules/posrawdetails/index.js';
 import bankpayane from './modules/bankpayane/index.js';
 import cheque from './modules/cheque/index.js';
-
+import miarze from './modules/miarze/index.js';
 import sync from './modules/sync/index.js';
 
 import spree from './modules/spree/index.js'
@@ -44,7 +44,8 @@ export default new Vuex.Store({
       sync,     
       spree,
       b1logs,
-      bank,     
+      bank, 
+      miarze,    
     },
     state(){
       return{ 

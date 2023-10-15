@@ -84,13 +84,13 @@ export default{
               owner_name: '',
               account_number: '',
               b1_account_code: '',
-              bank_id: 1
+              bank_id: ''
           },
           defaultItem: {
               owner_name: '',
               account_number: '',
               b1_account_code: '',
-              bank_id : 1
+              bank_id : ''
           },
       }
   },    watch: {
