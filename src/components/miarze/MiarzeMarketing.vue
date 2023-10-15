@@ -9,6 +9,33 @@
             </v-card-text>
         </v-card>
         <v-card>
+          <v-card-title>
+            <v-form>
+                    <v-row>
+                        <v-col cols="3">
+                          <v-select
+                          :items="orderStates"
+                          v-model="options.orderState"
+                          item-text="text"
+                          item-value="value"
+                          label="وضعیت سفارش"
+                          ></v-select>
+                        </v-col>
+                        <v-col cols="4">
+                            <date-picker label="تاریخ به‌روزرسانی از" v-model="options.orderUpdatedAtGt"></date-picker>
+                        </v-col>
+                        <v-col cols="4">
+                            <date-picker label="تاریخ ایجاد از" v-model="options.orderCreatedAtGt"></date-picker>
+                        </v-col>
+                        <!-- <v-col cols="1">
+                            <v-btn dark color="green" type="submit">جستجو</v-btn>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn dark color="red" @click="clearForm">پاک کردن</v-btn>
+                        </v-col> -->
+                    </v-row>
+                </v-form>
+          </v-card-title>
             <v-card-text>
                 <v-data-table
                 fixed-header
@@ -24,6 +51,9 @@
                 show-select       
                 @click:sort="sortChanged"           
                 >
+                <template v-slot:[`item.total_amount`]="{ item }">
+                  <p>{{ item.total_amount | formatAmount }}</p>
+                </template>
                 </v-data-table>
             </v-card-text>
         </v-card>
@@ -65,8 +95,9 @@
     </v-container>    
 </template>
 <script>
-
+  import DatePicker from '../DatePicker.vue'
 export default {
+
     data(){
         return {
           isLoading: false,
@@ -85,7 +116,7 @@ export default {
             selectedOrders:[],
             selectedTemplate:null,
         }
-    },
+    }, components:{ DatePicker},
     methods:{
       sortChanged(sort) {
         this.options.sortBy = sort[0].sortBy;
@@ -107,6 +138,7 @@ export default {
         })
       },
         loadOrders() {
+            console.log('Loading orders from Miarze...', this.options);
             this.$store.dispatch('loadMiarzeOrders',this.options)
     },
     openSendMessageModal(){
@@ -127,6 +159,26 @@ export default {
   },
     
     computed:{
+      orderStates(){
+        return [
+          {
+            text:'payment',
+            value:'payment'
+          },
+          {
+            text:'complete',
+            value:'complete'
+          },
+          {
+            text:'address',
+            value:'address'
+          },
+          {
+            text:'cart',
+            value:'cart'
+          }
+        ]
+      },
       messageTemplates(){
             return this.$store.getters.getMiarzeMessageTemplates;
         },
@@ -138,37 +190,36 @@ export default {
                 {
           text: "شماره سفارش",
           align: "center",
-          //sortable: false,
+          sortable: false,
           value: "number",
         },                {
           text: "وضعیت سفارش",
           align: "center",
-          //sortable: false,
+          sortable: false,
           value: "order_state",
         },                {
           text: "آخرین به‌روزرسانی",
           align: "center",
-          //sortable: false,
           value: "order_updated_at",
         },                {
           text: "ایجاد",
           align: "center",
-          //sortable: false,
+
           value: "order_created_at",
         },                {
           text: "کاربر",
           align: "center",
-          //sortable: false,
+          sortable: false,
           value: "user_name",
         },{
           text: "مبلغ",
           align: "center",
-          //sortable: false,
+          sortable: false,
           value: "total_amount",
         },{
           text: "پیامک",
           align: "center",
-          //sortable: false,
+          sortable: false,
           value: "message_count",
         },{
           text: "عملیات",
@@ -189,6 +240,13 @@ export default {
       this.loadOrders();    
       },  deep: true
          }
+    },
+    filters:{
+    formatAmount(value){
+      const stringVlue = String(value)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+    }
     },
     
     created(){

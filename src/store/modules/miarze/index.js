@@ -32,7 +32,7 @@ export default {
                     'q[order_updated_at_gt]': payload.orderUpdatedAtGt,
                     'q[order_state_eq]': payload.orderState,
                   };
-                  const sorting = payload.sortBy + ' ' + (payload.sortDesc ? 'desc' : 'asc')
+                  const sorting = payload.sortBy + ' ' + (payload.sortDesc[0] ? 'desc' : 'asc')
                   console.log(payload)
                   console.log(filters)
                   const params= {
