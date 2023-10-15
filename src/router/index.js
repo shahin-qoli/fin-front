@@ -115,7 +115,7 @@ function guardMyrouteLoggedIn(to, from, next){
   //this is just an example. You will have to find a better or 
   // centralised way to handle you localstorage data handling 
   
-  if(localStorage.getItem('token'))
+  if(window.localStorage.getItem('token'))
     isAuthenticated = true;
    else
     isAuthenticated= false;

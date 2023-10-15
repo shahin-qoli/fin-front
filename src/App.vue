@@ -24,7 +24,20 @@ export default {
   data: () => ({
 
   }),
-  
+  beforeMount() {
+    window.addEventListener("beforeunload", this.onUnload);
+  },
+  beforeDestroy() {
+    window.removeEventListener("beforeunload", this.onUnload);
+  },
+  methods: {
+    onUnload() {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('userId')
+      window.localStorage.removeItem('userEmail')
+      window.localStorage.removeItem('userRole')
+    }
+  },
   created(){
     this.$store.dispatch('initUser')
   }
