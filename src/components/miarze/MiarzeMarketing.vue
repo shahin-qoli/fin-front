@@ -5,7 +5,7 @@
                 به روز رسانی سفارشات
             </v-card-title>
             <v-card-text>
-                <v-btn color="primary">به روز رسانی</v-btn>
+                <v-btn :loading="isLoading" @click="updateMiarzeOrders" color="primary">به روز رسانی</v-btn>
             </v-card-text>
         </v-card>
         <v-card>
@@ -21,9 +21,9 @@
                 :options.sync="options"
                 :server-items-length="itemCountMiarze"
                 class="elevation-1"
-                show-select                  
+                show-select       
+                @click:sort="sortChanged"           
                 >
-
                 </v-data-table>
             </v-card-text>
         </v-card>
@@ -43,12 +43,25 @@
                     </v-select>
                   </v-col>
                   <v-col cols="4">
-                    <v-btn color="green" type="submit">ارسال</v-btn>
+                    <v-btn color="green" :loading="isLoading" type="submit">ارسال</v-btn>
                   </v-col>
                 </v-row>
                 </v-form>      
           </v-card-text>
         </v-card>
+        <v-dialog v-model="showModal" max-width="500">
+            <v-card>
+                <v-card-title class="text-h5">نتیجه</v-card-title>
+                <v-card-text>
+                    <v-row>
+                      <h4>{{updateResult}}</h4>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                <v-btn color="primary" text @click="showModal = false">بستن</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>    
 </template>
 <script>
@@ -56,22 +69,41 @@
 export default {
     data(){
         return {
+          isLoading: false,
+          showModal: false,
+          updateResult: '',
             options:{           
             itemsPerPage: 10,
-            page:1, },
+            page:1,
+            sortBy:  ['order_created_at'],
+            sortDesc:  ['false'],
+            orderState: '',
+            orderCreatedAtGt:'',
+            orderUpdatedAtGt:''
+           },
             showSendMessageModal: false,
             selectedOrders:[],
             selectedTemplate:null,
         }
     },
     methods:{
+      sortChanged(sort) {
+        this.options.sortBy = sort[0].sortBy;
+        this.options.sortDesc = sort[0].sortDesc;
+    },
       loadTemplates() {
             this.$store.dispatch('loadMiarzeMessageTemplates')
         },
       SendMessage(){
+        this.isLoading = true
         var payload = {selectedOrders: this.selectedOrders, selectedTemplate: this.selectedTemplate}
         this.$store.dispatch('sendMessageToOrder',payload).then((response)=> {
-          console.log(response)
+          this.isLoading = false
+          this.showModal= true
+        this.updateResult = response
+           this.selectedOrders=[],
+           this.selectedTemplate=null
+           this.loadOrders()
         })
       },
         loadOrders() {
@@ -83,6 +115,15 @@ export default {
     closeSendMessageModal() {
       this.showSendMessageModal = false;
     },
+    updateMiarzeOrders(){
+      this.isLoading = true
+      this.$store.dispatch('updateMiarzeOrders').then((response) => {
+        this.showModal= true
+        this.updateResult = response
+        this.isLoading = false
+        this.loadOrders()
+      })
+    }
   },
     
     computed:{

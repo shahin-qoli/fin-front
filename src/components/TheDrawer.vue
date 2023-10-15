@@ -97,7 +97,7 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/cheque'><h5>داشبود چک</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/cheque'><h5>داشبورد چک</h5></router-link> 
                     </v-col>
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/chequelogs'><h5>B1 Logs</h5></router-link> 
@@ -112,7 +112,17 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/spree'><h5>داشبود فاکتور</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/spree'><h5>همگام سازی</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/miarzemarketing'><h5>ارسال پیامک</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/miarzemessagetemplates'><h5>قالب پیامک</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -124,7 +134,7 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/sync'><h5>داشبود</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/sync'><h5>داشبورد</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>                  
                 </v-expansion-panel>
