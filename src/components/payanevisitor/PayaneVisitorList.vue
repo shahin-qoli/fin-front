@@ -1,4 +1,5 @@
 <template>
+  <v-container>
   <v-card outlined>
       <v-card-title>
           <v-text-field
@@ -31,7 +32,10 @@
       </template>
         <template v-slot:top>
               <v-toolbar flat color="white">
+                <v-switch 
+                  v-model="options.isActive" label="فقط فعال ها"></v-switch>
                   <v-spacer></v-spacer>
+
                   <v-dialog v-model="dialogNew" max-width="500px">
                   <template v-slot:activator="{ on, attrs }">
                       <v-btn
@@ -81,61 +85,51 @@
                       </v-card-actions>
                   </v-card>
                   </v-dialog>
-                  <!-- <v-dialog v-model="dialogEdit" max-width="500px">
-                  <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                      color="primary"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                      >جدید</v-btn>
-                  </template>
-                  <v-card>
-                      <v-card-title>
-                      <span class="headline"><span class="text-h5">{{ formTitle }}</span></span>
-                      </v-card-title>
-                      <v-card-text>
-                      <v-container>
-                          <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.name" label="نام ویزیتور"></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.b1_slpcode" label="کد بی وان"></v-text-field>
-                          </v-col>
-                          </v-row>
-                      </v-container>
-                      </v-card-text>
-                      <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
-                      <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
-                      </v-card-actions>
-                  </v-card>
-                  </v-dialog> -->
               </v-toolbar>
-          </template>
-          <!-- <template v-slot:[`item.actions`]="{ item }">
+        </template>
+          <template v-slot:[`item.actions`]="{ item }">
             <v-icon
               small
               class="mr-2"
-              @click="editItem(item)"
+              @click="deactiveItem(item)"
+              
             >
-              mdi-pencil
+              mdi-cancel
             </v-icon>
-          </template> -->
+          </template>
       </v-data-table>
   </v-card>
+  <v-dialog v-model="dialogConfirmDeactivate" max-width="400px">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn color="error" dark small v-bind="attrs" v-on="on">غیرفعال کردن</v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="headline"><span class="text-h5">تأیید عملیات</span></span>
+      </v-card-title>
+      <v-card-text>
+        آیا از غیرفعال کردن این مورد اطمینان دارید؟
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="closeConfirmDeactivate">لغو</v-btn>
+        <v-btn color="error" text @click="deactivateItemConfirmed">تأیید</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</v-container>
 </template>
 
 <script>
   export default{
       data(){
       return{
+        dialogConfirmDeactivate: false,
+      itemToDeactivate: null, // Store the item to be deactivated
         options: {
             itemsPerPage: 10,
             page:1,
+            isActive: true,
             },
         dialogNew: false,
         dialogEdit: false,
@@ -158,6 +152,13 @@
   }
       ,
       methods:{
+            closeConfirmDeactivate() {
+      this.dialogConfirmDeactivate = false;
+      this.itemToDeactivate = null; // Clear the stored item
+    },
+    openConfirmDeactivate() {
+      this.dialogConfirmDeactivate = true;
+    },
           close () {
       this.dialogNew = false
       this.$nextTick(() => {
@@ -165,11 +166,15 @@
         this.editedIndex = -1
       })
     },
-    editItem(item){
-      this.editedItem = item
-      this.editedIndex = item.id
-      this.dialog = true
-    },
+    deactiveItem(item){
+      if (this.itemToDeactivate) {
+      this.$store.dispatch('deactivePayanePerson', item.id).then((response) => {
+        if (response)
+        console.log("TRUE")
+      else
+      console.log("False")
+    })}
+    this.closeConfirmDeactivate();},
     saveNew () {
       this.$store.dispatch('createPayaneVisitor', this.newItem)
       this.loadPayaneVisitors();
@@ -198,6 +203,11 @@
                   text: "کد پایانه",
                   align: "center",
                   value: "payane_code",
+              },
+              {
+                  text: "فعال",
+                  align: "center",
+                  value: "is_active",
               },
               {
               text: "",

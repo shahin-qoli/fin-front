@@ -38,7 +38,7 @@ export default {
         async loadPayaneVisitors(context, payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get(`/front/payane_persons?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+                const {data: responseData} = await finAgent.get(`/front/payane_persons?page=${payload.page}&per_page=${payload.itemsPerPage}&q[is_active_eq]=${payload.isActive}`);
                 var payaneVisitorData = responseData.data;
                 var itemCount = responseData.options.count;
                 const payaneVisitors = []
@@ -100,6 +100,20 @@ export default {
                 );
                 throw error;
              }
+        },
+        async deactivePayanePerson(context,payload){
+            try{
+    const resonse = await finAgent.put(`/front/payane_persons/${payload.id}/deactivate`)
+    if (resonse.status < 300){
+    return true
         }
-    }
-}
+    else
+        return false
+    }catch (err) {
+        //console.log(err.response);
+        const error = new Error(
+            err.response.data.error || 'Failed to fetch'
+        );
+        throw error;
+     }
+}}}
