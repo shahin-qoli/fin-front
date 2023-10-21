@@ -40,6 +40,9 @@
                 <v-data-table
                 fixed-header
                 dense
+                :single-expand="singleExpand"
+      :expanded.sync="expanded"
+      show-expand
                 :headers="headers"
                 :items="MiarzeOrders"
                 item-key="id"
@@ -51,6 +54,20 @@
                 show-select       
                 @click:sort="sortChanged"           
                 >
+                <template v-slot:expanded-item="{ headers, item }">
+                  <td :colspan="headers.length">
+                    <v-card style="max-height: 200px; overflow: auto;">
+                      <v-card-title class="text-h6">نام کالا ها</v-card-title>
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="12">
+                            <th4 v-for="(productName, index) in item.product_names" :key="index">{{ productName }}</th4>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card>
+                  </td>
+                </template>
                 <template v-slot:[`item.total_amount`]="{ item }">
                   <p>{{ item.total_amount | formatAmount }}</p>
                 </template>
@@ -221,6 +238,11 @@ export default {
           align: "center",
           sortable: false,
           value: "message_count",
+        },{
+          text: "تعداد کالا",
+          align: "center",
+          sortable: false,
+          value: "item_count",
         },{
           text: "عملیات",
           align: "center",
