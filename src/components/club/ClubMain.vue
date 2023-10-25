@@ -25,14 +25,14 @@
                     <v-col cols="4">
                 <v-text-field
                 :value="reportData.points.point1.point"
-                label="امتیاز 1 میلیون خرید نقدی"
+                label="امتیاز خرید"
                 disabled
                 ></v-text-field>
             </v-col>
             <v-col cols="4">
                 <v-text-field
                 :value="reportData.points.point2.point"
-                label="امتیاز 1 میلیون خرید"
+                label="امتیاز نقدی"
                 disabled
                 ></v-text-field>
             </v-col>
@@ -50,7 +50,7 @@
                     </v-card-title>
                     <v-card-text>
                        <p> کل مبلغ خرید شما {{ reportData.points.point1.summation | formatAmount}} ریال بوده است.</p>
-                       <p>با توجه به محاسبه هر {{ reportData.points.point1.divider | formatAmount}} یک امتیاز شما {{  reportData.points.point1.point }} امتیاز برده اید.</p>
+                       <p>با توجه به محاسبه هر {{ reportData.points.point1.divider | formatAmount}} یک امتیاز شما {{  reportData.points.point1.point }} امتیاز کسب کرده اید.</p>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -61,14 +61,16 @@
                     </v-card-title>
                     <v-card-text>
                        <p> کل مبلغ خرید نقدی شما {{ reportData.points.point2.summation | formatAmount }} ریال بوده است.</p>
-                       <p>با توجه به محاسبه هر {{ reportData.points.point2.divider | formatAmount }} دو امتیاز شما {{  reportData.points.point2.point }} امتیاز برده اید.</p>
+                       <p>با توجه به محاسبه هر {{ reportData.points.point2.divider | formatAmount }} دو امتیاز شما {{  reportData.points.point2.point }} امتیاز کسب کرده اید.</p>
                     </v-card-text>
                 </v-card>
             </v-col>
             <v-col cols="12">
-                <v-btn color="red" @click="reportData = null,reportData=null,mobileNumber=''" >بستن</v-btn>
-            </v-col>
             <v-card>
+                <v-card-title>
+                    <p>جزییات فاکتور</p>
+                </v-card-title>
+                <v-card-text>
                 <v-data-table
                 fixed-header
                 dense
@@ -83,7 +85,12 @@
                 <p>{{ item.DocDate | formatDate }}</p>
                 </template>
                 </v-data-table>
+            </v-card-text>
             </v-card>
+        </v-col>
+            <v-col cols="12">
+                <v-btn color="red" @click="reportData = null,reportData=null,mobileNumber=''" >بستن</v-btn>
+            </v-col>
             </v-row>
             </v-card-text>
         </v-card>
