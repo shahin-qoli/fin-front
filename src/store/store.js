@@ -18,7 +18,7 @@ import bankpayane from './modules/bankpayane/index.js';
 import cheque from './modules/cheque/index.js';
 import miarze from './modules/miarze/index.js';
 import sync from './modules/sync/index.js';
-
+import club from './modules/club/index.js'
 import spree from './modules/spree/index.js'
 import b1logs from './modules/b1logs/index.js';
 import bank from './modules/bank/index.js'
@@ -45,7 +45,8 @@ export default new Vuex.Store({
       spree,
       b1logs,
       bank, 
-      miarze,    
+      miarze, 
+      club,   
     },
     state(){
       return{ 

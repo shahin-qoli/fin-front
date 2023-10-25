@@ -25,7 +25,7 @@ import chequeLogs from '../views/ChequeLogsView.vue'
 import ChequeUpdate from '../views/ChequeUpdateView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
-
+import ClubMainView from '../views/ClubMainView.vue'
 import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
@@ -129,6 +129,13 @@ function guardMyrouteLoggedIn(to, from, next){
    }
 }
 const routes = [
+  {
+    path: '/club',
+    name: 'club',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: ClubMainView
+  },
   {
     path: '/',
     name: 'home',
