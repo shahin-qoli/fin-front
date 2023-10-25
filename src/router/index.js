@@ -25,7 +25,7 @@ import chequeLogs from '../views/ChequeLogsView.vue'
 import ChequeUpdate from '../views/ChequeUpdateView.vue'
 import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
-
+import ExhabitionView from '../views/ExhabitionDashboardView.vue'
 import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
@@ -134,7 +134,14 @@ const routes = [
     name: 'home',
     beforeEnter : guardMyrouteLoggedIn,
     component: HomeView
-  },  {
+  },
+  {
+    path: '/exhabition',
+    name: 'exhabition',
+    beforeEnter : guardMyrouteAdmin,
+    component: ExhabitionView
+  },
+  {
     path: '/cardtocard',
     name: 'cardtocard',
     beforeEnter : guardMyrouteAdmin,
