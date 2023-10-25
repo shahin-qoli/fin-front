@@ -12,7 +12,7 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn type="submit" color="purple">جستجو</v-btn>
+                            <v-btn :loading="isLoading" type="submit" color="purple">جستجو</v-btn>
                         </v-col>
                     </v-row>
                     </v-form>
@@ -91,11 +91,15 @@ export default {
             reportData:null,
             errorData: null,
             errorModal: false,
+            isLoading: false
         }
     },
     methods:{
         submitForm(){
+            this.isLoading = true
+            this.reportData = null
             this.$store.dispatch('findClubReport', this.mobileNumber).then((response) => {
+                this.isLoading = false
                 console.log(response)
                 if (response.success){
                     this.reportData = response.result
