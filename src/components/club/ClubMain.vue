@@ -163,7 +163,7 @@
                 </v-card>
             </v-col>
                 <v-col cols="12">
-                    <v-btn color="red" @click="reportData = null,reportData=null,mobileNumber=''" >بستن</v-btn>
+                    <v-btn color="red" @click="refreshData" >بستن</v-btn>
                 </v-col>
                 </v-row>
                 </v-card-text>
