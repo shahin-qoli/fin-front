@@ -78,12 +78,15 @@
                     </template>
                     <template v-slot:expanded-item="{ headers}">
                         <td :colspan="headers.length">
-                                    <v-row
+                            <v-row>
+                                    <v-col cols="12"
                                     v-for="check in chequeHistory"
                                     :key="check.id"
                                     >
-                                    <p>در تاریخ {{check.created_at}} با بدنه درخواست {{check.request_body }} و نتیجه {{ check.is_success }}</p>
-                                    </v-row>
+                                    <p>در تاریخ {{check.created_at | formatDate}} با بدنه درخواست {{check.request_body }} و نتیجه {{ check.is_success }}</p>
+                                    </v-col>
+                            </v-row>
+
                         </td>
                     </template>
                 </v-data-table>
@@ -625,16 +628,14 @@ export default {
       }
     },watch:{
         expanded(newExpanded, oldExpanded) {
-            console.log("Going to oooooooo")
-                    console.log(newExpanded, oldExpanded)
-            if (newExpanded !== oldExpanded && newExpanded.length != 0 ) {
-                
+            if (newExpanded !== oldExpanded && newExpanded.length != 0 ) {              
                 this.$store.dispatch('loadChequeHistory', newExpanded).then((response) => {
-
                     this.chequeHistory = response
-
             })
-        }
+        }else 
+            {
+                this.chequeHistory = null
+            }
     }},
     filters:{
         formatState(state, chequeStates){
