@@ -53,6 +53,9 @@
                 :items="cheques"
                 item-key="checkKey"
                 show-select
+                single-expand
+                :expanded.sync="expanded"
+                show-expand
                 item-value="checkKey"
                 v-model="selectedItems"
                 @input="handleTableSelectionChange"
@@ -72,6 +75,16 @@
                     </template>
                     <template v-slot:[`item.receiptDate`]="{ item }">
                         <p>{{ item.receiptDate | formatDate }}</p>
+                    </template>
+                    <template v-slot:expanded-item="{ headers}">
+                        <td :colspan="headers.length">
+                                    <v-row
+                                    v-for="check in chequeHistory"
+                                    :key="check.id"
+                                    >
+                                    <p>در تاریخ {{check.created_at}} با بدنه درخواست {{check.request_body }} و نتیجه {{ check.is_success }}</p>
+                                    </v-row>
+                        </td>
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -203,6 +216,7 @@ export default {
     components:{ DatePicker},
     data() {
         return {
+            chequeHistory: null,
             searchLoaded: '',
             search: {
                 startDate: '',
@@ -379,7 +393,7 @@ export default {
                 depositedAccount: "",
                 reference: "",
                 depositDate:"",
-            },
+            }, expanded: [],
             showModal: false,
             reportResult: {
                 "sucess_results" : [],
@@ -609,7 +623,19 @@ export default {
                 depositDate:"",
             }
       }
-    },
+    },watch:{
+        expanded(newExpanded, oldExpanded) {
+            console.log("Going to oooooooo")
+                    console.log(newExpanded, oldExpanded)
+            if (newExpanded !== oldExpanded && newExpanded.length != 0 ) {
+                
+                this.$store.dispatch('loadChequeHistory', newExpanded).then((response) => {
+
+                    this.chequeHistory = response
+
+            })
+        }
+    }},
     filters:{
         formatState(state, chequeStates){
             let index = chequeStates.findIndex(stat => stat.value == state )

@@ -107,6 +107,18 @@ export default{
         },
         nillError(context){
             context.commit('nillError') 
+        },
+        async loadChequeHistory(context, payload){
+            context.commit('setError', null)
+            try {
+                console.log("LOOOOOOOOOOOOG")
+                console.log(payload)
+                const {data: historyData} = await finAgent.get(`/front/cheques/get_check_history?check_key=${payload[0].checkKey}`);
+                console.log(historyData)
+                return historyData
+            } catch (err) {
+                context.commit('setError', err)
+            }
         }
     }
 }
