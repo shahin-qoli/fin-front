@@ -19,14 +19,14 @@
                     <v-card class="section section_dark ma-5 pa-5" outlined>
                         <v-card-text>  
                                 <v-form @submit.prevent="submitFormMobile">
-                                    <v-row>
-                                    <v-col cols="5">
+                                    <v-row no-gutters>
+                                    <v-col cols="12" md="6">
                                         <v-text-field
                                         label="شماره موبایل"
                                         v-model="mobileNumber"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="4">
+                                    <v-col cols="12" md="6">
                                         <v-btn :loading="isLoading" type="submit" color="purple">جستجو</v-btn>
                                     </v-col>
                                 </v-row>
@@ -38,14 +38,14 @@
                     <v-card class="section section_dark ma-5 pa-5" outlined>
                         <v-card-text>  
                                 <v-form @submit.prevent="submitFormCode">
-                                    <v-row>
-                                    <v-col cols="5">
+                                    <v-row no-gutters>
+                                    <v-col cols="12" md="6">
                                         <v-text-field
                                         label="شماره مشتری"
                                         v-model="cardCode"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="4">
+                                    <v-col cols="12" md="6">
                                         <v-btn :loading="isLoading" type="submit" color="purple">جستجو</v-btn>
                                     </v-col>
                                 </v-row>
@@ -55,35 +55,35 @@
                 </v-tab-item>
             </v-tabs-items>
         </v-card>
-        <v-card class="section section_dark ma-5 pa-5" v-if="reportData">
-            <v-card class="section section_dark ma-5 pa-5">
+        <v-card class="ma-5 pa-5" v-if="reportData">
+            <v-card class=" ma-5 pa-5">
                 <v-card-title>
                     <p>مشخصات مشتری</p>
                 </v-card-title>
                 <v-card-text >
-                    <v-row>
-                        <v-col cols="3">
+                    <v-row no-gutters>
+                        <v-col cols="12" lg="4" sm="6" md="6">
                             <v-text-field
                     :value="reportData.customer_data.cardName"
                     label="نام مشتری"
                     disabled
                     ></v-text-field>
                         </v-col>
-                        <v-col cols="3">
+                        <v-col cols="12" lg="4" sm="6" md="6">
                             <v-text-field
                     :value="reportData.customer_data.cardCode"
                     label="کد مشتری"
                     disabled
                     ></v-text-field>
                         </v-col>
-                        <v-col cols="3">
+                        <v-col cols="12" lg="4" sm="6" md="6">
                             <v-text-field
                     :value="reportData.customer_data.city"
                     label="شهر "
                     disabled
                     ></v-text-field>
                         </v-col>
-                        <v-col cols="3">
+                        <v-col cols="12" lg="4" sm="6" md="6">
                             <v-text-field
                     :value="reportData.customer_data.cellular"
                     label="شماره موبایل "
@@ -96,28 +96,28 @@
             <v-card>
                 <v-card-text class="section section_dark">
                     <v-row>
-                        <v-col cols="4">
+                        <v-col cols="12" lg="4" sm="4" md="4">
                     <v-text-field
                     :value="reportData.points.point1.point"
                     label="امتیاز خرید"
                     disabled
                     ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="12" lg="4" sm="4" md="4">
                     <v-text-field
                     :value="reportData.points.point2.point"
                     label="امتیاز نقدی"
                     disabled
                     ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="12" lg="4" sm="4" md="4">
                     <v-text-field
                     :value="reportData.points.point2.point + reportData.points.point1.point"
                     label="جمع امتیاز"
                     disabled
                     ></v-text-field>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" lg="6" sm="6" md="6">
                     <v-card>
                         <v-card-title>
                             محاسبات امتیاز اول
@@ -128,7 +128,7 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" lg="6" sm="6" md="6">
                     <v-card>
                         <v-card-title>
                             محاسبات امتیاز دوم
