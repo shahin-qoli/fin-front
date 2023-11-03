@@ -355,6 +355,13 @@ export default {
                 //sortable: false,
                 value: "last_order[0].DocDate",
                 },
+                ,
+                {
+                text: "موبایل ثبت شده",
+                align: "center",
+                //sortable: false,
+                value: "final_mobile_number",
+                },
                 {
                 text: "ثبت نام شده",
                 align: "center",
