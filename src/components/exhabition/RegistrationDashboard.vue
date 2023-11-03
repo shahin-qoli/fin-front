@@ -355,7 +355,6 @@ export default {
                 //sortable: false,
                 value: "last_order[0].DocDate",
                 },
-                ,
                 {
                 text: "موبایل ثبت شده",
                 align: "center",
