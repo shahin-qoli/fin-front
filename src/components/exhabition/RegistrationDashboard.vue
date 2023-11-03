@@ -11,6 +11,9 @@
                 <v-tab>
                     <p>جستجوی پیشرفته</p>
                 </v-tab>
+                <v-tab>
+                    <p>ثبت مشتری ناشناس</p>
+                </v-tab>
     </v-tabs>
     <v-tabs-items  v-if="!isSearchSuccess"
     v-model="tab">
@@ -32,8 +35,7 @@
     </v-card>
     </v-tab-item>
     <v-tab-item>
-
-        <v-card  >
+        <v-card >
         <v-card-title><p>جستجو پیشرفته</p></v-card-title>
         <v-card-text>
             <v-form @submit.prevent="submitFormAdvanced">
@@ -67,8 +69,54 @@
         </v-card-text>
     </v-card>
     </v-tab-item>
+    <v-tab-item>
+        <v-card >
+        <v-card-title><p>ثبت مشتری ناشناس</p></v-card-title>
+        <v-card-text>
+            <v-form @submit.prevent="submitFormUnknown">
+                <v-row>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.name" label="نام" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.mobileNumber" label="شماره موبایل" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.county" label="استان" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.city" label="شهر" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.address" label="آدرس" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.idNumber" label="کد ملی" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="unknownUser.slpName" label="نام ویزیتور" outlined></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-radio-group row v-model="unknownUser.signedDay">
+                            <v-radio label="سه شنبه" value="1"></v-radio>
+                            <v-radio label="چهار شنبه" value="2"></v-radio>
+                            <v-radio label="پنج شنبه" value="3"></v-radio>
+                            <v-radio label="جمعه" value="4"></v-radio>
+                        </v-radio-group>
+                    </v-col> 
+                    <v-col cols="3">
+                        <v-text-field v-model="unknownUser.guestCount" label="تعداد مهمان"></v-text-field>
+                    </v-col>
+                     
+                    <v-col cols="6">
+                        <v-btn color="primary" type="submit">ثبت</v-btn>
+                    </v-col>
+                </v-row>
+            </v-form>
+        </v-card-text>
+    </v-card>
+    </v-tab-item>
     </v-tabs-items>
-
     <v-card v-if="isSearchSuccess && !selectedCustomer">
         <v-card-title><p>نتایج جستجو</p></v-card-title>
         <v-card-text>
@@ -85,9 +133,9 @@
 
             </v-data-table>
         </v-card-text>
-        <v-card-action>
+        <v-card-actions>
                 <v-btn @click="refreshData" color="red">بازنشانی</v-btn>
-        </v-card-action>
+        </v-card-actions>
     </v-card>
     <v-card v-if="selectedCustomer && !isGatherData">
         <v-card-title><p>تایید انتخاب</p></v-card-title>
@@ -130,6 +178,9 @@
                         <v-text-field v-model="guestCount" label="تعداد مهمان"></v-text-field>
                     </v-col>
                     <v-col cols="3">
+                        <v-text-field v-model="idNumber" label="تعداد مهمان"></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
                         <v-btn color="primary" type="submit">ثبت</v-btn>
                     </v-col>  
                 </v-row> 
@@ -163,7 +214,7 @@
                 <v-btn color="primary" text @click="errorModal = false, errorData = ''">بستن</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+    </v-dialog>
 </v-container>
 </template>
 
@@ -173,6 +224,18 @@ export default {
     data(){
         return {
             tab: null,
+            unknownUser:{
+                name:'',
+                county: '',
+                city: '',
+                mobileNumber: '',
+                address: '',
+                slpName: '',
+                signedDay:null,
+                idNumber: '',
+                guestCount: null,
+
+            },
             advancedSerach:{
                 cardName:'',
                 idNumber: '',
@@ -195,12 +258,25 @@ export default {
             signedDay: null,
             completed: false,
             itemCount: null,
+            idNumber: null
   
             
         }
     },
     methods:{
         refreshData() {
+            this.unknownUser={
+                name:'',
+                county: '',
+                city: '',
+                mobileNumber: '',
+                address: '',
+                slpName: '',
+                signedDay:null,
+                idNumber: '',
+                guestCount: null,
+
+            },
             this.advancedSerach = {
                 cardName:'',
                 idNumber: '',
@@ -210,6 +286,7 @@ export default {
                 county: '',
                 address: '',
             },
+            this.idNumber = null,
             this.advancedSearchRequired= false,
             this.mobileNumber= '',
             this.isLoading =  false,
@@ -262,7 +339,7 @@ export default {
         },
         submitFormGatherData(){
             this.isLoading = true
-            let data ={guestCount: this.guestCount, signedDay: this.signedDay, cardCode: this.selectedCustomer } 
+            let data ={guestCount: this.guestCount, signedDay: this.signedDay, cardCode: this.selectedCustomer, idNumber: this.idNumber } 
             this.$store.dispatch('submitFormGatherData', data).then((response) => {
                 this.isLoading = false
                 console.log(response)
@@ -292,6 +369,26 @@ export default {
                     this.errorData = response.result.error || "شماره وارد شده صحیح نیست"
                     this.errorModal= true}
             })
+        },
+        submitFormUnknown(){
+            this.isLoading = true
+            this.$store.dispatch('submitFormUnknown', this.unknownUser).then((response) => {
+                this.isLoading = false
+                console.log(response)
+                if (response.success){
+                    if (response.result.data.length > 0){
+                    this.searchResult = response.result.data
+                    this.isSearchSuccess = true;}
+                    else{
+                        this.errorData ="مشتری پیدا نشد"
+                        this.errorModal= true
+                    }
+                }
+                else{                   
+                    this.errorData = response.result.error || "شماره وارد شده صحیح نیست"
+                    this.errorModal= true}
+            })
+       
         }
     },
     computed:{

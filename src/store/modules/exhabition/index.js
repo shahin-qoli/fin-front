@@ -34,7 +34,7 @@ export default{
 },
 async submitFormGatherData(context, payload){
     try{
-    const body = {card_code: payload.cardCode, signed_day: payload.signedDay, guest_count: payload.guestCount}
+    const body = {card_code: payload.cardCode, signed_day: payload.signedDay, guest_count: payload.guestCount, id_number: payload.idNumber}
     const response = await finAgent.post(`/v2/club_invited_users/create_guest`, body)  
 
     if (response.status == 200)
@@ -61,4 +61,19 @@ async submitFormAdvancedSearch(context, payload){
         return  {success: false, result: err.response.data}
      } 
 },
+async submitFormUnknown(context, payload){
+    try{
+        const body = {name: payload.name, signed_day: payload.signedDay, guest_count: payload.guestCount, id_number: payload.idNumber,
+        county: payload.county, city: payload.city, mobile_number: payload.mobileNumber,address: payload.address, slp_name: payload.slpName}
+        const response = await finAgent.post(`/v2/club_unknown_users/create_guest`, body)  
+    
+        if (response.status == 200)
+            return  {success: true, result:response.data}
+        else 
+            return  {success: false, result:response.data}
+        
+    }catch (err) {
+        return  {success: false, result: err.response.data}
+     } 
+}
 }}
