@@ -22,6 +22,7 @@ import club from './modules/club/index.js'
 import spree from './modules/spree/index.js'
 import b1logs from './modules/b1logs/index.js';
 import bank from './modules/bank/index.js'
+import exhabition from './modules/exhabition/index.js'
 
 Vue.use(Vuex);
 
@@ -46,7 +47,8 @@ export default new Vuex.Store({
       b1logs,
       bank, 
       miarze, 
-      club,   
+      club, 
+      exhabition,  
     },
     state(){
       return{ 
