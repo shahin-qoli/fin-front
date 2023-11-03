@@ -1,6 +1,21 @@
 <template>
 <v-container>
-    <v-card v-if="!isSearchSuccess && !advancedSearchRequired">
+    <v-tabs v-if="!isSearchSuccess"
+            @change="refreshData"
+            v-model="tab"
+            align-with-title
+            ><v-tabs-slider color="yellow"></v-tabs-slider>
+                <v-tab>
+                    <p>جستجو با شماره موبایل</p>
+                </v-tab>
+                <v-tab>
+                    <p>جستجوی پیشرفته</p>
+                </v-tab>
+    </v-tabs>
+    <v-tabs-items  v-if="!isSearchSuccess"
+    v-model="tab">
+    <v-tab-item>
+        <v-card>
         <v-card-title><p>جستجو با شماره موبایل مشتری</p></v-card-title>
         <v-card-text>
             <v-form @submit.prevent="submitFormMobile">
@@ -11,14 +26,14 @@
                     <v-col cols="3">
                         <v-btn color="primary" type="submit">جستجو</v-btn>
                     </v-col>
-                    <v-col cols="3">
-                        <v-btn color="yellow" @click="advancedSearchRequired = true">جستجو پیشرفته</v-btn>
-                    </v-col>
                 </v-row>
             </v-form>
         </v-card-text>
     </v-card>
-    <v-card v-if="!isSearchSuccess && advancedSearchRequired" >
+    </v-tab-item>
+    <v-tab-item>
+
+        <v-card  >
         <v-card-title><p>جستجو پیشرفته</p></v-card-title>
         <v-card-text>
             <v-form @submit.prevent="submitFormAdvanced">
@@ -51,24 +66,31 @@
             </v-form>
         </v-card-text>
     </v-card>
+    </v-tab-item>
+    </v-tabs-items>
+
     <v-card v-if="isSearchSuccess && !selectedCustomer">
-        <v-card-title><p>نتایج جستجو برای شماره {{ mobileNumber }}</p></v-card-title>
+        <v-card-title><p>نتایج جستجو</p></v-card-title>
         <v-card-text>
             <v-data-table
                 :items="searchResult"
                 :headers="headers"
                 item-key="card_code"
-
             >
             <template v-slot:[`item.action`]="props">
-                <v-btn class="mx-2" color="orange"  @click="selectedCustomer =  props.item.card_code">
+                <v-btn :disabled="props.item.is_settled" class="mx-2" color="orange"  @click="selectedCustomer =  props.item.card_code">
                     انتخاب
                 </v-btn>
               </template> 
+
             </v-data-table>
         </v-card-text>
+        <v-card-action>
+                <v-btn @click="refreshData" color="red">بازنشانی</v-btn>
+        </v-card-action>
     </v-card>
     <v-card v-if="selectedCustomer && !isGatherData">
+        <v-card-title><p>تایید انتخاب</p></v-card-title>
         <v-card-text>
             <v-row>
                 <v-col v-if="mobileNumber.length == 11" cols="6">
@@ -87,8 +109,12 @@
                 </v-col>
             </v-row>
         </v-card-text>
+        <v-card-action>
+                <v-btn @click="refreshData" color="red">بازنشانی</v-btn>
+        </v-card-action>
     </v-card>
     <v-card v-if="isGatherData && !completed">
+        <v-card-title><p>ورود اطلاعات همایش</p></v-card-title>
         <v-card-text>
             <v-form @submit.prevent="submitFormGatherData">  
                 <v-row>
@@ -109,6 +135,9 @@
                 </v-row> 
             </v-form>
         </v-card-text>
+        <v-card-action>
+                <v-btn @click="refreshData" color="red">بازنشانی</v-btn>
+        </v-card-action>
     </v-card>
     <v-card v-if="completed">
         <v-col cols="12">
@@ -143,6 +172,7 @@ var jalaali = require('jalaali-js')
 export default {
     data(){
         return {
+            tab: null,
             advancedSerach:{
                 cardName:'',
                 idNumber: '',
@@ -171,6 +201,16 @@ export default {
     },
     methods:{
         refreshData() {
+            this.advancedSerach = {
+                cardName:'',
+                idNumber: '',
+                slpCode: '',
+                slpName: '',
+                countyPhoneCode: '',
+                county: '',
+                address: '',
+            },
+            this.advancedSearchRequired= false,
             this.mobileNumber= '',
             this.isLoading =  false,
             this.searchResult =  null,
@@ -216,7 +256,7 @@ export default {
 
                 }
                 else{                   
-                    this.errorData =  response.result.error || "کد وارد شده صحیح نیست"
+                    this.errorData = "شماره وارد شده تکراری است" 
                     this.errorModal= true}
             })
         },
@@ -257,6 +297,13 @@ export default {
     computed:{
         headers(){
             return [
+                
+                {
+                text: "انتخاب",
+                align: "center",
+                //sortable: false,
+                value: "action",
+                },
                 {
                 text: "نام",
                 align: "center",
@@ -309,10 +356,10 @@ export default {
                 value: "last_order[0].DocDate",
                 },
                 {
-                text: "انتخاب",
+                text: "ثبت نام شده",
                 align: "center",
                 //sortable: false,
-                value: "action",
+                value: "is_settled",
                 }
             ]
         }
