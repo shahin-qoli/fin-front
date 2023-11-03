@@ -27,7 +27,7 @@
                         <v-text-field v-model="mobileNumber" label="شماره موبایل" outlined></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                        <v-btn color="primary" type="submit">جستجو</v-btn>
+                        <v-btn color="primary" :loading="isLoading" type="submit">جستجو</v-btn>
                     </v-col>
                 </v-row>
             </v-form>
@@ -62,7 +62,7 @@
                         <v-text-field v-model="advancedSerach.slpCode" label="کد ویزیتور" outlined></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-btn color="primary" type="submit">جستجو</v-btn>
+                        <v-btn color="primary" :loading="isLoading" type="submit">جستجو</v-btn>
                     </v-col>
                 </v-row>
             </v-form>
@@ -109,7 +109,7 @@
                     </v-col>
                      
                     <v-col cols="6">
-                        <v-btn color="primary" type="submit">ثبت</v-btn>
+                        <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
                     </v-col>
                 </v-row>
             </v-form>
@@ -150,7 +150,7 @@
                    </h3>
                 </v-col>
                 <v-col cols="3">
-                    <v-btn color="primary" @click="submitMobileForCode">تایید</v-btn>
+                    <v-btn color="primary" :loading="isLoading" @click="submitMobileForCode">تایید</v-btn>
                 </v-col>
                 <v-col cols="3">
                     <v-btn color="red" @click="mobileNumber = ''">اصلاح</v-btn>
@@ -181,7 +181,7 @@
                         <v-text-field v-model="idNumber" label="تعداد مهمان"></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                        <v-btn color="primary" type="submit">ثبت</v-btn>
+                        <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
                     </v-col>  
                 </v-row> 
             </v-form>
