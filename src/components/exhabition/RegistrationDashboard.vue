@@ -56,10 +56,15 @@
                         <v-text-field v-model="advancedSerach.address" label="آدرس" outlined></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                        <v-text-field v-model="advancedSerach.slpName" label="نام ویزیتور" outlined></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                        <v-text-field v-model="advancedSerach.slpCode" label="کد ویزیتور" outlined></v-text-field>
+                        <v-select
+                                    :items="slpData"
+                                    name="visitor"
+                                    label="ویزیتور"
+                                    solo
+                                    item-text="slp_name"
+                                    item-value="slp_code"
+                                    v-model="advancedSerach.slpCode"
+                        ></v-select>
                     </v-col>
                     <v-col cols="6">
                         <v-btn color="primary" :loading="isLoading" type="submit">جستجو</v-btn>
@@ -389,6 +394,9 @@ export default {
                     this.errorModal= true}
             })
        
+        },
+        loadSlps(){
+            this.$store.dispatch('loadSlpData')
         }
     },
     computed:{
@@ -465,6 +473,9 @@ export default {
                 value: "is_settled",
                 }
             ]
+        },
+        slpData(){
+            return this.$store.getters.getSpls;
         }
     },
     filters:{
@@ -480,6 +491,9 @@ export default {
             return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
 
+    },
+    created(){
+        this.loadSlps();
     }
     
 }

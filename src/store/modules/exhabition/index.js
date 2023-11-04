@@ -1,9 +1,21 @@
 import  {finAgent} from '@/services/agent'
 
 export default{
-    state(){},
-    mutations:{},
-    getters:{},
+    state(){
+        return{
+            slps: []
+        }
+    },
+    mutations:{
+        setSlps(state, payload){
+            state.slps = payload
+        }
+    },
+    getters:{
+        getSpls(state){
+            return state.slps
+        }
+    },
     actions:{
         async findUserByMobile(context, payload){
             try{
@@ -49,7 +61,7 @@ async submitFormGatherData(context, payload){
 async submitFormAdvancedSearch(context, payload){
     try{
         const response = await finAgent.get(`/v2/club_user_data?q[address_cont]=${payload.address}&q[card_name_cont]=${payload.cardName}&
-        q[county_matches]=${payload.county}&q[slp_name_cont]=${payload.slpName}&q[slp_code_cont]=${payload.slpCode}&q[id_number_eq]=${payload.idNumber}&
+        q[county_matches]=${payload.county}&q[slp_name_cont]=${payload.slpName}&q[slp_code_eq]=${payload.slpCode}&q[id_number_eq]=${payload.idNumber}&
         q[county_phone_code_eq]=${payload.countyPhoneCode}`)  
     
         if (response.status == 200)
@@ -75,5 +87,27 @@ async submitFormUnknown(context, payload){
     }catch (err) {
         return  {success: false, result: err.response.data}
      } 
+},
+async loadSlpData(context){
+    try{
+        const {data:responseData} = await finAgent.get(`/v2/club_slp_data`)  
+        var slpData = responseData
+        const slps = [];
+        for (const item of slpData) {
+            
+            const slp = {
+
+                 ...item
+            };
+            slps.push(slp);  
+          }
+          context.commit('setSlps', slps);
+    }catch (err) {
+        //console.log(err.response);
+        const error = new Error(
+            err || 'Failed to fetch'
+        );
+        throw error;
+     }  
 }
 }}
