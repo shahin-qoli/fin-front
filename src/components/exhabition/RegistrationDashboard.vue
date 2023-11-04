@@ -178,7 +178,7 @@
                         <v-text-field v-model="guestCount" label="تعداد مهمان"></v-text-field>
                     </v-col>
                     <v-col cols="3">
-                        <v-text-field v-model="idNumber" label="تعداد مهمان"></v-text-field>
+                        <v-text-field v-model="idNumber" label="کد ملی"></v-text-field>
                     </v-col>
                     <v-col cols="3">
                         <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
