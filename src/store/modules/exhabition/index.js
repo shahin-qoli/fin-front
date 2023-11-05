@@ -46,7 +46,9 @@ export default{
 },
 async submitFormGatherData(context, payload){
     try{
-    const body = {card_code: payload.cardCode, signed_day: payload.signedDay, guest_count: payload.guestCount, id_number: payload.idNumber}
+    const body = {card_code: payload.cardCode, signed_day: payload.signedDay,
+     guest_count: payload.guestCount, id_number: payload.idNumber,county: payload.county,
+     city: payload.city, address: payload.address}
     const response = await finAgent.post(`/v2/club_invited_users/create_guest`, body)  
 
     if (response.status == 200)

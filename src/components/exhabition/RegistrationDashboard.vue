@@ -186,6 +186,15 @@
                         <v-text-field v-model="idNumber" label="کد ملی"></v-text-field>
                     </v-col>
                     <v-col cols="3">
+                        <v-text-field v-model="county" label="استان"></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                        <v-text-field v-model="city" label="شهر"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="address" label="آدرس"></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
                         <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
                     </v-col>  
                 </v-row> 
@@ -263,9 +272,10 @@ export default {
             signedDay: null,
             completed: false,
             itemCount: null,
-            idNumber: null
-  
-            
+            idNumber: null,
+            address: null,
+            city: null,
+            county: null            
         }
     },
     methods:{
@@ -291,6 +301,9 @@ export default {
                 county: '',
                 address: '',
             },
+            this.address= null,
+            this.city = null,
+            this.county = null ,
             this.idNumber = null,
             this.advancedSearchRequired= false,
             this.mobileNumber= '',
@@ -344,7 +357,9 @@ export default {
         },
         submitFormGatherData(){
             this.isLoading = true
-            let data ={guestCount: this.guestCount, signedDay: this.signedDay, cardCode: this.selectedCustomer, idNumber: this.idNumber } 
+            let data ={guestCount: this.guestCount, signedDay: this.signedDay,
+             cardCode: this.selectedCustomer, idNumber: this.idNumber,
+             county: this.county, city: this.city, address: this.address } 
             this.$store.dispatch('submitFormGatherData', data).then((response) => {
                 this.isLoading = false
                 console.log(response)
