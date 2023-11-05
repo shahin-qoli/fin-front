@@ -27,7 +27,7 @@ import BankList from '../views/BankListView.vue'
 import ImportTemplateView from '../views/ImportTemplateView.vue'
 import ClubMainView from '../views/ClubMainView.vue'
 import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
-
+import RegisterationDashboardView from '../views/RegistrationDashboardView.vue'
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
 
 
@@ -130,6 +130,12 @@ function guardMyrouteLoggedIn(to, from, next){
 }
 const routes = [
   {
+    path: '/registartiondashboard',
+    name: 'registartiondashboard',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: RegisterationDashboardView
+  },  {
     path: '/club',
     name: 'club',
     // beforeEnter : guardMyrouteAdmin,
