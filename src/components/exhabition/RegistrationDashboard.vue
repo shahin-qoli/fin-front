@@ -235,25 +235,25 @@
                             <v-radio label="جمعه" value="4"></v-radio>
                         </v-radio-group>
                     </v-col>  
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-text-field v-model="toEditInvitation.guestCount" label="تعداد مهمان"></v-text-field>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-text-field v-model="toEditInvitation.idNumber" label="کد ملی"></v-text-field>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-text-field v-model="toEditInvitation.county" label="استان"></v-text-field>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-text-field v-model="toEditInvitation.city" label="شهر"></v-text-field>
                     </v-col>
                     <v-col cols="6">
                         <v-text-field v-model="toEditInvitation.address" label="آدرس"></v-text-field>
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
                     </v-col>  
-                    <v-col cols="3">
+                    <v-col cols="6">
                         <v-btn color="primary" text @click="editModal = false">بستن</v-btn>
                     </v-col>  
                 </v-row> 
@@ -392,7 +392,6 @@ export default {
                 county: '',
                 city: '',
                 address: '',
-                slpName: '',
                 signedDay:null,
                 idNumber: '',
                 guestCount: null
@@ -500,7 +499,15 @@ export default {
             this.selectedCustomerForEdit = code
             this.$store.dispatch('loadInvitationData', code).then((response)=>{
                 if (response.success){
-                    this.toEditInvitation = response.result[0]
+                    this.toEditInvitation ={
+                        county: response.result.county,
+                city: response.result.city,
+                address: response.result.address,
+                signedDay: String(response.result.signed_day),
+                idNumber: response.result.id_number,
+                guestCount: response.result.guest_count
+                    }
+                     response.result
                     this.editModal= true;
                 } else {
                     this.errorData = response.result.error || "مشکلی پیش آمده است"
