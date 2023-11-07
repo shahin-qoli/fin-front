@@ -111,5 +111,33 @@ async loadSlpData(context){
         );
         throw error;
      }  
+},
+async loadInvitationData(context,cardCode){
+    try {
+    const response = await finAgent.get(`/v2/club_invited_users/get_invitation?card_code=${cardCode}`)
+    if (response.status == 200)
+        return  {success: true, result:response.data}
+    else 
+        return  {success: false, result:response.data}
+
+    } catch(err){
+    return {success: false, result: err.response.data}
+  }
+},
+async editInvitation(context, payload){
+    try{
+        const body = {card_code: payload.cardCode, signed_day: payload.signedDay,
+         guest_count: payload.guestCount, id_number: payload.idNumber,county: payload.county,
+         city: payload.city, address: payload.address}
+        const response = await finAgent.post(`/v2/club_invited_users/update_guest`, body)  
+    
+        if (response.status == 200)
+            return  {success: true, result:response.data}
+        else 
+            return  {success: false, result:response.data}
+        
+    }catch (err) {
+        return  {success: false, result: err.response.data}
+     } 
 }
 }}
