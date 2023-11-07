@@ -130,10 +130,19 @@
                 :headers="headers"
                 item-key="card_code"
             >
-            <template v-slot:[`item.action`]="props">
-                <v-btn :disabled="props.item.is_settled" class="mx-2" color="orange"  @click="selectedCustomer =  props.item.card_code">
-                    انتخاب
+            <template v-slot:[`item.action`]="props" >
+                <v-row>
+                    <v-col cols="6">
+                <v-btn :disabled="props.item.is_settled"  color="orange"  @click="selectedCustomer =  props.item.card_code">
+                    <span class="btn-text">انتخاب</span>
                 </v-btn>
+            </v-col>
+            <v-col cols="6">
+                <v-btn :disabled="!props.item.is_settled" color="yellow"  @click="editSelectedInviteation(props.item.card_code)">
+                     <span class="btn-text">ویرایش</span>
+                </v-btn>
+            </v-col>
+            </v-row>
               </template> 
 
             </v-data-table>
@@ -212,6 +221,46 @@
             <v-btn @click="refreshData" color="red">شروع مجدد</v-btn>
         </v-col>
     </v-card>
+    <v-dialog v-model="editModal" max-width="500">
+            <v-card>
+                <v-card-title class="text-h5">ویرایش اطلاعات</v-card-title>
+                <v-card-text>
+                    <v-form @submit.prevent="submitEditInvitation">  
+                <v-row>
+                    <v-col cols="6">
+                        <v-radio-group row v-model="toEditInvitation.signedDay">
+                            <v-radio label="سه شنبه" value="1"></v-radio>
+                            <v-radio label="چهار شنبه" value="2"></v-radio>
+                            <v-radio label="پنج شنبه" value="3"></v-radio>
+                            <v-radio label="جمعه" value="4"></v-radio>
+                        </v-radio-group>
+                    </v-col>  
+                    <v-col cols="6">
+                        <v-text-field v-model="toEditInvitation.guestCount" label="تعداد مهمان"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="toEditInvitation.idNumber" label="کد ملی"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="toEditInvitation.county" label="استان"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="toEditInvitation.city" label="شهر"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-text-field v-model="toEditInvitation.address" label="آدرس"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-btn color="primary" :loading="isLoading" type="submit">ثبت</v-btn>
+                    </v-col>  
+                    <v-col cols="6">
+                        <v-btn color="primary" text @click="editModal = false">بستن</v-btn>
+                    </v-col>  
+                </v-row> 
+            </v-form>
+                </v-card-text>
+            </v-card>
+    </v-dialog>
     <v-dialog v-model="errorModal" max-width="500">
             <v-card>
                 <v-card-title class="text-h5">خطا</v-card-title>
@@ -226,6 +275,14 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-btn color="primary" text @click="errorModal = false, errorData = ''">بستن</v-btn>
+                </v-card-actions>
+            </v-card>
+    </v-dialog>
+    <v-dialog v-model="successModal" max-width="500">
+            <v-card>
+                <v-card-title class="text-h5">با موفقیت ثبت شد.</v-card-title>
+                <v-card-actions>
+                <v-btn color="primary" text @click="successModal = false">بستن</v-btn>
                 </v-card-actions>
             </v-card>
     </v-dialog>
@@ -275,9 +332,22 @@ export default {
             idNumber: null,
             address: null,
             city: null,
-            county: null            
-        }
-    },
+            county: null,
+            editModal: false,   
+            toEditInvitation:{
+                county: '',
+                city: '',
+                address: '',
+                slpName: '',
+                signedDay:null,
+                idNumber: '',
+                guestCount: null
+            },
+            selectedCustomerForEdit: null,
+            successModal: false
+
+            }                 
+        },
     methods:{
         refreshData() {
             this.unknownUser={
@@ -316,7 +386,19 @@ export default {
             this.isGatherData =  false,
             this.guestCount =  null,
             this.signedDay =  null,
-            this.completed =  false
+            this.completed =  false,
+            this.editModal = false,
+            this.toEditInvitation = {
+                county: '',
+                city: '',
+                address: '',
+                signedDay:null,
+                idNumber: '',
+                guestCount: null
+            },
+            this.selectedCustomerForEdit= null
+        
+
         },
         submitFormMobile(){
             this.isLoading = true
@@ -412,6 +494,43 @@ export default {
         },
         loadSlps(){
             this.$store.dispatch('loadSlpData')
+        },
+        editSelectedInviteation(code){
+            this.selectedCustomerForEdit = code
+            this.$store.dispatch('loadInvitationData', code).then((response)=>{
+                if (response.success){
+                    this.toEditInvitation ={
+                        county: response.result.county,
+                city: response.result.city,
+                address: response.result.address,
+                signedDay: String(response.result.signed_day),
+                idNumber: response.result.id_number,
+                guestCount: response.result.guest_count
+                    }
+                     response.result
+                    this.editModal= true;
+                } else {
+                    this.errorData = response.result.error || "مشکلی پیش آمده است"
+                    this.errorModal = true
+                }
+            })
+            
+        },
+        submitEditInvitation(){
+            this.isLoading = true
+            let data ={guestCount: this.toEditInvitation.guestCount, signedDay: this.toEditInvitation.signedDay,
+             cardCode: this.selectedCustomerForEdit, idNumber: this.toEditInvitation.idNumber,
+             county: this.toEditInvitation.county, city: this.toEditInvitation.city, address: this.toEditInvitation.address } 
+            this.$store.dispatch('editInvitation', data).then((response) => {
+                this.isLoading = false
+                console.log(response)
+                if (response.success){
+                    this.successModal = true
+                }
+                else{                   
+                    this.errorData =  response.result.error || "کد وارد شده صحیح نیست"
+                    this.errorModal= true}
+            })
         }
     },
     computed:{
@@ -513,3 +632,13 @@ export default {
     
 }
 </script>
+<style scoped>
+.btn-text {
+  font-size: 14px; /* Adjust the font size as needed */
+}
+
+/* Adjust the button width as needed */
+.v-btn {
+  width: 10%; /* or a specific width in pixels */
+}
+</style>
