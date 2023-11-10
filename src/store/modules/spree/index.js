@@ -56,10 +56,10 @@ export default {
         async createSo(contex, payload){
             try {
                 let orderNumbers= []
-                payload.forEach(item => {
+                payload.selectedItems.forEach(item => {
                     orderNumbers.push(item.number)
                 });
-                const body ={order_numbers: orderNumbers} 
+                const body ={order_numbers: orderNumbers, account_code: payload.selectedAccount} 
                 const {data: responseData} = await spreeAgent.post(`/storefront/b1_requests/by_order_numbers`, body)
 
                 const results= responseData.results
