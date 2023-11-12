@@ -29,7 +29,7 @@ import ClubMainView from '../views/ClubMainView.vue'
 import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 import RegisterationDashboardView from '../views/RegistrationDashboardView.vue'
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
-
+import ClubPublicView from '../views/ClubPublicView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -141,6 +141,12 @@ const routes = [
     // beforeEnter : guardMyrouteAdmin,
     
     component: ClubMainView
+  },{
+    path: '/club/:mobile',
+    name: 'club',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: ClubPublicView
   },
   {
     path: '/',

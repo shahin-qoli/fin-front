@@ -1,68 +1,13 @@
 <template>
     <v-container>
-        <v-row >
+        <v-row>
             <v-col cols="12" class="d-flex justify-center align-center">
             <h3>باشگاه مشتریان بروکس</h3>
         </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-        <v-card>
-            <v-tabs
-            @change="refreshData"
-            v-model="tab"
-            align-with-title
-            ><v-tabs-slider color="yellow"></v-tabs-slider>
-                <v-tab>
-                    <p>جستجو با شماره موبایل</p>
-                </v-tab>
-                <v-tab>
-                    <p>جستجو با شماره مشتری</p>
-                </v-tab>
-            </v-tabs>
-            <v-tabs-items 
-            v-model="tab">
-                <v-tab-item>
-                    <v-card class="section section_dark ma-5 pa-5" outlined>
-                        <v-card-text>  
-                                <v-form @submit.prevent="submitFormMobile">
-                                    <v-row no-gutters>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                        label="شماره موبایل"
-                                        v-model="mobileNumber"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-btn :loading="isLoading" type="submit" color="purple">جستجو</v-btn>
-                                    </v-col>
-                                </v-row>
-                                </v-form>
-                        </v-card-text>
-                    </v-card>
-                </v-tab-item>
-                <v-tab-item>
-                    <v-card class="section section_dark ma-5 pa-5" outlined>
-                        <v-card-text>  
-                                <v-form @submit.prevent="submitFormCode">
-                                    <v-row no-gutters>
-                                    <v-col cols="12" md="6">
-                                        <v-text-field
-                                        label="شماره مشتری"
-                                        v-model="cardCode"
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="6">
-                                        <v-btn :loading="isLoading" type="submit" color="purple">جستجو</v-btn>
-                                    </v-col>
-                                </v-row>
-                                </v-form>
-                        </v-card-text>
-                    </v-card>
-                </v-tab-item>
-            </v-tabs-items>
-        </v-card>
-        <v-card class="ma-5 pa-5" v-if="reportData">
+                <v-card class="ma-5 pa-5" v-if="reportData">
             <v-card class=" ma-5 pa-5">
                 <v-card-title>
                     <p>مشخصات مشتری</p>
@@ -176,8 +121,9 @@
                 </v-card-text>
             </v-card>
         </v-card>
-    </v-col>
-    </v-row>
+            </v-col>
+        </v-row>
+
         <v-dialog v-model="errorModal" max-width="500">
             <v-card>
                 <v-card-title class="text-h5">خطا</v-card-title>
@@ -195,7 +141,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        
     </v-container>
 </template>
 
@@ -204,9 +149,6 @@ var jalaali = require('jalaali-js')
 export default {
     data(){
         return {
-            tab: null,
-            mobileNumber: '',
-            cardCode: '',
             reportData: null,
             errorData: null,
             errorModal: false,
@@ -223,7 +165,7 @@ export default {
         submitFormMobile(){
             this.isLoading = true
             this.reportData = null
-            this.$store.dispatch('findClubReportMobile', this.mobileNumber).then((response) => {
+            this.$store.dispatch('findGetClubReportMobile', this.mobileNumber).then((response) => {
                 this.isLoading = false
                 console.log(response)
                 if (response.success){
@@ -234,20 +176,20 @@ export default {
                     this.errorModal= true}
             })
         },
-        submitFormCode(){
-            this.isLoading = true
-            this.reportData = null
-            this.$store.dispatch('findClubReportCode', this.cardCode).then((response) => {
-                this.isLoading = false
-                console.log(response)
-                if (response.success){
-                    this.reportData = response.result
-                }
-                else{                   
-                    this.errorData =  response.result.error || "کد وارد شده صحیح نیست"
-                    this.errorModal= true}
-            })
-        }
+        // submitFormCode(){
+        //     this.isLoading = true
+        //     this.reportData = null
+        //     this.$store.dispatch('findClubReportCode', this.cardCode).then((response) => {
+        //         this.isLoading = false
+        //         console.log(response)
+        //         if (response.success){
+        //             this.reportData = response.result
+        //         }
+        //         else{                   
+        //             this.errorData =  response.result.error || "کد وارد شده صحیح نیست"
+        //             this.errorModal= true}
+        //     })
+        // }
     },
     computed:{
         headers(){
@@ -291,6 +233,9 @@ export default {
                 value: "U_PayDueDate",
                 },
             ]
+        },
+        mobileNumber(){
+            return this.$route.params.mobile
         }
     },
     filters:{
@@ -305,9 +250,11 @@ export default {
             let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
             return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
-    }
+    },
+        created(){
+            this.submitFormMobile();
+        }
     
 
 }
-
 </script>
