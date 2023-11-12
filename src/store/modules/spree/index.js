@@ -127,6 +127,24 @@ export default {
                 );
                 throw error;
             }
+        },
+        async createInvoice(context, payload){
+            try {
+                let orderNumbers= []
+                payload.selectedItems.forEach(item => {
+                    orderNumbers.push(item.number)
+                });
+                const body ={order_numbers: orderNumbers} 
+                const {data: responseData} = await spreeAgent.post(`/storefront/b1_requests/deliver_and_invoice_by_order_numbers`, body)
+                const results= responseData.results
+                return results
+            }
+            catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }            
         }
 
     }

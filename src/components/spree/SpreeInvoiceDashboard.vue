@@ -52,7 +52,7 @@
                 <p>عملیات</p>
             </v-card-title>
             <v-card-text>
-                <v-row>
+                <v-row v-if="isReadyForSo">
                     <v-col cols="3">
                         <v-select 
                         
@@ -66,8 +66,12 @@
                     </v-col>
                     <v-col cols="3">
                         <v-btn :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
-                    </v-col>
-                    
+                    </v-col>               
+                </v-row>
+                <v-row v-if="isReadyForInvoice">
+                    <v-col cols="3">
+                        <v-btn  @click="createInvoice">صدور  Invoice</v-btn>
+                    </v-col>  
                 </v-row>
                 
             </v-card-text>
@@ -210,6 +214,13 @@ export default {
         },
     ]
 
+        },
+        isReadyForSo(){
+            return this.selectedItems.every(item => item.b1_doc_entry == null) &&  this.selectedItems.every(item => item.need_document ==  true )
+        },
+        isReadyForInvoice(){
+            return ((!this.selectedItems.every(item => item.b1_doc_entry == null)) &&
+            (this.selectedItems.every(item => item.invoice_b1_doc_entry == null)))
         }
     },
     methods:{
@@ -225,6 +236,15 @@ export default {
                 this.reportResult = response;
             })
         },
+        createInvoice(){
+            let payload = {selectedItems: this.selectedItems};
+            this.$store.dispatch('createInvoice', payload).then((response) =>{
+                this.loadOrders();
+                this.showModal=true;
+                this.selectedItems= [];
+                this.reportResult = response;
+            })
+        }
     },
     filters:{
         formatDate(geoDate){
