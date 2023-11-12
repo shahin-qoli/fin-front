@@ -52,7 +52,24 @@
                 <p>عملیات</p>
             </v-card-title>
             <v-card-text>
-                <v-btn @click="createSo">صدور  SO</v-btn>
+                <v-row>
+                    <v-col cols="3">
+                        <v-select 
+                        
+                                    name="bankAccount"
+                                    label="شماره حساب"
+                                    solo
+                                    item-text="item"
+                                    item-value="value"
+                                    v-model="selectedAccount"
+                        :items="accounts">صدور  SO</v-select>
+                    </v-col>
+                    <v-col cols="3">
+                        <v-btn :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
+                    </v-col>
+                    
+                </v-row>
+                
             </v-card-text>
         </v-card>
             <!-- Modal -->
@@ -85,6 +102,7 @@ export default {
     data(){
         return {
             selectedItems: [],
+            selectedAccount: null,
             options: {
                 itemsPerPage: 10,
                 page:1,
@@ -181,6 +199,17 @@ export default {
         },
         selectedInvoice(){
             return this.selectedItems.length > 0;
+        },
+        accounts(){
+            return [        {
+            item:"111102008004",
+            value: "111102008004"
+        },  {
+            item:"111102006018",
+            value: "111102006018"
+        },
+    ]
+
         }
     },
     methods:{
@@ -188,7 +217,8 @@ export default {
             this.$store.dispatch('loadOrders', this.options)
         },
         createSo(){
-            this.$store.dispatch('createSo', this.selectedItems).then((response) =>{
+            let payload = {selectedItems: this.selectedItems,selectedAccount: this.selectedAccount};
+            this.$store.dispatch('createSo', payload).then((response) =>{
                 this.loadOrders();
                 this.showModal=true;
                 this.selectedItems= [];
