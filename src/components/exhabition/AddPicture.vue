@@ -59,7 +59,6 @@
   </div>
   <div class="camera-frame"></div>
   <div v-if="isCameraOpen" v-show="!isLoading" class="camera-box" :class="{ 'flash' : isShotPhoto }">
-    
     <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
       
     <video v-show="!isPhotoTaken" ref="camera" :width="300" :height="300" autoplay></video>
@@ -163,8 +162,8 @@ export default {
         },
         async submitFindCustomer(){
             try {
-                console.log("go to find")
-                const response = await finAgent.get(`/v2/club_user_data/find_customer_for_image?mobile_number=${this.mobileNumber}&card_code=${this.cardCode}` );
+                console.log("go to find") 
+                const response = await finAgent.get(`/v2/club_user_data/find_customer_for_image?mobile_number=${this.mobileNumber}&card_code=${String.prototype.toLowerCase(this.cardCode)}` );
                 console.log(response.data.id)
                 if (response.status == 200) {
                     this.customer = {id: response.data.id, cardCode: response.data.card_code, cardName: response.data.card_name};
@@ -211,7 +210,7 @@ export default {
       
       const constraints = (window.constraints = {
 				audio: false,
-				video: {facingMode: { exact: "environment" },}
+				video:  {facingMode: { exact: "environment" },}
 			});
 
 
@@ -275,14 +274,134 @@ await this.submitUploadForm();
 
 <style scoped>
   .camera-frame {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the frame */
-    width: calc(100% - 20px); /* Adjust the width to compensate for the margin */
-    height: calc(100% - 20px);
-    background: url('@/assets/img/face-frame.svg') center center no-repeat;
+    position: absolute;
+    top: 20px;
+    left: 100px;
+    width: 300px;
+    height: 300px;
     background-size: contain; /* or 'cover' depending on your image */
     opacity: 0.5; /* Adjust the opacity as needed */
-    pointer-events: none; /* Allow interactions with the underlying video */
+    pointer-events: none;
+    background: url('@/assets/img/face-frame.svg') center center no-repeat;
+
   }
+  .web-camera-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 500px;
+
+}
+
+.web-camera-container .camera-button {
+  margin-bottom: 2rem;
+}
+
+.web-camera-container .camera-box .camera-shutter.svg-container {
+  width: 100%;
+  height: 100%;
+  background: url('@/assets/img/face-frame.svg') center center no-repeat;
+  background-size: cover; /* or 'contain' depending on your needs */
+  opacity: 0.5; /* Adjust the opacity as needed */
+  pointer-events: none;
+}
+/* Add this if you decide to use an img tag for the SVG */
+.web-camera-container .camera-box .camera-shutter .svg-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.web-camera-container .camera-box .camera-shutter.flash {
+  opacity: 1;
+}
+
+.web-camera-container .camera-shoot {
+  margin: 1rem 0;
+}
+
+.web-camera-container .camera-shoot button {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+}
+
+.web-camera-container .camera-shoot button img {
+  height: 35px;
+  object-fit: cover;
+}
+
+.web-camera-container .camera-loading {
+  overflow: hidden;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  min-height: 150px;
+  margin: 3rem 0 0 -1.2rem;
+}
+
+.web-camera-container .camera-loading ul {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 999999;
+  margin: 0;
+}
+
+.web-camera-container .camera-loading .loader-circle {
+  display: block;
+  height: 14px;
+  margin: 0 auto;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  transform: translateX(-50%);
+  position: absolute;
+  width: 100%;
+  padding: 0;
+}
+
+.web-camera-container .camera-loading li {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  padding: 0;
+  position: relative;
+  margin: 0 0 0 4px;
+  background: #999;
+  animation: preload 1s infinite;
+  top: -50%;
+  border-radius: 100%;
+}
+
+.web-camera-container .camera-loading li:nth-child(2) {
+  animation-delay: .2s;
+}
+
+.web-camera-container .camera-loading li:nth-child(3) {
+  animation-delay: .4s;
+}
+
+@keyframes preload {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 </style>
