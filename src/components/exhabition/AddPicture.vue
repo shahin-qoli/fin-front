@@ -253,7 +253,9 @@ export default {
     },
     
     async downloadImage() {
-        const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+        const canvas = document.getElementById("photoTaken");
+  const quality = 0.95; // Set the desired quality level between 0 and 1
+  const dataURL = canvas.toDataURL("image/jpeg", quality).replace("image/jpeg", "image/octet-stream");
 
 // Convert data URL to Blob
 const blob = await fetch(canvas).then((res) => res.blob());
