@@ -57,7 +57,7 @@
       <li></li>
     </ul>
   </div>
-  
+  <div class="camera-frame"></div>
   <div v-if="isCameraOpen" v-show="!isLoading" class="camera-box" :class="{ 'flash' : isShotPhoto }">
     
     <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
@@ -273,3 +273,16 @@ await this.submitUploadForm();
 }
 </script>
 
+<style scoped>
+  .camera-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('@/assets/img/face-frame.svg') center center no-repeat;
+    background-size: contain; /* or 'cover' depending on your image */
+    opacity: 0.5; /* Adjust the opacity as needed */
+    pointer-events: none; /* Allow interactions with the underlying video */
+  }
+</style>
