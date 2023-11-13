@@ -30,6 +30,7 @@ import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 import RegisterationDashboardView from '../views/RegistrationDashboardView.vue'
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
 import ClubPublicView from '../views/ClubPublicView.vue'
+import UploadPictureView from '../views/UploadPictureView.vue'
 import AddPictureView from '../views/AddPictureView.vue'
 
 Vue.use(VueRouter)
@@ -130,6 +131,13 @@ function guardMyrouteLoggedIn(to, from, next){
    }
 }
 const routes = [
+  {
+    path: '/addpicture2',
+    name: 'addpicture2',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: UploadPictureView
+  }, 
   {
     path: '/addpicture',
     name: 'addpicture',
