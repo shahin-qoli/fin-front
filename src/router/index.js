@@ -30,6 +30,7 @@ import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 import RegisterationDashboardView from '../views/RegistrationDashboardView.vue'
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
 import ClubPublicView from '../views/ClubPublicView.vue'
+import AddPictureView from '../views/AddPictureView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -130,10 +131,15 @@ function guardMyrouteLoggedIn(to, from, next){
 }
 const routes = [
   {
-    path: '/registartiondashboard',
-    name: 'registartiondashboard',
+    path: '/addpicture',
+    name: 'addpicture',
     // beforeEnter : guardMyrouteAdmin,
     
+    component: AddPictureView
+  }, 
+  {
+    path: '/registartiondashboard',
+    name: 'registartiondashboard',
     component: RegisterationDashboardView
   },  {
     path: '/club',
