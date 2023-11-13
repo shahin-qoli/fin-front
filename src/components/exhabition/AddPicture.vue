@@ -275,11 +275,11 @@ await this.submitUploadForm();
 
 <style scoped>
   .camera-frame {
-    position: absolute;
-    top: 0;
-    left: 30px;
-    width: calc(100% - 30px);
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the frame */
+    width: calc(100% - 20px); /* Adjust the width to compensate for the margin */
+    height: calc(100% - 20px);
     background: url('@/assets/img/face-frame.svg') center center no-repeat;
     background-size: contain; /* or 'cover' depending on your image */
     opacity: 0.5; /* Adjust the opacity as needed */
