@@ -278,7 +278,7 @@ await this.submitUploadForm();
     position: absolute;
     top: 0;
     left: 30px;
-    width: 100%;
+    width: calc(100% - 30px);
     height: 100%;
     background: url('@/assets/img/face-frame.svg') center center no-repeat;
     background-size: contain; /* or 'cover' depending on your image */
