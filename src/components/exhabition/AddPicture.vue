@@ -62,9 +62,9 @@
     
     <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
       
-    <video v-show="!isPhotoTaken" ref="camera" :width="600" :height="600" autoplay></video>
+    <video v-show="!isPhotoTaken" ref="camera" :width="300" :height="300" autoplay></video>
     
-    <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="600" :height="600"></canvas>
+    <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="300" :height="300"></canvas>
   </div>
   
   <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
@@ -278,8 +278,8 @@ await this.submitUploadForm();
     position: absolute;
     top: 0;
     left: 0;
-    width: 600;
-    height: 600;
+    width: 200;
+    height: 200;
     background: url('@/assets/img/face-frame.svg') center center no-repeat;
     background-size: contain; /* or 'cover' depending on your image */
     opacity: 0.5; /* Adjust the opacity as needed */
