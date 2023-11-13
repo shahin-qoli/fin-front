@@ -41,7 +41,7 @@
             </v-card-text>
         </v-card>
         <v-card>
-            <v-card-text>
+            <v-card-text v-if="customer.id">
                 <div id="app" class="web-camera-container">
   <div class="camera-button">
       <button type="button" class="button is-rounded" :class="{ 'is-primary' : !isCameraOpen, 'is-danger' : isCameraOpen}" @click="toggleCamera">
@@ -211,7 +211,7 @@ export default {
       
       const constraints = (window.constraints = {
 				audio: false,
-				video: true
+				video: {facingMode: { exact: "environment" },}
 			});
 
 
@@ -252,11 +252,20 @@ export default {
       context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
     },
     
-    downloadImage() {
-      const download = document.getElementById("downloadPhoto");
-      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg")
-    .replace("image/jpeg", "image/octet-stream");
-      download.setAttribute("href", canvas);
+    async downloadImage() {
+        const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+
+// Convert data URL to Blob
+const blob = await fetch(canvas).then((res) => res.blob());
+
+// Create a File object from the Blob
+const file = new File([blob], "image.jpg", { type: "image/octet-stream" });
+
+// Set the file in your component data (assuming you have a 'file' data property)
+this.file = file;
+
+// Now, call the submitUploadForm method
+await this.submitUploadForm();
     }
 }
 }
