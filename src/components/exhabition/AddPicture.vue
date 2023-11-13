@@ -258,7 +258,7 @@ export default {
   const dataURL = canvas.toDataURL("image/jpeg", quality).replace("image/jpeg", "image/octet-stream");
 
 // Convert data URL to Blob
-const blob = await fetch(canvas).then((res) => res.blob());
+const blob = await fetch(dataURL).then((res) => res.blob());
 
 // Create a File object from the Blob
 const file = new File([blob], "image.jpg", { type: "image/octet-stream" });
