@@ -44,9 +44,9 @@
             <v-card-text v-if="customer.id">
                 <div id="app" class="web-camera-container">
   <div class="camera-button">
-      <button type="button" class="button is-rounded" :class="{ 'is-primary' : !isCameraOpen, 'is-danger' : isCameraOpen}" @click="toggleCamera">
-        <span v-if="!isCameraOpen">Open Camera</span>
-        <span v-else>Close Camera</span>
+      <button type="button"  class="button is-rounded" :class="{ 'is-primary' : !isCameraOpen, 'is-danger' : isCameraOpen}" @click="toggleCamera">
+        <span v-if="!isCameraOpen" color="purple">بازکردن دوربین</span>
+        <span v-else color="red">بستن دوربین</span>
     </button>
   </div>
   
@@ -75,7 +75,7 @@
   
   <div v-if="isPhotoTaken && isCameraOpen" class="camera-download">
     <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="downloadImage">
-      Download
+      <p>بارگذاری عکس</p>
     </a>
   </div>
 </div>
