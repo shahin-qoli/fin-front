@@ -277,8 +277,8 @@ await this.submitUploadForm();
   .camera-frame {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 10px;
+    width: calc(100% - 10px);
     height: 100%;
     background: url('@/assets/img/face-frame.svg') center center no-repeat;
     background-size: contain; /* or 'cover' depending on your image */
