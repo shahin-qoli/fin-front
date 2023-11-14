@@ -32,6 +32,7 @@ import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue
 import ClubPublicView from '../views/ClubPublicView.vue'
 import UploadPictureView from '../views/UploadPictureView.vue'
 import AddPictureView from '../views/AddPictureView.vue'
+import UsingPromotions from '../views/UsingPromotionsView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -149,6 +150,12 @@ const routes = [
     path: '/registartiondashboard',
     name: 'registartiondashboard',
     component: RegisterationDashboardView
+  }, {
+    path: '/club/use',
+    name: 'clubuse',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: UsingPromotions
   },  {
     path: '/club',
     name: 'club',
