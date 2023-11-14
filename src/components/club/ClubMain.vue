@@ -103,23 +103,30 @@
             <v-card>
                 <v-card-text class="section section_dark">
                     <v-row>
-                        <v-col cols="12" lg="4" sm="4" md="4">
+                        <v-col cols="12" lg="3" sm="3" md="3">
                     <v-text-field
                     :value="reportData.points.point1.point"
                     label="امتیاز خرید"
                     disabled
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" lg="4" sm="4" md="4">
+                <v-col cols="12" lg="3" sm="3" md="3">
                     <v-text-field
                     :value="reportData.points.point2.point"
                     label="امتیاز نقدی"
                     disabled
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" lg="4" sm="4" md="4">
+                <v-col cols="12" lg="3" sm="3" md="3">
                     <v-text-field
-                    :value="reportData.points.point2.point + reportData.points.point1.point"
+                    :value="reportData.points.point3.point"
+                    label="امتیاز همایش"
+                    disabled
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="3" sm="3" md="3">
+                    <v-text-field
+                    :value="reportData.points.point2.point + reportData.points.point1.point + reportData.points.point3.point"
                     label="جمع امتیاز"
                     disabled
                     ></v-text-field>
@@ -143,6 +150,17 @@
                         <v-card-text>
                         <p> کل مبلغ خرید نقدی شما {{ reportData.points.point2.summation | formatAmount }} ریال بوده است.</p>
                         <p>با توجه به محاسبه هر {{ reportData.points.point2.divider | formatAmount }} دو امتیاز شما {{  reportData.points.point2.point }} امتیاز کسب کرده اید.</p>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" lg="6" sm="6" md="6">
+                    <v-card>
+                        <v-card-title>
+                            محاسبات امتیاز همایش BELEX
+                        </v-card-title>
+                        <v-card-text>
+                            <p>با توجه به خریدهای شما در همایش، برنده {{  reportData.points.point3.point }} امتیاز شده‌اید.</p>
+                            <p>جهت مشاهده امتیاز هر خرید، جزییات فاکتور را ببینید.</p>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -289,6 +307,12 @@ export default {
                 align: "center",
                 //sortable: false,
                 value: "U_PayDueDate",
+                },
+                {
+                text: "امتیاز همایش",
+                align: "center",
+                //sortable: false,
+                value: "U_ClubPoint",
                 },
             ]
         }
