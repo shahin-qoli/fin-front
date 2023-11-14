@@ -29,7 +29,7 @@
                     </v-row>
                 </v-card-text>
                 <v-card-actions>
-                <v-btn color="primary" text @click="okModal = false">بستن</v-btn>
+                <v-btn color="primary" text @click="refreshData">بستن</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -42,7 +42,6 @@ import {finAgent} from '@/services/agent'
 export default{
     data(){
         return{
-            promotions: [],
             cardCode:'',
             PromoCode:'',
             b1doc:'',
@@ -73,6 +72,13 @@ export default{
                 );
                 throw error;
             }
+        },
+        refreshData(){
+            this.cardCode ='',
+            this.PromoCode ='',
+            this.b1doc ='',
+            this.okModal= false,
+            this.errorMessage= ''
         }
     }
 }
