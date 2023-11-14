@@ -2,12 +2,12 @@
     <nav>
       <using-promotions></using-promotions>
     </nav>
-  </template>
+</template>
   
 
 
 <script>
-    import UsingPromotions from '@/components/club/UsingPromotions.vue';
+    import UsingPromotions from '@/components/club/UsingPromotion.vue';
     export default {
       components: {
         UsingPromotions
