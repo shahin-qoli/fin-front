@@ -52,7 +52,7 @@
                 <p>عملیات</p>
             </v-card-title>
             <v-card-text>
-                <v-row>
+                <v-row v-if="isReadyForSo">
                     <v-col cols="3">
                         <v-select 
                         
@@ -65,9 +65,13 @@
                         :items="accounts">صدور  SO</v-select>
                     </v-col>
                     <v-col cols="3">
-                        <v-btn :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
-                    </v-col>
-                    
+                        <v-btn :loading="isLoading" :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
+                    </v-col>               
+                </v-row>
+                <v-row v-if="isReadyForInvoice">
+                    <v-col cols="3">
+                        <v-btn :loading="isLoading"  @click="createInvoice">صدور  Invoice</v-btn>
+                    </v-col>  
                 </v-row>
                 
             </v-card-text>
@@ -115,6 +119,7 @@ export default {
             },
             showModal: false,
             reportResult: [],
+            isLoading: false,
         }
     },
     computed:{
@@ -210,6 +215,13 @@ export default {
         },
     ]
 
+        },
+        isReadyForSo(){
+            return this.selectedItems.every(item => item.b1_doc_entry == null) &&  this.selectedItems.every(item => item.need_document ==  true )
+        },
+        isReadyForInvoice(){
+            return ((!this.selectedItems.every(item => item.b1_doc_entry == null)) &&
+            (this.selectedItems.every(item => item.invoice_b1_doc_entry == null)))
         }
     },
     methods:{
@@ -218,13 +230,26 @@ export default {
         },
         createSo(){
             let payload = {selectedItems: this.selectedItems,selectedAccount: this.selectedAccount};
+            this.isLoading = true
             this.$store.dispatch('createSo', payload).then((response) =>{
                 this.loadOrders();
                 this.showModal=true;
                 this.selectedItems= [];
+                this.isLoading = false
                 this.reportResult = response;
             })
         },
+        createInvoice(){
+            let payload = {selectedItems: this.selectedItems};
+            this.isLoading = true
+            this.$store.dispatch('createInvoice', payload).then((response) =>{
+                this.loadOrders();
+                this.showModal=true;
+                this.selectedItems= [];
+                this.isLoading = false
+                this.reportResult = response;
+            })
+        }
     },
     filters:{
         formatDate(geoDate){
