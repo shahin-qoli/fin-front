@@ -29,7 +29,10 @@ import ClubMainView from '../views/ClubMainView.vue'
 import MiarzeMessageTemplateView from '../views/MiarzeMessageTemplatesView.vue'
 import RegisterationDashboardView from '../views/RegistrationDashboardView.vue'
 import spreeInvoiceVendorDashboardView from '../views/SpreeInvoiceVendorView.vue'
-
+import ClubPublicView from '../views/ClubPublicView.vue'
+import UploadPictureView from '../views/UploadPictureView.vue'
+import AddPictureView from '../views/AddPictureView.vue'
+import UsingPromotions from '../views/UsingPromotionsView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -130,17 +133,41 @@ function guardMyrouteLoggedIn(to, from, next){
 }
 const routes = [
   {
-    path: '/registartiondashboard',
-    name: 'registartiondashboard',
+    path: '/addpicture2',
+    name: 'addpicture2',
     // beforeEnter : guardMyrouteAdmin,
     
+    component: UploadPictureView
+  }, 
+  {
+    path: '/addpicture',
+    name: 'addpicture',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: AddPictureView
+  }, 
+  {
+    path: '/registartiondashboard',
+    name: 'registartiondashboard',
     component: RegisterationDashboardView
+  }, {
+    path: '/club/use',
+    name: 'clubuse',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: UsingPromotions
   },  {
     path: '/club',
     name: 'club',
     // beforeEnter : guardMyrouteAdmin,
     
     component: ClubMainView
+  },{
+    path: '/club/:mobile',
+    name: 'club',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: ClubPublicView
   },
   {
     path: '/',

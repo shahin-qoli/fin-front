@@ -3,17 +3,24 @@ import  {finAgent} from '@/services/agent'
 export default{
     state(){
         return{
-            slps: []
+            slps: [],
+            customer:[]
         }
     },
     mutations:{
         setSlps(state, payload){
             state.slps = payload
+        },
+        setCustomer(state, payload){
+            state.customer = payload
         }
     },
     getters:{
         getSpls(state){
             return state.slps
+        },
+        getCustomer(state){
+            return state.customer
         }
     },
     actions:{
@@ -139,5 +146,54 @@ async editInvitation(context, payload){
     }catch (err) {
         return  {success: false, result: err.response.data}
      } 
+},
+async submitUploadForm(){
+    this.uploadError= false
+    if (!this.file) return;
+    let formData = new FormData()
+    this.isLoading = true;
+    console.log("customer:", this.customer)
+    let userId = this.customer.id
+    formData.append('file', this.file,this.file.name)
+    try {
+        const response = await finAgent.post(`/v2/club_user_data/upload_image?user_id=${userId}`,formData, {responseType: 'blob'} );
+        if (response.status == 200) {
+            this.uploadError = true;
+            this.file = null;
+            this.isLoading = false;
+            this.isFormReady = false;
+        } else {
+
+            this.file = null;
+            this.isLoading = false;
+            this.isFormReady = false;
+        }
+
+
+    } catch (err){
+        const error = new Error(
+            
+            err.response.data.error || 'Failed to fetch'
+        );
+        this.uploadError = true;
+            this.file = null;
+            this.isLoading = false;
+        throw error;
+    }
+},
+async submitFindCustomer(context,payload){
+    try {
+        console.log("go to find")
+        const response = await finAgent.get(`/v2/club_user_data/find_customer_for_image?mobile_number=${payload.mobileNumber}&card_code=${payload.cardCode}`, {responseType: 'blob'} );
+        console.log(response)
+        if (response.status == 200) {
+            return  {success: true, result:response.data}
+        } else{
+            return  {success: false, result:response.data}
+        }
+    } catch (err){ 
+return  {success: false, result:err.response.data}
+
+    }
 }
 }}

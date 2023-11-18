@@ -3,7 +3,7 @@
   
     <!-- app bar start -->
    
-    <the-drawer ></the-drawer>
+    <the-drawer v-if="!isPublic" ></the-drawer>
 
      <!-- app bar end -->
 
@@ -24,6 +24,11 @@ export default {
   data: () => ({
 
   }),
+  computed:{
+    isPublic(){
+      return this.$route.path.includes('club')
+    }
+    },
   beforeMount() {
     window.addEventListener("beforeunload", this.onUnload);
   },
