@@ -65,12 +65,12 @@
                         :items="accounts">صدور  SO</v-select>
                     </v-col>
                     <v-col cols="3">
-                        <v-btn :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
+                        <v-btn :loading="isLoading" :disabled="!selectedAccount" @click="createSo">صدور  SO</v-btn>
                     </v-col>               
                 </v-row>
                 <v-row v-if="isReadyForInvoice">
                     <v-col cols="3">
-                        <v-btn  @click="createInvoice">صدور  Invoice</v-btn>
+                        <v-btn :loading="isLoading"  @click="createInvoice">صدور  Invoice</v-btn>
                     </v-col>  
                 </v-row>
                 
@@ -119,6 +119,7 @@ export default {
             },
             showModal: false,
             reportResult: [],
+            isLoading: false,
         }
     },
     computed:{
@@ -229,19 +230,23 @@ export default {
         },
         createSo(){
             let payload = {selectedItems: this.selectedItems,selectedAccount: this.selectedAccount};
+            this.isLoading = true
             this.$store.dispatch('createSo', payload).then((response) =>{
                 this.loadOrders();
                 this.showModal=true;
                 this.selectedItems= [];
+                this.isLoading = false
                 this.reportResult = response;
             })
         },
         createInvoice(){
             let payload = {selectedItems: this.selectedItems};
+            this.isLoading = true
             this.$store.dispatch('createInvoice', payload).then((response) =>{
                 this.loadOrders();
                 this.showModal=true;
                 this.selectedItems= [];
+                this.isLoading = false
                 this.reportResult = response;
             })
         }
