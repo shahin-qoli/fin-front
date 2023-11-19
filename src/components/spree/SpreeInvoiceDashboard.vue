@@ -52,6 +52,11 @@
                 <p>عملیات</p>
             </v-card-title>
             <v-card-text>
+                <v-row>
+                    <v-col cols="6">
+                        <v-btn :loading="isLoading" @click="createB1User">تعریف در B1</v-btn>
+                    </v-col>
+                </v-row>
                 <v-row v-if="isReadyForSo">
                     <v-col cols="3">
                         <v-select 
@@ -247,6 +252,16 @@ export default {
                 this.showModal=true;
                 this.selectedItems= [];
                 this.isLoading = false
+                this.reportResult = response;
+            })
+        },
+        createB1User(){
+            payload = {order_number: this.selectedItems[0].number};
+            this.isLoading = true;
+            this.$store.dispatch('createB1User',payload).then((response) => {
+                this.isLoading = false;
+                this.showModal=true;
+                this.selectedItems= [];
                 this.reportResult = response;
             })
         }
