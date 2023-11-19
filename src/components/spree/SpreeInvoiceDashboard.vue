@@ -53,8 +53,11 @@
             </v-card-title>
             <v-card-text>
                 <v-row>
+                    <v-col cols="12">
+                    <p class="warn">لطفا برای تعریف  کاربر در B1 فقط یک سفارش را انتخاب کنید.</p>
+                </v-col>
                     <v-col cols="6">
-                        <v-btn :loading="isLoading" @click="createB1User">تعریف در B1</v-btn>
+                        <v-btn :loading="isLoading" color="orange" @click="createB1User">تعریف در B1</v-btn>
                     </v-col>
                 </v-row>
                 <v-row v-if="isReadyForSo">
@@ -256,7 +259,7 @@ export default {
             })
         },
         createB1User(){
-            payload = {order_number: this.selectedItems[0].number};
+            let payload = {order_number: this.selectedItems[0].number};
             this.isLoading = true;
             this.$store.dispatch('createB1User',payload).then((response) => {
                 this.isLoading = false;
@@ -282,3 +285,9 @@ export default {
 }
 }
 </script>
+<style scoped>
+.warn{
+    color: red;
+    align-self: center;
+}
+</style>
