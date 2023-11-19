@@ -145,6 +145,17 @@ export default {
                 );
                 throw error;
             }            
+        },
+        async createB1User(context, payload){
+            try {
+                const {data: responseData} = await spreeAgent.post(`/storefront/b1_requests/create_user_by_order`, payload)
+                return responseData
+              } catch(err){
+                const error = new Error(
+                  err.response.data.error || 'Failed to create user'
+                );
+                throw error;
+              }
         }
 
     }
