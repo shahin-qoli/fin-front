@@ -17,8 +17,7 @@
         item-key="id"
         :search="search"
         :loading="isLoading"
-        :options.sync="options"
-        :server-items-length="itemCount"
+
           >
           <template v-slot:top>
                 <v-toolbar flat color="white">
@@ -133,7 +132,7 @@
       },
             loadSalePersons() {
                 // console.log(this)
-                this.$store.dispatch('loadSalePersons', this.options)
+                this.$store.dispatch('loadSalePersons')
             }
         },
         computed:{
@@ -176,6 +175,9 @@
       this.loadSalePersons();    
       },  deep: true
     }
+  },
+  created(){
+    this.loadSalePersons(); 
   }
   
     }

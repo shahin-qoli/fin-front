@@ -66,10 +66,10 @@ export default {
                 throw error;
              }
         },
-        async loadSalePersons(context,payload){
+        async loadSalePersons(context){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get(`/front/sale_persons?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+                const {data: responseData} = await finAgent.get(`/front/sale_persons`);
                 var salePersonData = responseData.data;
                 var itemCount = responseData.options.count;
                 const salePersons = []
