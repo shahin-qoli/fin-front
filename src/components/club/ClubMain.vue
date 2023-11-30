@@ -178,7 +178,7 @@
                     class="elevation-1"
                     >
                     <template v-slot:[`item.Total`]="{ item }">
-                    <p>{{ item.Total | formatAmount }}</p>
+                    <p>{{ (item.LineTotal - item.DiscSum + item.LineVat) | formatAmount }}</p>
                     </template>
                     <template v-slot:[`item.DocDate`]="{ item }">
                     <p>{{ item.DocDate | formatDate }}</p>
