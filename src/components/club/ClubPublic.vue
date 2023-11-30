@@ -179,6 +179,8 @@ export default {
             this.reportData = null;
             this.mobileNumber = '';
             this.cardCode = '';
+        },        calculateTotal(item){
+        return (item.LineTotal - item.DiscSum + item.LineVat)
         },
         submitFormMobile(){
             this.isLoading = true
@@ -261,11 +263,6 @@ export default {
         },
         mobileNumber(){
             return this.$route.params.mobile
-        }
-    },methods:{
-        
-        calculateTotal(item){
-        return (item.LineTotal - item.DiscSum + item.LineVat)
         }
     },
     filters:{
