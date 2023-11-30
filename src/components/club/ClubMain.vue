@@ -265,6 +265,10 @@ export default {
                     this.errorData =  response.result.error || "کد وارد شده صحیح نیست"
                     this.errorModal= true}
             })
+        },
+        
+        calculateTotal(item){
+        return (item.LineTotal - item.DiscSum + item.LineVat)
         }
     },
     computed:{
@@ -315,9 +319,6 @@ export default {
                 value: "U_ClubPoint",
                 },
             ]
-        },
-        calculateTotal(item){
-        return (item.LineTotal - item.DiscSum + item.LineVat)
         }
     },
     filters:{
