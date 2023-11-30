@@ -261,7 +261,9 @@ export default {
         },
         mobileNumber(){
             return this.$route.params.mobile
-        },
+        }
+    },methods:{
+        
         calculateTotal(item){
         return (item.LineTotal - item.DiscSum + item.LineVat)
         }
