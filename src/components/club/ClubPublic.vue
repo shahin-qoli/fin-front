@@ -123,7 +123,7 @@
                     class="elevation-1"
                     >
                     <template v-slot:[`item.Total`]="{ item }">
-                    <p>{{ (item.LineTotal - item.DiscSum + item.LineVat) | formatAmount }}</p>
+                    <p>{{  calculateTotal(item) | formatAmount }}</p>
                     </template>
                     <template v-slot:[`item.DocDate`]="{ item }">
                     <p>{{ item.DocDate | formatDate }}</p>
@@ -261,6 +261,9 @@ export default {
         },
         mobileNumber(){
             return this.$route.params.mobile
+        },
+        calculateTotal(item){
+        return (item.LineTotal - item.DiscSum + item.LineVat)
         }
     },
     filters:{
