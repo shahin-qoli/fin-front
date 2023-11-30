@@ -268,7 +268,7 @@ export default {
         },
         
         calculateTotal(item){
-        return (item.LineTotal - item.DiscSum + item.LineVat)
+        return (parseFloat(item.LineTotal) - parseFloat(item.DiscSum) + parseFloat(item.LineVat))
         }
     },
     computed:{
