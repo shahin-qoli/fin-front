@@ -179,8 +179,9 @@ export default {
             this.reportData = null;
             this.mobileNumber = '';
             this.cardCode = '';
-        },        calculateTotal(item){
-        return (item.LineTotal - item.DiscSum + item.LineVat)
+        },       
+        calculateTotal(item){
+        return (parseFloat(item.LineTotal) - parseFloat(item.DiscSum) + parseFloat(item.LineVat))
         },
         submitFormMobile(){
             this.isLoading = true
