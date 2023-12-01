@@ -125,7 +125,30 @@ export default {
                 );
                 throw error;
             }
-        }
+        },
+        async loadTaxSourceDocuments(context, payload){
+            try{
+                const {data:responseData} = await finAgent.get(`/front/sync_source_documents/tax_get_sources?page=${payload.page}&per_page=${payload.itemsPerPage}
+                &q[is_synced_eq]=${payload.isSynced}&q[equivalent_created_eq]=${payload.equivalentCreated}&q[source_document_date_lt]=${payload.docsEndDate}
+                &q[source_document_date_gt]=${payload.docsStartDate}&is_ready_to_tax=${payload.isReadyToTax}`)
+                var syncSourceDocsData = responseData.data
+                var itemCount = responseData.options.count;
+                const syncSourceDocs =[]
+                for(const item of syncSourceDocsData){
+                    const syncSourceDoc = {
+                        ...item
+                    }
+                    syncSourceDocs.push(syncSourceDoc)
+                }
+                context.commit('setSyncSourceDocs', syncSourceDocs);
+                context.commit('setItemCountSyncSources', itemCount);
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
     },
 
 }
