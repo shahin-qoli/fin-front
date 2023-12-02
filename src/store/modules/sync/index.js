@@ -149,6 +149,25 @@ export default {
                 throw error;
             }
         },
-    },
+        async updateTaxSourceDocument(context, payload){
+            try{
+                let body ={source_ids: payload}
+                const {data:responseData} = await finAgent.post(`/front/sync_source_documents/tax_update_source`, body)
+                return responseData
+            }catch (err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async createEquivalentTax(context, payload){
+            try {
+                const {data: responseData} = await finAgent.post('/front/sync_source_documents/tax_create_equivalent', payload)
+                return responseData
+        }catch(err){
+            return{result: false, error: err}
+        }
+    },}
 
 }

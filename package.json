@@ -16,6 +16,7 @@
     "vue": "^2.7.14",
     "vue-persian-datetime-picker": "^2.10.4",
     "vue-router": "^3.5.1",
+    "vue-toasted": "^1.1.28",
     "vuetify": "^2.6.0",
     "vuex": "^3.0.1"
   },
