@@ -168,6 +168,14 @@ export default {
         }catch(err){
             return{result: false, error: err}
         }
-    },}
-
+    },
+    async sendSourceTax(context, payload){
+        try {
+            const {data: responseData} = await finAgent.post('/front/sync_source_documents/tax_send_source',payload)
+            return responseData
+        }catch(err){
+            return {result: false, error: err}
+        }
+    },
+    }
 }
