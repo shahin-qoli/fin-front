@@ -87,11 +87,14 @@
                          <v-btn v-if="!props.item.raw_data"  class="mx-2" small  @click="taxUpdateSource(props.item)">
                             <p>به روزرسانی</p>
                         </v-btn>
-                        <p v-if="props.item.is_ready_for_tax_service[0]">تعیین نقد و نسیه</p>
+                        <p v-if="props.item.is_ready_for_tax_service[0] && !props.item.equivalent_created">تعیین نقد و نسیه</p>
+                        <v-btn v-if="props.item.equivalent_created && !props.item.is_synced" class="mx-2" small  @click="taxSendSource(props.item)">
+                            <p>ارسال سند</p>
+                        </v-btn>
                         </template>
                         <template v-slot:expanded-item="{ headers, item}">
                             <td :colspan="headers.length">
-                                <v-card v-if="item.is_ready_for_tax_service[0]" flat>
+                                <v-card v-if="item.is_ready_for_tax_service[0] && !item.equivalent_created" flat>
                                     <v-form @submit.prevent="createEquivalent">
                                     <v-row>
                                         <v-col cols="4">
@@ -233,6 +236,28 @@ export default{
                                 }
                                 this.loadSyncSourceDocs()
                             })
+                },
+        taxSendSource(item){
+            this.$store.dispatch('sendSourceTax', [item.id]).then (response =>{
+                        if (response.success_results.length > 0){
+                            this.$toasted.show("با موفقیت انجام شد", {
+                                            theme: "toasted-primary",
+                                            position: "bottom-center",
+                                            duration : 5000,
+                                            type: 'success',
+                                            icon : 'check'
+                                        })
+                                    }else{
+                                        this.$toasted.show("خطا", {
+                                            theme: "toasted-primary",
+                                            position: "bottom-center",
+                                            duration : 5000,
+                                            icon : 'alert-circle',
+                                            type: 'error'
+                                        })
+                                    }
+                                    this.loadSyncSourceDocs()
+                                })
                 },
         createEquivalent(){
             this.$store.dispatch('createEquivalentTax',{naghd:this.naghd,nesie: this.nesie, source_id: this.expanded[0].id}).then(response =>{
