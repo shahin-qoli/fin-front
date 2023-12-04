@@ -92,6 +92,9 @@
                             <p>ارسال سند</p>
                         </v-btn>
                         </template>
+                        <template v-slot:[`item.is_sent`]="{ item }">
+                        <p>{{ item.sync_equivalent_document ? item.sync_equivalent_document.tax_is_sent : false  }}</p>
+                        </template>
                         <template v-slot:expanded-item="{ headers, item}">
                             <td :colspan="headers.length">
                                 <v-card v-if="item.is_ready_for_tax_service[0] && !item.equivalent_created" flat>
@@ -115,6 +118,7 @@
                                 </v-card>
                             </td>
                         </template>
+                        
                         <!-- <template v-slot:[`item.mainDocument`]="props">
                             <span>{{ JSON.stringify(props.item.mainDocument) }}</span>
                         </template>
@@ -340,6 +344,11 @@ export default{
             value: "equivalent_created",
           }, 
           {
+            text:"وضعیت ارسال به سامانه",
+            align: "center",
+            //sortable: false,
+            value: "is_sent",
+          },          {
             text:"وضعیت همگام سازی",
             align: "center",
             //sortable: false,
