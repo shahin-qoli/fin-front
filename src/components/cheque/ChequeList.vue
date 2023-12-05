@@ -208,6 +208,10 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <p>در حال عملیات</p>
+  </v-overlay>
     </v-container>
 </template>
 
@@ -402,7 +406,8 @@ export default {
                 "sucess_results" : [],
                 "faild_results" : [],
                 "error" : ''
-            }
+            },
+            isLoading: false,
         }
     },
     computed:{
@@ -606,8 +611,10 @@ export default {
                      next_state: this.selectedState,
                      reg_state: this.selectedReg,
                     deposite_details: this.depositeDetails}
+        this.isLoading = true;            
         this.$store.dispatch('updateCheques', payload).then((response) => {
         this.loadCheques(); 
+        this.isLoading = false;
         this.showModal=true;
         this.reportResult = response;
         })
