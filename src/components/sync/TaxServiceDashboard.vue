@@ -131,6 +131,10 @@
             </v-col>
         </v-row>
     </v-card>
+    <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <p>در حال عملیات</p>
+  </v-overlay>
     </v-container>
 </template>
 
@@ -152,7 +156,8 @@ export default{
         selectedFilter: 0,
         expanded:[],
         naghd:0,
-        nesie: 0
+        nesie: 0,
+        isLoading: false,
         }
     },
     methods:{
@@ -220,7 +225,8 @@ export default{
             }
         },
         taxUpdateSource(item){
-            this.$store.dispatch('updateTaxSourceDocument', [item.id]).then (response =>{
+            this.isLoading = true;
+            this.$store.dispatch('updateTaxSourceDocument', [item.id]).then (response =>{           
                 if (response.success_results.length > 0){
                     this.$toasted.show("با موفقیت انجام شد", {
                                         theme: "toasted-primary", 
@@ -239,9 +245,11 @@ export default{
                                     })
                                 }
                                 this.loadSyncSourceDocs()
+                                this.isLoading = false;
                             })
                 },
         taxSendSource(item){
+            this.isLoading = true;
             this.$store.dispatch('sendSourceTax', [item.id]).then (response =>{
                         if (response.success_results.length > 0){
                             this.$toasted.show("با موفقیت انجام شد", {
@@ -261,9 +269,11 @@ export default{
                                         })
                                     }
                                     this.loadSyncSourceDocs()
+                                    this.isLoading = false;
                                 })
                 },
         createEquivalent(){
+            this.isLoading = true;
             this.$store.dispatch('createEquivalentTax',{naghd:this.naghd,nesie: this.nesie, source_id: this.expanded[0].id}).then(response =>{
                 console.log(response)
                 if (response.result){
@@ -284,6 +294,7 @@ export default{
                                         type: 'error'
                                     })
                                 }
+                                this.isLoading = false;
                                 this.loadSyncSourceDocs()
             })
         },
