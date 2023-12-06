@@ -29,17 +29,22 @@
                 <p>فیلتر فاکتور</p>
             </v-col>
             <v-col>
-                <v-form @submit.prevent="filterSourceDocs">
-                    <v-row>
-                        <v-col cols="4">
-                            <v-select
-                            :items="selectStateOptions"
-                            v-model="selectedFilter"
-                            v-on:change="handleChangeFilter"
-                            ></v-select>
-                        </v-col>
-                    </v-row>
-                </v-form>
+                <v-row>
+                    <v-col cols="4">
+                        <v-select
+                        :items="selectStateOptions"
+                        v-model="selectedFilter"
+                        v-on:change="handleChangeFilter"
+                        label="وضعیت سند"
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="3">
+                            <date-picker v-model="options.docsStartDate" label="تاریخ شروع"></date-picker>
+                    </v-col>
+                    <v-col cols="3">
+                        <date-picker v-model="options.docsEndDate" label="تاریخ پایان"></date-picker>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </v-card>
@@ -88,7 +93,7 @@
                             <p>به روزرسانی</p>
                         </v-btn>
                         <p v-if="props.item.is_ready_for_tax_service[0] && !props.item.equivalent_created">تعیین نقد و نسیه</p>
-                        <v-btn v-if="props.item.equivalent_created && !props.item.is_synced" class="mx-2" small  @click="taxSendSource(props.item)">
+                        <v-btn v-if="props.item.equivalent_created && !props.item.sync_equivalent_document.tax_is_sent" class="mx-2" small  @click="taxSendSource(props.item)">
                             <p>ارسال سند</p>
                         </v-btn>
                         </template>
@@ -140,7 +145,9 @@
 
 <script>
 var jalaali = require('jalaali-js')
+import DatePicker from '../DatePicker.vue'
 export default{
+    components: {DatePicker},
     data(){
         return{
             options: {
@@ -152,6 +159,7 @@ export default{
           docsStartDate: '',
             docsEndDate: '',
             isReadyToTax: false,
+            taxIsSent: '',
         },
         selectedFilter: 0,
         expanded:[],
@@ -162,22 +170,25 @@ export default{
     },
     methods:{
         loadSyncSourceDocs(){
-            this.$store.dispatch('loadTaxSourceDocuments', this.options)
+            console.log("start")
+            this.isLoading = true;
+            this.$store.dispatch('loadTaxSourceDocuments', this.options).then(()=>this.isLoading=false)
         },
         handleChangeFilter(){
             console.log("start to handle"+ this.selectedFilter)
             switch (parseInt(this.selectedFilter, 10)){
+                //اسناد خام
                 case 1:
                 this.options= {
           itemsPerPage: 10,
           page:1,
           isSynced: false,
           equivalentCreated: false,
-          docsStartDate: '',
-            docsEndDate: '',
             isReadyToTax: false,
+            taxIsSent: '',
         }
         break;
+       //خطای اطلاعات پایه"
         case 2:
         
         this.options= {
@@ -185,43 +196,64 @@ export default{
           page:1,
           isSynced: false,
           equivalentCreated: false,
-          docsStartDate: '',
-            docsEndDate: '',
             isReadyToTax: false,
+            taxIsSent: '',
         }
         break;
+         //نیاز به آماده سازی
         case 3:
         this.options= {
           itemsPerPage: 10,
           page:1,
           isSynced: false,
           equivalentCreated: false,
-          docsStartDate: '',
-            docsEndDate: '',
-            isReadyToTax: true,
+            isReadyToTax: false,
+            taxIsSent: false,
         }
         break;
+      //آماده ارسال
         case 4:
         this.options= {
           itemsPerPage: 10,
           page:1,
           isSynced: false,
           equivalentCreated: true,
-          docsStartDate: '',
-            docsEndDate: '',
             isReadyToTax: true,
+            taxIsSent: false,
         }
         break;
+        //اسناد ارسال شده
         case 5:
+        this.options= {
+          itemsPerPage: 10,
+          page:1,
+          isSynced: false,
+          equivalentCreated: true,
+            isReadyToTax: true,
+            taxIsSent: true,
+        };
+        break;
+        //خطای ارسال
+        case 6:
+        this.options= {
+          itemsPerPage: 10,
+          page:1,
+          isSynced: false,
+          equivalentCreated: true,
+            isReadyToTax: true,
+            taxIsSent: true,
+        };          
+        break;
+        //پایان یافته 
+        case 7:
         this.options= {
           itemsPerPage: 10,
           page:1,
           isSynced: true,
           equivalentCreated: true,
-          docsStartDate: '',
-            docsEndDate: '',
             isReadyToTax: true,
-        };
+            taxIsSent: true,
+        };      
             }
         },
         taxUpdateSource(item){
