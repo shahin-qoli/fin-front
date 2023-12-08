@@ -96,6 +96,9 @@
                         <v-btn v-if="props.item.equivalent_created && !props.item.sync_equivalent_document.tax_is_sent" class="mx-2" small  @click="taxSendSource(props.item)">
                             <p>ارسال سند</p>
                         </v-btn>
+                        <v-btn v-if="props.item.equivalent_created && props.item.sync_equivalent_document.tax_error_detail" class="mx-2" small  @click="showErrorDetail(props.item)">
+                            <p>مشاهده خطای سند</p>
+                        </v-btn>
                         </template>
                         <template v-slot:[`item.is_sent`]="{ item }">
                         <p>{{ item.sync_equivalent_document ? item.sync_equivalent_document.tax_is_sent : false  }}</p>
@@ -136,10 +139,22 @@
             </v-col>
         </v-row>
     </v-card>
+    //لودینگ عملیات
     <v-overlay :value="isLoading">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
       <p>در حال عملیات</p>
-  </v-overlay>
+    </v-overlay>
+    //جزییات خطا
+    <v-dialog v-model="errorDetailModal" max-width="500">
+        <v-card>
+            <v-row>
+                <v-col>
+                    <p>{{ errorDetail }}</p>
+                </v-col>
+            </v-row>
+            <v-btn color="primary" text @click="showModal = false">بستن</v-btn>
+        </v-card>
+    </v-dialog>
     </v-container>
 </template>
 
@@ -166,6 +181,8 @@ export default{
         naghd:0,
         nesie: 0,
         isLoading: false,
+        errorDetailModal : false,
+        errorDetail:'',
         }
     },
     methods:{
@@ -333,6 +350,10 @@ export default{
         isNaghdNesieOk(total,naghd,nesie){
 
             return parseInt(total) != parseInt(naghd) + parseInt(nesie)
+        },
+        showErrorDetail(item){
+            this.errorDetailModal = true
+            this.errorDetail = item.sync_equivalent_document.tax_error_detail
         }
     },
     computed:{
