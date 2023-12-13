@@ -125,7 +125,58 @@ export default {
                 );
                 throw error;
             }
+        },
+        async loadTaxSourceDocuments(context, payload){
+            try{
+                const {data:responseData} = await finAgent.get(`/front/sync_source_documents/tax_get_sources?page=${payload.page}&per_page=${payload.itemsPerPage}
+                &q[is_synced_eq]=${payload.isSynced}&q[equivalent_created_eq]=${payload.equivalentCreated}&q[source_document_date_lt]=${payload.docsEndDate}
+                &q[source_document_date_gt]=${payload.docsStartDate}&is_ready_to_tax=${payload.isReadyToTax}&q[sync_equivalent_document_tax_is_sent_eq]=${payload.taxIsSent}`)
+                var syncSourceDocsData = responseData.data
+                var itemCount = responseData.options.count;
+                const syncSourceDocs =[]
+                for(const item of syncSourceDocsData){
+                    const syncSourceDoc = {
+                        ...item
+                    }
+                    syncSourceDocs.push(syncSourceDoc)
+                }
+                context.commit('setSyncSourceDocs', syncSourceDocs);
+                context.commit('setItemCountSyncSources', itemCount);
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async updateTaxSourceDocument(context, payload){
+            try{
+                let body ={source_ids: payload}
+                const {data:responseData} = await finAgent.post(`/front/sync_source_documents/tax_update_source`, body)
+                return responseData
+            }catch (err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async createEquivalentTax(context, payload){
+            try {
+                const {data: responseData} = await finAgent.post('/front/sync_source_documents/tax_create_equivalent', payload)
+                return responseData
+        }catch(err){
+            return{result: false, error: err}
         }
     },
-
+    async sendSourceTax(context, payload){
+        try {
+            let body ={source_ids: payload}
+            const {data: responseData} = await finAgent.post('/front/sync_source_documents/tax_sync_sources',body)
+            return responseData
+        }catch(err){
+            return {result: false, error: err}
+        }
+    },
+    }
 }

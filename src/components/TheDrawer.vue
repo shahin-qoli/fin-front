@@ -139,6 +139,9 @@
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/sync'><h5>داشبورد</h5></router-link> 
                     </v-col>
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/taxsync'><h5>سامانه مودیان</h5></router-link> 
+                    </v-col>
                   </v-expansion-panel-content>                  
                 </v-expansion-panel>
               </v-col>

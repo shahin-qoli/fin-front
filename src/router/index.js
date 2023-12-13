@@ -33,6 +33,7 @@ import ClubPublicView from '../views/ClubPublicView.vue'
 import UploadPictureView from '../views/UploadPictureView.vue'
 import AddPictureView from '../views/AddPictureView.vue'
 import UsingPromotions from '../views/UsingPromotionsView.vue'
+import TaxServiceDashboard from '../views/TaxServiceDashboardView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -198,6 +199,11 @@ const routes = [
     name: 'sync',
     beforeEnter : guardMyrouteCheque,
     component: SyncDashboard
+  },{
+    path: '/taxsync',
+    name: 'taxsync',
+    beforeEnter : guardMyrouteCheque,
+    component: TaxServiceDashboard
   },
   {
     path: '/chequelogs',
