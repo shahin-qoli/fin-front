@@ -63,6 +63,9 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/payanereport'><h5>گزارشات صندوق</h5></router-link> 
                   </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/goldenpayanereport'><h5>قرارداد طلایی</h5></router-link> 
+                  </v-col>
                 </v-expansion-panel-content>
               </v-expansion-panel>
               </v-col>

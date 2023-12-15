@@ -34,7 +34,7 @@ import UploadPictureView from '../views/UploadPictureView.vue'
 import AddPictureView from '../views/AddPictureView.vue'
 import UsingPromotions from '../views/UsingPromotionsView.vue'
 import TaxServiceDashboard from '../views/TaxServiceDashboardView.vue'
-
+import GoldenPayaneReportView from '../views/GoldenPayaneReportView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -279,6 +279,11 @@ const routes = [
     name: 'payanereport',
     beforeEnter : guardMyrouteAdmin,
     component: payanereportView
+  },{
+    path: '/goldenpayanereport',
+    name: 'goldenpayanereport',
+    beforeEnter : guardMyrouteAdmin,
+    component: GoldenPayaneReportView
   },
   {
     path: '/usetransaction',
