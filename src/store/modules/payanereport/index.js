@@ -33,7 +33,9 @@ export default {
         async loadPayaneReports(context,payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}`);
+                let is_used = payload.isUsed 
+                console.log(payload)
+                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`);
                 var payaneReportData = responseData.data;
                 const payaneReports = []
                 var itemCount = responseData.options.count;
@@ -59,7 +61,11 @@ export default {
             try{
                 console.log("HERE ITEM")
                 console.log(payload)
+                if (payload.docentry === null) {
                 var data ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":""} 
+                }else{
+                    data ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"", "used_for_docentry": payload.docentry,"used_for_doctype": 17}  
+                }
                 const {data:responseData} = await finAgent.post(`/front/pos_payane_reports/${payload.id}/use_payments`,data)
                 console.log(responseData.result)
                 if(responseData.result == true){

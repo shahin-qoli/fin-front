@@ -1,5 +1,6 @@
 <template>
     <v-container>
+         <!-- انتخاب پایانه  -->
         <v-card>
             <v-card-text>
                 <v-select
@@ -8,10 +9,10 @@
                     item-value="payane_code"
                     item-text="customItemText"
                     label="پایانه"
-                    multiple
                     filled
                     outlined
                     small-chips
+                    single-line
                 >   
                 <template v-slot:item="{ item }">
                     <div>{{ displayText(item) }}</div>
@@ -22,14 +23,18 @@
                 </v-select>
             </v-card-text>
         </v-card>
-        <v-card v-if="selectedPayaneCode">
+         <!-- گزارش سفارش ها -->
+        <v-card v-if="options.selectedPayaneCodes">
             <v-card-text>
                 <v-data-table
                 fixed-header
                 dense
                 :headers="orderHeaders"
                 :items="orders"
-                item-key="id"
+                item-key="order.DocNum"
+                single-select
+                v-model="selectedOrder"
+                show-select
                 >
                 <template v-slot:[`item.total`]="{item}">
                 {{ orderTotal(item).toFixed(0) | formatAmount }}
@@ -40,10 +45,18 @@
                 </v-data-table>
             </v-card-text>
         </v-card>
-        <v-card v-if="selectedPayaneCode">
+        <!-- گزارش پایانه ها -->
+        <v-card v-if="options.selectedPayaneCodes">
+            <v-card-title>
+                <v-switch
+                v-model="options.isUsed"
+                label="استفاده شده ها"></v-switch>
+            </v-card-title>
+            <v-card-text>
             <v-data-table
             fixed-header
             dense
+           
             :headers="posHeaders"
             :items="payaneReports"
             item-key="id"     
@@ -121,7 +134,9 @@
                 </v-btn>
             </template>
             </v-data-table>
+        </v-card-text>
         </v-card>
+        <!-- لودینگ -->
         <v-overlay :value="isLoading">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
                 <p>در حال بارگذاری</p>
@@ -139,12 +154,14 @@ export default {
             page:1, 
             selectedPayaneCodes: '',
             selectedDate:'',
-            selectedType: 'customer'
+            selectedType: 'customer',
+            isUsed: false
             },
-            selectedPayaneCode:'',
+            selectedPayaneCode:[],
             dialog: false,
             posRawsDetails: [],
             isLoading: false,
+            selectedOrder:[],
         }
     },
     computed:{
@@ -306,21 +323,20 @@ export default {
             return isUsed != true;
         },
         noSalePerson(salePerson){
-            return salePerson == null;
+            return salePerson == null || this.selectedOrder.length < 1
         },
         displayText(item) {
             return item.payane_code + ' - ' + item.card_name;
             },
         loadPayanes(){
+
             this.$store.dispatch('loadGoldenPayanes')
         },
         orderTotal(item){
-            console.log("item")
-            console.log(item)
             return (Number.parseFloat(item.order.LineTot) + Number.parseFloat(item.order.VatTot) - Number.parseFloat(item.order.DiscTot))
         },
         loadPayaneReports() {
-                // console.log(this)
+            console.log(this.options)
                 this.$store.dispatch('loadPayaneReports',this.options)
         },
         loadGoldOrders(cardCode){
@@ -328,9 +344,18 @@ export default {
             this.$store.dispatch('loadGoldOrders', cardCode).then(()=> this.isLoading=false)
         },
         viewMore(item) {
-            console.log(item)
             this.posRawsDetails = item.pos_raws
          },
+         usePoses(item){
+                this.loading = true;
+            var payload = {
+            ...item, doncentry: this.selectedOrder[0].order.DocEntry
+            }
+            this.$store.dispatch('usePayaneReport',payload)
+            .finally(() => {
+                this.loading = false;
+              })
+            },
      },
     watch:{
         selectedPayaneCode:{
