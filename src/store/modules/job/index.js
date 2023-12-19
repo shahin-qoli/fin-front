@@ -37,8 +37,15 @@ export default{
         },
         async loadJobs(context,payload){
             context.commit('setIsLoading', 'true')
+            let qstring = ''
+            if (payload.isSuccess){
+                qstring = 'q[jobfull_of_UsedPayment_type_state_not_eq]='
+            }
+            else {
+                qstring = 'q[jobfull_of_UsedPayment_type_state_eq]='
+            }
             try {
-                const {data: responseData} = await finAgent.get(`/front/job_results?page=${payload.page}&per_page=${payload.itemsPerPage}`);
+                const {data: responseData} = await finAgent.get(`/front/job_results?page=${payload.page}&per_page=${payload.itemsPerPage}&${qstring}complete`);
                 const jobs = []
                 var jobsData = responseData.data;
                 var itemCount = responseData.options.count;
