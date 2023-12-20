@@ -1,14 +1,27 @@
 <template>
   <v-card outlined>
       <v-card-title>
+        <v-row>
+          <v-col cols="6">
           <v-text-field
-          v-model="search"
+          v-model="options.slpName"
           append-icon="mdi-magnify"
-          label="جستجو"
+          label="نام"
           single-line
           hide-details
           ></v-text-field>
-      </v-card-title>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+          v-model="options.payaneCode"
+          append-icon="mdi-magnify"
+          label="کد پایانه"
+          single-line
+          hide-details
+          ></v-text-field>
+        </v-col>
+        </v-row>
+      </v-card-title>  
       <v-data-table
       fixed-header
       dense
@@ -136,6 +149,8 @@
         options: {
             itemsPerPage: 10,
             page:1,
+            payaneCode:'',
+            slpName:''
             },
         dialogNew: false,
         dialogEdit: false,

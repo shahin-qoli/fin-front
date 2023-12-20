@@ -3,13 +3,8 @@
         <template>
             <v-card outlined>
                 <v-card-title>
-                    <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="جستجو"
-                        single-line
-                        hide-details
-                    ></v-text-field>
+                  <v-switch
+                  v-model="options.isSuccess">نیاز به تلاش مجدد</v-switch>
                 </v-card-title>
                 <v-data-table
                     fixed-header
@@ -42,7 +37,8 @@ export default{
             search: "",
             options: {
         itemsPerPage: 10,
-        page: 1
+        page: 1,
+        isSuccess: true
       },
 
         }
