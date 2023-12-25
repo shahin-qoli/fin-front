@@ -86,7 +86,7 @@
                         </v-col>
                         <v-col cols="6">
                             <v-btn dark color="red" @click="refreshData">بازنشانی</v-btn>
-                            <v-btn dark color="green" type="submit">ثبت</v-btn>
+                            <v-btn dark  color="green" type="submit">ثبت</v-btn>
                         </v-col>
                     </v-row>
                 </v-form>
@@ -139,6 +139,13 @@ export default {
         },
         requestAccounts(){
             return this.$store.getters.getRequestAccounts
+        },
+        isReady(){
+            console.log(this.file != null)
+            return this.file != null
+            // && this.request.transactionType !=null 
+            // && this.request.toAccount !=null && this.request.fromAccount !=null 
+            // && this.request.amount !=null && this.request.peygiriNumber !=null 
         }
     },methods:{
         refreshData(){
@@ -164,11 +171,28 @@ export default {
             }
         },
         submitRequest(){
+            if (!this.isRead){
+                this.$toasted.show("فرم را تکمیل کنید", {
+                    duration: 3000,
+                    type: 'error'
+                })
+            }else{
             this.request.requestedBy = this.user.id
             this.$store.dispatch('createPaymentRequest', this.request).then((response) =>{
-                console.log(`this id response =${response}`)
-            })
-        },
+                if (response == true){
+                    this.$toasted.show('درخواست با موفقیت ثبت شد', {
+                      duration: 3000,
+                      type: 'success'
+                    })
+                    this.refreshData()
+                }else{
+                    this.$toasted.show('خطا، دوباره تلاش کنید',{
+                        duration: 3000,
+                        type: 'error'
+                    })
+                }
+               
+        })}},
         itemForType(type){
             if (type == 1){
                 return this.requestCards
