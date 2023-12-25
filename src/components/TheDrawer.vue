@@ -36,7 +36,7 @@
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
-              <v-col cols="12" v-if="requestAccess">
+              <!-- <v-col cols="12" v-if="requestAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                     <h3>درخواست ها</h3>
@@ -53,7 +53,7 @@
                     </v-col> 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
-              </v-col>
+              </v-col> -->
               <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                 <v-expansion-panel-header class="grey lighten-5">
@@ -67,8 +67,33 @@
                   <router-link style="text-decoration: none;" to='/goldenpayanereport'><h5>قرارداد طلایی</h5></router-link> 
                   </v-col>
                 </v-expansion-panel-content>
+                <v-expansion-panel-content class="grey lighten-5">
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/createpaymentrequest'><h5>ایجاد درخواست</h5></router-link> 
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/goldenpayanereport'><h5>فهرست درخواست ها</h5></router-link> 
+                  </v-col>
+                </v-expansion-panel-content> 
+
               </v-expansion-panel>
               </v-col>
+              <v-col cols="12" v-if="requestAccess">
+                <v-expansion-panel class="grey lighten-5">
+                <v-expansion-panel-header class="grey lighten-5">
+                <h3>درخواست پرداخت</h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="grey lighten-5">
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/createpaymentrequest'><h5>ایجاد درخواست</h5></router-link> 
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/paymentrequestlist'><h5>فهرست درخواست ها</h5></router-link> 
+                  </v-col>
+                </v-expansion-panel-content> 
+                               
+              </v-expansion-panel>
+              </v-col>              
               <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
