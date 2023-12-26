@@ -141,8 +141,8 @@ export default {
             return this.$store.getters.getRequestAccounts
         },
         isReady(){
-            console.log(this.file != null)
-            return this.file != null
+    
+            return this.file === null || this.request.cardCode === null || this.request.amount ===null
             // && this.request.transactionType !=null 
             // && this.request.toAccount !=null && this.request.fromAccount !=null 
             // && this.request.amount !=null && this.request.peygiriNumber !=null 
@@ -171,7 +171,9 @@ export default {
             }
         },
         submitRequest(){
-            if (!this.isReady){
+            console.log("this is ready")
+            console.log(this.isReady)
+            if (this.isReady){
                 this.$toasted.show("فرم را تکمیل کنید", {
                     duration: 3000,
                     type: 'error'
