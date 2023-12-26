@@ -171,7 +171,7 @@ export default {
             }
         },
         submitRequest(){
-            if (!this.isRead){
+            if (!this.isReady){
                 this.$toasted.show("فرم را تکمیل کنید", {
                     duration: 3000,
                     type: 'error'
