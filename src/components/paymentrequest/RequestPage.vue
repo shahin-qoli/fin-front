@@ -112,7 +112,7 @@ export default {
                 peygiriNumber:null,
                 requestExtraInfo:null,
             },
-            file:null,
+            file:'',
         }
     },
     computed:{
@@ -141,8 +141,8 @@ export default {
             return this.$store.getters.getRequestAccounts
         },
         isReady(){
-    
-            return this.file === null || this.request.cardCode === null || this.request.amount ===null
+            console.log(` this is file : ${this.file}`)
+            return (this.request.amount >0 )
             // && this.request.transactionType !=null 
             // && this.request.toAccount !=null && this.request.fromAccount !=null 
             // && this.request.amount !=null && this.request.peygiriNumber !=null 
@@ -173,7 +173,7 @@ export default {
         submitRequest(){
             console.log("this is ready")
             console.log(this.isReady)
-            if (this.isReady){
+            if (!this.isReady){
                 this.$toasted.show("فرم را تکمیل کنید", {
                     duration: 3000,
                     type: 'error'
