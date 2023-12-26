@@ -111,9 +111,9 @@ export default {
         },
         async fetchPaymentRequests(context,payload){
             try{
+                console.log(payload)
                 context.commit('setIsLoading',true);
-                const {data: responseData} = await finAgent.get(`/front/payment_register_requests?
-                page=${payload.page}&per_page=${payload.itemsPerPage}&q[status_eq]=${payload.status}&q[requested_by_eq]=${payload.requestedBy}`);
+                const {data: responseData} = await finAgent.get(`/front/payment_register_requests?page=${payload.page}&per_page=${payload.itemsPerPage}&q[state_eq]=${payload.state}&q[requested_by_eq]=${payload.requestedBy}&q[card_code_cont]=${payload.cardCode}`);
                 let paymentRequests = responseData.data;
                 let itemCount = responseData.options.count
                 context.commit('setPaymentRequests',paymentRequests);
@@ -147,7 +147,7 @@ export default {
         },
         async denyPaymentRequest(context,payload){
             try{
-                console.log(payload)
+                
                 context.commit('setIsLoading',true);
                 const {data: responseData} = await finAgent.post(`/front/payment_register_requests/${payload.id}/deny`,payload);
                 context.commit('setIsLoading',false);

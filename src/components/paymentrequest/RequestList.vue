@@ -1,15 +1,41 @@
 <template>
     <v-container>
         <v-card>
-        <v-data-table
-        :headers="headers"
-        :items="requests"
-        :options.sync="options"
-        :server-items-length="itemCount">
-            <template v-slot:[`item.details`]="item">
-                <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
-            </template>
-        </v-data-table>
+            <v-card-title>
+                <v-row>
+                    <v-col cols="12" class="d-flex align-center justify-center">
+                        <p>فیلترها</p>
+                    </v-col>
+                    <v-col cols="4">
+                        <v-select
+                        :items="requestStates"
+                        placeholder="وضعیت سند"
+                        solo
+                        filled
+                        dense
+                        item-text="text"
+                        item-value="value"
+                        v-model="options.state"
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="4">
+                        <v-text-field
+                        v-model="options.cardCode"
+                        label="کد مشتری"></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-card-title>
+            <v-card-text>
+                <v-data-table
+                :headers="headers"
+                :items="requests"
+                :options.sync="options"
+                :server-items-length="itemCount">
+                    <template v-slot:[`item.details`]="item">
+                        <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                    </template>
+                </v-data-table>
+            </v-card-text>
         </v-card>
             <v-dialog
             v-model="dialog"
@@ -112,7 +138,9 @@ export default{
             itemsPerPage: 10,
             page:1,
             state:'',
-            requestedBy: ''
+            requestedBy: '',
+            selectedState:'',
+            cardCode:''
         },
         dialog: false,
         dialogItem:{card_code:''},
@@ -156,6 +184,26 @@ export default{
                     text: 'جزییات',
                     value: 'details'
                 }
+            ]
+        },
+        requestStates(){
+            return [
+                {
+                    text: 'درخواست شده',
+                    value: 'requested'
+                },
+                {
+                    text: 'رد شده',
+                    value: 'denied'
+                },
+                {
+                    text: 'تایید شده',
+                    value: 'completed'
+                },
+                {
+                    text: 'در حال بررسی',
+                    value: 'processing'
+                },
             ]
         },
         requests(){

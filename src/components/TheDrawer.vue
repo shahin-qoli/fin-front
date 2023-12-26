@@ -36,7 +36,7 @@
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
-              <!-- <v-col cols="12" v-if="requestAccess">
+              <v-col cols="12" v-if="requestAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                     <h3>درخواست ها</h3>
@@ -48,12 +48,12 @@
                     <v-col cols="12" v-if="!saleRole">
                       <router-link style="text-decoration: none;" to='/joblist'><h5>همگام سازی</h5></router-link> 
                     </v-col>    
-                    <v-col cols="12" v-if="saleRole">
+                    <!-- <v-col cols="12" v-if="saleRole">
                         <router-link style="text-decoration: none;" to='/usetransaction'><h5>درخواست ثبت سند</h5></router-link>  
-                    </v-col> 
+                    </v-col>  -->
                   </v-expansion-panel-content>
                 </v-expansion-panel>
-              </v-col> -->
+              </v-col>
               <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                 <v-expansion-panel-header class="grey lighten-5">
