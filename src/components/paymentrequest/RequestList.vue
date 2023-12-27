@@ -178,11 +178,11 @@ export default{
                 },
                 {
                     text: 'درخواست توسط',
-                    value: 'requested_by'
+                    value: 'requested_by_name'
                 },
                 {
                     text: 'به روزرسانی توسط',
-                    value: 'updated_by'
+                    value: 'updated_by_name'
                 },
                 {
                     text: 'وضعیت',
