@@ -177,6 +177,14 @@ export default{
                     value: 'amount'
                 },
                 {
+                    text: 'درخواست توسط',
+                    value: 'requested_by'
+                },
+                {
+                    text: 'به روزرسانی توسط',
+                    value: 'updated_by'
+                },
+                {
                     text: 'وضعیت',
                     value: 'state'
                 },
