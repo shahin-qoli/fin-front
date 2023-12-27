@@ -107,13 +107,13 @@
                             <v-text-field disabled label="وضعیت" v-model="dialogItem.state"></v-text-field>
                         </v-col>         
                         <v-col cols="4">
-                            <v-text-field label="توضیحات رد" v-model="updateItem.rejectExteraInfo"></v-text-field>
+                            <v-text-field label="توضیحات رد" v-model="updateItem.reject_extra_info"></v-text-field>
                         </v-col>    
                         <v-col cols="4">
-                            <v-text-field label="شماره سند بی وان" v-model="updateItem.b1DocNum"></v-text-field>
+                            <v-text-field label="شماره سند بی وان" v-model="updateItem.b1_docnum"></v-text-field>
                         </v-col>   
                         <v-col cols="4">
-                            <v-text-field label="شماره درخواست در نرم افزار" v-model="updateItem.transitionId"></v-text-field>
+                            <v-text-field label="شماره درخواست در نرم افزار" v-model="updateItem.transaction_id"></v-text-field>
                         </v-col>               
                         <v-col cols="6">
                             <v-btn dark color="red" @click="dialog=false">بستن</v-btn>
@@ -145,9 +145,9 @@ export default{
         dialog: false,
         dialogItem:{card_code:''},
         updateItem:{
-            rejectExteraInfo:'',
-            b1DocNum:'',
-            transitionId:'',
+            reject_extra_info:'',
+            b1_docnum:'',
+            transaction_id:'',
             id:'',
             updated_by:''
         }
@@ -224,6 +224,10 @@ export default{
         detailsDialog(item){
             this.dialog=true;
             this.updateItem.id= item.item.id
+            this.updateItem.updated_by = item.item.updated_by
+            this.updateItem.reject_extra_info = item.item.reject_extra_info
+            this.updateItem.b1_docnum = item.item.b1_docnum
+            this.transaction_id = item.item.transaction_id
             this.updated_by= this.user.id
             this.dialogItem= {...item.item}
         },
