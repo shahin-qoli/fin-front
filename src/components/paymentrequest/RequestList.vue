@@ -228,7 +228,6 @@ export default{
             this.updateItem.reject_extra_info = item.item.reject_extra_info
             this.updateItem.b1_docnum = item.item.b1_docnum
             this.transaction_id = item.item.transaction_id
-            this.updated_by= this.user.id
             this.dialogItem= {...item.item}
         },
         loadPaymentRequests(){
@@ -236,6 +235,7 @@ export default{
         },
         deny(){
             if(window.confirm('آیا از رد این درخواست اطمینان دارید؟')){
+                        this.updateItem.updated_by= this.user.id
                         this.$store.dispatch('denyPaymentRequest', this.updateItem)
                         .then((response) => {
                             if (response == true){
@@ -257,6 +257,7 @@ export default{
         ,
         verify(){
             if(window.confirm('آیا از تایید این درخواست اطمینان دارید؟')){
+                this.updateItem.updated_by= this.user.id
                         this.$store.dispatch('verifyPaymentRequest', this.updateItem)
                         .then((response) => {
                             if (response == true){
@@ -277,6 +278,7 @@ export default{
                 }
         ,
         proccess(){
+            this.updateItem.updated_by= this.user.id
             this.$store.dispatch('processingPaymentRequest', this.updateItem)
                         .then((response) => {
                             if (response == true){
