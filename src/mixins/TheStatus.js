@@ -7,7 +7,8 @@ export const TheStatus ={
                 ["denied", "رد شده"],
                 ["api_error", "خطا"],
                 ["complete", "تکمیل شده"],
-                ["retried", "تلاش مجدد"]
+                ["retried", "تلاش مجدد"],
+                ["completed", "تکمیل شده"],
             ]),
             requestStatusColor: new Map([
                 ["requested", "yellow"],
@@ -15,7 +16,8 @@ export const TheStatus ={
                 ["denied", "red"],
                 ["api_error", "red"],
                 ["complete", "green"],
-                ["retried", "gray"]
+                ["retried", "gray"],
+                ["completed", "green"],
             ])
 
         }

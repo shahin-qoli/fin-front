@@ -31,8 +31,26 @@
                 :items="requests"
                 :options.sync="options"
                 :server-items-length="itemCount">
+                    <template v-slot:[`item.amount`]="item">
+                        <v-row>
+                            <v-col class="d-flex align-center">
+                                <p>{{ item.item.amount | formatAmount }}</p>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <template v-slot:[`item.created_at`]="item">
+                        <p>{{ item.item.created_at | formatDate }}</p>
+                    </template>
+                    <template v-slot:[`item.transaction_type`]="item">
+                        <p>{{ transactionTypeFromatted(item.item.transaction_type) }}</p>
+                    </template>
                     <template v-slot:[`item.details`]="item">
                         <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                    </template>
+                    <template v-slot:[`item.state`]="item">
+                        <v-chip small dark :color="getColorRequestStatus(item.item.state)">
+                  {{ transformRequestStatus(item.item.state) }}
+                </v-chip>
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -128,10 +146,17 @@
             </v-row>
         </v-card>
         </v-dialog>
+        <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <p>در حال عملیات</p>
+  </v-overlay>
     </v-container>
 </template>
 <script>
+var jalaali = require('jalaali-js')
+import {TheStatus} from '../../mixins/TheStatus.js'
 export default{
+    mixins:[TheStatus],
     data(){
         return {
             options:{
@@ -150,7 +175,8 @@ export default{
             transaction_id:'',
             id:'',
             updated_by:''
-        }
+        },
+        isLoading: false,
         }
     },
     computed:{
@@ -227,8 +253,17 @@ export default{
             return this.$store.getters.getUser.role === 'sale';
           },
 
+
     },
     methods:{
+        transactionTypeFromatted(item){
+            if (item == 1 )
+            return "کارت به کارت"
+            else if (item ==2)
+            return "حساب به حساب"
+        else
+        return ""
+          },
         detailsDialog(item){
             this.dialog=true;
             this.updateItem.id= item.item.id
@@ -239,22 +274,27 @@ export default{
             this.dialogItem= {...item.item}
         },
         loadPaymentRequests(){
-            this.$store.dispatch('fetchPaymentRequests',this.options)
+            this.isLoading= true
+            this.$store.dispatch('fetchPaymentRequests',this.options).then(()=>this.isLoading= false)
         },
         deny(){
             if(window.confirm('آیا از رد این درخواست اطمینان دارید؟')){
+                         this.isLoading= true
                         this.updateItem.updated_by= this.user.id
                         this.$store.dispatch('denyPaymentRequest', this.updateItem)
                         .then((response) => {
+                            this.isLoading= false
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت رد شد', {
                                     duration: 3000,
-                                    type: 'success'
+                                    type: 'success',
+                                    position: 'bottom-center'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
-                                    type: 'error'
+                                    type: 'error',
+                                    position: 'bottom-center'
                                 })
                             }                    
                             this.dialog = false
@@ -265,18 +305,22 @@ export default{
         ,
         verify(){
             if(window.confirm('آیا از تایید این درخواست اطمینان دارید؟')){
+                this.isLoading= true
                 this.updateItem.updated_by= this.user.id
                         this.$store.dispatch('verifyPaymentRequest', this.updateItem)
                         .then((response) => {
+                            this.isLoading= false
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت تایید شد', {
                                     duration: 3000,
-                                    type: 'success'
+                                    type: 'success',
+                                    position: 'bottom-center'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
-                                    type: 'error'
+                                    type: 'error',
+                                    position: 'bottom-center'
                                 })
                             }                    
                             this.dialog = false
@@ -286,24 +330,41 @@ export default{
                 }
         ,
         proccess(){
+            this.isLoading= true
             this.updateItem.updated_by= this.user.id
             this.$store.dispatch('processingPaymentRequest', this.updateItem)
                         .then((response) => {
+                            this.isLoading= false
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت تایید شد', {
                                     duration: 3000,
-                                    type: 'success'
+                                    type: 'success',
+                                    position: 'bottom-center'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
-                                    type: 'error'
+                                    type: 'error',
+                                    position: 'bottom-center'
                                 })
                             }                    
                             this.dialog = false
                             this.loadPaymentRequests()
                         })
                 }
+    },
+        filters:{
+    formatAmount(value){
+      const stringVlue = String(value)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+    },
+    formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
     },
     watch:{
     options:{
