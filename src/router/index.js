@@ -37,7 +37,7 @@ import TaxServiceDashboard from '../views/TaxServiceDashboardView.vue'
 import GoldenPayaneReportView from '../views/GoldenPayaneReportView.vue'
 import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
 import paymentrequestListView from '@/views/PaymentRequestListView.vue'
-
+import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -149,7 +149,13 @@ const routes = [
     name: 'paymentrequestlist',
     beforeEnter : guardMyrouteLoggedIn,
     component: paymentrequestListView
-  },
+  },{
+    path: '/financialdasboard',
+    name: 'financialdashboard',
+    beforeEnter: guardMyrouteAdmin,
+    component: FinancialDasboardView
+  }
+  ,
   {
     path: '/addpicture2',
     name: 'addpicture2',

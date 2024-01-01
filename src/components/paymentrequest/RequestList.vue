@@ -293,8 +293,9 @@ export default{
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
-                                    type: 'error',
-                                    position: 'bottom-center'
+
+                                    position: 'bottom-center',
+                                    type: 'error'
                                 })
                             }                    
                             this.dialog = false
@@ -313,8 +314,8 @@ export default{
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت تایید شد', {
                                     duration: 3000,
-                                    type: 'success',
-                                    position: 'bottom-center'
+                                    position: 'bottom-center',
+                                    type: 'success'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
