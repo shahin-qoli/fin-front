@@ -249,11 +249,13 @@ export default{
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت رد شد', {
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'success'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'error'
                                 })
                             }                    
@@ -271,11 +273,13 @@ export default{
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت تایید شد', {
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'success'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'error'
                                 })
                             }                    
@@ -292,11 +296,13 @@ export default{
                             if (response == true){
                                 this.$toasted.show('درخواست با موفقیت تایید شد', {
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'success'
                                 });
                             }else{
                                 this.$toasted.show("خطا در عملیات",{
                                     duration: 3000,
+                                    position: 'bottom-center',
                                     type: 'error'
                                 })
                             }                    
