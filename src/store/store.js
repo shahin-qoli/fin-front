@@ -23,6 +23,9 @@ import spree from './modules/spree/index.js'
 import b1logs from './modules/b1logs/index.js';
 import bank from './modules/bank/index.js'
 import exhabition from './modules/exhabition/index.js'
+import paymentrequest from './modules/paymentrequest/index.js';
+import financialdashboard from './modules/financialdashboard/index.js';
+
 
 Vue.use(Vuex);
 
@@ -49,6 +52,8 @@ export default new Vuex.Store({
       miarze, 
       club, 
       exhabition,  
+      paymentrequest,
+      financialdashboard,
     },
     state(){
       return{ 

@@ -48,9 +48,9 @@
                     <v-col cols="12" v-if="!saleRole">
                       <router-link style="text-decoration: none;" to='/joblist'><h5>همگام سازی</h5></router-link> 
                     </v-col>    
-                    <v-col cols="12" v-if="saleRole">
+                    <!-- <v-col cols="12" v-if="saleRole">
                         <router-link style="text-decoration: none;" to='/usetransaction'><h5>درخواست ثبت سند</h5></router-link>  
-                    </v-col> 
+                    </v-col>  -->
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -67,8 +67,33 @@
                   <router-link style="text-decoration: none;" to='/goldenpayanereport'><h5>قرارداد طلایی</h5></router-link> 
                   </v-col>
                 </v-expansion-panel-content>
+                <v-expansion-panel-content class="grey lighten-5">
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/createpaymentrequest'><h5>ایجاد درخواست</h5></router-link> 
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/goldenpayanereport'><h5>فهرست درخواست ها</h5></router-link> 
+                  </v-col>
+                </v-expansion-panel-content> 
+
               </v-expansion-panel>
               </v-col>
+              <v-col cols="12" v-if="requestAccess">
+                <v-expansion-panel class="grey lighten-5">
+                <v-expansion-panel-header class="grey lighten-5">
+                <h3>درخواست پرداخت</h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="grey lighten-5">
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/createpaymentrequest'><h5>ایجاد درخواست</h5></router-link> 
+                  </v-col>
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/paymentrequestlist'><h5>فهرست درخواست ها</h5></router-link> 
+                  </v-col>
+                </v-expansion-panel-content> 
+                               
+              </v-expansion-panel>
+              </v-col>              
               <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
@@ -148,6 +173,18 @@
                   </v-expansion-panel-content>                  
                 </v-expansion-panel>
               </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                  <h3>داشبورد فروش</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/financialdasboard'><h5>Sale Order</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>              
             </v-expansion-panels>
             </v-col>
         </v-row>

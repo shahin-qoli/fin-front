@@ -4,7 +4,12 @@ import  {finAgent} from '@/services/agent'
 export default {
     async useCardtocard(contex, payload){
         try{
-            var data ={"used_for": payload.cardcode, "captured_by":""} 
+            let user = payload.userid
+            if (payload.cardcode !=null && payload.b1docnum == null){
+                var data ={"used_for": payload.cardcode, "captured_by":user.id} }
+            else if (payload.b1docnum != null){
+                data ={"b1_docnum": payload.b1docnum, "captured_by":user.id,"used_for": payload.cardcode}
+            }
             const {data:responseData} = await finAgent.post(`/front/card_to_card_raws/${payload.item.id}/use_payment`,data)
             console.log(responseData.result)
             if(responseData.result == true){

@@ -35,6 +35,10 @@ import AddPictureView from '../views/AddPictureView.vue'
 import UsingPromotions from '../views/UsingPromotionsView.vue'
 import TaxServiceDashboard from '../views/TaxServiceDashboardView.vue'
 import GoldenPayaneReportView from '../views/GoldenPayaneReportView.vue'
+import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
+import paymentrequestListView from '@/views/PaymentRequestListView.vue'
+import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
+
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -132,7 +136,26 @@ function guardMyrouteLoggedIn(to, from, next){
     next('/login'); // go to '/login';
    }
 }
-const routes = [
+const routes = [ 
+  {
+    path: '/createpaymentrequest',
+    name: 'createpaymentrequest',
+    beforeEnter : guardMyrouteLoggedIn,
+    component: paymentrequestPageView
+  }
+  , 
+  {
+    path: '/paymentrequestlist',
+    name: 'paymentrequestlist',
+    beforeEnter : guardMyrouteLoggedIn,
+    component: paymentrequestListView
+  },{
+    path: '/financialdasboard',
+    name: 'financialdashboard',
+    beforeEnter: guardMyrouteAdmin,
+    component: FinancialDasboardView
+  }
+  ,
   {
     path: '/addpicture2',
     name: 'addpicture2',

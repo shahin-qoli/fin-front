@@ -12,10 +12,13 @@
           </v-row>
         </v-container>
         <v-container v-if="item.is_used==false">
-          <v-form  @submit.prevent="submitForm(item,cardcode)">
+          <v-form  @submit.prevent="submitForm(item,cardcode,b1docnum)">
             <v-row>
-              <v-col cols="12">
+              <v-col cols="4">
                 <v-text-field v-model="cardcode" hint="c50000" label="کد مشتری"> </v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-text-field v-model="b1docnum" hint="4432" label="شماره سند بی وان"> </v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-btn dark color="green" type="submit">استفاده تراکنش</v-btn>
@@ -37,15 +40,20 @@ export default{
         console.log(up)
         return up.used_payments[0].used_for
       },
-        submitForm(item,cardcode) {
-            const obj = {item: item, cardcode:cardcode}
+        submitForm(item,cardcode,b1docnum) {
+            const obj = {item: item, cardcode:cardcode,b1docnum:b1docnum, userid: this.user.id}
             this.$emit('use-row', obj)
         }
     },
     data(){return {
-        cardcode: null
+        cardcode: null,
+        b1docnum: null
     } 
        
+    },computed:{
+      user(){
+        return this.$store.getters.getUser
+      }
     },
     props: {
         item: {}
