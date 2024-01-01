@@ -25,18 +25,20 @@
                             >
                             </v-autocomplete>
                         </v-col>
-                        <!-- <v-col cols="4">
+                        <v-col cols="4">
                             <v-text-field
                             label="نام مشتری"
-                            :v-bind="request.customerName"
+                            disabled
+                            v-model="selectedCustomerName"
                             ></v-text-field>
-                        </v-col> -->
+                        </v-col>
                         <v-col cols="4">
                             <v-select
                             :items="transactionTypes"
                             item-text="text"
                             item-value="value"
                             required
+                            label="نوع تراکنش"
                             v-model="request.transactionType"
                             @input="loadRequestAccounts"></v-select>
                         </v-col>
@@ -59,7 +61,8 @@
                         <v-col cols="4">
                             <v-text-field
                             label="مبلغ"
-                            v-model="request.amount"
+                            :value="formatAmountMethod"
+                            @blur="updateAmount"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="4">
@@ -92,9 +95,14 @@
                 </v-form>
             </v-card-text>
         </v-card>
+        <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <p>در حال عملیات</p>
+  </v-overlay>
     </v-container>
 </template>
 <script>
+var jalaali = require('jalaali-js')
 import DatePicker from '../DatePicker.vue'
 export default {
     components:{
@@ -111,11 +119,23 @@ export default {
                 transactionDate:null,
                 peygiriNumber:null,
                 requestExtraInfo:null,
+                amount:'',
+                file:null
             },
-            file:'',
+            
+            isLoading:false
         }
     },
     computed:{
+        formatAmountMethod() {
+      // Format the amount in the input field by adding commas
+      console.log(`Req AMOUNT: ${this.request.amount }`)
+
+      const stringVlue = String(this.request.amount)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+
+    },
         user(){
             return this.$store.getters.getUser
         },
@@ -141,11 +161,17 @@ export default {
             return this.$store.getters.getRequestAccounts
         },
         isReady(){
-            console.log(` this is file : ${this.file}`)
-            return (this.request.amount >0 )
-            // && this.request.transactionType !=null 
-            // && this.request.toAccount !=null && this.request.fromAccount !=null 
-            // && this.request.amount !=null && this.request.peygiriNumber !=null 
+
+            return (this.request.amount >0 && this.request.file 
+            && this.request.transactionType !=null 
+            && this.request.toAccount !=null && this.request.fromAccount !=null 
+            && this.request.amount !=null && this.request.peygiriNumber !=null )
+        },
+        selectedCustomerName(){
+            if (this.request.cardCode !== null)
+           return this.customers.filter(item => item.card_code == this.request.cardCode)[0].card_name
+        else
+            return ""
         }
     },methods:{
         refreshData(){
@@ -157,10 +183,13 @@ export default {
                 transactionDate:null,
                 peygiriNumber:null,
                 requestExtraInfo:null,
-                requestedBy: null
+                requestedBy: null,
+                amount:'',
+                file: null
             }
         },
         loadFilteredCustomers(){
+            
             this.$store.dispatch('fetchFilteredCustomers', this.searchCustomer)
         },
         loadRequestAccounts(){
@@ -176,20 +205,25 @@ export default {
             if (!this.isReady){
                 this.$toasted.show("فرم را تکمیل کنید", {
                     duration: 3000,
+                    position: 'bottom-center',
                     type: 'error'
                 })
             }else{
+                this.isLoading= true
             this.request.requestedBy = this.user.id
             this.$store.dispatch('createPaymentRequest', this.request).then((response) =>{
+                this.isLoading= false
                 if (response == true){
                     this.$toasted.show('درخواست با موفقیت ثبت شد', {
-                      duration: 3000,
+                      duration: 5000,
+                      position: 'bottom-center',
                       type: 'success'
                     })
                     this.refreshData()
                 }else{
                     this.$toasted.show('خطا، دوباره تلاش کنید',{
                         duration: 3000,
+                        position: 'bottom-center',
                         type: 'error'
                     })
                 }
@@ -201,6 +235,24 @@ export default {
             }else{
                 return this.requestAccounts
             } 
+        },
+        updateAmount(){
+            console.log('Updating amount:', event.target.value);
+            this.request.amount = event.target.value
+            console.log('Updated amount:', this.request.amount);
+        }
+    },
+        filters:{
+    formatAmount(value){
+      const stringVlue = String(value)
+      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return formattedIntegerPart
+    },
+    formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
     },
     watch:{
