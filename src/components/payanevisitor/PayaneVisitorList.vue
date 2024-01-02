@@ -1,4 +1,5 @@
 <template>
+  <div>
   <v-card outlined>
       <v-card-title>
         <v-row>
@@ -42,108 +43,133 @@
       <template  v-slot:[`item.b1_slpcode`]="props">
       {{ props.item.sale_person.b1_slpcode }}
       </template>
-        <template v-slot:top>
-              <v-toolbar flat color="white">
-                  <v-spacer></v-spacer>
-                  <v-dialog v-model="dialogNew" max-width="500px">
-                  <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                      color="primary"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                      >جدید</v-btn>
-                  </template>
-                  <v-card>
-                      <v-card-title>
-                      <span class="headline"><span class="text-h5">جدید</span></span>
-                      </v-card-title>
-                      <v-card-text>
-                      <v-container>
-                          <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-select
-                                  :items="salePersons"
-                                  name="salePerson"
-                                  label="ویزیتور"
-                                  solo
-                                  item-text="name"
-                                  item-value="b1_slpcode"
-                                  v-model="newItem.b1_slpcode"
-                            ></v-select>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-select
-                                  :items="payaneCodes"
-                                  name="payaneCode"
-                                  label="پایانه"
-                                  solo
-                                  item-text="payane_code"
-                                  item-value="payane_code"
-                                  v-model="newItem.payane_code"
-                            ></v-select>
-                          </v-col>
-                          </v-row>
-                      </v-container>
-                      </v-card-text>
-                      <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
-                      <v-btn color="blue darken-1" text @click="saveNew">ذخیره</v-btn>
-                      </v-card-actions>
-                  </v-card>
-                  </v-dialog>
-                  <!-- <v-dialog v-model="dialogEdit" max-width="500px">
-                  <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                      color="primary"
-                      dark
-                      class="mb-2"
-                      v-bind="attrs"
-                      v-on="on"
-                      >جدید</v-btn>
-                  </template>
-                  <v-card>
-                      <v-card-title>
-                      <span class="headline"><span class="text-h5">{{ formTitle }}</span></span>
-                      </v-card-title>
-                      <v-card-text>
-                      <v-container>
-                          <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.name" label="نام ویزیتور"></v-text-field>
-                          </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.b1_slpcode" label="کد بی وان"></v-text-field>
-                          </v-col>
-                          </v-row>
-                      </v-container>
-                      </v-card-text>
-                      <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
-                      <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
-                      </v-card-actions>
-                  </v-card>
-                  </v-dialog> -->
-              </v-toolbar>
-          </template>
-          <!-- <template v-slot:[`item.actions`]="{ item }">
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialogNew" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+                >جدید</v-btn>
+            </template>
+            <v-card>
+                <v-card-title>
+                <span class="headline"><span class="text-h5">جدید</span></span>
+                </v-card-title>
+                <v-card-text>
+                <v-container>
+                    <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select
+                            :items="salePersons"
+                            name="salePerson"
+                            label="ویزیتور"
+                            solo
+                            item-text="name"
+                            item-value="b1_slpcode"
+                            v-model="newItem.b1_slpcode"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select
+                            :items="payaneCodes"
+                            name="payaneCode"
+                            label="پایانه"
+                            solo
+                            item-text="payane_code"
+                            item-value="payane_code"
+                            v-model="newItem.payane_code"
+                      ></v-select>
+                    </v-col>
+                    </v-row>
+                </v-container>
+                </v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
+                <v-btn color="blue darken-1" text @click="saveNew">ذخیره</v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+            <!-- <v-dialog v-model="dialogEdit" max-width="500px">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+                >جدید</v-btn>
+            </template>
+            <v-card>
+                <v-card-title>
+                <span class="headline"><span class="text-h5">{{ formTitle }}</span></span>
+                </v-card-title>
+                <v-card-text>
+                <v-container>
+                    <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedItem.name" label="نام ویزیتور"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="editedItem.b1_slpcode" label="کد بی وان"></v-text-field>
+                    </v-col>
+                    </v-row>
+                </v-container>
+                </v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">لغو</v-btn>
+                <v-btn color="blue darken-1" text @click="save">ذخیره</v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog> -->
+        </v-toolbar>
+      </template>
+          <template v-slot:[`item.actions`]="{ item }">
             <v-icon
               small
               class="mr-2"
-              @click="editItem(item)"
+              @click="deactiveItem(item)"
             >
-              mdi-pencil
+              غیر فعال کردن
             </v-icon>
-          </template> -->
+          </template>
       </v-data-table>
   </v-card>
+  <v-dialog v-model="deactiveDialog">
+    <v-card>
+      <v-row>
+        <v-col v-if="!alreadyValidatedDeactive" cols="12">
+          <v-btn  @click="validateDeactive">بررسی</v-btn>
+        </v-col>
+        <v-col v-if="alreadyValidatedDeactive && validationError" cols="12">
+          <p>{{ validationError }}</p>
+        </v-col>
+        <v-col v-if="alreadyValidatedDeactive && !validationError" cols="12">
+          <p>برای غیر فعال سازی مشکلی وجود ندارد</p>
+        </v-col>
+        <v-col v-if="alreadyValidatedDeactive" cols="6">
+          <date-picker v-model="endDate" label="تاریخ پایان"></date-picker>
+        </v-col>
+        <v-col v-if="alreadyValidatedDeactive" cols="6">
+          <v-btn :disable="endDate"  @click="deactiveAnyway">غیر فعال سازی</v-btn>
+        </v-col>        
+      </v-row>
+    </v-card>
+  </v-dialog>
+</div>
 </template>
 
 <script>
-  export default{
+import DatePicker from '../DatePicker.vue'
+  export default{        components:{
+        DatePicker
+    },
       data(){
       return{
         options: {
@@ -169,6 +195,11 @@
             payane_code: '',
             b1_slpcode: '',
           },
+          toDeactiveItem:null,
+          deactiveDialog: false,
+          alreadyValidatedDeactive: false,
+          validationError: null,
+          endDate:null
       }
   }
       ,
@@ -185,17 +216,53 @@
       this.editedIndex = item.id
       this.dialog = true
     },
+    deactiveItem(item){
+      this.toDeactiveItem = item
+      this.deactiveDialog=true
+    },
     saveNew () {
       this.$store.dispatch('createPayaneVisitor', this.newItem)
       this.loadPayaneVisitors();
       this.close()
     },
-          loadPayaneVisitors() {
-              // console.log(this)
-              this.$store.dispatch('loadPayaneVisitors',this.options)
-              this.$store.dispatch('loadFreeSalePersons')
-              this.$store.dispatch('loadFreePayaneCodes')
+    loadPayaneVisitors() {
+        // console.log(this)
+        this.$store.dispatch('loadPayaneVisitors',this.options)
+        this.$store.dispatch('loadFreeSalePersons')
+        this.$store.dispatch('loadFreePayaneCodes')
+    },
+    validateDeactive(){
+      this.$store.dispatch('validatePayanePersonDeactive', this.toDeactiveItem).then((response) =>{
+        if (response.success){
+          if (response.result.success){
+            this.alreadyValidatedDeactive = true
+          }else{
+            this.alreadyValidatedDeactive = true
+            this.validationError= response.result.error ||  response.result.result 
           }
+        }
+      })
+    },
+    deactiveAnyway(){
+      this.toDeactiveItem.endDate = this.endDate
+      this.$store.dispatch('deactiveAnywayPayanePerson', this.toDeactiveItem).then((response) =>{
+        if (response.success){
+          if (response.result.success){
+            this.$toasted.show('عملیات با موفقیت انجام شد', {
+              position: 'bottom-center',
+              type: 'success',
+              duration: 3000
+            })
+          }else{
+            this.$toasted.show(response.result.error, {
+              position: 'bottom-center',
+              type: 'error',
+              duration: 3000
+            })
+          }
+        }
+      })
+    }
       },
       computed:{
       headers(){
@@ -215,7 +282,7 @@
                   value: "payane_code",
               },
               {
-              text: "",
+              text: "عملیات",
               align: "center",
               //sortable: false,
               value: "actions",
