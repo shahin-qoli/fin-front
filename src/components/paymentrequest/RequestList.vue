@@ -29,6 +29,7 @@
                 <v-data-table
                 :headers="headers"
                 :items="requests"
+                item-key="id"
                 :options.sync="options"
                 :server-items-length="itemCount">
                     <template v-slot:[`item.details`]="item">
@@ -218,7 +219,7 @@ export default{
             return this.$store.getters.getPaymentRequests
         },
         itemCount(){
-            return this.$store.state.paymentRequestsItemCount
+            return this.$store.getters.getPaymentRequestsItemCount
         },
         user(){
             return this.$store.getters.getUser

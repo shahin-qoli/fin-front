@@ -6,24 +6,25 @@
             <v-col
             cols="3"
             >    
-            <v-select
+            <v-autocomplete
                 v-model="options.selectedPayaneCodes"
                 :items="payaneCodes"
                 item-value="payane_code"
-                item-text="customItemText"
+                item-text="payane_code"
                 label="پایانه"
                 multiple
                 filled
                 outlined
                 small-chips
+                :search-input.sync="searchPayaneCodes" 
             >   
-            <template v-slot:item="{ item }">
+            <!-- <template v-slot:item="{ item }">
                 <div>{{ displayText(item) }}</div>
             </template>
             <template v-slot:selection="{ item }">
                 <div>{{ displayText(item) }}</div>
-            </template>
-            </v-select>
+            </template> -->
+            </v-autocomplete>
             </v-col>
             <v-col
             cols="3"
@@ -184,6 +185,7 @@ var jalaali = require('jalaali-js')
             selectedDate:'',
             selectedType: ''
             },
+            searchPayaneCodes:"98",
             personTypes: [
               {type: 'sale_person', type_name: 'ویزیتور'},
               {type: 'driver', type_name: 'راننده'},
@@ -196,7 +198,15 @@ var jalaali = require('jalaali-js')
       handler(){
       this.loadPayaneReports();    
       },  deep: true
-         }
+         },
+         searchPayaneCodes:{
+            handler(){
+                setTimeout(() => {
+                    this.loadBankPayanes();
+                }, 1000);
+                        
+        }
+    },
     },
         methods:{
             async exportData(){
@@ -235,7 +245,8 @@ var jalaali = require('jalaali-js')
             },
             loadBankPayanes() {
                  console.log("this is going to loading")
-                this.$store.dispatch('loadBankPayanes')
+                 console.log(this.searchPayaneCodes)
+                this.$store.dispatch('loadBankPayanes', this.searchPayaneCodes)
             },
             usePoses(item){
                 this.loading = true;
@@ -391,18 +402,13 @@ var jalaali = require('jalaali-js')
       return this.$store.getters.getSalePersons
     },
     payaneCodes(){
-      return this.$store.getters.getBankPayanes.map((item) => {
-        return {
-          payane_code: item.payane_code,
-          active_payane_person: item.active_payane_person,
-        };
-      });
+      return this.$store.getters.getBankPayanes
     }
     },
-        created(){
+    //     created(){
 
-        this.loadBankPayanes();
-    }
+    //     this.loadBankPayanes();
+    // }
     }
 
 </script>
