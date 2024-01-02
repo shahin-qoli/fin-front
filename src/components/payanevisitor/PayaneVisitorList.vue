@@ -131,13 +131,13 @@
         </v-toolbar>
       </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon
+            <v-btn
               small
               class="mr-2"
               @click="deactiveItem(item)"
             >
               غیر فعال کردن
-            </v-icon>
+            </v-btn>
           </template>
       </v-data-table>
   </v-card>
@@ -148,7 +148,46 @@
           <v-btn  @click="validateDeactive">بررسی</v-btn>
         </v-col>
         <v-col v-if="alreadyValidatedDeactive && validationError" cols="12">
-          <p>{{ validationError }}</p>
+          <v-row>
+            <v-col cols="12">
+          <p>
+            تعداد تراکنش استفاده نشده: {{ validationError.pos_count }} 
+          </p>
+          <p>
+            تعداد گزارش استفاده نشده: {{ validationError.report_count }}
+          </p>
+        </v-col>
+        <v-col v-if="validationError.pos_count > 0" cols="12">
+          <v-data-table
+          :items="validationError.pos_detail"
+          :headers="childHeader">
+          <template v-slot:top>
+            <p>تراکنش ها</p>
+          </template>
+          <template v-slot:[`item.amount`]="item">
+            {{ item.item.amount | formatAmount}}
+          </template>
+          <template v-slot:[`item.transaction_date`]="item">
+            {{ item.item.transaction_date | formtDate}}
+          </template>
+          </v-data-table>
+        </v-col>
+        <v-col v-if="validationError.report_count > 0" cols="12">
+          <v-data-table
+          :items="validationError.report_detail"
+          :headers="childHeader">
+          <template v-slot:top>
+            <p>گزارش ها</p>
+          </template>
+          <template v-slot:[`item.amount`]="item">
+            {{ item.item.amount | formatAmount}}
+          </template>
+          <template v-slot:[`item.transaction_date`]="item">
+            {{ item.item.transaction_date | formtDate}}
+          </template>
+          </v-data-table>
+        </v-col>
+        </v-row>
         </v-col>
         <v-col v-if="alreadyValidatedDeactive && !validationError" cols="12">
           <p>برای غیر فعال سازی مشکلی وجود ندارد</p>
@@ -166,6 +205,8 @@
 </template>
 
 <script>
+
+var jalaali = require('jalaali-js')
 import DatePicker from '../DatePicker.vue'
   export default{        components:{
         DatePicker
@@ -247,6 +288,8 @@ import DatePicker from '../DatePicker.vue'
       this.toDeactiveItem.endDate = this.endDate
       this.$store.dispatch('deactiveAnywayPayanePerson', this.toDeactiveItem).then((response) =>{
         if (response.success){
+          this.loadPayaneVisitors()
+          this.deactiveDialog= false
           if (response.result.success){
             this.$toasted.show('عملیات با موفقیت انجام شد', {
               position: 'bottom-center',
@@ -257,7 +300,7 @@ import DatePicker from '../DatePicker.vue'
             this.$toasted.show(response.result.error, {
               position: 'bottom-center',
               type: 'error',
-              duration: 3000
+              duration: 5000
             })
           }
         }
@@ -303,6 +346,20 @@ import DatePicker from '../DatePicker.vue'
       return this.$store.getters.getFreePayaneCodes
     }, itemCount(){
       return this.$store.getters.getPayaneVisitorItemCount;
+    },
+    childHeader(){
+      return [
+             {
+                  text: "تاریخ",
+                  align: "center",
+                  value: "transaction_date",
+              }, 
+              {
+                  text: "مبلغ",
+                  align: "center",
+                  value: "amount",
+              }, 
+      ]
     }
   },
   watch:{
@@ -310,8 +367,29 @@ import DatePicker from '../DatePicker.vue'
       handler(){
       this.loadPayaneVisitors();    
       },  deep: true
+    },
+    deactiveDialog(newValue){
+      if (!newValue){
+        this.alreadyValidatedDeactive = false;
+        this.validationError = null;
+        this.endDate = null;
+        this.toDeactiveItem=null
+      }
     }
-  }
+  },
+  filters:{
+        formatAmount(value){
+          const stringVlue = String(value)
+          const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return formattedIntegerPart
+        },
+        formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
+         },
   }
 
 </script>

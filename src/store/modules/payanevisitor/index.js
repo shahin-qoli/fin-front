@@ -118,7 +118,6 @@ export default {
                 context.commit('setIsLoading', true);
                 let data = {bank_payane_id:payload.bank_payane.id,sale_person_id:payload.sale_person.id, end_date: payload.endDate}
                 const {data: responseData} = await finAgent.post(`/front/payane_persons/deactive_anyway`, data);
-                context.dispatch('loadPayaneVisitors')
                 return {success: true, result: responseData}
             } catch (err) {
                 return {success: false, error: err}
