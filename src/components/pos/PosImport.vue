@@ -151,13 +151,20 @@
                 const {data:responseData} = await finAgent.get('/front/pos_payane_reports/update_report' );
                 console.log('finish')
                 console.log(responseData.error)
-                if (responseData.error == "") {
+                if (responseData.error.length < 1) {
                     this.loadingUpdate = false;
                     this.showModal = true; // Show the modal
                     const details = responseData.results.map(result => {
                     return `Transaction Date: ${result.transaction_date}, Payane Code: ${result.payane_code}`;
                       });
                     this.reportResult = `تعداد ردیف های گزارش شده : ${responseData.updated_count} و جزییات شامل : ${details.join(', ')}`;
+                }else{
+                    this.loadingUpdate = false;
+                    this.showModal = true; // Show the modal
+                    const details = responseData.results.map(result => {
+                    return `Transaction Date: ${result.transaction_date}, Payane Code: ${result.payane_code}`;
+                      });      
+                      this.reportResult = `خطاهای به روزرسانی: ${responseData.error.join(', ')} و تعداد ردیف های گزارش شده : ${responseData.updated_count} و جزییات شامل : ${details.join(', ')}`;             
                 }
             } catch (err){
                 const error = new Error(               

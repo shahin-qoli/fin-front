@@ -100,6 +100,30 @@ export default {
                 );
                 throw error;
              }
+        },
+        async validatePayanePersonDeactive(context, payload){
+            try {
+                context.commit('setIsLoading', true);
+                let data = {bank_payane_id:payload.bank_payane.id,sale_person_id:payload.sale_person.id}
+                const {data: responseData} = await finAgent.post(`/front/payane_persons/deactive_validate`, data);
+                return {success: true, result: responseData}
+            } catch (err) {
+                return {success: false, error: err}
+            } finally {
+                context.commit('setIsLoading', false);
+            }
+        },
+        async deactiveAnywayPayanePerson(context, payload){
+            try {
+                context.commit('setIsLoading', true);
+                let data = {bank_payane_id:payload.bank_payane.id,sale_person_id:payload.sale_person.id, end_date: payload.endDate}
+                const {data: responseData} = await finAgent.post(`/front/payane_persons/deactive_anyway`, data);
+                return {success: true, result: responseData}
+            } catch (err) {
+                return {success: false, error: err}
+            } finally {
+                context.commit('setIsLoading', false);
+            }
         }
     }
 }
