@@ -168,7 +168,7 @@
             {{ item.item.amount | formatAmount}}
           </template>
           <template v-slot:[`item.transaction_date`]="item">
-            {{ item.item.transaction_date | formtDate}}
+            {{ item.item.transaction_date | formatDate}}
           </template>
           </v-data-table>
         </v-col>
@@ -183,7 +183,7 @@
             {{ item.item.amount | formatAmount}}
           </template>
           <template v-slot:[`item.transaction_date`]="item">
-            {{ item.item.transaction_date | formtDate}}
+            {{ item.item.transaction_date | formatDate}}
           </template>
           </v-data-table>
         </v-col>
