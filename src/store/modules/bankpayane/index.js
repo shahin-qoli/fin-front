@@ -31,10 +31,10 @@ export default {
         }
     },
     actions:{
-        async loadBankPayanes(context){
+        async loadBankPayanes(context, payload){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get('/front/bank_payanes');
+                const {data: responseData} = await finAgent.get(`/front/bank_payanes?q[payane_code_cont]=${payload}`);
                 var bankPayaneData = responseData.data;
                 const bankPayanes = []
                 for (const item of bankPayaneData) {
