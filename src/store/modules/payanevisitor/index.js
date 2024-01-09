@@ -86,11 +86,10 @@ export default {
         async createPayaneVisitor(context, payload,actions){
             try{
                 var data = payload
-                console.log(data)
+         
                 const {data:responseData} = await finAgent.post('/front/payane_persons', data)
                 if (responseData){
-                    console.log("HERE TO have")
-                    console.log(payload)
+
                     actions.dispatch('loadPayaneVisitors')
                 }
             } catch (err) {

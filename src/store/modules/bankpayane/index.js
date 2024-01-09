@@ -57,7 +57,7 @@ export default {
         async loadGoldenPayanes(context){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get('/front/payane_persons/get_goldens');
+                const {data: responseData} = await finAgent.get('/front/payane_persons/get_goldens?per_page=300&page=1');
                 var goldenPayaneData = responseData.data;
                 const goldenPayanes = []
                 for (const item of goldenPayaneData) {
@@ -79,12 +79,16 @@ export default {
         },
         async loadGoldOrders(context,payload){
             try{
-                context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get(`/front/payane_persons/get_golden_orders?card_code=${payload}`);
-                console.log(responseData);
-                var goldOrders = responseData.result;
-                context.commit('setIsLoading', 'false')
+
+                const  responseData = await finAgent.get(`/front/payane_persons/get_golden_orders?card_code=${payload}`);
+              console.log(responseData);
+                var goldOrders = responseData.data.result;
+                if (goldOrders&& goldOrders.length > 0){
                 context.commit('setGoldOrders', goldOrders)
+            }
+            else{
+                context.commit('setGoldOrders', [])
+            }
 
             } catch (err) {
                 //console.log(err.response);
