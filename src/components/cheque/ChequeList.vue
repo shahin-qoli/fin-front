@@ -209,9 +209,9 @@
             </v-card>
         </v-dialog>
         <v-overlay :value="isLoading">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-      <p>در حال عملیات</p>
-  </v-overlay>
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <p>در حال عملیات</p>
+        </v-overlay>
     </v-container>
 </template>
 

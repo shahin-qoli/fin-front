@@ -57,9 +57,18 @@ export default{
             const {data: responseData} = await finAgent.get('/front/campaign/get_initialize_data')
             if (responseData.success){
                 context.commit("setInitialData",responseData)
+                return {success: true}
             }
         }catch(e){
-            console.log(e)
+            return {success: false, error: e}
+        }
+    },
+    async createCampaign(context, payload){
+        try{
+            const {data: responseData} = await finAgent.post('/front/campaign/', payload)
+            return responseData
+        }catch(e){
+            return {success: false, error: e}
         }
     }},
     getters:{

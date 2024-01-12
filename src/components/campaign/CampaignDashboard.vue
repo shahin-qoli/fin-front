@@ -179,6 +179,9 @@
                                             <v-col cols="4">
                                                 <v-text-field v-model="head.camChannelDis" label="تخفیف کانال"></v-text-field>
                                             </v-col>
+                                            <v-col cols="4">
+                                                <v-text-field v-model="head.camSalesChannel" label="کانال فروش"></v-text-field>
+                                            </v-col>
                                         </v-row>
                                     </v-expansion-panel-content>                                    
                                 </v-expansion-panel>     
@@ -200,6 +203,10 @@
                                             </v-col>
                                             <v-col cols="3">
                                                 <v-select solo item-text="listname" item-value="listnum" v-model="head.camB1PriceList" :items="priceLists" label="لیست قیمت بی وان"></v-select>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="head.camIsHaveCampaignDis" label="آیا تخفیف کمپین دارد؟"></v-checkbox>
                                             </v-col>
                                         </v-row>
                                     </v-expansion-panel-content>                              
@@ -257,7 +264,7 @@
                                             </v-col>
                                             <v-col cols="2">
                                                 <v-checkbox
-                                                v-model="row.idRequired" label="اجباری"></v-checkbox>
+                                                v-model="row.isRequired" label="اجباری"></v-checkbox>
                                             </v-col>                                        
                                         </v-row>
                                         <v-divider></v-divider>
@@ -375,6 +382,10 @@
             <v-btn color="primary" @click="submitCampaign">ثبت کمپین</v-btn>
         </v-col>
     </v-row>
+    <v-overlay :value="isLoading">
+        <v-progress-circular indeterminate color="green"></v-progress-circular>
+        <p>لطفا صبر کنید</p>
+    </v-overlay>
     </v-sheet> 
 </template>
 
@@ -385,10 +396,11 @@ export default{
     data(){
         return{
             loadingTaxon: false,
-            loadingInitial: false,
+            isLoading: false,
             searchCustomer:'',
             searchItem:'',
             selectedCardCode:'',
+            selectedCardGroup:'',
             selectedItemGroup:'',
             selectedItemCode:'',
             head:{
@@ -412,17 +424,19 @@ export default{
                 camPerStepDis:'',
                 camMaxValueDis:'',
                 camMaxAllDis:'',
+                camSalesChannel:'',
                 camChannelDis:'',
                 camCanHaveB1Dis:false,
                 camSettleType:'',
                 camCommissionEff:'',
-                camB1PriceList:''
+                camB1PriceList:'',
+                camIsHaveCampaignDis:false
 
             },
             row:{
                 itemCodes:[],
                 itemGroups:[],
-            idRequired:false,
+            isRequired:false,
             reqCoEff:'',
             minQty:'',
             maxQty:'',
@@ -533,7 +547,7 @@ export default{
             this.row={
                 itemCodes:[],
                 itemGroups:[],
-            idRequired:false,
+            isRequired:false,
             reqCoEff:'',
             minQty:'',
             maxQty:'',
@@ -579,11 +593,40 @@ export default{
             })
         },
         loadInitialeData(){
-            this.loadingInitial = true
-            this.$store.dispatch("fetchInitialData").then(()=> this.loadingInitial= false)
+            this.isLoading = true
+            this.$store.dispatch("fetchInitialData").then((response)=>{
+                this.isLoading= false
+                if (!response.success){
+                this.$toasted.show("خطا در بارگذاری، صفحه را رفرش کنید", {
+                    position:'bottom-center',
+                    duration: 10000,
+                    type: 'error'
+                })
+                }
+        })
         },
         loadFilteredItems(){
             this.$store.dispatch('fetchFilteredItems', this.searchItem)
+        },
+        submitCampaign(){
+            this.isLoading=true
+            let payload = {rows: this.rows, head: this.head}
+            this.$store.dispatch('createCampaign', payload).then((response)=>{
+                this.isLoading= false
+                if (response.success){
+                    this.$toasted.show("با موفقیت انجام شد",{
+                        position: 'bottom-center',
+                        type: 'success',
+                        duration: 5000
+                    })
+                }else{
+                    this.$toasted.show(`خطا:${response.error}`,{
+                        position: 'bottom-center',
+                        type: 'error',
+                        duration: 10000
+                    })                   
+                }
+            })
         }
     },
     watch:{
@@ -599,6 +642,14 @@ export default{
             setTimeout(()=>{
                 this.loadFilteredItems();
             })
+        }
+    },selectedCardGroup(newValue){
+        if (newValue !== ''){
+            this.head.camCardGroups.push(newValue)
+            this.$nextTick(() => {
+            this.selectedCardGroup = '';
+            });
+ 
         }
     }
     ,selectedCardCode(newValue){
