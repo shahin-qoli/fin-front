@@ -348,7 +348,7 @@
                                                 <v-select  solo item-text="Title" item-value="Id" label="قواعد تخفیف" :items="disRelations" v-model="row.disRelation"></v-select>
                                             </v-col>
                                             <v-col cols="6">
-                                                <v-select  solo item-text="Name" item-value="Id" label="سیاست تخفیف" :items="disPolicies" v-model="row.disPolicies"></v-select>
+                                                <v-select  solo item-text="Name" item-value="Id" label="سیاست تخفیف" :items="disPolicies" v-model="row.disPolicy"></v-select>
                                             </v-col>
                                         </v-row>
                                         <v-row>
@@ -626,6 +626,60 @@ export default{
                         duration: 10000
                     })                   
                 }
+                this.rows = []
+                this.row = {
+                itemCodes:[],
+                itemGroups:[],
+            isRequired:false,
+            reqCoEff:'',
+            minQty:'',
+            maxQty:'',
+            stepQty:'',
+            disPerStepQty:'',
+            maxDisQty:'',
+            minValue:'',
+            maxValue:'',
+            stepValue:'',
+            disPerStepValue:'',
+            maxDisValue:'',
+            maxAllDis:'',
+            basePrice:'',
+            baseDis:'',
+            fixDisValue:'',
+            disRelation:'',
+            disPolicy:'',
+            taxon:''     
+            };
+            this.head = {
+                camName:'',
+                camStartDate:'',
+                camEndDate:"",
+                camActive:false,
+                camType:'B',
+                camB1CampaignId:'',
+                camCardCodes:[],
+                camCardGroups:[],
+                camBaseDis:'',
+                camDisRelation:'',
+                camMinRow:'',
+                camMaxRow:'',
+                camPerRowDis:'',
+                camMaxRowDis:'',
+                camMinValue:'',
+                camMaxValue:'',
+                camPerValueStep:'',
+                camPerStepDis:'',
+                camMaxValueDis:'',
+                camMaxAllDis:'',
+                camSalesChannel:'',
+                camChannelDis:'',
+                camCanHaveB1Dis:false,
+                camSettleType:'',
+                camCommissionEff:'',
+                camB1PriceList:'',
+                camIsHaveCampaignDis:false
+
+            }
             })
         }
     },
