@@ -215,7 +215,7 @@ var jalaali = require('jalaali-js')
                     if (response.data.type === 'application/json') {
                     this.exportError = true;
                      } else {
-                        console.log(response)
+   
                     FileSaver.saveAs(response.data, "financ-export-data.xlsx")
                      }    
                      }
@@ -236,7 +236,7 @@ var jalaali = require('jalaali-js')
             }
                     },
             viewMore(item) {
-                console.log(item)
+                // console.log(item)
                 this.posRawsDetails = item.pos_raws
             },
             loadPayaneReports() {
@@ -244,8 +244,7 @@ var jalaali = require('jalaali-js')
                 this.$store.dispatch('loadPayaneReports',this.options)
             },
             loadBankPayanes() {
-                 console.log("this is going to loading")
-                 console.log(this.searchPayaneCodes)
+
                 this.$store.dispatch('loadBankPayanes', this.searchPayaneCodes)
             },
             usePoses(item){

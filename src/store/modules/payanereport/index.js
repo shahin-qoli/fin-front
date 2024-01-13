@@ -34,7 +34,7 @@ export default {
             try{
                 context.commit('setIsLoading', 'true')
                 let is_used = payload.isUsed 
-                console.log(payload)
+                // console.log(payload)
                 const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`);
                 var payaneReportData = responseData.data;
                 const payaneReports = []
@@ -59,18 +59,20 @@ export default {
         },
         async usePayaneReport(contex, payload){
             try{
-                console.log("HERE ITEM")
+                console.log("Using payane report...")
                 console.log(payload)
+                console.log(payload.docentry)
                 if (payload.docentry === null) {
-                var data ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":""} 
+                var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":""} 
                 }else{
-                    data ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"", "used_for_docentry": payload.docentry,"used_for_doctype": 17}  
+                    d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"", "used_for_docentry": payload.docentry,"used_for_doctype": 17}  
                 }
-                const {data:responseData} = await finAgent.post(`/front/pos_payane_reports/${payload.id}/use_payments`,data)
-                console.log(responseData.result)
+                console.log(d)
+                const {data:responseData} = await finAgent.post(`/front/pos_payane_reports/${payload.id}/use_payments`,d)
+                // console.log(responseData.result)
                 if(responseData.result == true){
-                    console.log("going to")
-                    data = {
+
+                    var data = {
                         cardcode: payload.active_payane_person.sale_person_code,
                         itemId: payload.id
                     }
@@ -84,6 +86,34 @@ export default {
                 );
                 throw error;
              } 
+        },
+        async loadPayaneReportsByCardcode(context, payload){
+            try {
+    
+
+                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports/get_report_by_cardcode?payane_code=${payload.selectedPayaneCodes}`);
+
+                var payaneReportData = responseData.data;
+                const payaneReports = []
+                var itemCount = responseData.options.count;
+
+                for (const item of payaneReportData) {
+                    const payaneReport = {
+                        ...item
+                    }
+                    payaneReports.push(payaneReport);
+                }
+
+                context.commit('setIsLoading', false)
+                context.commit('setPayaneReports', payaneReports)
+                context.commit('setItemCount', itemCount);
+
+            } catch (err) {
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
         }
     }
 }

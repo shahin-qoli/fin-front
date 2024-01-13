@@ -38,6 +38,8 @@ import GoldenPayaneReportView from '../views/GoldenPayaneReportView.vue'
 import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
 import paymentrequestListView from '@/views/PaymentRequestListView.vue'
 import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
+import CampaignDashboardView from '@/views/CampaignDashboardView.vue'
+
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -142,6 +144,11 @@ const routes = [
     name: 'createpaymentrequest',
     beforeEnter : guardMyrouteLoggedIn,
     component: paymentrequestPageView
+  },  {
+    path: '/campaigndashboard',
+    name: 'campaigndashboard',
+    beforeEnter : guardMyrouteLoggedIn,
+    component: CampaignDashboardView
   }
   , 
   {

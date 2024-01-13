@@ -14,6 +14,7 @@
                     small-chips
                     single-line
                 >   
+                
                 <template v-slot:item="{ item }">
                     <div>{{ displayText(item) }}</div>
                 </template>
@@ -29,10 +30,11 @@
                 <v-data-table
                 fixed-header
                 dense
+                hide-default-footer
                 :headers="orderHeaders"
                 :items="orders"
                 item-key="order.DocNum"
-                single-select
+      
                 v-model="selectedOrder"
                 show-select
                 >
@@ -42,6 +44,9 @@
                 <template v-slot:[`item.order.DocDate`]="{item}">
                 {{ item.order.DocDate | formatDate }}
                 </template>  
+                <template v-slot:[`item.payment.totalpaymentforLine`]="{item}">
+                {{ paymentTotal(item).toFixed(0) | formatAmount }}
+                </template> 
                 </v-data-table>
             </v-card-text>
         </v-card>
@@ -335,9 +340,16 @@ export default {
         orderTotal(item){
             return (Number.parseFloat(item.order.LineTot) + Number.parseFloat(item.order.VatTot) - Number.parseFloat(item.order.DiscTot))
         },
+        paymentTotal(item){
+            console.log(item)
+            if (item.payment) {
+            return Number.parseFloat(item.payment.totalpaymentforLine)}
+            else
+            return 0
+        },
         loadPayaneReports() {
             console.log(this.options)
-                this.$store.dispatch('loadPayaneReports',this.options)
+                this.$store.dispatch('loadPayaneReportsByCardcode',this.options)
         },
         loadGoldOrders(cardCode){
             this.isLoading = true
@@ -349,7 +361,7 @@ export default {
          usePoses(item){
                 this.loading = true;
             var payload = {
-            ...item, doncentry: this.selectedOrder[0].order.DocEntry
+            ...item, docentry: this.selectedOrder[0].order.DocEntry
             }
             this.$store.dispatch('usePayaneReport',payload)
             .finally(() => {
@@ -370,7 +382,8 @@ export default {
       handler(){
       this.loadPayaneReports();    
       },  deep: true
-         }},        filters:{
+         }},
+    filters:{
     formatAmount(value){
       const stringVlue = String(value)
       const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

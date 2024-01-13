@@ -376,7 +376,7 @@ export default{
     },
     computed:{
         defineClass(){
-            console.log(this.order.customer.ballance < 0)
+
             return this.order.customer.ballance < 0 ? 'red-text' : ''
         },
         paymentHeaders(){
@@ -458,7 +458,7 @@ export default{
                 return paid
             else{
            this.order.payment.filter(x => x.IpType == "C").forEach((item) => paid += Number.parseFloat(item.paymentforLineTotal))
-            // console.log(pym)
+
             return this.formatAmount(paid.toFixed(0))}
         },
         expectedChequeDays(){
