@@ -360,6 +360,7 @@ export default {
     watch:{
         selectedPayaneCode:{
             handler(){
+                this.selectedOrder = []
                 this.options.selectedPayaneCodes = this.selectedPayaneCode
                 let cardCode = this.payaneCodes.filter(item => item.payane_code == this.selectedPayaneCode)[0].card_code
                 this.loadGoldOrders(cardCode)
