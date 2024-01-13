@@ -118,9 +118,12 @@
                                             <v-col cols="3">
                                                 <v-text-field label="تخفیف پایه" v-model="head.camBaseDis"></v-text-field>
                                             </v-col>
-                                            <v-col cols="9">
+                                            <v-col cols="4">
                                                 <v-select solo item-text="Title" item-value="Id" label="قواعد تخفیف" :items="disRelations" v-model="head.camDisRelation"></v-select>
-                                            </v-col>                                            
+                                            </v-col>         
+                                            <v-col cols="4">
+                                                <v-select  solo item-text="Name" item-value="Id" label="سیاست تخفیف" :items="disPolicies" v-model="head.camDisPolicy"></v-select>
+                                            </v-col>                                      
                                         </v-row>
                                     </v-expansion-panel-content>                                  
                                 </v-expansion-panel>       
@@ -454,7 +457,8 @@ export default{
                 camSettleType:'',
                 camCommissionEff:'',
                 camB1PriceList:'',
-                camIsHaveCampaignDis:false
+                camIsHaveCampaignDis:false,
+                camDisPolicy:''
 
             },
             row:{
@@ -701,7 +705,8 @@ export default{
                 camSettleType:'',
                 camCommissionEff:'',
                 camB1PriceList:'',
-                camIsHaveCampaignDis:false
+                camIsHaveCampaignDis:false,
+                camDisPolicy:''
 
             }
             })
