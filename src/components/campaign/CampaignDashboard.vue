@@ -8,12 +8,27 @@
         <v-sheet>
         <v-row>
             <v-col cols="12">
-                <v-expansion-panels>
-                    <v-expansion-panel>
-                        <v-expansion-panel-header>
-                           <h3>کلیات کمپین</h3> 
-                        </v-expansion-panel-header>
-                        <v-expansion-panel-content>
+                <v-stepper v-model="e1">
+                    <v-stepper-header>
+                        <v-stepper-step
+                        :complete="e1 > 1"
+                        step="1"
+                        >
+                        کلیات کمپین
+                        </v-stepper-step>
+
+                        <v-divider></v-divider>
+
+                        <v-stepper-step
+                        :complete="e1 > 2"
+                        step="2"
+                        >
+                        جزییات کمپین
+                        </v-stepper-step>
+                    </v-stepper-header>    
+                    <v-stepper-items>
+                        <v-stepper-content step="1">
+                            <!-- پنل کلیات -->
                             <v-expansion-panels>
                                 <v-expansion-panel>
                                     <v-expansion-panel-header>
@@ -212,13 +227,14 @@
                                     </v-expansion-panel-content>                              
                                 </v-expansion-panel>                                                 
                             </v-expansion-panels>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                    <v-expansion-panel>
-                        <v-expansion-panel-header>
-                            <h3>جزییات کمپین</h3>
-                        </v-expansion-panel-header>
-                        <v-expansion-panel-content>
+                            <v-btn
+                                color="primary"
+                                @click="e1 = 2"
+                            >
+                            بعد
+                            </v-btn>
+                        </v-stepper-content>
+                        <v-stepper-content step="2">
                             <v-card outlined>
                                 <v-card-title>
                                     <h4>خط فاکتور</h4>
@@ -353,7 +369,7 @@
                                         </v-row>
                                         <v-row>
                                             <v-col class="d-flex justify-center" cols="12">
-                                                <v-btn color="purple" type="submit">اضافه کردن</v-btn>
+                                                <v-btn color="yellow" type="submit">اضافه کردن</v-btn>
                                             </v-col>
                                         </v-row>
                                     </v-form>    
@@ -371,17 +387,24 @@
                                     ></v-data-table>
                                 </v-card-text>
                             </v-card>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
+                            <v-btn
+                                color="purple"
+                                @click="submitCampaign"
+                            >
+                            ثبت
+                            </v-btn>
+
+                            <v-btn  @click="e1 = 1" color="red">
+                            قبل
+                            </v-btn>
+                        </v-stepper-content>
+                    </v-stepper-items>
+
+                </v-stepper>
+
             </v-col>
         </v-row>
     </v-sheet>
-    <v-row>
-        <v-col cols="12" class="d-flex align-center justify-center py-5">
-            <v-btn color="primary" @click="submitCampaign">ثبت کمپین</v-btn>
-        </v-col>
-    </v-row>
     <v-overlay :value="isLoading">
         <v-progress-circular indeterminate color="green"></v-progress-circular>
         <p>لطفا صبر کنید</p>
@@ -395,6 +418,7 @@ export default{
     components:{ DatePicker},
     data(){
         return{
+            e1: 1,
             loadingTaxon: false,
             isLoading: false,
             searchCustomer:'',
