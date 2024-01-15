@@ -341,10 +341,10 @@
           <v-card-text>
             <v-row>
               <v-col cols="4">
-                <v-btn color="green" @click="changeTo240">240مغایرت در پرداخت</v-btn>
+                <v-btn color="green" @click="changeTo310">310تایید واحد مالی</v-btn>
               </v-col>
               <v-col cols="4">
-                <v-btn color="red" @click="changeTo310">310تایید واحد مالی</v-btn>
+                <v-btn color="red" @click="changeTo240">240مغایرت در پرداخت</v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -365,7 +365,7 @@
 </template>
 
 <script>
-import cheqAgent from '@/services/agent'
+import  {cheqAgent} from '@/services/agent'
 var jalaali = require('jalaali-js')
 export default{
     data(){
@@ -380,139 +380,140 @@ export default{
         this.docNum=''
         this.order=null
       },
-        findOrder(){
-            this.isLoading= true;
-            this.$store.dispatch('fetchFinancialDashboardData', this.docNum).then((response) =>{
-                this.isLoading = false;
-                if (response.success)
-                    this.order = response.data
-                else
-                    this.docNum = ''
-                    this.$toasted.show(response.error,{
-                        duration: 3000,
-                        position: 'bottom-center',
-                        type: 'error'
-                })
-            })
-        },
-        formatAmount(value){
-          const stringVlue = String(value)
-          const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return formattedIntegerPart
-        },
-        async changeTo310(){
-          this.isLoading = true
-          try{
-            let token = this.getB1Token()
-          let payload = {
-            token: token, DocEntry: this.order.docEntry, NextStateCode: 310,OperatorGroupCode: "admin", OperatorCode:1
-           }
-           const response = await cheqAgent.post('/OperatorCode', payload)
-           if(response.status == 200){
-            this.isLoading = false
-            if (response.data.results == true){
-              this.$toasted.show('با موفقیت انجام شد',{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'success'
-            })
-            }else{
-              this.$toasted.show(response.data.error,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-            }
-          }else if(response.status < 500){
-            this.isLoading = false
-            this.$toasted.show(response.data.error,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-          }else{
-            this.isLoading = false
-            this.$toasted.show('خطا در برقراری ارتباط با B1',{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
+      findOrder(){
+          this.isLoading= true;
+          this.$store.dispatch('fetchFinancialDashboardData', this.docNum).then((response) =>{
+              this.isLoading = false;
+              if (response.success)
+                  this.order = response.data
+              else
+                  this.docNum = ''
+                  this.$toasted.show(response.error,{
+                      duration: 3000,
+                      position: 'bottom-center',
+                      type: 'error'
+              })
+          })
+      },
+      formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+      },
+      async changeTo310(){
+        this.isLoading = true
+        try{
+          let token = this.getB1Token()
+        let payload = {
+          token: token, DocEntry: this.order.docEntry, NextStateCode: 310,OperatorGroupCode: "admin", OperatorCode:1
           }
-
-          }catch(e){
-            this.isLoading = false
-            this.$toasted.show(e.message,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-          }
-        },
-        async changeTo240(){
-          this.isLoading = true
-          try{
-            let token = this.getB1Token()
-          let payload = {
-            token: token, DocEntry: this.order.docEntry, NextStateCode: 240,OperatorGroupCode: "admin", OperatorCode:1
-           }
-           const response = await cheqAgent.post('/OperatorCode', payload)
-           if(response.status == 200){
-            this.isLoading = false
-            if (response.data.results == true){
-              this.$toasted.show('با موفقیت انجام شد',{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'success'
-            })
-            }else{
-              this.$toasted.show(response.data.error,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-            }
-          }else if(response.status < 500){
-            this.isLoading = false
-            this.$toasted.show(response.data.error,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-          }else{
-            this.isLoading = false
-            this.$toasted.show('خطا در برقراری ارتباط با B1',{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-          }
-
-          }catch(e){
-            this.isLoading = false
-            this.$toasted.show(e.message,{
-              position: 'bottom-center',
-              duration: 5000,
-              type: 'error'
-            })
-          }
-        },
-        async getB1Token(){
-          try{
-            let payload = {Username:"ShahinCamunda", Password:"kAFy24iCosIb2r9jliLB"}
-          const response = await cheqAgent.post('/Login',payload)
+          const response = await cheqAgent.post('/OperatorCode', payload)
           if(response.status == 200){
-            return response.data
+          this.isLoading = false
+          if (response.data.results == true){
+            this.$toasted.show('با موفقیت انجام شد',{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'success'
+          })
+          }else{
+            this.$toasted.show(response.data.error,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
           }
-          }catch{
-            this.isLoading=false
-            this.$toasted.show("خطا در بی وان، توکن",{
-              position: 'bottom-center',
-              type:"error",
-              duration: 5000
-            })
-          }
+        }else if(response.status < 500){
+          this.isLoading = false
+          this.$toasted.show(response.data.error,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }else{
+          this.isLoading = false
+          this.$toasted.show('خطا در برقراری ارتباط با B1',{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }
 
-        },
+        }catch(e){
+          this.isLoading = false
+          this.$toasted.show(e.message,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }
+      },
+      async changeTo240(){
+        this.isLoading = true
+        try{
+          let token = this.getB1Token()
+        let payload = {
+          token: token, DocEntry: this.order.docEntry, NextStateCode: 240,OperatorGroupCode: "admin", OperatorCode:1
+          }
+          const response = await cheqAgent.post('/OperatorCode', payload)
+          if(response.status == 200){
+          this.isLoading = false
+          this.refreshData()
+          if (response.data.results == true){
+            this.$toasted.show('با موفقیت انجام شد',{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'success'
+          })
+          }else{
+            this.$toasted.show(response.data.error,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+          }
+        }else if(response.status < 500){
+          this.isLoading = false
+          this.$toasted.show(response.data.error,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }else{
+          this.isLoading = false
+          this.$toasted.show('خطا در برقراری ارتباط با B1',{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }
+
+        }catch(e){
+          this.isLoading = false
+          this.$toasted.show(e.message,{
+            position: 'bottom-center',
+            duration: 5000,
+            type: 'error'
+          })
+        }
+      },
+      async getB1Token(){
+        try{
+          let payload = {Username:"ShahinCamunda", Password:"kAFy24iCosIb2r9jliLB"}
+        const response = await cheqAgent.post('/Login',payload)
+        if(response.status == 200){
+          return response.data
+        }
+        }catch{
+          this.isLoading=false
+          this.$toasted.show("خطا در بی وان، توکن",{
+            position: 'bottom-center',
+            type:"error",
+            duration: 5000
+          })
+        }
+
+      },
 
     },
     computed:{
