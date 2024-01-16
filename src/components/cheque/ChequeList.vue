@@ -649,10 +649,6 @@ export default {
             }
     }},
     filters:{
-        formatState(state, chequeStates){
-            let index = chequeStates.findIndex(stat => stat.value == state )
-            return chequeStates[index].text
-        },
         formatRegState(state, regStates){
             let index = regStates.findIndex(stat => stat.value == state )
             return regStates[index].text            
