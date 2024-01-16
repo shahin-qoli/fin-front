@@ -636,25 +636,8 @@ export default{
         loadFilteredItems(){
             this.$store.dispatch('fetchFilteredItems', this.searchItem)
         },
-        submitCampaign(){
-            this.isLoading=true
-            let payload = {rows: this.rows, head: this.head}
-            this.$store.dispatch('createCampaign', payload).then((response)=>{
-                this.isLoading= false
-                if (response.success){
-                    this.$toasted.show("با موفقیت انجام شد",{
-                        position: 'bottom-center',
-                        type: 'success',
-                        duration: 5000
-                    })
-                }else{
-                    this.$toasted.show(`خطا:${response.error}`,{
-                        position: 'bottom-center',
-                        type: 'error',
-                        duration: 10000
-                    })                   
-                }
-                this.rows = []
+        refreshData(){
+            this.rows = []
                 this.row = {
                 itemCodes:[],
                 itemGroups:[],
@@ -709,6 +692,27 @@ export default{
                 camDisPolicy:''
 
             }
+        }
+        ,
+        submitCampaign(){
+            this.isLoading=true
+            let payload = {rows: this.rows, head: this.head}
+            this.$store.dispatch('createCampaign', payload).then((response)=>{
+                this.isLoading= false
+                if (response.success){
+                    this.$toasted.show("با موفقیت انجام شد",{
+                        position: 'bottom-center',
+                        type: 'success',
+                        duration: 5000
+                    })
+                    this.refreshData()
+                }else{
+                    this.$toasted.show(`خطا:${response.error}`,{
+                        position: 'bottom-center',
+                        type: 'error',
+                        duration: 10000
+                    })                   
+                }
             })
         }
     },
