@@ -62,10 +62,10 @@
                 class="elevation-1"
                 :search="searchLoaded">
                     <template v-slot:[`item.state`]="{ item }">
-                        <p>{{ item.state | formatState(chequeStates) }}</p>
+                        <p>{{  formatState(item.state,chequeStates) }}</p>
                     </template>
                     <template v-slot:[`item.regSate`]="{ item }">
-                        <p>{{ item.regSate | formatState(regStates) }}</p>
+                        <p>{{  formatState(item.regSate,regStates) }}</p>
                     </template>
                     <template v-slot:[`item.value`]="{ item }">
                         <p>{{ item.value | formatAmount }}</p>
@@ -604,6 +604,10 @@ export default {
       submitSearch(){
         this.loadCheques()
       },
+      formatState(state, chequeStates){
+            let index = chequeStates.findIndex(stat => stat.value == state )
+            return chequeStates[index].text
+        },
       submitAction(){
         console.log("start")
         const selectedCheques = this.selectedItems.map(item => item.checkKey)
