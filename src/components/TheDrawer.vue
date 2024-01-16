@@ -148,6 +148,9 @@
                     <router-link style="text-decoration: none;" to='/miarzemessagetemplates'><h5>قالب پیامک</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
+                  <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/campaigndashboard'><h5>ساخت کمپین</h5></router-link> 
+                    </v-col>        
                 </v-expansion-panel>
               </v-col>
               <v-col cols="12" v-if="syncAccess">
