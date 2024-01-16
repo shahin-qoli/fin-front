@@ -65,7 +65,9 @@
                         <p>{{  formatState(item.state,chequeStates) }}</p>
                     </template>
                     <template v-slot:[`item.regSate`]="{ item }">
-                        <p>{{  formatState(item.regSate,regStates) }}</p>
+
+                        <p>{{ item.regSate | formatRegState(regStates) }} {{ }}</p>
+
                     </template>
                     <template v-slot:[`item.value`]="{ item }">
                         <p>{{ item.value | formatAmount }}</p>
@@ -589,6 +591,13 @@ export default {
     }
     },
     methods:{
+        initialStartDate(){
+            // const today = new Date()
+            // const month = today.getMonth();
+            // today.setMonth(month - 1);
+            // return today.toISOString().split('T')[0]
+            return '1402/09/01'
+        },
         handleTableSelectionChange() {
             const commonNextStates = this.selectedItems[0].nextStates;
             const possibleNextStates = commonNextStates.filter(nextState => {
@@ -599,7 +608,8 @@ export default {
             this.possibleNextStates = possibleNextStates
         },
         loadCheques() {
-        this.$store.dispatch('loadCheques', this.search)
+            this.isLoading = true
+        this.$store.dispatch('loadCheques', this.search).then(()=>this.isLoading=false)
       },
       submitSearch(){
         this.loadCheques()
@@ -636,7 +646,14 @@ export default {
                 reference: "",
                 depositDate:"",
             }
-      }
+      },
+      formatState(state, chequeStates){
+            let index = chequeStates.findIndex(stat => stat.value == state )
+            if (index)
+                return chequeStates[index].text
+            else
+                return "تعریف نشده"
+        },
     },watch:{
         expanded(newExpanded, oldExpanded) {
             if (newExpanded !== oldExpanded && newExpanded.length != 0 ) {              
@@ -651,7 +668,10 @@ export default {
     filters:{
         formatRegState(state, regStates){
             let index = regStates.findIndex(stat => stat.value == state )
+            if (index)
             return regStates[index].text            
+            else
+            return "تعریف نشده"
         },
         formatAmount(value){
         const stringVlue = String(value)
@@ -664,6 +684,10 @@ export default {
             let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
             return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
+    },
+    created(){
+        // this.search.startDate= this.initialStartDate()
+        // this.loadCheques()
     }
 }
 </script>
