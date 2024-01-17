@@ -614,10 +614,6 @@ export default {
       submitSearch(){
         this.loadCheques()
       },
-      formatState(state, chequeStates){
-            let index = chequeStates.findIndex(stat => stat.value == state )
-            return chequeStates[index].text
-        },
       submitAction(){
         console.log("start")
         const selectedCheques = this.selectedItems.map(item => item.checkKey)
