@@ -39,6 +39,9 @@ export default{
     actions:{
         async loadCheques(context, payload){
             try {
+                if (payload.startDate == ""){
+                    payload.startDate = "2024-01-01"
+                }
                 const {data: chequesData} = await cheqAgent.get(`/GetCheckList`,{ params: payload, paramsSerializer: {
                       indexes: null // by default: false
                     } })

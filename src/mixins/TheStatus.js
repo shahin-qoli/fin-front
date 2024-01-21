@@ -9,6 +9,7 @@ export const TheStatus ={
                 ["complete", "تکمیل شده"],
                 ["retried", "تلاش مجدد"],
                 ["completed", "تکمیل شده"],
+                ["processing", "در حال بررسی"],
             ]),
             requestStatusColor: new Map([
                 ["requested", "yellow"],
@@ -18,6 +19,7 @@ export const TheStatus ={
                 ["complete", "green"],
                 ["retried", "gray"],
                 ["completed", "green"],
+                ["processing", "gray"],
             ])
 
         }

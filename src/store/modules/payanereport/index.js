@@ -35,7 +35,13 @@ export default {
                 context.commit('setIsLoading', 'true')
                 let is_used = payload.isUsed 
                 // console.log(payload)
-                const {data: responseData} = await finAgent.get(`/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`);
+                let url =''
+                if(payload.withoutSalePerson){
+                    url = `/front/pos_payane_reports/reports_without_person?page=${payload.page}&per_page=${payload.itemsPerPage}&report_date=${payload.selectedDate}`
+                }else{
+                    url = `/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`
+                }
+                const {data: responseData} = await finAgent.get(url)
                 var payaneReportData = responseData.data;
                 const payaneReports = []
                 var itemCount = responseData.options.count;

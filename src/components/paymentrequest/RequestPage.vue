@@ -151,6 +151,10 @@ export default {
                 {
                     text:"حساب به حساب",
                     value:2
+                },
+                {
+                    text:"کارتخوان",
+                    value:3
                 }
             ]
         },
@@ -161,11 +165,15 @@ export default {
             return this.$store.getters.getRequestAccounts
         },
         isReady(){
-
+            if (this.request.transactionType != 3){
             return (this.request.amount >0 && this.request.file 
             && this.request.transactionType !=null 
             && this.request.toAccount !=null && this.request.fromAccount !=null 
-            && this.request.amount !=null && this.request.peygiriNumber !=null )
+            && this.request.amount !=null && this.request.peygiriNumber !=null && this.request.transactionDate != null )}
+            else{
+                return (this.request.amount >0 && this.request.file
+                && this.request.peygiriNumber !=null && this.request.transactionDate != null )
+            }
         },
         selectedCustomerName(){
             if (this.request.cardCode !== null)

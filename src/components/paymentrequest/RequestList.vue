@@ -263,7 +263,7 @@ export default{
             else if (item ==2)
             return "حساب به حساب"
         else
-        return ""
+        return "کارتخوان"
           },
         detailsDialog(item){
             this.dialog=true;

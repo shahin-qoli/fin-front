@@ -1,45 +1,54 @@
 <template>
     <v-container>
         <v-card outlined>
-            <v-card-title>
-                    <v-row>
-            <v-col
-            cols="3"
-            >    
-            <v-autocomplete
-                v-model="options.selectedPayaneCodes"
-                :items="payaneCodes"
-                item-value="payane_code"
-                item-text="payane_code"
-                label="پایانه"
-                multiple
-                filled
-                outlined
-                small-chips
-                :search-input.sync="searchPayaneCodes" 
-            >   
-            <!-- <template v-slot:item="{ item }">
-                <div>{{ displayText(item) }}</div>
-            </template>
-            <template v-slot:selection="{ item }">
-                <div>{{ displayText(item) }}</div>
-            </template> -->
-            </v-autocomplete>
-            </v-col>
-            <v-col
-            cols="3"
-            ><date-picker v-model="options.selectedDate"></date-picker>
-            </v-col>
-            <v-col cols="3">
-                <v-select 
-                    v-model="options.selectedType" 
-                    label="نوع"
-                    :items="personTypes"
-                    item-text="type_name"
-                    item-value="type"
-                ></v-select>
-            </v-col>
-        </v-row>
+            <v-card-title >
+                <v-row justify="space-between">
+                    <v-col>
+                        <v-row >
+                            <v-col
+                            cols="3"
+                            v-if="!options.withoutSalePerson"
+                            >    
+                            <v-autocomplete
+                                v-model="options.selectedPayaneCodes"
+                                :items="payaneCodes"
+                                item-value="payane_code"
+                                item-text="payane_code"
+                                label="پایانه"
+                                multiple
+                                filled
+                                outlined
+                                small-chips
+                                :search-input.sync="searchPayaneCodes" 
+                            ></v-autocomplete>
+                            </v-col>
+                            <v-col
+                            cols="3"
+                            ><date-picker label="تاریخ" v-model="options.selectedDate"></date-picker>
+                            </v-col>
+                            <v-col cols="3" v-if="!options.withoutSalePerson">
+                                <v-select 
+                                    v-model="options.selectedType" 
+                                    label="نوع"
+                                    :items="personTypes"
+                                    item-text="type_name"
+                                    item-value="type"
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col>
+                        <v-row>
+                            <v-col>
+                                <v-switch
+                                v-model="options.withoutSalePerson"
+                                label="پایانه‌های بدون مالک"
+                                class="pa-3"
+                                ></v-switch>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
             </v-card-title>
             <v-data-table
             fixed-header
@@ -183,7 +192,8 @@ var jalaali = require('jalaali-js')
             page:1, 
             selectedPayaneCodes: '',
             selectedDate:'',
-            selectedType: ''
+            selectedType: '',
+            withoutSalePerson: false,
             },
             searchPayaneCodes:"98",
             personTypes: [

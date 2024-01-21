@@ -264,6 +264,10 @@ export default {
                 {
                     text: "نزد تحصیل دار",
                     value: 220
+                },               
+                {
+                    text: "مسترد شده به مشتری",
+                    value: 230
                 },
                 {
                     text: "واگذار به بانک",
@@ -645,7 +649,9 @@ export default {
       },
       formatState(state, chequeStates){
             let index = chequeStates.findIndex(stat => stat.value == state )
-            if (index)
+          console.log("stt")
+          console.log(index)
+            if (index >= 0)
                 return chequeStates[index].text
             else
                 return "تعریف نشده"
@@ -664,7 +670,9 @@ export default {
     filters:{
         formatRegState(state, regStates){
             let index = regStates.findIndex(stat => stat.value == state )
-            if (index)
+            console.log("reg")
+            console.log(index)
+            if (index >= 0)
             return regStates[index].text            
             else
             return "تعریف نشده"
