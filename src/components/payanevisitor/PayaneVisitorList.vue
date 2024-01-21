@@ -268,7 +268,7 @@ import DatePicker from '../DatePicker.vue'
     },
     loadPayaneVisitors() {
         // console.log(this)
-        this.$store.dispatch('loadPayaneVisitors',this.options)
+        this.$store.dispatch('loadPayaneVisitorsAll',this.options)
         this.$store.dispatch('loadFreeSalePersons')
         this.$store.dispatch('loadFreePayaneCodes')
     },

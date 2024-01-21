@@ -60,6 +60,31 @@ export default {
                 throw error;
              } 
         },
+        async loadPayaneVisitorsAll(context, payload){
+            try{
+                context.commit('setIsLoading', 'true')
+                const {data: responseData} = await finAgent.get(`/front/payane_persons/get_all?page=${payload.page}&per_page=${payload.itemsPerPage}&q[bank_payane_payane_code_cont]=${payload.payaneCode}&q[sale_person_name_cont]=${payload.slpName}`);  
+                var payaneVisitorData = responseData.data;
+                var itemCount = responseData.options.count;
+                const payaneVisitors = []
+                for (const item of payaneVisitorData) {
+                    const payaneVisitor= {
+                        ...item
+                    }
+                    payaneVisitors.push(payaneVisitor); 
+                }
+                context.commit('setIsLoading', 'false')
+                context.commit('setPayaneVisitors', payaneVisitors)
+                context.commit('setItemCount', itemCount);
+
+            } catch (err) {
+                //console.log(err.response);
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+             } 
+        },
         async loadFreePayaneCodes(context){
         try{
             context.commit('setIsLoading', 'true')
