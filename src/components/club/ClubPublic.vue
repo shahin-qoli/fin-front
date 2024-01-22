@@ -112,7 +112,7 @@
                 <v-col cols="12">
                 <v-card>
                     <v-card-title>
-                        <p>جزییات فاکتور</p>
+                        <p>جزییات فاکتور، امتیاز دریافتی</p>
                     </v-card-title>
                     <v-card-text>
                     <v-data-table
@@ -131,7 +131,30 @@
                     </v-data-table>
                 </v-card-text>
                 </v-card>
-            </v-col>
+                </v-col>
+                <v-col cols="12">
+                <v-card>
+                    <v-card-title>
+                        <p>جزییات فاکتور، امتیاز مصرفی</p>
+                    </v-card-title>
+                    <v-card-text>
+                    <v-data-table
+                    fixed-header
+                    dense
+                    :headers="headers"
+                    :items="reportData.data.used_order"
+                    class="elevation-1"
+                    >
+                    <template v-slot:[`item.Total`]="{ item }">
+                    <p>{{  calculateTotal(item) | formatAmount }}</p>
+                    </template>
+                    <template v-slot:[`item.DocDate`]="{ item }">
+                    <p>{{ item.DocDate | formatDate }}</p>
+                    </template>
+                    </v-data-table>
+                </v-card-text>
+                </v-card>
+                </v-col>
                 <v-col cols="12">
                     <v-btn color="red" @click="refreshData" >بستن</v-btn>
                 </v-col>
