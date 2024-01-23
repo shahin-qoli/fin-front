@@ -39,7 +39,7 @@ import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
 import paymentrequestListView from '@/views/PaymentRequestListView.vue'
 import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
 import CampaignDashboardView from '@/views/CampaignDashboardView.vue'
-
+import HrmView from '@/views/HrmView.vue'
 
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
@@ -187,7 +187,14 @@ const routes = [
     // beforeEnter : guardMyrouteAdmin,
     
     component: UsingPromotions
-  },  {
+  },{
+    path: '/hrm',
+    name: 'hrm',
+    // beforeEnter : guardMyrouteAdmin,
+    
+    component: HrmView
+  }
+  ,  {
     path: '/club',
     name: 'club',
     // beforeEnter : guardMyrouteAdmin,
