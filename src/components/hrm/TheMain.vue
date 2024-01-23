@@ -190,8 +190,8 @@ export default{
         return{
             tab: null,
             isLoading: false,
-            mobileNumber:"09124769631",
-            nationalId:"0075016907",
+            mobileNumber:"",
+            nationalId:"",
             selectedMonth:'',
             allData: null,
             personnel: null,
@@ -205,8 +205,8 @@ export default{
         refreshData(){
             this.tab= null,
             this.isLoading = false,
-            this.mobileNumber ="09124769631",
-            this.nationalId = "0075016907",
+            this.mobileNumber ="",
+            this.nationalId = "",
             this.selectedMonth ='',
             this.allData = null,
             this.personnel = null,
