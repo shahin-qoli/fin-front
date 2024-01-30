@@ -182,7 +182,7 @@
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>  
-              <v-col cols="12" v-if="adminRole">
+              <v-col cols="12" v-if="b1Access">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                     <h3>کمپین</h3>
@@ -235,18 +235,32 @@ export default {
     }
   },
   computed:{
+    b1Role(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'b1'
+    },
+    creaditRole(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'credit'
+    },
+    spreeRole(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'spree'
+    },
+    financeRole(){
+      const user = this.$store.getters.getUser;
+      return user.role == 'finance'     
+    },
     saleRole(){
-      
       const user = this.$store.getters.getUser;
       return user.role == 'sale'
     },adminRole(){
       const user = this.$store.getters.getUser;
       return user.role == 'admin'
-
     },
     chequeAccess(){
       const user = this.$store.getters.getUser;
-      return user.role == 'finance' || user.role == 'admin' || user.role == 'credit'
+      return this.financeRole() || this.creaditRole() || this.adminRole()
     },
     requestAccess(){
       const user = this.$store.getters.getUser;
@@ -254,18 +268,22 @@ export default {
     },
     transactionsAccess(){
       const user = this.$store.getters.getUser;
-      return user.role == 'finance' || user.role == 'admin' 
+      return this.saleRole() || this.adminRole()
     },
     spreeAccess(){
       const user = this.$store.getters.getUser;
-      return user.role == 'spree' || user.role == 'admin'
+      return this.adminRole() || this.spreeRole()
     },
     userLoged(){
       console.log(this.$store.getters.getUser !={})
       return this.$store.getters.isLogged 
     },syncAccess(){
       const user = this.$store.getters.getUser;
-      return user.role == 'admin' || user.role == 'credit'
+      return this.adminRole() || this.creaditRole()
+    },
+    b1Access(){
+      const user = this.$store.getters.getUser;
+      return this.adminRole() || this.b1Role()
     }
 
   },
