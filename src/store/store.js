@@ -26,7 +26,7 @@ import exhabition from './modules/exhabition/index.js'
 import paymentrequest from './modules/paymentrequest/index.js';
 import financialdashboard from './modules/financialdashboard/index.js';
 import campaign from './modules/campaign/index.js';
-
+import hrm from './modules/hrm/index.js';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -55,6 +55,7 @@ export default new Vuex.Store({
       paymentrequest,
       financialdashboard,
       campaign,
+      hrm
     },
     state(){
       return{ 
