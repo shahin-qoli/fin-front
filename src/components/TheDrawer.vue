@@ -190,7 +190,10 @@
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/campaigndashboard'><h5>ساخت کمپین</h5></router-link> 
-                    </v-col>                   
+                    </v-col>         
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/campaignlist'><h5>لیست کمپین</h5></router-link> 
+                    </v-col>            
                   </v-expansion-panel-content>
                 </v-expansion-panel>                
               </v-col>            
@@ -259,31 +262,26 @@ export default {
       return user.role == 'admin'
     },
     chequeAccess(){
-      const user = this.$store.getters.getUser;
-      return this.financeRole() || this.creaditRole() || this.adminRole()
+      return this.financeRole || this.creaditRole || this.adminRole
     },
     requestAccess(){
       const user = this.$store.getters.getUser;
       return user.role == 'sale' || user.role == 'admin' || user.role == 'finance'
     },
     transactionsAccess(){
-      const user = this.$store.getters.getUser;
-      return this.saleRole() || this.adminRole()
+      return this.saleRole || this.adminRole
     },
     spreeAccess(){
-      const user = this.$store.getters.getUser;
-      return this.adminRole() || this.spreeRole()
+      return this.adminRole || this.spreeRole
     },
     userLoged(){
       console.log(this.$store.getters.getUser !={})
       return this.$store.getters.isLogged 
     },syncAccess(){
-      const user = this.$store.getters.getUser;
-      return this.adminRole() || this.creaditRole()
+      return this.adminRole || this.creaditRole
     },
     b1Access(){
-      const user = this.$store.getters.getUser;
-      return this.adminRole() || this.b1Role()
+      return this.adminRole || this.b1Role
     }
 
   },

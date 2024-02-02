@@ -66,12 +66,16 @@
       <template v-slot:[`item.amount`]="{ item }">
         <p>{{ item.amount | formatAmount }}</p>
       </template>
+      <template v-slot:[`item.transaction_date`]="{item}">
+        <p>{{ item.transaction_date | formatDate }}</p>
+      </template>
       </v-data-table>
   
     </v-card>
   </template>
   
   <script>
+  var jalaali = require('jalaali-js')
   import DatePicker from '../DatePicker.vue'
   import TheRow from '../TheRow.vue'
     export default {
@@ -103,7 +107,13 @@
         const stringVlue = String(value)
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
-      }
+      },
+      formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
     }
     ,
     computed: {
@@ -200,6 +210,7 @@
         this.$store.dispatch('loadBankAccounts')
       },
       },
+
     created(){
       this.loadBankAccounts();
       

@@ -8,7 +8,10 @@ export default{
             disPolicies:[],
             priceLists:[],
             itemGroups:[],
-            filteredItems:[]
+            filteredItems:[],
+            campaigns:[],
+            campaignDetails:[],
+            bundleRows:[]
     }
     },
     mutations:{
@@ -21,6 +24,11 @@ export default{
         },
         setFilteredItems(state,payload){
             state.filteredItems = payload
+        },
+        setCampaignData(state, payload){
+            state.campaigns = payload.campaigns
+            state.campaignDetails = payload.campaign_details
+            state.bundleRows = payload.bundle_rows
         }
     },
     actions:{
@@ -37,7 +45,7 @@ export default{
         },
         async fetchTaxonItems(context, payload){
             try{
-            const {data: responseData} = await spreeAgent.get(`/storefront/products?filter[taxons]=${payload}&per_page=250&include=variants`)
+            const {data: responseData} = await spreeAgent.get(`/storefront/products?filter[taxons]=${payload}&page=1&per_page=250&include=variants`)
             console.log(responseData)
             if (responseData){
                 console.log("fffffffffffffffffffffffff")
@@ -51,26 +59,39 @@ export default{
             console.log(e)
             return []
         }
-    }, 
-    async fetchInitialData(context){
-        try{
-            const {data: responseData} = await finAgent.get('/front/campaign/get_initialize_data')
-            if (responseData.success){
-                context.commit("setInitialData",responseData)
-                return {success: true}
+        }, 
+        async fetchInitialData(context){
+            try{
+                const {data: responseData} = await finAgent.get('/front/campaign/get_initialize_data')
+                if (responseData.success){
+                    context.commit("setInitialData",responseData)
+                    return {success: true}
+                }
+            }catch(e){
+                return {success: false, error: e}
             }
-        }catch(e){
-            return {success: false, error: e}
-        }
-    },
-    async createCampaign(context, payload){
-        try{
-            const {data: responseData} = await finAgent.post('/front/campaign/', payload)
-            return responseData
-        }catch(e){
-            return {success: false, error: e}
-        }
-    }},
+        },
+        async createCampaign(context, payload){
+            try{
+                const {data: responseData} = await finAgent.post('/front/campaign/', payload)
+                return responseData
+            }catch(e){
+                return {success: false, error: e}
+            }
+        },
+        async fetchCampaignsData(context){
+            try{
+                const {data: responseData} = await finAgent.get("/front/campaign")
+                if ("error" in responseData){
+                    return {success: false, error: responseData.error}
+                }else{
+                    context.commit("setCampaignData",responseData)
+                    return {success: true }
+                }
+            }catch(e){
+                return {success: false, error: e}
+            }
+        }},
     getters:{
         getCardGroups(state){
             return state.cardGroups
@@ -89,6 +110,15 @@ export default{
         },
         getFilteredItems(state){
             return state.filteredItems
+        },
+        getCampaigns(state){
+            return state.campaigns
+        },
+        getCampaignDetails(state){
+            return state.campaignDetails
+        },
+        getBundleRows(state){
+            return state.bundleRows
         }
     }
 }

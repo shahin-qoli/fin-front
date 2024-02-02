@@ -298,7 +298,8 @@
                                 <v-col cols="2 ">
                                     <v-text-field
                                     label="سفارش باز"
-                                    :messages="order.customer.openOrder < 0 ? 'منفی' : ''"                                    :value="formatAmount(order.customer.openOrder)"></v-text-field>
+                                    :messages="order.customer.openOrder < 0 ? 'منفی' : ''"                                   
+                                    :value="formatAmount(order.customer.openOrder)"></v-text-field>
                                 </v-col>                                                                                               
                             </v-row>
                         </v-card-text>
@@ -322,7 +323,7 @@
                                 :headers="paymentHeaders"
                                 :items="order.payment">
                                     <template v-slot:[`item.paymentforLineTotal`]="item">
-                                      <p>  {{ item.item.paymentforLineTotal | formatAmount}}</p>
+                                      <p>  {{ formatAmount(item.item.paymentforLineTotal)}}</p>
                                     </template>
                                     <template v-slot:[`item.ipDueDate`]="item">
                                         <p>{{ item.item.ipDueDate | formatDate }}</p>
@@ -396,7 +397,8 @@ export default{
           })
       },
       formatAmount(value){
-        const stringVlue = String(value)
+        let fixed = Number(value).toFixed(0)
+        const stringVlue = fixed //String(value)
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
       },
@@ -981,7 +983,8 @@ export default{
         ]
     },    
     payDueDateText(){
-        return this.payDueDate.filter(item => item.value == this.order.order.marketingdetails.payDueDate)[0].text
+      let text = this.payDueDate.filter(item => item.value == this.order.order.marketingdetails.payDueDate)[0].text
+        return  text ? text : "تعریف نشده"
     },
     invType(){
       let data = [
@@ -1015,9 +1018,8 @@ export default{
             cheques.forEach((item) => {
                 let duedate = Date.parse(item.ipDueDate)
                 let daysDifference = (duedate - today) / (1000 * 60 * 60 * 24);
-                console.log(`this is the ${daysDifference}`)
-                weighted += item.paymentforLineTotal * daysDifference
-                total += item.paymentforLineTotal
+                weighted += Number(item.paymentforLineTotal) * daysDifference
+                total += Number(item.paymentforLineTotal)
             })
             return (weighted/total).toFixed(0)
     }
