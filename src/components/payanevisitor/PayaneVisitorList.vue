@@ -43,6 +43,14 @@
       <template  v-slot:[`item.b1_slpcode`]="props">
       {{ props.item.sale_person.b1_slpcode }}
       </template>
+      <template  v-slot:[`item.is_golden`]="props">
+        <v-row justify="center">
+          <v-col  class="align-center justify-center">
+            <v-simple-checkbox disabled v-model="props.item.is_golden"></v-simple-checkbox>
+
+          </v-col>
+        </v-row>
+      </template>
       <template v-slot:top>
         <v-toolbar flat color="white">
             <v-spacer></v-spacer>
@@ -131,13 +139,27 @@
         </v-toolbar>
       </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn
-              small
-              class="mr-2"
-              @click="deactiveItem(item)"
-            >
-              غیر فعال کردن
-            </v-btn>
+            <v-row no-gutters justify="center">
+              <v-col cols="3">
+                <v-btn
+                  small
+                  class="mr-2"
+                  @click="deactiveItem(item)"
+                >
+                  غیر فعال کردن
+                </v-btn>
+              </v-col>
+              <v-col cols="3">
+                <v-btn
+                  small
+                  class="mr-2"
+                  @click="changeGold(item)"
+                >
+                  تغییر قرارداد طلایی
+                </v-btn>
+              </v-col>
+            </v-row>
+
           </template>
       </v-data-table>
   </v-card>
@@ -305,8 +327,24 @@ import DatePicker from '../DatePicker.vue'
           }
         }
       })
-    }
-      },
+    }, 
+    changeGold(item){
+      this.$store.dispatch('changeGoldenPayanePerson', item).then((response) =>{
+        if (response.success){
+          this.loadPayaneVisitors()
+            this.$toasted.show('عملیات با موفقیت انجام شد', {
+              position: 'bottom-center',
+              type: 'success',
+              duration: 3000
+            })
+       }else{
+        this.$toasted.show(response.error, {
+              position: 'bottom-center',
+              type: 'error',
+              duration: 5000
+            })
+       }
+      })}},
       computed:{
       headers(){
           return [
@@ -323,6 +361,11 @@ import DatePicker from '../DatePicker.vue'
                   text: "کد پایانه",
                   align: "center",
                   value: "payane_code",
+              },
+              {
+                  text: "قرارداد طلایی",
+                  align: "center",
+                  value: "is_golden",
               },
               {
               text: "عملیات",
@@ -360,7 +403,7 @@ import DatePicker from '../DatePicker.vue'
                   value: "amount",
               }, 
       ]
-    }
+    },
   },
   watch:{
     options:{
