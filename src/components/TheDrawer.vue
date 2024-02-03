@@ -269,7 +269,7 @@ export default {
       return user.role == 'sale' || user.role == 'admin' || user.role == 'finance'
     },
     transactionsAccess(){
-      return this.saleRole || this.adminRole
+      return this.financeRole || this.adminRole
     },
     spreeAccess(){
       return this.adminRole || this.spreeRole
