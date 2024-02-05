@@ -1,4 +1,4 @@
-import { finAgent,spreeAgent } from "@/services/agent";
+import { finAgent,spreeBrxAgent } from "@/services/agent";
 
 export default{
     state(){
@@ -45,7 +45,7 @@ export default{
         },
         async fetchTaxonItems(context, payload){
             try{
-            const {data: responseData} = await spreeAgent.get(`/storefront/products?filter[taxons]=${payload}&page=1&per_page=250&include=variants`)
+            const {data: responseData} = await spreeBrxAgent.get(`/storefront/products?filter[taxons]=${payload}&page=1&per_page=250&include=variants`)
             console.log(responseData)
             if (responseData){
                 console.log("fffffffffffffffffffffffff")
