@@ -2,6 +2,7 @@
 const baseUrl =  "https://backfinancial.burux.ir" //process.env.VUE_APP_BACKEND_URL
 const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
 const spreeUrl = "https://shopback.miarze.com/api/v2"
+const spreeBrxUrl = "https://spree.burux.com/api/v2"
 // const spreeToken = "f13d8dc23f4e4d8b1798199b21b112d8f567c95248d8729bbaac96acefec6852"
 const axios = require('axios');
 export const finAgent = axios.create({
@@ -34,7 +35,9 @@ export const spreeAgent = axios.create({
     'Authorization': 'Bearer 8f1f5beff42e9cefa3a2d75bb29613ad74c5b4bae80ee80e69838dbfbfa08fd2'
   }
 });
-
+export const spreeBrxAgent = axios.create({
+  baseURL: spreeBrxUrl
+});
 // spreeAgent.interceptors.request.use(
 //     async config => {
 //       config.headers = {
