@@ -1,4 +1,4 @@
-import { finAgent } from "@/services/agent";
+import { finAgent, spreeAgent } from "@/services/agent";
 
 export default {
     state(){
@@ -6,7 +6,8 @@ export default {
             miarzeOrders:[],
             itemCount: null,
             itemCountMessageTemplate: null,
-            miarzeMessageTemplates:[]
+            miarzeMessageTemplates:[],
+            miarzeOrderMessageTemplates:[]
         }
     },
     mutations:{
@@ -21,6 +22,9 @@ export default {
         },
         setMiarzeMessageTemplates(state,payload){
          state.miarzeMessageTemplates = payload
+        },
+        setMiarzeOrderMessageTemplates(state,payload){
+            state.miarzeOrderMessageTemplates= payload
         }
     },
     actions:{
@@ -144,8 +148,37 @@ export default {
             );
             throw error;
             }
-        }
+        },
+        async loadOrderMessageTemplates(context){
+            try{
+                const {data: responseData} = await spreeAgent.get(`/storefront/message_templates`);
+                var miarzeOrderMessageTemplateData = responseData.result;
+                const miarzeOrderMessageTemplates = []
+                for (const item of miarzeOrderMessageTemplateData) {
+                    const miarzeMessageTemplate= {
+                        ...item
+                    }
+                    miarzeOrderMessageTemplates.push(miarzeMessageTemplate); 
+                }    
+                context.commit('setMiarzeOrderMessageTemplates', miarzeOrderMessageTemplates)
 
+            }catch(err){
+                    const error = new Error(
+                        err.response.data.error || 'Failed to fetch'
+                    );
+                    throw error;
+            }
+        },
+        async updateMiarzeOrderMessageTemplate(context,payload){
+            console.log("AAAAAAAAAAAAAAAAAA")
+            console.log(payload)
+            try{
+                const {data: responseData} = await spreeAgent.put(`/storefront/message_templates/${payload.id}`,payload);
+                return responseData
+            }catch(err){
+                return{success: false, error: err}
+            }
+        }
     },
     getters:{
         getMiarzeOrders(state){
@@ -159,6 +192,9 @@ export default {
         },
         getMiarzeMessageTemplates(state){
         return state.miarzeMessageTemplates;
+        },
+        getMiarzeOrderMessageTemplates(state){
+            return state.miarzeOrderMessageTemplates;
         }
     }
 }

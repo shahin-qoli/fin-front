@@ -150,7 +150,7 @@
                   </v-expansion-panel-content>
                   <v-expansion-panel-content class="grey lighten-5">
                   <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/campaigndashboard'><h5>ساخت کمپین</h5></router-link> 
+                    <router-link style="text-decoration: none;" to='/ordermessage'><h5>پیامک های سفارش</h5></router-link> 
                     </v-col>        
                   </v-expansion-panel-content>
                 </v-expansion-panel>

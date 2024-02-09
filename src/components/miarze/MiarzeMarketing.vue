@@ -40,7 +40,6 @@
                 <v-data-table
                 fixed-header
                 dense
-                :single-expand="singleExpand"
       :expanded.sync="expanded"
       show-expand
                 :headers="headers"
@@ -117,6 +116,7 @@ export default {
 
     data(){
         return {
+          expanded:null,
           isLoading: false,
           showModal: false,
           updateResult: '',
