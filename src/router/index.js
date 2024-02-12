@@ -42,7 +42,7 @@ import CampaignDashboardView from '@/views/CampaignDashboardView.vue'
 import HrmView from '@/views/HrmView.vue'
 import CampaignListView from '@/views/CampaignListView.vue'
 import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
-
+import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -175,7 +175,12 @@ const routes = [
     beforeEnter: guardMyrouteAdmin,
     component: FinancialDasboardView
   }
-  ,
+  ,{
+    path: '/financialmain',
+    name: 'financialmain',
+    beforeEnter: guardMyrouteAdmin,
+    component: OrderDashboardMainView
+  },
   {
     path: '/addpicture2',
     name: 'addpicture2',
