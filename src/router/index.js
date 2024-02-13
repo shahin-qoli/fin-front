@@ -172,13 +172,13 @@ const routes = [
   },{
     path: '/financialdasboard',
     name: 'financialdashboard',
-    beforeEnter: guardMyrouteAdmin,
+    beforeEnter: guardMyrouteLoggedIn,
     component: FinancialDasboardView
   }
   ,{
     path: '/financialmain',
     name: 'financialmain',
-    beforeEnter: guardMyrouteAdmin,
+    beforeEnter: guardMyrouteLoggedIn,
     component: OrderDashboardMainView
   },
   {

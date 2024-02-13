@@ -30,6 +30,7 @@ export default {
             localStorage.removeItem('userId')
             localStorage.removeItem('userEmail')
             localStorage.removeItem('userRole')
+            localStorage.removeItem('b1OperatorCode')
             context.commit('cleanUser')
         },
         async userLogin(context, payload){
@@ -45,6 +46,7 @@ export default {
              localStorage.setItem('userEmail', user.email)
              localStorage.setItem('userId', user.id)
              localStorage.setItem('userRole', user.role)
+             localStorage.setItem('b1OperatorCode', user.b1_operator_code)
              context.commit('setUser', user)
 
      
@@ -59,7 +61,7 @@ export default {
         initUser(context){
             if (localStorage.getItem('userId'))
                 var user = {'email': localStorage.getItem('userEmail'),
-                 'role': localStorage.getItem('userRole'), 'id':localStorage.getItem('userId') };
+                 'role': localStorage.getItem('userRole'), 'id':localStorage.getItem('userId'),'b1_operator_code': localStorage.getItem('b1OperatorCode') };
                 context.commit('setUser', user)
   
         }

@@ -56,6 +56,56 @@ export default {
                     error: error
                 }
             }
+        },
+        async prepareFinancialDashboardData(context, payload){
+            try{
+                const response = await finAgent.get(`/front/order_dashboards/report?doc_num=${payload}`)
+                if(response.status == 200){
+                    if(response.data.error == null){
+                        let postData = {current_state: `a${response.data.order.docStatus}`,
+                        order_number:response.data.order.docNum,
+                        operator_group_code: localStorage.getItem("userRole") ,
+                        operator_code: Number.parseInt(localStorage.getItem("b1OperatorCode"))}
+                        console.log(postData)
+                        const responseNext = await finAgent.post(`/v2/bpms/validated_next_states`, postData)
+                        if (responseNext.status == 200){
+                            if (responseNext.data.error == null){
+                            return {
+                                success: true,
+                                data: response.data,
+                                nextStates: responseNext.data.data
+                            }}
+                            else{
+                                return{
+                                    success: true,
+                                    data: response.data,
+                                    nextStates: []
+                                }
+                            }
+                        }else{
+                            return{
+                            success: false,
+                            error: responseNext.data.error
+                            }
+                        }
+                        }else{
+                        return {
+                            success: false,
+                            error: response.data.error
+                        }
+                    }
+                }else{
+                    return {
+                        success: false,
+                        error: response.data
+                    }
+                }
+            }catch(error){
+                return {
+                    success: false,
+                    error: error
+                }
+            }
         }
     }
 }

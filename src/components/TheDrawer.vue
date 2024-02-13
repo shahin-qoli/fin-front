@@ -170,7 +170,7 @@
                   </v-expansion-panel-content>                  
                 </v-expansion-panel>
               </v-col>
-              <v-col cols="12" v-if="transactionsAccess">
+              <v-col cols="12" v-if="requestAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
                   <h3>داشبورد فروش</h3>
