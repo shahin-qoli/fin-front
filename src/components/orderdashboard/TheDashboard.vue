@@ -531,7 +531,7 @@ export default{
           token: token, DocEntry: this.order.docEntry,
           NextStateCode: NextStateCode,
           OperatorGroupCode: this.$store.getters.getUser.userRole,
-          OperatorCode: this.$store.getters.getUser.b1OperatorCode
+          OperatorCode: this.$store.getters.getUser.userRole
           }
           const response = await cheqAgent.post('/OperatorCode', payload)
           if(response.status == 200){

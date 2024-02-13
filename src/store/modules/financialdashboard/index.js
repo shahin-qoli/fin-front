@@ -19,7 +19,7 @@ export default {
     actions:{
         async fetchtFinancialOrders(context, payload){
             try{
-                let params= {state: payload.state, end_date: payload.endDate, start_date: payload.startDate, card_code: payload.cardCode}
+                let params= {doc_num: payload.docNum,state: payload.orderState, end_date: payload.endDate, start_date: payload.startDate, card_code: payload.cardCode}
                 const {data: responseData} = await finAgent.get(`/front/order_dashboards`,{params: params})
                 if (responseData.result)
                     context.commit('setOrders', responseData.result)

@@ -1,6 +1,58 @@
 <template>
     <v-container>
+        <v-card outlined>
+            <v-card-text>
+            <v-row>
+                <v-col cols="12">
+                    <v-form @submit.prevent="loadOrders">
+                        <v-row>
+                            <v-col cols="3">
+                                <date-picker v-model="search.startDate" label="از تاریخ"></date-picker>
+                            </v-col>
+                            <v-col cols="3">
+                                <date-picker v-model="search.endDate" label="تا تاریخ"></date-picker>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-text-field v-model="search.cardCode" label="کد مشتری"></v-text-field>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-text-field v-model="search.docNum" label="شماره سفارش"></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <v-select
+                                    :items="orderStates"
+                                    name="orderStates"
+                                    label="وضعیت سفارش"
+                                    item-text="text"
+                                    item-value="value"
+                                    v-model="search.orderState"
+                                
+                                ></v-select>
+                            </v-col>
+                            <v-col cols="1">
+                                <v-btn dark color="green" type="submit">جستجو</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-col>
+            </v-row>
+        </v-card-text>
+        </v-card>
         <v-card>
+            <v-card-title>
+                <v-row>
+                    <v-col cols="12">
+                    <v-text-field
+                        v-model="searchLoaded"
+                        append-icon="mdi-magnify"
+                        label="جستجو در جدول"
+                        single-line
+                        hide-details
+                    ></v-text-field>
+                </v-col>
+                </v-row>
+            </v-card-title>
+            <v-spacer></v-spacer>
             <v-card-text>
             <v-data-table
                         fixed-header
@@ -8,10 +60,16 @@
                         :headers="headers"
                         :items="orders"
                         item-key="id"          
-                        :search="search"
+                        :search="searchLoaded"
                         :loading="isLoading"   
                         class="elevation-1"                   
                     >
+                    <template v-slot:[`item.U_State`]="item">
+                        <p>{{ formatState(item.item.U_State,orderStates) }}</p>
+                    </template>
+                    <template v-slot:[`item.DocDate`]="item">
+                        {{ item.item.DocDate | formatDate  }}
+                    </template>
                     <template v-slot:[`item.more`]="item">
                             <v-btn @click="openMoreDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
                     </template>
@@ -32,19 +90,23 @@
     </v-container>
 </template>
 <script>
+import DatePicker from '../DatePicker.vue'
 import TheDashboard from './TheDashboard.vue'
+var jalaali = require('jalaali-js')
+
 export default{
-    components:{TheDashboard},
+    components:{TheDashboard,DatePicker},
     data(){
         return{
-            options:{
-                state:'',
-                startDate:'',
-                endDate:'',
-                cardCode:''
-            },
             isLoading: false,
-            search:'',
+            searchLoaded:'',
+            search:{
+                docNum: "",
+                orderState:"",
+                cardCode:"",
+                endDate:"",
+                startDate:""
+            },
             moreDialog:false,
             selectedDocNum:"",
             order:null,
@@ -65,12 +127,12 @@ export default{
                     value: "DocNum",
                 },
                 {
-                    text: "شماره",
+                    text: "کد مشتری",
                     align: "center",
                     value: "CardCode",
                 },
                 {
-                    text: "شماره",
+                    text: "نام",
                     align: "center",
                     value: "CardName",
                 },
@@ -88,9 +150,121 @@ export default{
         },
         orders(){
             return this.$store.getters.getFinancialOrders
+        },
+        orderStates(){
+            return[
+                {
+                    text: 'پیش سفارش',
+                    value: 120
+                },
+                {
+                    text: 'تایید مشتری',
+                    value: 130
+                },
+                {
+                    text: 'تایید مدیر',
+                    value: 160
+                },                
+                {
+                    text: 'تایید سرپرست',
+                    value: 150
+                },
+                {
+                    text: 'تایید ویزیتور',
+                    value: 140
+                },
+                {
+                    text: 'رد شده',
+                    value: -190
+                },
+                {
+                    text: 'ثبت شده',
+                    value: 190
+                },
+                {
+                    text: 'آماده توزیع',
+                    value: 370
+                },
+                {
+                    text: 'تایید واحد مالی',
+                    value: 310
+                },                
+                {
+                    text: 'دریافت اطلاعات پرداخت',
+                    value: 230
+                },
+                {
+                    text: 'مغایرت در پرداخت',
+                    value: 240
+                },
+                {
+                    text: 'ثبت اولیه پرداخت',
+                    value: 225
+                },
+                {
+                    text: 'عملیات انبار',
+                    value: 350
+                },
+                {
+                    text: 'تایید پای بار واحد فروش',
+                    value: 305
+                },
+                {
+                    text: 'در انتظار پرداخت',
+                    value: 220
+                },
+                {
+                    text: 'تحویل شده',
+                    value: 390
+                },
+                {
+                    text: 'بخشی تحویل شده',
+                    value: 380
+                },
+                {
+                    text: 'آماده توزیع',
+                    value: 370
+                },
+                {
+                    text: 'در حال ارسال',
+                    value: 385
+                },
+                {
+                    text: 'در حال ارسال بخشی',
+                    value: 382
+                },
+                {
+                    text: 'فاکتور شده',
+                    value: 490
+                },
+                {
+                    text: 'بخشی فاکتور شده',
+                    value: 470
+                },
+                {
+                    text: 'بخشی تحویل و بخشی فاکتور شده',
+                    value: 460
+                },
+                {
+                    text: 'تحویل کامل و بخشی فاکتور شده',
+                    value: 480
+                },
+                {
+                    text: 'برگشت شده',
+                    value: -390
+                },
+                
+            ]
         }
     },
     methods:{
+        formatState(state,orderStates){
+            let index = orderStates.findIndex(stat => stat.value == state )
+            if (index >= 0)
+                return orderStates[index].text
+            else
+                return "تعریف نشده"
+        },
         findOrder(){
           this.isLoading= true;
           this.$store.dispatch('prepareFinancialDashboardData', this.selectedDocNum).then((response) =>{
@@ -115,7 +289,8 @@ export default{
             this.moreDialog = true
         },
         loadOrders(){
-            this.$store.dispatch("fetchtFinancialOrders",this.options)
+            this.isLoading=true
+            this.$store.dispatch("fetchtFinancialOrders",this.search).then(()=>this.isLoading=false)
         },
         closeMoreDialog(){
             this.moreDialog=false
@@ -123,9 +298,16 @@ export default{
             this.order=null
             this.nextStatesData=null
         }
+    },filters:{
+        formatDate(geoDate){
+            
+            var date = new Date(geoDate);
+            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        }
     },
-    created(){
-        this.loadOrders()
-    }
+    // created(){
+    //     this.loadOrders()
+    // }
 }
 </script>
