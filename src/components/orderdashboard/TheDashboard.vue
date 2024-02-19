@@ -533,7 +533,7 @@ export default{
           OperatorGroupCode: this.$store.getters.getUser.userRole,
           OperatorCode: this.$store.getters.getUser.userRole
           }
-          const response = await cheqAgent.post('/OperatorCode', payload)
+          const response = await cheqAgent.post('/ChangeOrderStatus', payload)
           if(response.status == 200){
           this.isLoading = false
           this.refreshData()
