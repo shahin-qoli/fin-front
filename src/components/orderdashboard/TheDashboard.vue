@@ -390,10 +390,10 @@ export default{
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
       },
-      async getB1Token(){
+      getB1Token(){
         try{
           let payload = {Username:"ShahinCamunda", Password:"kAFy24iCosIb2r9jliLB"}
-        const response = await cheqAgent.post('/Login',payload)
+        const response = cheqAgent.post('/Login',payload)
         if(response.status == 200){
           return response
         }
@@ -423,6 +423,7 @@ export default{
           OperatorGroupCode: OperatorGroupCode,
           OperatorCode: OperatorCode
           }
+            console.log(`rhis: ${payload}`)
           const response = await cheqAgent.post('/ChangeOrderStatus', payload)
           if(response.status == 200){
           this.isLoading = false
