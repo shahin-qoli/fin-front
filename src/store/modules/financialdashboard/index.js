@@ -59,11 +59,11 @@ export default {
         },
         async prepareFinancialDashboardData(context, payload){
             try{
-                const response = await finAgent.get(`/front/order_dashboards/report?doc_num=${payload}`)
+                const response = await finAgent.get(`/front/order_dashboards/report?doc_entry=${payload}`)
                 if(response.status == 200){
                     if(response.data.error == null){
                         let postData = {current_state: `a${response.data.order.docStatus}`,
-                        order_number:response.data.order.docNum,
+                        order_docentry:response.data.order.docEntry,
                         operator_group_code: localStorage.getItem("userRole") ,
                         operator_code: Number.parseInt(localStorage.getItem("b1OperatorCode"))}
                         console.log(postData)
@@ -73,6 +73,7 @@ export default {
                             return {
                                 success: true,
                                 data: response.data,
+                                actions: responseNext.data.actions,
                                 nextStates: responseNext.data.data
                             }}
                             else{
@@ -106,6 +107,24 @@ export default {
                     error: error
                 }
             }
-        }
-    }
+        },
+        async doB1ActionBpms(context, payload){
+            try{
+                const response = await finAgent.get(`/front/order_dashboards/do_action`,payload)
+                if(response.status == 200){
+                    return response.data
+                }else{
+                    return {
+                        is_success: false,
+                        error: "خطا در برقراری ارتباط با سرور"
+                    }
+                }
+            }catch(error){
+                return {
+                    is_success: false,
+                    error: error
+                }
+            }
+        
+    }}
 }

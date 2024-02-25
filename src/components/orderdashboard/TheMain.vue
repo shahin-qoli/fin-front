@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card outlined>
+        <v-card outlined v-if="!moreDialog">
             <v-card-text>
             <v-row>
                 <v-col cols="12">
@@ -38,7 +38,7 @@
             </v-row>
         </v-card-text>
         </v-card>
-        <v-card>
+        <v-card v-if="!moreDialog">
             <v-card-title>
                 <v-row>
                     <v-col cols="12">
@@ -76,12 +76,10 @@
             </v-data-table>
         </v-card-text>
         </v-card>
-        <v-dialog
-        fullscreen
-        transition="dialog-bottom-transition"
-        v-model="moreDialog">
-        <the-dashboard :order="order" :nextStatesData="nextStatesData"  @close="closeMoreDialog"></the-dashboard>
-        </v-dialog>
+        <v-card
+        v-if="moreDialog">
+        <the-dashboard :order="order" :actions="actions" :nextStatesData="nextStatesData"  @close="closeMoreDialog"></the-dashboard>
+        </v-card>
         <!-- لودینگ -->
         <v-overlay :value="isLoading">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -108,9 +106,10 @@ export default{
                 startDate:""
             },
             moreDialog:false,
-            selectedDocNum:"",
+            selectedDocEntry:"",
             order:null,
-            nextStatesData: null
+            nextStatesData: null,
+            actions: null
         }
     },
     computed:{
@@ -267,12 +266,13 @@ export default{
         },
         findOrder(){
           this.isLoading= true;
-          this.$store.dispatch('prepareFinancialDashboardData', this.selectedDocNum).then((response) =>{
+          this.$store.dispatch('prepareFinancialDashboardData', this.selectedDocEntry).then((response) =>{
               this.isLoading = false;
               if (response.success)
-                 console.log(response),
                   this.order = response.data,
-                  this.nextStatesData = response.nextStates
+                  this.nextStatesData = response.nextStates,
+                  this.actions = response.actions,
+                  this.moreDialog = true
               else
                 //   this.docNum = ''
                   this.$toasted.show(response.error,{
@@ -283,10 +283,9 @@ export default{
           })
       },
         openMoreDialog(item){
-            console.log(item)
-            this.selectedDocNum = item.item.DocNum
+            this.selectedDocEntry = item.item.DocEntry
             this.findOrder()
-            this.moreDialog = true
+            
         },
         loadOrders(){
             this.isLoading=true
@@ -294,9 +293,10 @@ export default{
         },
         closeMoreDialog(){
             this.moreDialog=false
-            this.selectedDocNum = ""
+            this.selectedDocEntry = ""
             this.order=null
             this.nextStatesData=null
+            this.actions = null
         }
     },filters:{
         formatDate(geoDate){

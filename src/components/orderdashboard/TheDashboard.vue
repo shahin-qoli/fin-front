@@ -30,7 +30,7 @@
             <v-card-title>
                 <v-row>
                     <v-col cols="12" class="d-flex justify-center align-center">
-                        <p>اطلاعات مشتری</p>
+                        <h2>اطلاعات مشتری</h2>
                     </v-col>
                 </v-row>               
             </v-card-title>
@@ -79,7 +79,7 @@
             <v-card-title>
                 <v-row>
                     <v-col cols="12" class="d-flex justify-center align-center">
-                        <p>اطلاعات سفارش</p>
+                        <h2>اطلاعات سفارش</h2>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -312,7 +312,7 @@
                     <v-card-title>
                         <v-row>
                             <v-col cols="12" class="d-flex justify-center align-center">
-                                <p>اطلاعات پرداخت های روی فاکتور</p>
+                                <h2>اطلاعات پرداخت های روی فاکتور</h2>
                             </v-col>
                         </v-row>
                     </v-card-title>
@@ -339,10 +339,54 @@
             </v-card-text>
         </v-card>
         <v-card v-if="order && nextStatesData">
+            <v-card-title>
+                <v-col cols="12" class="d-flex justify-center align-center">
+                        <h2>تغییر وضعیت سفارش</h2>
+                    </v-col>
+            </v-card-title>
+          <v-card-text>
+            <v-row align="center" justify="center" >
+              <v-col v-for="(item,index) in nextStatesData" :key="index" cols="4" class="d-flex justify-center align-center">
+                <v-btn color="green" @click="changeState(item)">{{item.title}}</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+        <v-card v-if="order && actions">
+            <v-card-title>
+                <v-col cols="12" class="d-flex justify-center align-center">
+                        <h2>صدور سند</h2>
+                    </v-col>
+            </v-card-title>
           <v-card-text>
             <v-row>
-              <v-col v-for="(item,index) in nextStatesData" :key="index" cols="4">
-                <v-btn color="green" @click="changeState(item)">{{item.title}}</v-btn>
+                <v-col cols="12">
+                    <v-data-table
+                    hide-default-footer
+                    :items="order.order.deliveryDocs"
+                    :headers="deliveryHeaders"
+                    show-select
+                    item-key="docEntry"
+                    item-value="docEntry"
+                    v-model="selectedDelivery">
+                    </v-data-table>
+                </v-col>
+                <v-col cols="4">
+                    <v-select
+                    :items="payDueDate"
+                    name="bankAccount"
+                    label="موعد پرداخت جدید"
+                    solo
+                    item-text="text"
+                    item-value="value"
+                    v-model="newPayDueDate"
+                    ></v-select>
+                    </v-col>
+                    <v-col cols="4">   
+                    <date-picker v-model="newDate" label="تاریخ جدید"></date-picker>
+                </v-col>
+              <v-col v-for="(item,index) in actions" :key="index" cols="4">
+                <v-btn color="green" @click="doB1Action(item)">{{item.title}}</v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -350,7 +394,7 @@
         <v-card v-if="order">
           <v-row>
               <v-col cols="4">
-                <v-btn  color="orange" @click="refreshData">بازنشانی</v-btn>
+                <v-btn  color="orange" @click="refreshData">بازگشت</v-btn>
               </v-col>
           </v-row>
         </v-card>
@@ -363,19 +407,26 @@
 </template>
 
 <script>
+import DatePicker from '../DatePicker.vue'
+
 import  {cheqAgent} from '@/services/agent'
 var jalaali = require('jalaali-js')
 export default{
+    components:{DatePicker},
     props:{
         // docNum: Number 
         order: Object,
-        nextStatesData: Object
+        nextStatesData: Array,
+        actions: Array
     },
     data(){
         return {
             // docNum:'',
             // order: null,
             isLoading: false,
+            newPayDueDate:null,
+            newDate: null,
+            selectedDelivery:null,
             // nextStatesData:null
         }
     },
@@ -384,125 +435,11 @@ export default{
 
         this.$emit("close")
       },
-    //   findOrder(){
-    //       this.isLoading= true;
-    //       this.$store.dispatch('prepareFinancialDashboardData', this.docNum).then((response) =>{
-    //           this.isLoading = false;
-    //           if (response.success)
-    //              console.log(response),
-    //               this.order = response.data,
-    //               this.nextStatesData = response.nextStates
-    //           else
-    //             //   this.docNum = ''
-    //               this.$toasted.show(response.error,{
-    //                   duration: 3000,
-    //                   position: 'bottom-center',
-    //                   type: 'error'
-    //           })
-    //       })
-    //   },
       formatAmount(value){
         let fixed = Number(value).toFixed(0)
         const stringVlue = fixed //String(value)
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
-      },
-      async changeTo310(){
-        this.isLoading = true
-        try{
-          let token = this.getB1Token()
-        let payload = {
-          token: token, DocEntry: this.order.docEntry, NextStateCode: 310,OperatorGroupCode: "admin", OperatorCode:1
-          }
-          const response = await cheqAgent.post('/OperatorCode', payload)
-          if(response.status == 200){
-          this.isLoading = false
-          if (response.data.results == true){
-            this.$toasted.show('با موفقیت انجام شد',{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'success'
-          })
-          }else{
-            this.$toasted.show(response.data.error,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-          }
-        }else if(response.status < 500){
-          this.isLoading = false
-          this.$toasted.show(response.data.error,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }else{
-          this.isLoading = false
-          this.$toasted.show('خطا در برقراری ارتباط با B1',{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }
-
-        }catch(e){
-          this.isLoading = false
-          this.$toasted.show(e.message,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }
-      },
-      async changeTo240(){
-        this.isLoading = true
-        try{
-          let token = this.getB1Token()
-        let payload = {
-          token: token, DocEntry: this.order.docEntry, NextStateCode: 240,OperatorGroupCode: "admin", OperatorCode:1
-          }
-          const response = await cheqAgent.post('/OperatorCode', payload)
-          if(response.status == 200){
-          this.isLoading = false
-          this.refreshData()
-          if (response.data.results == true){
-            this.$toasted.show('با موفقیت انجام شد',{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'success'
-          })
-          }else{
-            this.$toasted.show(response.data.error,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-          }
-        }else if(response.status < 500){
-          this.isLoading = false
-          this.$toasted.show(response.data.error,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }else{
-          this.isLoading = false
-          this.$toasted.show('خطا در برقراری ارتباط با B1',{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }
-
-        }catch(e){
-          this.isLoading = false
-          this.$toasted.show(e.message,{
-            position: 'bottom-center',
-            duration: 5000,
-            type: 'error'
-          })
-        }
       },
       async getB1Token(){
         try{
@@ -528,7 +465,7 @@ export default{
           let token = this.getB1Token()
           let NextStateCode = item.code.substring(1)
         let payload = {
-          token: token, DocEntry: this.order.docEntry,
+          token: token, DocEntry: this.order.DocEntry,
           NextStateCode: NextStateCode,
           OperatorGroupCode: this.$store.getters.getUser.userRole,
           OperatorCode: this.$store.getters.getUser.userRole
@@ -574,13 +511,49 @@ export default{
             type: 'error'
           })
         }  
+      },
+      async doB1Action(item){
+        if (this.selectedDelivery == null){
+            this.$toasted.show("لطفا یک دلیوری انتخاب کنید",{
+                position: 'bottom-center',
+                type: 'error',
+                duration: 5000
+            })
+        }else{
+        let payload = {
+            action_id:item.id,
+            so_doc_entry: this.order.DocEntry,
+            delivery_doc_entry:this.selectedDelivery,
+        }
+        if (this.newPayDueDate){
+            payload.new_pay_due_date= this.newPayDueDate
+        }
+        if (this.newDate){
+            payload.new_date = this.newDate
+        }
+        console.log(payload)
+        // this.$store.dispatch("doB1ActionBpms", payload).then((response)=>{
+        //     if (response.is_success == true){
+        //         this.refreshData()
+        //         this.$toasted.show('با موفقیت انجام شد',{
+        //             position: 'bottom-center',
+        //             duration: 5000,
+        //             type:'success'
+        //         })
+        //     }else{
+        //         this.$toasted.show(response.error,{
+        //             position: 'bottom-center',
+        //             duration: 5000,
+        //             type: 'error'
+        //         })
+        //     }
+        //     }
+        // )
+        }
       }
 
     },
     computed:{
-      orderIn230(){
-        return (this.order && this.order.order.docStatus == 230)
-      },
         defineClass(){
 
             return this.order.customer.ballance < 0 ? 'red-text' : ''
@@ -1081,6 +1054,26 @@ export default{
                     total += Number(item.paymentforLineTotal)
                 })
                 return (weighted/total).toFixed(0)
+        },
+        deliveryHeaders(){
+            return [
+                {
+                    text: 'شماره سند',
+                    value: 'docNum'
+                },  
+                {
+                    text: 'تاریخ سند',
+                    value: 'docTime'
+                },  
+                {
+                    text: 'مبلغ سند',
+                    value: 'docTotal'
+                },  
+                {
+                    text: 'مشتری',
+                    value: 'cardCode'
+                }, 
+            ]
         }
     },
     filters:{
