@@ -441,12 +441,13 @@ export default{
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
       },
-      async getB1Token(){
+
+      getB1Token(){
         try{
           let payload = {Username:"ShahinCamunda", Password:"kAFy24iCosIb2r9jliLB"}
-        const response = await cheqAgent.post('/Login',payload)
+        const response = cheqAgent.post('/Login',payload)
         if(response.status == 200){
-          return response.data
+          return response
         }
         }catch{
           this.isLoading=false
@@ -464,13 +465,19 @@ export default{
         try{
           let token = this.getB1Token()
           let NextStateCode = item.code.substring(1)
+            let DocEntry = this.order.docEntry
+            let OperatorGroupCode = this.$store.getters.getUser.userRole
+        let OperatorCode = this.$store.getters.getUser.userRole
         let payload = {
-          token: token, DocEntry: this.order.DocEntry,
+
+          token: token,
+          DocEntry: DocEntry,
           NextStateCode: NextStateCode,
-          OperatorGroupCode: this.$store.getters.getUser.userRole,
-          OperatorCode: this.$store.getters.getUser.userRole
+          OperatorGroupCode: OperatorGroupCode,
+          OperatorCode: OperatorCode
           }
-          const response = await cheqAgent.post('/OperatorCode', payload)
+            console.log(`rhis: ${payload}`)
+          const response = await cheqAgent.post('/ChangeOrderStatus', payload)
           if(response.status == 200){
           this.isLoading = false
           this.refreshData()
