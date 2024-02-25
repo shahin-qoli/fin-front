@@ -352,7 +352,7 @@
             </v-row>
           </v-card-text>
         </v-card>
-        <v-card v-if="order && actions">
+        <v-card v-if="order && actions.length > 0">
             <v-card-title>
                 <v-col cols="12" class="d-flex justify-center align-center">
                         <h2>صدور سند</h2>
@@ -398,11 +398,11 @@
               </v-col>
           </v-row>
         </v-card>
-        <!-- لودینگ
+        <!-- لودینگ -->
         <v-overlay :value="isLoading">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
-                <p>در حال بارگذاری</p>
-        </v-overlay> -->
+                <p>در حال عملیات</p>
+        </v-overlay>
     </v-container>
 </template>
 
@@ -442,12 +442,12 @@ export default{
         return formattedIntegerPart
       },
 
-      getB1Token(){
+      async getB1Token(){
         try{
           let payload = {Username:"ShahinCamunda", Password:"kAFy24iCosIb2r9jliLB"}
-        const response = cheqAgent.post('/Login',payload)
+        const response = await cheqAgent.post('/Login',payload)
         if(response.status == 200){
-          return response
+          return response.data
         }
         }catch{
           this.isLoading=false
@@ -461,22 +461,21 @@ export default{
       },
       async changeState(item){
         this.isLoading = true
-        console.log(item)
         try{
-          let token = this.getB1Token()
-          let NextStateCode = item.code.substring(1)
-            let DocEntry = this.order.docEntry
-            let OperatorGroupCode = this.$store.getters.getUser.userRole
-        let OperatorCode = this.$store.getters.getUser.userRole
-        let payload = {
+          let token = await this.getB1Token()
+          let nextStateCode = item.code.substring(1)
+        let docEntry = this.order.order.docEntry
+        let operatorGroupCode = this.$store.getters.getUser.role
+        let operatorCode = this.$store.getters.getUser.b1_operator_code
 
-          token: token,
-          DocEntry: DocEntry,
-          NextStateCode: NextStateCode,
-          OperatorGroupCode: OperatorGroupCode,
-          OperatorCode: OperatorCode
+        let payload = {
+          token: String(token),
+          DocEntry: docEntry,
+          NextStateCode: nextStateCode,
+          OperatorGroupCode: operatorGroupCode,
+          OperatorCode: operatorCode
           }
-            console.log(`rhis: ${payload}`)
+            console.log(payload)
           const response = await cheqAgent.post('/ChangeOrderStatus', payload)
           if(response.status == 200){
           this.isLoading = false
