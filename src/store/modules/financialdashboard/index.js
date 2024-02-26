@@ -110,7 +110,7 @@ export default {
         },
         async doB1ActionBpms(context, payload){
             try{
-                const response = await finAgent.get(`/front/order_dashboards/do_action`,payload)
+                const response = await finAgent.post(`/front/order_dashboards/do_action`,payload)
                 if(response.status == 200){
                     return response.data
                 }else{

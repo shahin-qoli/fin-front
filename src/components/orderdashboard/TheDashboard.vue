@@ -26,319 +26,10 @@
             </v-card-text>
         </v-card> -->
         <!-- کارت اطلاعات سفارش -->
-        <v-card v-if="order">
-            <v-card-title>
-                <v-row>
-                    <v-col cols="12" class="d-flex justify-center align-center">
-                        <h2>اطلاعات مشتری</h2>
-                    </v-col>
-                </v-row>               
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.customer.cardCode"
-                        label="کد"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.customer.cardName"
-                        label="نام"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.customer.city"
-                        label="شهر"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.customer.groupName"
-                        label="گروه مشتری"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.customer.slpname"
-                        label="ویزیتور"
-                        ></v-text-field>    
-                    </v-col>
-                    <v-col cols="4">
-                        <v-text-field
-                        :value="order.order.docTime"
-                        label="تاریخ فاکتور"
-                        ></v-text-field>    
-                    </v-col>
-                </v-row>
-            </v-card-text>
-        </v-card>  
-        <v-card v-if="order">         
-            <v-card-title>
-                <v-row>
-                    <v-col cols="12" class="d-flex justify-center align-center">
-                        <h2>اطلاعات سفارش</h2>
-                    </v-col>
-                </v-row>
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <!-- کارت جزییات سفارش -->
-                    <v-col cols="6">
-                <v-card>
-                    <v-card-text>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-data-table
-                                hide-default-footer
-
-                                :items="order.order.marketingLines"
-                                :headers="orderHeaders"
-                                >
-                                <template v-slot:[`item.priceAfterDiscount`]="item" >
-                                    <p>{{ item.item.priceAfterDiscount.toFixed(0) | formatAmount }}</p>
-                                </template>
-                                <template v-slot:[`item.lineTotal`]="item" >
-                                    <p>{{ item.item.lineTotal.toFixed(0) | formatAmount }}</p>
-                                </template>                                
-                                </v-data-table>
-                                <div style="margin-top: 15px;" >
-                                    <v-row justify="end" >
-                                    <v-col cols="12" lg="2" sm="4" md="4">
-                                        <p class="total-text">جمع کل:</p>
-                                    </v-col>
-                                    <v-col cols="12" lg="3" sm="8" md="8">
-                                    <p class="total-text">{{ (order.order.documentTotal+order.order.marketingdetails.documentDiscount)| formatAmount }} ریال</p>
-                                    </v-col>
-                                    </v-row>
-                                    <v-row justify="end" >
-                                    <v-col cols="12" lg="2" sm="4" md="4">
-                                        <p class="total-text">درصد تخفیف:</p>
-                                    </v-col>
-                                    <v-col cols="12" lg="3" sm="8" md="8">
-                                    <p class="total-text">{{ order.order.marketingdetails.documentDiscountPercent }}</p>
-                                    </v-col>
-                                    </v-row>    
-                                    <v-row justify="end" >
-                                    <v-col cols="12" lg="2" sm="4" md="4">
-                                        <p class="total-text">قابل پرداخت:</p>
-                                    </v-col>
-                                    <v-col cols="12" lg="3" sm="8" md="8">
-                                    <p class="total-text">{{ order.order.documentTotal | formatAmount }} ریال</p>
-                                    </v-col>
-                                    </v-row>         
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <!-- کارت جزییات سفارش -->
-            <v-col cols="6">
-                <v-card class="ma-3">
-                    <v-card-title>
-                        <v-row>
-                            <v-col cols="12" class="d-flex justify-center align-center">
-                                <p>جزییات</p>
-                            </v-col>
-                        </v-row>
-                    </v-card-title>                    
-                    <v-card-text>                                             
-                        <v-row>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="روش تسویه"
-                                :value="settleType"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="موعد تسویه"
-                                :value="payDueDateText"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="زمان پرداخت"
-                                :value="paymentTime"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="روش ارسال"
-                                :value="deliveryType"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="کمپین"
-                                :value="order.order.marketingdetails.campaign"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-text-field
-                                label="نوع فاکتور"
-                                :value="invType"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col  cols="4">
-                              <v-text-field label="وضعیت سند" disabled :value="order.order.docStatus"></v-text-field>
-                            </v-col> 
-                        </v-row>
-                    </v-card-text>
-                </v-card>
-                <!-- کارت جزییات پرداخت -->
-                <v-card class="ma-3">
-                    <v-card-title>
-                        <v-row>
-                            <v-col cols="12" class="d-flex justify-center align-center">
-                                <p>پرداختی ها</p>
-                            </v-col>
-                        </v-row>
-                    </v-card-title>                    
-                    <v-card-text>                                             
-                        <v-row>
-                            <v-col cols="3">
-                                <p>پرداخت نقدی:</p>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="مبلغ لازم"
-                                v-model="requiredCash"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="مبلغ پرداختی"
-                                v-model="paidCash"
-                                disabled></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col cols="12">
-                                <p>پرداخت چک:</p>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="مبلغ لازم"
-                                v-model="requiredCheque"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="روز مورد انتظار"
-                                v-model="expectedChequeDays"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="مبلغ پرداختی"
-                                v-model="paidCheque"
-                                disabled></v-text-field>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-text-field
-                                label="راس چک"
-                                v-model="calRas"
-                                disabled></v-text-field>
-                            </v-col>                            
-                        </v-row>                        
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            </v-row>
-            </v-card-text>
-        </v-card>
-        <v-card v-if="order">
-            <v-card-title>
-                <v-row>
-                    <v-col cols="12" class="d-flex justify-center align-center">
-                        <h2>سوابق مالی</h2>
-                    </v-col>
-                </v-row>
-            </v-card-title>
-
-            <v-card-text>
-                    <v-card class="ma-3">
-                        <v-row>
-                        <v-card-title>
-                            <v-col cols="12" class="d-flex justify-center align-center">
-                                <p>سابقه حساب باز و چک برگشتی مشتری</p>
-                            </v-col>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-row>
-                                <v-col cols="2">
-                                    <v-text-field
-                                    label="مانده مشتری"
-                                    :messages="order.customer.ballance < 0 ? 'منفی' : ''"
-                                    :value="formatAmount(order.customer.ballance)"
-                                    :class="defineClass"></v-text-field>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-text-field
-                                    label="چک باز"
-                                    :messages="order.customer.openCheck < 0 ? 'منفی' : ''"
-                                    :value="formatAmount(order.customer.openCheck)"></v-text-field>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-text-field
-                                    :messages="order.customer.rejectedCheck < 0 ? 'منفی' : ''"
-                                    label="چک برگشتی"
-                                    :value="formatAmount(order.customer.rejectedCheck)"></v-text-field>
-                                </v-col> 
-                                <v-col cols="2">
-                                    <v-text-field
-                                    :messages="order.customer.openDelivery < 0 ? 'منفی' : ''"
-                                    label="خروج باز"
-                                    :value="formatAmount(order.customer.openDelivery)"></v-text-field>
-                                </v-col>
-                                <v-col cols="2 ">
-                                    <v-text-field
-                                    label="سفارش باز"
-                                    :messages="order.customer.openOrder < 0 ? 'منفی' : ''"                                   
-                                    :value="formatAmount(order.customer.openOrder)"></v-text-field>
-                                </v-col>                                                                                               
-                            </v-row>
-                        </v-card-text>
-                        </v-row>   
-                </v-card>
-
-            </v-card-text>
-            <v-card-text>
-                <v-card class="ma-3">
-                    <v-card-title>
-                        <v-row>
-                            <v-col cols="12" class="d-flex justify-center align-center">
-                                <h2>اطلاعات پرداخت های روی فاکتور</h2>
-                            </v-col>
-                        </v-row>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-row>
-                            <v-col cols=12>
-                                <v-data-table
-                                :headers="paymentHeaders"
-                                :items="order.payment">
-                                    <template v-slot:[`item.paymentforLineTotal`]="item">
-                                      <p>  {{ formatAmount(item.item.paymentforLineTotal)}}</p>
-                                    </template>
-                                    <template v-slot:[`item.ipDueDate`]="item">
-                                        <p>{{ item.item.ipDueDate | formatDate }}</p>
-                                    </template>
-                                    <template v-slot:[`item.ipDocDate`]="item">
-                                        <p>{{ item.item.ipDocDate | formatDate }}</p>
-                                    </template>                                    
-                                </v-data-table>
-                            </v-col>   
-                        </v-row>
-                    </v-card-text>
-                </v-card>
-            </v-card-text>
-        </v-card>
-        <v-card v-if="order && nextStatesData">
+        <the-customer :order="order"></the-customer>
+        <the-order :order="order"></the-order>
+        <the-finance :order="order"></the-finance>
+        <v-card v-if="hasChange">
             <v-card-title>
                 <v-col cols="12" class="d-flex justify-center align-center">
                         <h2>تغییر وضعیت سفارش</h2>
@@ -352,7 +43,7 @@
             </v-row>
           </v-card-text>
         </v-card>
-        <v-card v-if="order && actions.length > 0">
+        <v-card v-if="hasAction">
             <v-card-title>
                 <v-col cols="12" class="d-flex justify-center align-center">
                         <h2>صدور سند</h2>
@@ -408,11 +99,13 @@
 
 <script>
 import DatePicker from '../DatePicker.vue'
-
+import TheFinance from './_finance.vue'
+import TheCustomer from './_customer.vue'
+import TheOrder from './_order.vue'
 import  {cheqAgent} from '@/services/agent'
 var jalaali = require('jalaali-js')
 export default{
-    components:{DatePicker},
+    components:{DatePicker,TheFinance, TheCustomer, TheOrder},
     props:{
         // docNum: Number 
         order: Object,
@@ -421,12 +114,13 @@ export default{
     },
     data(){
         return {
+            
             // docNum:'',
             // order: null,
             isLoading: false,
             newPayDueDate:null,
             newDate: null,
-            selectedDelivery:null,
+            selectedDelivery:[],
             // nextStatesData:null
         }
     },
@@ -519,17 +213,19 @@ export default{
         }  
       },
       async doB1Action(item){
-        if (this.selectedDelivery == null){
+        this.isLoading = true
+        if (this.selectedDelivery.length != 1){
             this.$toasted.show("لطفا یک دلیوری انتخاب کنید",{
                 position: 'bottom-center',
                 type: 'error',
                 duration: 5000
             })
         }else{
+            
         let payload = {
             action_id:item.id,
-            so_doc_entry: this.order.DocEntry,
-            delivery_doc_entry:this.selectedDelivery,
+            so_doc_entry: this.order.order.docEntry,
+            delivery_doc_entry:this.selectedDelivery[0].docEntry,
         }
         if (this.newPayDueDate){
             payload.new_pay_due_date= this.newPayDueDate
@@ -538,248 +234,29 @@ export default{
             payload.new_date = this.newDate
         }
         console.log(payload)
-        // this.$store.dispatch("doB1ActionBpms", payload).then((response)=>{
-        //     if (response.is_success == true){
-        //         this.refreshData()
-        //         this.$toasted.show('با موفقیت انجام شد',{
-        //             position: 'bottom-center',
-        //             duration: 5000,
-        //             type:'success'
-        //         })
-        //     }else{
-        //         this.$toasted.show(response.error,{
-        //             position: 'bottom-center',
-        //             duration: 5000,
-        //             type: 'error'
-        //         })
-        //     }
-        //     }
-        // )
+        this.$store.dispatch("doB1ActionBpms", payload).then((response)=>{
+            this.isLoading = false
+            if (response.is_success == true){
+                this.refreshData()
+                this.$toasted.show('با موفقیت انجام شد',{
+                    position: 'bottom-center',
+                    duration: 5000,
+                    type:'success'
+                })
+            }else{
+                this.$toasted.show(response.error,{
+                    position: 'bottom-center',
+                    duration: 5000,
+                    type: 'error'
+                })
+            }
+            }
+        )
         }
       }
 
     },
     computed:{
-        defineClass(){
-
-            return this.order.customer.ballance < 0 ? 'red-text' : ''
-        },
-        paymentHeaders(){
-            return [
-                {
-                    text: 'شماره سند',
-                    value: 'ipDocNum'
-                },  
-                {
-                    text: 'تاریخ سند',
-                    value: 'ipDocDate'
-                }, 
-                {
-                    text: 'تاریخ موثر',
-                    value: 'ipDueDate'
-                }, 
-                {
-                    text: 'شماره صیادی',
-                    value: 'U_SayadiNumber'
-                }, 
-                {
-                    text: 'نوع',
-                    value: 'IpType'
-                }, 
-                {
-                    text: 'مبلغ',
-                    value: 'paymentforLineTotal'
-                }
-            ]
-        },
-        orderHeaders(){
-            return [
-                {
-                    text: 'کد',
-                    value: 'itemCode'
-                },            
-                {
-                    text: 'شرح',
-                    value: 'itemName'
-                },     
-                {
-                    text: 'تعداد',
-                    value: 'itemQty'
-                },     
-                {
-                    text: 'فی',
-                    value: 'priceAfterDiscount'
-                },  
-                {
-                    text: 'درصد تخفیف',
-                    value: 'discountPercent'
-                },       
-                {
-                    text: 'جمع',
-                    value: 'lineTotal'
-                },  
-            ]
-        },
-        requiredCash(){
-            let payduedate =  this.payDueDate.filter(x => x.value == this.order.order.marketingdetails.payDueDate)[0];
-            return  this.formatAmount((this.order.order.documentTotal * payduedate.cash).toFixed(0))
-        },
-        paidCash(){
-            let paid= 0
-            if (this.order.payment.length < 1)
-                return paid
-            else{
-           this.order.payment.filter(x => x.IpType == "T").forEach((item) => paid += Number.parseFloat(item.paymentforLineTotal))
-            // console.log(pym)
-            return this.formatAmount(paid.toFixed(0))}
-        },
-        requiredCheque(){
-            let payduedate =  this.payDueDate.filter(x => x.value == this.order.order.marketingdetails.payDueDate)[0];
-            return this.formatAmount((this.order.order.documentTotal * payduedate.cheque).toFixed(0))
-        },
-        paidCheque(){
-            let paid= 0
-            if (this.order.payment.length < 1)
-                return paid
-            else{
-           this.order.payment.filter(x => x.IpType == "C").forEach((item) => paid += Number.parseFloat(item.paymentforLineTotal))
-
-            return this.formatAmount(paid.toFixed(0))}
-        },
-        expectedChequeDays(){
-            return this.payDueDate.filter(x => x.value == this.order.order.marketingdetails.payDueDate)[0].days;
-        },
-        cardGroupCodes(){
-        return [
-            {
-            text: "مشتریان عادی",
-            value: 166
-            },        {
-            text: "مشتریان برنزی",
-            value: 167
-            },        {
-            text: "مشتریان نقره ای",
-            value: 168
-            },        {
-            text: "مشتریان طلایی",
-            value: 169
-            }]
-        },
-        settleType(){
-        let data = [
-            {
-            text: "نقد",
-            value: 1
-            },
-            {
-            text: "چک",
-            value: 2
-            },
-            {
-            text: "NotSet",
-            value: 3
-            },
-            {
-            text: "ترکیبی",
-            value: 4
-            },
-            {
-            text: "pos",
-            value: 8
-            },
-            {
-            text: "online",
-            value: 16
-            },
-            {
-            text: "card",
-            value: 32
-            },
-            {
-            text: "pos_cheque",
-            value: 10
-            },
-            {
-            text: "online_cheque",
-            value: 18
-            },
-            {
-            text: "card_cheque",
-            value: 34
-            }
-        ]
-            return data.filter(item => item.value == this.order.order.marketingdetails.settleType)[0].text
-        },
-        paymentTime(){
-        let data = [
-            {
-            text: "واریز",
-            value: 1
-            },
-            {
-            text: "پای بار",
-            value: 2
-            },
-            {
-            text: "گارانتی",
-            value: 3
-            },
-            {
-            text: "تسویه بعد از ارسال",
-            value: 4
-            },
-            {
-            text: "اینترنتی",
-            value: 5
-            },
-            {
-            text: "NotSet",
-            value: 6
-            },
-        ]
-        return data.filter(item => item.value == this.order.order.marketingdetails.paymentTime)[0].text
-        },
-        deliveryType(){
-        let data =  [
-            {
-            text: "ماشین توزیع",
-            value: 11
-            },
-            {
-            text: "ماشین اجاره ای",
-            value: 12
-            },
-            {
-            text: "باربری",
-            value: 13
-            },
-            {
-            text: "پخش گرم",
-            value: 14
-            },
-            {
-            text: "توسط ویزیتور",
-            value: 15
-            },
-            {
-            text: "NotSet",
-            value: 16
-            },
-            {
-            text: "توسط مشتری",
-            value: 17
-            },
-            {
-            text: "پیک",
-            value: 18
-            },
-            {
-            text: "می ارزه",
-            value: 19
-            },
-        ]   
-        return data.filter(item => item.value == this.order.order.marketingdetails.deliveryType)[0].text
-        },
         payDueDate(){
         return [
             {
@@ -1019,48 +496,7 @@ export default{
             days: 120
             }
             ]
-        },    
-        payDueDateText(){
-        let text = this.payDueDate.filter(item => item.value == this.order.order.marketingdetails.payDueDate)[0].text
-            return  text ? text : "تعریف نشده"
-        },
-        invType(){
-        let data = [
-            {
-            text: "رسمی",
-            value: 1,
-            settletype:1
-            },
-            {
-            text: "گارانتی",
-            value: 2,
-            settletype:1
-            },
-            {
-            text: "غیر رسمی",
-            value: 3,
-            settletype:2
-            }
-    
-            ]
-            return data.filter(item => item.value == this.order.order.marketingdetails.invType)[0].text
-        },
-        calRas(){
-            let today = Date.now()
-            let weighted = 0
-            let total = 0
-            let cheques = this.order.payment.filter((item)=> item.IpType =="C")
-            if (cheques.length < 1)
-                return 0 
-            else
-                cheques.forEach((item) => {
-                    let duedate = Date.parse(item.ipDueDate)
-                    let daysDifference = (duedate - today) / (1000 * 60 * 60 * 24);
-                    weighted += Number(item.paymentforLineTotal) * daysDifference
-                    total += Number(item.paymentforLineTotal)
-                })
-                return (weighted/total).toFixed(0)
-        },
+        },   
         deliveryHeaders(){
             return [
                 {
@@ -1080,6 +516,16 @@ export default{
                     value: 'cardCode'
                 }, 
             ]
+        },
+        hasAction(){
+            if (this.actions == null ){
+                return false
+            }else{
+                return this.actions.length > 0
+            }
+        },
+        hasChange(){
+            return this.order && this.nextStatesData?.length > 0
         }
     },
     filters:{

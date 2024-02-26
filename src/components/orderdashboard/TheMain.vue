@@ -269,6 +269,7 @@ export default{
           this.$store.dispatch('prepareFinancialDashboardData', this.selectedDocEntry).then((response) =>{
               this.isLoading = false;
               if (response.success)
+              console.log(response),
                   this.order = response.data,
                   this.nextStatesData = response.nextStates,
                   this.actions = response.actions,
