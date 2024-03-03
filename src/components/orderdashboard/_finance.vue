@@ -78,7 +78,10 @@
                                 </template>
                                 <template v-slot:[`item.ipDocDate`]="item">
                                     <p>{{ item.item.ipDocDate | formatDate }}</p>
-                                </template>                                    
+                                </template>
+                                <template v-slot:[`item.IpType`]="item">
+                                    <p>{{ item.item.IpType == "T" ? "نقدی" : "چک"}}</p>
+                                </template>                                       
                             </v-data-table>
                         </v-col>   
                     </v-row>
@@ -123,14 +126,14 @@ export default{
         },
     },methods:{
         formatAmount(value){
-          const stringVlue = String(value)
+          const stringVlue = Number(value).toFixed(0)
           const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          return formattedIntegerPart
+          return  formattedIntegerPart
         },
     
     },
     filters:{    formatAmount(value){
-          const stringVlue = String(value)
+          const stringVlue = Number(value).toFixed(0)
           const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           return formattedIntegerPart
         },

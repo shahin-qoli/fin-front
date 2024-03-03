@@ -26,7 +26,7 @@
                                     item-text="text"
                                     item-value="value"
                                     v-model="search.orderState"
-                                
+                                    solo
                                 ></v-select>
                             </v-col>
                             <v-col cols="1">
@@ -100,7 +100,7 @@ export default{
             searchLoaded:'',
             search:{
                 docNum: "",
-                orderState:"",
+                orderState:null,
                 cardCode:"",
                 endDate:"",
                 startDate:""
@@ -152,6 +152,10 @@ export default{
         },
         orderStates(){
             return[
+                {
+          text: 'همه وضعیت‌ها', // Change this text to whatever is suitable
+          value: null // Set the value to null or an appropriate value
+        },
                 {
                     text: 'پیش سفارش',
                     value: 120
@@ -252,7 +256,7 @@ export default{
                     text: 'برگشت شده',
                     value: -390
                 },
-                
+
             ]
         }
     },
@@ -290,6 +294,9 @@ export default{
         },
         loadOrders(){
             this.isLoading=true
+            if (this.search.orderState == null){
+                this.search.orderState = ""
+            }
             this.$store.dispatch("fetchtFinancialOrders",this.search).then(()=>this.isLoading=false)
         },
         closeMoreDialog(){

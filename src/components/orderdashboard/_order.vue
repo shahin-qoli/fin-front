@@ -98,7 +98,7 @@
                             <v-col cols="4">
                                 <v-text-field
                                 label="کمپین"
-                                :value="order.order.marketingdetails.campaign"
+                                :value="formatCampaign(order.order.marketingdetails.campaign)"
                                 disabled></v-text-field>
                             </v-col>
                             <v-col cols="4">
@@ -108,7 +108,7 @@
                                 disabled></v-text-field>
                             </v-col>
                             <v-col  cols="4">
-                              <v-text-field label="وضعیت سند" disabled :value="order.order.docStatus"></v-text-field>
+                              <v-text-field label="وضعیت سند" disabled :value="formatState(order.order.docStatus,orderStates)"></v-text-field>
                             </v-col> 
                         </v-row>
                     </v-card-text>
@@ -189,6 +189,20 @@ export default{
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
       },
+      formatState(state,orderStates){
+            let index = orderStates.findIndex(stat => stat.value == state )
+            if (index >= 0)
+                return orderStates[index].text
+            else
+                return "تعریف نشده"
+        },
+        formatCampaign(value){
+            let index = this.campaigns.findIndex(stat => stat.value == value )
+            if (index >= 0)
+                return this.campaigns[index].text
+            else
+                return "تعریف نشده"
+        },
     },
     computed:{
         
@@ -252,9 +266,7 @@ export default{
                     value: 'lineTotal'
                 },  
             ]
-        },
-        
-
+        }, 
         settleType(){
         let data = [
             {
@@ -651,13 +663,165 @@ export default{
                 })
                 return (weighted/total).toFixed(0)
         },
-
+        orderStates(){
+            return[
+                {
+                    text: 'پیش سفارش',
+                    value: 120
+                },
+                {
+                    text: 'تایید مشتری',
+                    value: 130
+                },
+                {
+                    text: 'تایید مدیر',
+                    value: 160
+                },                
+                {
+                    text: 'تایید سرپرست',
+                    value: 150
+                },
+                {
+                    text: 'تایید ویزیتور',
+                    value: 140
+                },
+                {
+                    text: 'رد شده',
+                    value: -190
+                },
+                {
+                    text: 'ثبت شده',
+                    value: 190
+                },
+                {
+                    text: 'آماده توزیع',
+                    value: 370
+                },
+                {
+                    text: 'تایید واحد مالی',
+                    value: 310
+                },                
+                {
+                    text: 'دریافت اطلاعات پرداخت',
+                    value: 230
+                },
+                {
+                    text: 'مغایرت در پرداخت',
+                    value: 240
+                },
+                {
+                    text: 'ثبت اولیه پرداخت',
+                    value: 225
+                },
+                {
+                    text: 'عملیات انبار',
+                    value: 350
+                },
+                {
+                    text: 'تایید پای بار واحد فروش',
+                    value: 305
+                },
+                {
+                    text: 'در انتظار پرداخت',
+                    value: 220
+                },
+                {
+                    text: 'تحویل شده',
+                    value: 390
+                },
+                {
+                    text: 'بخشی تحویل شده',
+                    value: 380
+                },
+                {
+                    text: 'آماده توزیع',
+                    value: 370
+                },
+                {
+                    text: 'در حال ارسال',
+                    value: 385
+                },
+                {
+                    text: 'در حال ارسال بخشی',
+                    value: 382
+                },
+                {
+                    text: 'فاکتور شده',
+                    value: 490
+                },
+                {
+                    text: 'بخشی فاکتور شده',
+                    value: 470
+                },
+                {
+                    text: 'بخشی تحویل و بخشی فاکتور شده',
+                    value: 460
+                },
+                {
+                    text: 'تحویل کامل و بخشی فاکتور شده',
+                    value: 480
+                },
+                {
+                    text: 'برگشت شده',
+                    value: -390
+                },
+                
+            ]
+        },
+        campaigns(){
+            return [
+                { text: 'خرید عادی', value: '0' },
+        { text: 'فروش ویژه چراغ خطی', value: '20' },
+        { text: 'فروش ویژه چراغ خطی آریان', value: '21' },
+        { text: 'طرح ده وات طلایی', value: '18' },
+        { text: 'طرح وات های طلایی', value: '14' },
+        { text: 'طرح پیشین', value: '00' },
+        { text: 'طرح نورواره 2', value: '12' },
+        { text: 'طرح نورواره 2-ویژه', value: '22' },
+        { text: 'طرح عیدانه', value: '01' },
+        { text: 'طرح ویژه 10 وات', value: '10' },
+        { text: 'طرح پخش گرم 10 وات', value: '11' },
+        { text: 'تابستان داغ', value: '24' },
+        { text: 'حراجستان', value: '25' },
+        { text: 'طرح چراغ خطی 1401', value: '26' },
+        { text: 'BELEX2022', value: '27' },
+        { text: 'طرح شب یلدای روشنایی', value: '28' },
+        { text: 'طرح شب یلدای باتری', value: '29' },
+        { text: 'بسته های یلدا', value: '30' },
+        { text: 'همایش بلکس شیراز 1401', value: '31' },
+        { text: 'نورواره3', value: '32' },
+        { text: 'آخرین قیمت سال 1401', value: '33' },
+        { text: 'همایش تهران و مشهد 1402', value: '34' },
+        { text: 'می ارزه', value: '35' },
+        { text: 'همایش اردبیل 1402', value: '36' },
+        { text: 'همایش کرمانشاه 1402', value: '37' },
+        { text: 'همایش ایلام 1402', value: '38' },
+        { text: 'همایش لرستان 1402', value: '39' },
+        { text: 'اقلامی همایش', value: '40' },
+        { text: 'گارانتی تعویض', value: '41' },
+        { text: 'همایش کردستان 1402', value: '42' },
+        { text: 'همایش همدان 1402', value: '43' },
+        { text: 'ده وات طلایی_اپ الکتریکی', value: '44' },
+        { text: 'طرح 10 وات پایدار آبان', value: '45' },
+        { text: 'همایش بلکس 2023', value: '46' },
+        { text: 'فروش امتیازی باشگاه', value: '47' },
+        { text: 'بسته های همایش بلکس 2023', value: '48' },
+        { text: 'فروش ابزارآلات همایش بلکس 2023', value: '49' },
+        { text: 'طرح اقلامی زمستان 1402 (30گروه)', value: '50' },
+        { text: 'حبابی های زمستان 1402', value: '51' },
+        { text: 'طرح اقلامی زمستان 1402 (69گروه)', value: '52' },
+        { text: 'طرح اقلامی سنگین زمستان 1402 (69گروه)', value: '53' },
+        { text: 'عیدانه بروکس - چک 6 ماهه', value: '54' },
+        { text: 'عیدانه بروکس - نقدی', value: '55' }
+            ]
+        }
     },
     filters:{
         formatAmount(value){
           const stringVlue = String(value)
           const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           return formattedIntegerPart
-        },}
+        },
+}
 }
 </script>
