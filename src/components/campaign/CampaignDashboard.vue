@@ -378,9 +378,12 @@
                                 <v-card-text>
                                     <v-form @submit.prevent="addRow">
                                         <v-row>
-                                            <v-col cols="12">
-                                                <v-select solo item-text="camName" item-value="camName" label="جزییات کمپین" :items="headDetails" v-model="row.headDetail"></v-select>
+                                            <v-col cols="6">
+                                                <v-select solo item-text="camName" item-value="camName" label="جزییات کمپین" :items="toSelectHeadDetails" v-model="row.headDetail"></v-select>
                                             </v-col>   
+                                            <v-col cols="6">
+                                                <v-checkbox v-model="row.canHaveOperDis"  label="آیا می‌تواند OperaDis داشته باشد؟"></v-checkbox>
+                                            </v-col>
                                             <v-col cols="6">
                                                 <v-autocomplete
                                                 :items="itemCodes"
@@ -645,7 +648,8 @@ export default{
                 disPolicy:'',
                 taxon:'',
                 ItemChckCond:'',
-                headDetail:''
+                headDetail:'',
+                canHaveOperDis: false,
             },
             rows:[]
         }
@@ -673,6 +677,9 @@ export default{
             value:'camName'
           }
             ]
+        },
+        toSelectHeadDetails(){
+            this.headDetails.push({camName: "انتخاب همه برای همه موارد"})
         },
         customers(){
             return this.$store.getters.getFilteredCustomers
@@ -834,7 +841,8 @@ export default{
             fixDisValue:'',
             disRelation:'',
             disPolicy:'',
-            taxon:''     
+            taxon:'',
+            canHaveOperDis: false   
             };
             this.head = {
                 camName:'',
@@ -881,7 +889,12 @@ export default{
         },
         submitCampaign(){
             this.isLoading=true
-            let payload = {rows: this.rows, head: this.head,head_details: this.headDetails}
+            let rows = this.rows.map(item=> {
+                if (item.headDetail === "انتخاب همه برای همه موارد"){
+                    item.headDetail = 0
+                }
+            })
+            let payload = {rows: rows, head: this.head,head_details: this.headDetails}
             this.$store.dispatch('createCampaign', payload).then((response)=>{
                 this.isLoading= false
                 if (response.success){
