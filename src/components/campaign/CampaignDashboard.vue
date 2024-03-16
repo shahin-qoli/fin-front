@@ -679,7 +679,12 @@ export default{
             ]
         },
         toSelectHeadDetails(){
-            this.headDetails.push({camName: "انتخاب همه برای همه موارد"})
+            let data = []
+            this.headDetails.forEach(item=>{
+                data.push(item)
+            })
+            data.push({camName:"انتخاب برای همه موارد"})
+            return data
         },
         customers(){
             return this.$store.getters.getFilteredCustomers
@@ -862,39 +867,59 @@ export default{
         },
         refreshHeadDetai(){
             this.headDetail = {
-                camCardCodes:[],
-                camCardGroups:[],
-                camBaseDis:'',
-                camDisRelation:'',
-                camMinRow:'',
-                camMaxRow:'',
-                camPerRowDis:'',
-                camMaxRowDis:'',
-                camMinValue:'',
-                camMaxValue:'',
-                camPerValueStep:'',
-                camPerStepDis:'',
-                camMaxValueDis:'',
-                camMaxAllDis:'',
-                camSalesChannel:'',
-                camChannelDis:'',
-                camCanHaveB1Dis:false,
-                camSettleType:'',
-                camCommissionEff:'',
-                camB1PriceList:'',
-                camIsHaveCampaignDis:false,
-                camDisPolicy:''
+                camActive:false,
+                camCardCodes:[]  ,
+                camName:""  ,
+                camCardGroups:[]  ,
+                camBaseDis:''  ,
+                camMinRow:''  ,
+                camMaxRow:''  ,
+                camPerRowDis:''  ,
+                camMaxRowDis:''  ,
+                camMinValue:''  ,
+                camMaxValue:''  ,
+                camPerValueStep:''  ,
+                camPerStepDis:''  ,
+                camMaxValueDis:''  ,
+                camDisRelation:''  ,
+                camMaxAllDis:''  ,
+                camSalesChannel:''  ,
+                camChannelDis:''  ,
+                camCanHaveB1Dis:false  ,
+                camMaxCreditTime:'', 
+                camSettleType:''  ,
+                camCommissionEff:''  ,
+                camB1PriceList:''  ,
+                camIsHaveCampaignDis:false  ,
+                camDisPolicy:''  ,
+                camPayDueDate:'', 
+                camPaymentTime:'', 
+                camDocType:'', 
+                camIsDraft:false, 
+                camIsHaveItemPrice:false, 
+                camIsHaveFreeDiscount: false,
+                camIsNeedSecondDoc: false,
+                camSecDocType:'', 
+                camIsHaveClubPoints: false,
+                camShouldPassCampaign: 'Y',
+                query:'',
+                qParam1:'',
+                qParam2:'',
+                qParam3: '',
+                qParam4:''
 
             }
         },
         submitCampaign(){
             this.isLoading=true
-            let rows = this.rows.map(item=> {
+            let rowstoSend =[]
+            this.rows.forEach(item=> {
                 if (item.headDetail === "انتخاب همه برای همه موارد"){
                     item.headDetail = 0
                 }
+                rowstoSend.push(item)
             })
-            let payload = {rows: rows, head: this.head,head_details: this.headDetails}
+            let payload = {rows: rowstoSend, head: this.head,head_details: this.headDetails}
             this.$store.dispatch('createCampaign', payload).then((response)=>{
                 this.isLoading= false
                 if (response.success){
