@@ -119,7 +119,8 @@
                                             v-model="nesie"></v-text-field>
                                         </v-col>
                                         <v-col cols="4">
-                                            <v-btn :disabled="isNaghdNesieOk(item.source_document_total, naghd, nesie)" type="submit">ثبت</v-btn>
+                                            
+                                            <v-btn  type="submit">ثبت</v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-form>
