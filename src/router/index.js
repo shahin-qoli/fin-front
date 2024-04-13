@@ -43,6 +43,7 @@ import HrmView from '@/views/HrmView.vue'
 import CampaignListView from '@/views/CampaignListView.vue'
 import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
 import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
+import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -141,6 +142,12 @@ function guardMyrouteLoggedIn(to, from, next){
    }
 }
 const routes = [ 
+  {
+    path: '/createinventorytransfer',
+    name: 'createinventorytransfer',
+    beforeEnter : guardMyrouteAdmin,
+    component: CreateInventoryTransfer
+  }, 
   {
     path: '/createpaymentrequest',
     name: 'createpaymentrequest',
