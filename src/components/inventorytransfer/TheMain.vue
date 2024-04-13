@@ -17,7 +17,7 @@
                     <v-divider/>
                     <v-col col="3">
                         <v-card-actions class="justify-center">
-                        <v-btn dark color="green" href="http://192.168.142.128:3400/api/front/b1_actions/get_inventory_transfer_template">دانلود نمونه فایل</v-btn>
+                        <v-btn dark color="green" href="https://backfinancial.burux.ir/api/front/b1_actions/get_inventory_transfer_template">دانلود نمونه فایل</v-btn>
                          </v-card-actions>
                      </v-col>
                        <v-divider/>
