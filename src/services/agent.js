@@ -1,5 +1,5 @@
 
-const baseUrl =  "https://backfinancial.burux.ir" //process.env.VUE_APP_BACKEND_URL
+const baseUrl =  "http://192.168.142.128:3400" //"https://backfinancial.burux.ir" //process.env.VUE_APP_BACKEND_URL "http://192.168.142.128:3400"//
 const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
 const spreeUrl = "https://shopback.miarze.com/api/v2"
 const spreeBrxUrl = "https://spree.burux.com/api/v2"

@@ -9,7 +9,7 @@
         <v-row>
             <v-col cols="12">
                 <v-stepper v-model="e1">
-                    <v-stepper-header>
+                    <v-stepper-header class="ma-4">
                         <v-stepper-step
                         :complete="e1 > 1"
                         step="1"
@@ -25,55 +25,113 @@
                         >
                         جزییات کمپین
                         </v-stepper-step>
+                        <v-divider></v-divider>
+                        <v-stepper-step
+                        :complete="e1 > 3"
+                        step="3"
+                        >
+                        خطوط کمپین
+                        </v-stepper-step>
                     </v-stepper-header>    
-                    <v-stepper-items>
+
+                    <v-stepper-items class="my-4" style="border: 1px solid #000;"> 
                         <v-stepper-content step="1">
+                            <v-row>
+                                <v-col cols="4">
+                                    <v-text-field
+                                    v-model="head.camName"
+                                    label="نام"></v-text-field>
+                                </v-col>
+                                <v-col cols="4">
+                                    <date-picker v-model="head.camStartDate"
+                                    label="تاریخ شروع"></date-picker>
+                                </v-col>
+                                <v-col cols="4">
+                                    <date-picker v-model="head.camEndDate"
+                                    label="تاریخ پایان"></date-picker>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-text-field
+                                    v-model="head.camB1CampaignId"
+                                    label="B1CampaignId"></v-text-field>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-checkbox
+                                    v-model="head.camActive"
+                                    label="فعال"
+                                    ></v-checkbox>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-text-field
+                                    label="نوع"
+                                    v-model="head.camType"></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-textarea v-model="head.query"
+                                    label="Query"></v-textarea>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-textarea v-model="head.qParam1"
+                                    label="QParam1"></v-textarea>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-textarea v-model="head.qParam2"
+                                    label="QParam2"></v-textarea>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-textarea v-model="head.qParam3"
+                                    label="QParam3"></v-textarea>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-textarea v-model="head.qParam4"
+                                    label="QParam4"></v-textarea>
+                                </v-col>
+                            </v-row>
+                            <v-btn
+                                color="primary"
+                                @click="e1 = 2"
+                            >
+                            بعد
+                            </v-btn>
+                        </v-stepper-content>
+                        <v-stepper-content step="2">
                             <!-- پنل کلیات -->
-                            <v-expansion-panels>
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>تنظیمات کلی</h4>
-                                    </v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-row>
+                            <v-form @submit.prevent="addHeadDetail">
+                            <v-card>
+                                <v-card-title>
+                                    <h4>کلیات تخفیف</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
                                             <v-col cols="3">
-                                                <v-text-field
-                                                v-model="head.camName"
-                                                label="نام"></v-text-field>
+                                                <v-text-field label="نام" v-model="headDetail.camName"></v-text-field>
                                             </v-col>
+                                            <v-col cols="4">
+                                                <v-select solo item-text="Title" item-value="Id" label="قواعد تخفیف" :items="disRelations" v-model="headDetail.camDisRelation"></v-select>
+                                            </v-col>         
+                                            <v-col cols="4">
+                                                <v-select  solo item-text="Name" item-value="Id" label="سیاست تخفیف" :items="disPolicies" v-model="headDetail.camDisPolicy"></v-select>
+                                            </v-col>      
                                             <v-col cols="3">
-                                                <date-picker v-model="head.camStartDate"
-                                                label="تاریخ شروع"></date-picker>
-                                            </v-col>
-                                            <v-col cols="3">
-                                                <date-picker v-model="head.camEndDate"
-                                                label="تاریخ پایان"></date-picker>
-                                            </v-col>
-                                            <v-col cols="3">
-                                                <v-text-field
-                                                v-model="head.camB1CampaignId"
-                                                label="B1CampaignId"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="3">
+                                                <v-text-field label="تخفیف پایه" v-model="headDetail.camBaseDis"></v-text-field>
+                                            </v-col>       
+                                            <v-col cols="4">
                                                 <v-checkbox
-                                                v-model="head.camActive"
+                                                v-model="headDetail.camActive"
                                                 label="فعال"
                                                 ></v-checkbox>
-                                            </v-col>
-                                            <v-col cols="3">
-                                                <v-text-field
-                                                label="نوع"
-                                                v-model="head.camType"></v-text-field>
-                                            </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>تنظیمات محدودیت</h4>
-                                    </v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-row>
+                                            </v-col>                         
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>تنظیمات محدودیت</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
                                             <v-col cols="6">
                                                 <v-autocomplete
                                                 v-model="selectedCardCode"
@@ -87,7 +145,7 @@
                                                 >
                                                 </v-autocomplete>
                                                 <v-textarea
-                                                v-model="head.camCardCodes"
+                                                v-model="headDetail.camCardCodes"
                                                 label="کد مشتریان"></v-textarea>
                                             </v-col>
                                             <v-col cols="6">
@@ -103,36 +161,18 @@
                                                 >
                                                 </v-autocomplete>
                                                 <v-textarea
-                                                v-model="head.camCardGroups"
+                                                v-model="headDetail.camCardGroups"
                                                 label="گروه مشتریان"></v-textarea>
                                             </v-col>                                            
                                         </v-row>
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>   
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>کلیات تخفیف</h4>
-                                    </v-expansion-panel-header> 
-                                    <v-expansion-panel-content>
-                                        <v-row>
-                                            <v-col cols="3">
-                                                <v-text-field label="تخفیف پایه" v-model="head.camBaseDis"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="4">
-                                                <v-select solo item-text="Title" item-value="Id" label="قواعد تخفیف" :items="disRelations" v-model="head.camDisRelation"></v-select>
-                                            </v-col>         
-                                            <v-col cols="4">
-                                                <v-select  solo item-text="Name" item-value="Id" label="سیاست تخفیف" :items="disPolicies" v-model="head.camDisPolicy"></v-select>
-                                            </v-col>                                      
-                                        </v-row>
-                                    </v-expansion-panel-content>                                  
-                                </v-expansion-panel>       
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>جزییات تخفیف</h4>
-                                    </v-expansion-panel-header>   
-                                    <v-expansion-panel-content>
-                                        <v-row >
+                                </v-card-text>
+                            </v-card>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>جزییات تخفیف</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row >
                                             <v-col ma-2 cols="6">
                                                 <v-card outlined>
                                                     <v-card-text>
@@ -141,16 +181,16 @@
                                                             <p>تخفیف تعداد خطوط</p>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="حداقل خط" v-model="head.camMinRow"></v-text-field>
+                                                            <v-text-field label="حداقل خط" v-model="headDetail.camMinRow"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="حداکثر خط" v-model="head.camMaxRow"></v-text-field>
+                                                            <v-text-field label="حداکثر خط" v-model="headDetail.camMaxRow"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="تخفیف هر خط" v-model="head.camPerRowDis"></v-text-field>
+                                                            <v-text-field label="تخفیف هر خط" v-model="headDetail.camPerRowDis"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="سقف تخفیف" v-model="head.camMaxRowDis"></v-text-field>
+                                                            <v-text-field label="سقف تخفیف" v-model="headDetail.camMaxRowDis"></v-text-field>
                                                         </v-col>
                                                     </v-row></v-card-text>
                                                 </v-card>
@@ -163,19 +203,19 @@
                                                             <p>تخفیف مبلغ کل</p>
                                                         </v-col> 
                                                         <v-col cols="4">
-                                                            <v-text-field label="حداقل مبلغ" v-model="head.camMinValue"></v-text-field>
+                                                            <v-text-field label="حداقل مبلغ" v-model="headDetail.camMinValue"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="حداکثر مبلغ" v-model="head.camMaxValue"></v-text-field>
+                                                            <v-text-field label="حداکثر مبلغ" v-model="headDetail.camMaxValue"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="44">
-                                                            <v-text-field label="مبلغ پله" v-model="head.camPerValueStep"></v-text-field>
+                                                            <v-text-field label="مبلغ پله" v-model="headDetail.camPerValueStep"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="تخفیف هر پله" v-model="head.camPerStepDis"></v-text-field>
+                                                            <v-text-field label="تخفیف هر پله" v-model="headDetail.camPerStepDis"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="4">
-                                                            <v-text-field label="سقف تخفیف" v-model="head.camMaxValueDis"></v-text-field>
+                                                            <v-text-field label="سقف تخفیف" v-model="headDetail.camMaxValueDis"></v-text-field>
                                                         </v-col> 
                                                     </v-row>      
                                                     </v-card-text>    
@@ -183,61 +223,154 @@
 
                                             </v-col>
                                             <v-col cols="3">
-                                                <v-text-field v-model="head.camMaxAllDis" label="سقف کلی تخفیف"></v-text-field>
+                                                <v-text-field v-model="headDetail.camMaxAllDis" label="سقف کلی تخفیف"></v-text-field>
                                             </v-col>
                                         </v-row>
-                                    </v-expansion-panel-content>                                
-                                </v-expansion-panel> 
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>کانال فروش</h4>
-                                    </v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-row>
+                                </v-card-text>
+                            </v-card>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>کانال فروش</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
                                             <v-col cols="4">
-                                                <v-text-field v-model="head.camChannelDis" label="تخفیف کانال"></v-text-field>
+                                                <v-text-field v-model="headDetail.camChannelDis" label="تخفیف کانال"></v-text-field>
                                             </v-col>
                                             <v-col cols="4">
-                                                <v-text-field v-model="head.camSalesChannel" label="کانال فروش"></v-text-field>
+                                                <v-text-field v-model="headDetail.camSalesChannel" label="کانال فروش"></v-text-field>
                                             </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-content>                                    
-                                </v-expansion-panel>     
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header>
-                                        <h4>پورسانت و بی وان</h4>
-                                    </v-expansion-panel-header>  
-                                    <v-expansion-panel-content>
-                                        <v-row>
+                                        </v-row>                                   
+                                </v-card-text>
+                            </v-card>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>پورسانت و بی وان</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
                                         <v-col cols="3">
                                                 <v-checkbox
-                                                v-model="head.camCanHaveB1Dis" label="قیمت و تخفیف از بی وان خوانده شود؟"></v-checkbox>
+                                                v-model="headDetail.camCanHaveB1Dis" label="قیمت و تخفیف از بی وان خوانده شود؟"></v-checkbox>
                                         </v-col>
                                         <v-col cols="3">
-                                                <v-select :items="settleTypes" solo item-text="text" item-value="value" label="روش پرداخت" v-model="head.camSettleType"></v-select>
+                                                <v-select :items="settleTypes" solo item-text="text" item-value="value" label="روش پرداخت" v-model="headDetail.camSettleType"></v-select>
                                         </v-col>
                                         <v-col cols="3">
-                                                <v-text-field v-model="head.camCommissionEff" label="تاثیر روی پورسانت"></v-text-field>
+                                                <v-text-field v-model="headDetail.camCommissionEff" label="تاثیر روی پورسانت"></v-text-field>
                                             </v-col>
                                             <v-col cols="3">
-                                                <v-select solo item-text="listname" item-value="listnum" v-model="head.camB1PriceList" :items="priceLists" label="لیست قیمت بی وان"></v-select>
+                                                <v-select solo item-text="listname" item-value="listnum" v-model="headDetail.camB1PriceList" :items="priceLists" label="لیست قیمت بی وان"></v-select>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camMaxCreditTime" label="حداکثر زمان اعتبار"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camPayDueDate" label="موعد تسویهpayduedate"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camPaymentTime" label="زمان تسویه paymenttime"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camDocType" label="نوع سند"></v-text-field>
                                             </v-col>
                                             <v-col cols="3">
                                                 <v-checkbox
-                                                v-model="head.camIsHaveCampaignDis" label="آیا تخفیف کمپین دارد؟"></v-checkbox>
+                                                v-model="headDetail.camIsDraft" label="آیا پیش نویس است؟"></v-checkbox>
                                             </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-content>                              
-                                </v-expansion-panel>                                                 
-                            </v-expansion-panels>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="headDetail.camIsHaveItemPrice" label="آیا ItemPrice دارد؟"></v-checkbox>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="headDetail.camIsHaveFreeDiscount" label="آیا FreeDiscount دارد؟"></v-checkbox>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="headDetail.camIsNeedSecondDoc" label="آیا سند دوم نیاز دارد؟"></v-checkbox>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camSecDocType" label="نوع سند دوم"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="headDetail.camIsHaveClubPoints" label="آیا امتیاز باشگاه دارد؟"></v-checkbox>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-text-field
+                                                v-model="headDetail.camShouldPassCampaign" label="باید کمپین را پاس کند؟"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="3">
+                                                <v-checkbox
+                                                v-model="headDetail.camIsHaveCampaignDis" label="آیا تخفیف کمپین دارد؟"></v-checkbox>
+                                            </v-col>
+                                        </v-row>                                       
+                                </v-card-text>
+                            </v-card>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>Query</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-textarea v-model="headDetail.query"
+                                        label="Query"></v-textarea>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-textarea v-model="headDetail.qParam1"
+                                        label="QParam1"></v-textarea>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-textarea v-model="headDetail.qParam2"
+                                        label="QParam2"></v-textarea>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-textarea v-model="headDetail.qParam3"
+                                        label="QParam3"></v-textarea>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-textarea v-model="headDetail.qParam4"
+                                        label="QParam4"></v-textarea>
+                                    </v-col>
+                                </v-row>
+                                </v-card-text>
+                            </v-card>
+                            <v-row>
+                                <v-col class="d-flex justify-center" cols="12">
+                                    <v-btn color="yellow" type="submit">اضافه کردن</v-btn>
+                                </v-col>
+                            </v-row>
+                            </v-form>
+                            <v-card>
+                                <v-card-title>
+                                    <h4>جزییات اضافه شده</h4>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-data-table
+                                    :items="headDetails"
+                                    :headers="headerDetailHeader"
+                                    hide-default-footer
+                                    ></v-data-table>
+                                </v-card-text>
+                            </v-card>
                             <v-btn
                                 color="primary"
-                                @click="e1 = 2"
+                                @click="e1 = 3"
                             >
                             بعد
                             </v-btn>
+                            <v-btn  @click="e1 = 1" color="red">
+                            قبل
+                            </v-btn>
                         </v-stepper-content>
-                        <v-stepper-content step="2">
+                        <v-stepper-content step="3">
                             <v-card outlined>
                                 <v-card-title>
                                     <h4>خط فاکتور</h4>
@@ -245,6 +378,12 @@
                                 <v-card-text>
                                     <v-form @submit.prevent="addRow">
                                         <v-row>
+                                            <v-col cols="6">
+                                                <v-select solo item-text="camName" item-value="camName" label="جزییات کمپین" :items="toSelectHeadDetails" v-model="row.headDetail"></v-select>
+                                            </v-col>   
+                                            <v-col cols="6">
+                                                <v-checkbox v-model="row.canHaveOperDis"  label="آیا می‌تواند OperaDis داشته باشد؟"></v-checkbox>
+                                            </v-col>
                                             <v-col cols="6">
                                                 <v-autocomplete
                                                 :items="itemCodes"
@@ -397,7 +536,7 @@
                             ثبت
                             </v-btn>
 
-                            <v-btn  @click="e1 = 1" color="red">
+                            <v-btn  @click="e1 = 2" color="red">
                             قبل
                             </v-btn>
                         </v-stepper-content>
@@ -437,52 +576,80 @@ export default{
                 camActive:false,
                 camType:'B',
                 camB1CampaignId:'',
-                camCardCodes:[],
-                camCardGroups:[],
-                camBaseDis:'',
-                camDisRelation:'',
-                camMinRow:'',
-                camMaxRow:'',
-                camPerRowDis:'',
-                camMaxRowDis:'',
-                camMinValue:'',
-                camMaxValue:'',
-                camPerValueStep:'',
-                camPerStepDis:'',
-                camMaxValueDis:'',
-                camMaxAllDis:'',
-                camSalesChannel:'',
-                camChannelDis:'',
-                camCanHaveB1Dis:false,
-                camSettleType:'',
-                camCommissionEff:'',
-                camB1PriceList:'',
-                camIsHaveCampaignDis:false,
-                camDisPolicy:''
-
+                query:'',
+                qParam1:'',
+                qParam2:'',
+                qParam3: '',
+                qParam4:''
             },
+            headDetail:{
+                camActive:false,
+                camCardCodes:[]  ,
+                camName:""  ,
+                camCardGroups:[]  ,
+                camBaseDis:''  ,
+                camMinRow:''  ,
+                camMaxRow:''  ,
+                camPerRowDis:''  ,
+                camMaxRowDis:''  ,
+                camMinValue:''  ,
+                camMaxValue:''  ,
+                camPerValueStep:''  ,
+                camPerStepDis:''  ,
+                camMaxValueDis:''  ,
+                camDisRelation:''  ,
+                camMaxAllDis:''  ,
+                camSalesChannel:''  ,
+                camChannelDis:''  ,
+                camCanHaveB1Dis:false  ,
+                camMaxCreditTime:'', 
+                camSettleType:''  ,
+                camCommissionEff:''  ,
+                camB1PriceList:''  ,
+                camIsHaveCampaignDis:false  ,
+                camDisPolicy:''  ,
+                camPayDueDate:'', 
+                camPaymentTime:'', 
+                camDocType:'', 
+                camIsDraft:false, 
+                camIsHaveItemPrice:false, 
+                camIsHaveFreeDiscount: false,
+                camIsNeedSecondDoc: false,
+                camSecDocType:'', 
+                camIsHaveClubPoints: false,
+                camShouldPassCampaign: 'Y',
+                query:'',
+                qParam1:'',
+                qParam2:'',
+                qParam3: '',
+                qParam4:''
+            },
+            headDetails:[],
             row:{
                 itemCodes:[],
                 itemGroups:[],
-            isRequired:false,
-            reqCoEff:'',
-            minQty:'',
-            maxQty:'',
-            stepQty:'',
-            disPerStepQty:'',
-            maxDisQty:'',
-            minValue:'',
-            maxValue:'',
-            stepValue:'',
-            disPerStepValue:'',
-            maxDisValue:'',
-            maxAllDis:'',
-            basePrice:'',
-            baseDis:'',
-            fixDisValue:'',
-            disRelation:'',
-            disPolicy:'',
-            taxon:''
+                isRequired:false,
+                reqCoEff:'',
+                minQty:'',
+                maxQty:'',
+                stepQty:'',
+                disPerStepQty:'',
+                maxDisQty:'',
+                minValue:'',
+                maxValue:'',
+                stepValue:'',
+                disPerStepValue:'',
+                maxDisValue:'',
+                maxAllDis:'',
+                basePrice:'',
+                baseDis:'',
+                fixDisValue:'',
+                disRelation:'',
+                disPolicy:'',
+                taxon:'',
+                ItemChckCond:'',
+                headDetail:'',
+                canHaveOperDis: false,
             },
             rows:[]
         }
@@ -503,6 +670,21 @@ export default{
             value:'disRelation'
           },
             ]
+        },headerDetailHeader(){
+            return [
+                {
+            text:'نام',
+            value:'camName'
+          }
+            ]
+        },
+        toSelectHeadDetails(){
+            let data = []
+            this.headDetails.forEach(item=>{
+                data.push(item)
+            })
+            data.push({camName:"انتخاب برای همه موارد"})
+            return data
         },
         customers(){
             return this.$store.getters.getFilteredCustomers
@@ -596,6 +778,10 @@ export default{
             taxon:''     
             }
         },
+        addHeadDetail(){
+            this.headDetails.push(this.headDetail)
+            this.refreshHeadDetai()            
+        },
         loadFilteredCustomers(){        
             this.$store.dispatch('fetchFilteredCustomers', this.searchCustomer)
         },
@@ -638,6 +824,7 @@ export default{
         },
         refreshData(){
             this.rows = []
+            this.headDetails = []
                 this.row = {
                 itemCodes:[],
                 itemGroups:[],
@@ -659,7 +846,8 @@ export default{
             fixDisValue:'',
             disRelation:'',
             disPolicy:'',
-            taxon:''     
+            taxon:'',
+            canHaveOperDis: false   
             };
             this.head = {
                 camName:'',
@@ -668,35 +856,70 @@ export default{
                 camActive:false,
                 camType:'B',
                 camB1CampaignId:'',
-                camCardCodes:[],
-                camCardGroups:[],
-                camBaseDis:'',
-                camDisRelation:'',
-                camMinRow:'',
-                camMaxRow:'',
-                camPerRowDis:'',
-                camMaxRowDis:'',
-                camMinValue:'',
-                camMaxValue:'',
-                camPerValueStep:'',
-                camPerStepDis:'',
-                camMaxValueDis:'',
-                camMaxAllDis:'',
-                camSalesChannel:'',
-                camChannelDis:'',
-                camCanHaveB1Dis:false,
-                camSettleType:'',
-                camCommissionEff:'',
-                camB1PriceList:'',
-                camIsHaveCampaignDis:false,
-                camDisPolicy:''
+                query:'',
+                qParam1:'',
+                qParam2:'',
+                qParam3: '',
+                qParam4:''
+            };
+            this.refreshHeadDetai()
+
+        },
+        refreshHeadDetai(){
+            this.headDetail = {
+                camActive:false,
+                camCardCodes:[]  ,
+                camName:""  ,
+                camCardGroups:[]  ,
+                camBaseDis:''  ,
+                camMinRow:''  ,
+                camMaxRow:''  ,
+                camPerRowDis:''  ,
+                camMaxRowDis:''  ,
+                camMinValue:''  ,
+                camMaxValue:''  ,
+                camPerValueStep:''  ,
+                camPerStepDis:''  ,
+                camMaxValueDis:''  ,
+                camDisRelation:''  ,
+                camMaxAllDis:''  ,
+                camSalesChannel:''  ,
+                camChannelDis:''  ,
+                camCanHaveB1Dis:false  ,
+                camMaxCreditTime:'', 
+                camSettleType:''  ,
+                camCommissionEff:''  ,
+                camB1PriceList:''  ,
+                camIsHaveCampaignDis:false  ,
+                camDisPolicy:''  ,
+                camPayDueDate:'', 
+                camPaymentTime:'', 
+                camDocType:'', 
+                camIsDraft:false, 
+                camIsHaveItemPrice:false, 
+                camIsHaveFreeDiscount: false,
+                camIsNeedSecondDoc: false,
+                camSecDocType:'', 
+                camIsHaveClubPoints: false,
+                camShouldPassCampaign: 'Y',
+                query:'',
+                qParam1:'',
+                qParam2:'',
+                qParam3: '',
+                qParam4:''
 
             }
-        }
-        ,
+        },
         submitCampaign(){
             this.isLoading=true
-            let payload = {rows: this.rows, head: this.head}
+            let rowstoSend =[]
+            this.rows.forEach(item=> {
+                if (item.headDetail === "انتخاب همه برای همه موارد"){
+                    item.headDetail = 0
+                }
+                rowstoSend.push(item)
+            })
+            let payload = {rows: rowstoSend, head: this.head,head_details: this.headDetails}
             this.$store.dispatch('createCampaign', payload).then((response)=>{
                 this.isLoading= false
                 if (response.success){
@@ -730,18 +953,20 @@ export default{
                 this.loadFilteredItems();
             })
         }
-    },selectedCardGroup(newValue){
+    },
+    selectedCardGroup(newValue){
         if (newValue !== ''){
-            this.head.camCardGroups.push(newValue)
+            this.headDetail.camCardGroups.push(newValue)
             this.$nextTick(() => {
             this.selectedCardGroup = '';
             });
  
         }
     }
-    ,selectedCardCode(newValue){
+    ,
+    selectedCardCode(newValue){
         if (newValue !== ''){
-            this.head.camCardCodes.push(newValue)
+            this.headDetail.camCardCodes.push(newValue)
             this.$nextTick(() => {
             this.selectedCardCode = '';
             this.searchCustomer = '';
@@ -750,7 +975,7 @@ export default{
         }
     },selectedGroupCode(newValue){
         if (newValue !== ''){
-            this.head.camGroupCodes.push(newValue)
+            this.headDetail.camGroupCodes.push(newValue)
             this.$nextTick(() => {
             this.selectedGroupCode = '';
             });

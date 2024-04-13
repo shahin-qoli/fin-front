@@ -4,10 +4,12 @@
         :items="campaigns"
         :headers="campaignHeader">
         <template v-slot:[`item.StartDate`]="{item}">
-            <p>{{ item.StartDate | formatDate }}</p>
+            <p v-if="item.StartDate">{{ item.StartDate | formatDate}}</p>
+            <p v-else>{{ item.StartDate }}</p>
         </template>
         <template v-slot:[`item.EndDate`]="{item}">
-            <p>{{ item.EndDate | formatDate }}</p>
+            <p v-if="item.EndDate">{{ item.EndDate | formatDate }}</p>
+            <p v-else>{{ item.EndDate }}</p>
         </template>
         <template v-slot:[`item.isActive`]="{ item }">
           <v-simple-checkbox
