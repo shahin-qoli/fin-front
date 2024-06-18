@@ -3,17 +3,24 @@ import  {finAgent} from '@/services/agent'
 export default {
     state(){
         return {
-            orders:[]
+            orders:[],
+            automatedOrders:[]
         }
     },
     mutations:{
         setOrders(state,payload){
             state.orders=payload;
+        },
+        setAutomateOrders(state,payload){
+            state.automatedOrders = payload
         }
     },
     getters:{
         getFinancialOrders(state){
             return state.orders;
+        },
+        getAutomatedOrders(state){
+            return state.automatedOrders;
         }
     },
     actions:{
@@ -23,6 +30,19 @@ export default {
                 const {data: responseData} = await finAgent.get(`/front/order_dashboards`,{params: params})
                 if (responseData.result)
                     context.commit('setOrders', responseData.result)
+            }catch(err){
+                const error = new Error(
+                    err.response.data.error || 'Failed to fetch'
+                );
+                throw error;
+            }
+        },
+        async fetchtAutomateOrders(context, payload){
+            try{
+                let params= {docnum_cont: payload.docNum,state_cont: payload.orderState, card_code_cont: payload.cardCode}
+                const {data: responseData} = await finAgent.get(`/front/automate_sale_orders?page=${payload.page}&per_page=${payload.itemsPerPage}`,{params: params})
+                if (responseData.result)
+                    context.commit('setAutomateOrders', responseData.result)
             }catch(err){
                 const error = new Error(
                     err.response.data.error || 'Failed to fetch'
@@ -126,5 +146,5 @@ export default {
                 }
             }
         
-    }}
+        }}
 }

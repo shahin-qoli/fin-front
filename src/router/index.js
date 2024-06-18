@@ -44,6 +44,7 @@ import CampaignListView from '@/views/CampaignListView.vue'
 import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
 import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
 import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
+import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -187,6 +188,11 @@ const routes = [
     name: 'financialmain',
     beforeEnter: guardMyrouteLoggedIn,
     component: OrderDashboardMainView
+  },{
+    path: '/automatesaleorder',
+    name: 'automatesaleorder',
+    beforeEnter: guardMyrouteAdmin,
+    component: AutomateDashboardView
   },
   {
     path: '/addpicture2',
