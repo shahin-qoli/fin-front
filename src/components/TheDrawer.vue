@@ -187,6 +187,9 @@
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/financialmain'><h5>لیست سفارشات</h5></router-link> 
                     </v-col>
+                    <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/automatesaleorder'><h5>اتوماسیون</h5></router-link> 
+                    </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>  
