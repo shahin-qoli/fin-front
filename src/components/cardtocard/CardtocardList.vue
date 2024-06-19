@@ -5,7 +5,7 @@
             <v-col cols="12">
                 <v-form @submit.prevent="submitForm">
                     <v-row>
-                        <v-col cols="63">
+                        <v-col cols="6">
                           <v-select
                           :items="bankAccounts"
                           v-model="options.bankAccountId"
