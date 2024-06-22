@@ -8,15 +8,33 @@
                             <v-col cols="3">
                                 <v-text-field v-model="options.cardCode" hint="c50000" label="کد مشتری"></v-text-field>
                             </v-col>
-                            <v-col cols="3">
+                            <!-- <v-col cols="3">
                                 <v-switch v-model="options.isSynced" label="نمایش فاکتور شده"></v-switch>
                             </v-col>
                             <v-col cols="3">
                                 <v-switch v-model="options.readyToInvoice" label="نمایش آماده فاکتور"></v-switch>
-                            </v-col>
+                            </v-col> -->
                             <v-col cols="3">
                                 <date-picker label="تاریخ شروع" v-model="options.startDate"></date-picker>
                             </v-col>
+                            <v-btn-toggle
+                                v-model="selectedFilter"
+                                tile
+                                color="deep-purple accent-3"
+                                group
+                            >
+                                <v-btn value="needProcess">
+                                فاکتور نشده ها
+                                </v-btn>
+
+                                <v-btn value="readyToInvoice">
+                                آماده فاکتورها
+                                </v-btn>
+
+                                <v-btn value="invoiced">
+                                فاکتور شده ها
+                                </v-btn>
+                            </v-btn-toggle>
                             <!-- <v-col cols="1">
                                 <v-btn dark color="green" type="submit">جستجو</v-btn>
                             </v-col>
@@ -118,7 +136,8 @@ export default{
             },
         isLoading: false,
         showModal: false,
-        errorMessage: null
+        errorMessage: null,
+        selectedFilter: "needProcess"
         }
     },
     computed:{
@@ -218,9 +237,6 @@ export default{
     methods:{
         loadOrders(){
             this.isLoading = true
-            if(this.options.isSynced){
-                this.options.readyToInvoice = true
-            }
             this.$store.dispatch('fetchtAutomateOrders',this.options).then(resp=>{
                 if (!resp){
                     this.errorMessage= resp.error
@@ -274,6 +290,32 @@ export default{
         }
     },
     watch:{
+        selectedFilter:{
+            handler(value){
+                switch (value){
+                    case "needProcess":
+                        this.options.isSynced = false
+                        this.options.needInvoice = true
+                        this.options.readyToInvoice = false;
+                        break;
+                    case "readyToInvoice":
+                        this.options.isSynced = false
+                        this.options.needInvoice = true
+                        this.options.readyToInvoice = true;
+                        break;
+                    case "invoiced":
+                        this.options.isSynced = true
+                        this.options.needInvoice = ""
+                        this.options.readyToInvoice = "";
+                        break;
+                    default:
+                        this.options.isSynced = false
+                        this.options.needInvoice = true
+                        this.options.readyToInvoice = false;
+                }
+                
+            }
+        },
     options:{
       handler(){
       this.loadOrders();    
