@@ -5,13 +5,13 @@
                 <v-row >
                     <v-col cols="12">
                         <v-row>
-                            <v-col cols="3">
+                            <v-col cols="2">
                                 <v-text-field v-model="options.cardCode" hint="c50000" label="کد مشتری"></v-text-field>
                             </v-col>
-                            <v-col cols="3">
+                            <v-col cols="2">
                                 <date-picker label="تاریخ شروع" v-model="options.startDate"></date-picker>
                             </v-col>
-                            <v-col cols="3">
+                            <v-col cols="6">
                                 <v-btn-toggle
                                 v-model="selectedFilter"
                                 tile
@@ -33,7 +33,7 @@
                             </v-col>
 
                             <v-spacer></v-spacer>
-                            <v-col cols="3">
+                            <v-col cols="2">
                                 <v-btn @click="dialog = true">عملیات کلی</v-btn>
                             </v-col>
 
