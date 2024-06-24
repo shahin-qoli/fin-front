@@ -78,18 +78,18 @@
                 </template>
                 <template v-slot:[`item.more`]="props">
                     <v-row>
-                        <v-col cols="4">
-                            <v-btn v-if="isNeedToUpdate(props.item)" class="mx-2" small  @click="updateReadyToInvoiceSingle(props.item)">
+                        <v-col cols="6" v-if="isNeedToUpdate(props.item)">
+                            <v-btn  small  @click="updateReadyToInvoiceSingle(props.item)">
                             بررسی
                             </v-btn>
                         </v-col>
-                        <v-col cols="4">            
-                            <v-btn style="color: red" v-if="isReadyToInvoice(props.item)" class="mx-2" small  @click="createInvoiceSingle(props.item)">
+                        <v-col cols="6" v-if="isReadyToInvoice(props.item)">            
+                            <v-btn style="color: red" small  @click="createInvoiceSingle(props.item)">
                             صدور فاکتور
                             </v-btn>
                         </v-col>
-                        <v-col cols="4">            
-                            <v-btn style="color: red" v-if="hasB1Errors(props.item)" class="mx-2" small  @click="showB1Erros(props.item)">
+                        <v-col cols="6" v-if="hasB1Errors(props.item)" >            
+                            <v-btn style="color: red"  small  @click="showB1Erros(props.item)">
                             مشاهده خطا
                             </v-btn>
                         </v-col>
