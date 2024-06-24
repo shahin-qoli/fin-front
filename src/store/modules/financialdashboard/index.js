@@ -199,6 +199,64 @@ export default {
                     error
                 }
             }
+        },
+        async updateDataFromB1AutomateOrder(){
+            try {
+                const response = await finAgent.post('/front/automate_sale_orders/update_orders')
+                if(response.status == 200){
+                    return response.data
+                }else{
+                    return {
+                        is_success: false,
+                        error: "خطا در برقراری ارتباط با سرور"
+                    }
+                }
+            }
+            catch(error){
+                return {
+                    is_success: false,
+                    error
+                }
+            }
+        },
+        async checkAllOrdersAutomateOrder(){
+            try {
+                const response = await finAgent.post('/front/automate_sale_orders/update_ready_to_invoice')
+                if(response.status == 200){
+                    return response.data
+                }else{
+                    return {
+                        is_success: false,
+                        error: "خطا در برقراری ارتباط با سرور"
+                    }
+                }
+            }
+            catch(error){
+                return {
+                    is_success: false,
+                    error
+                }
+            }
         }
-    }
+        ,
+        async createInvoiceAllAutomateOrder(){
+            try {
+                const response = await finAgent.post('/front/automate_sale_orders/create_invoice')
+                if(response.status == 200){
+                    return response.data
+                }else{
+                    return {
+                        is_success: false,
+                        error: "خطا در برقراری ارتباط با سرور"
+                    }
+                }
+            }
+            catch(error){
+                return {
+                    is_success: false,
+                    error
+                }
+            }
+        }
+}
 }

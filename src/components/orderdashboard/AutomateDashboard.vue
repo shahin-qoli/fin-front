@@ -8,16 +8,11 @@
                             <v-col cols="3">
                                 <v-text-field v-model="options.cardCode" hint="c50000" label="کد مشتری"></v-text-field>
                             </v-col>
-                            <!-- <v-col cols="3">
-                                <v-switch v-model="options.isSynced" label="نمایش فاکتور شده"></v-switch>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-switch v-model="options.readyToInvoice" label="نمایش آماده فاکتور"></v-switch>
-                            </v-col> -->
                             <v-col cols="3">
                                 <date-picker label="تاریخ شروع" v-model="options.startDate"></date-picker>
                             </v-col>
-                            <v-btn-toggle
+                            <v-col cols="3">
+                                <v-btn-toggle
                                 v-model="selectedFilter"
                                 tile
                                 color="deep-purple accent-3"
@@ -35,12 +30,13 @@
                                 فاکتور شده ها
                                 </v-btn>
                             </v-btn-toggle>
-                            <!-- <v-col cols="1">
-                                <v-btn dark color="green" type="submit">جستجو</v-btn>
                             </v-col>
-                            <v-col cols="1">
-                                <v-btn dark color="red" @click="clearForm">پاک کردن</v-btn>
-                            </v-col> -->
+
+                            <v-spacer></v-spacer>
+                            <v-col cols="3">
+                                <v-btn @click="dialog = true">عملیات کلی</v-btn>
+                            </v-col>
+
                         </v-row>
                     </v-col>
                 </v-row>
@@ -82,14 +78,19 @@
                 </template>
                 <template v-slot:[`item.more`]="props">
                     <v-row>
-                        <v-col cols="6">
+                        <v-col cols="4">
                             <v-btn v-if="isNeedToUpdate(props.item)" class="mx-2" small  @click="updateReadyToInvoiceSingle(props.item)">
                             بررسی
                             </v-btn>
                         </v-col>
-                        <v-col cols="6">            
+                        <v-col cols="4">            
                             <v-btn style="color: red" v-if="isReadyToInvoice(props.item)" class="mx-2" small  @click="createInvoiceSingle(props.item)">
                             صدور فاکتور
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="4">            
+                            <v-btn style="color: red" v-if="hasB1Errors(props.item)" class="mx-2" small  @click="showB1Erros(props.item)">
+                            مشاهده خطا
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -108,6 +109,22 @@
                         {{ errorMessage }}
                     </h3>
                 </v-card-text>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="b1ErrorsDialog" max-width="500">
+            <v-card>
+                <v-card-text>
+                    {{ b1ErrorsDialogMessage }}
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog" max-width="600">
+            <v-card>
+            <v-card-actions>
+                <v-btn color="green" @click="updateDataFromB1">دریافت سفارشات از بی وان</v-btn>
+                <v-btn color="yellow" @click="checkAllOrders">بررسی همه سفارش ها</v-btn>
+                <v-btn color="orange" @click="createInvoiceAll">فاکتور کردن آماده ها</v-btn>
+            </v-card-actions>
             </v-card>
         </v-dialog>
         <v-overlay :value="isLoading">
@@ -137,8 +154,12 @@ export default{
         isLoading: false,
         showModal: false,
         errorMessage: null,
-        selectedFilter: "needProcess"
+        selectedFilter: "needProcess",
+        dialog: false,
+        b1ErrorsDialog: false,
+        b1ErrorsDialogMessage: null,
         }
+        
     },
     computed:{
         headers(){
@@ -152,11 +173,6 @@ export default{
                     text: "تاریخ",
                     align: "center",
                     value: "docdate",
-                },
-                {
-                    text: "شماره داخلی",
-                    align: "center",
-                    value: "docentry",
                 },
                 {
                     text: "کد مشتری",
@@ -199,15 +215,10 @@ export default{
                     value: "document_total",
                 },
                 {
-                    text: "همگام سازی",
+                    text: "فاکتور شده",
                     align: "center",
                     value: "is_synced",
                 },           
-                {
-                    text: "نیاز به فاکتور",
-                    align: "center",
-                    value: "need_invoice",
-                },
                 {
                     text: "آماده فاکتور",
                     align: "center",
@@ -248,46 +259,91 @@ export default{
         },
         isNeedToUpdate(item){
         return item.need_invoice && !item.ready_to_invoice && !item.is_synced
-      },        
-      isReadyToInvoice(item){
-        return item.need_invoice && !item.is_synced
-      },
-      updateReadyToInvoiceSingle(item){
-        this.isLoading = true
-        this.errorMessage= null
-        this.$store.dispatch("updateReadyToInvoiceSingle", item.id).then(resp=>{
-            if(!resp.isSuccess){
-                this.errorMessage= resp.error
-            }
-            this.isLoading = false
-            this.showModal = true
-            this.loadOrders();  
-        })
-      },
-      createInvoiceSingle(item){
-        this.isLoading = true
-        this.$store.dispatch("createInvoiceSingle", item.id).then(resp=>{
-            if(!resp.isSuccess){
-                this.errorMessage= resp.error
-            }
-            this.isLoading = false
-            this.showModal = true
-            this.loadOrders();  
-        })
-      }
-    },    filters:{
-    formatAmount(value){
-      const stringVlue = String(value)
-      const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return formattedIntegerPart
-    },
-            
-    formatDate(geoDate){
-            
-            var date = new Date(geoDate);
-            let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
-            return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+        },        
+        isReadyToInvoice(item){
+            return item.need_invoice && !item.is_synced
+        },
+        updateReadyToInvoiceSingle(item){
+            this.isLoading = true
+            this.errorMessage= null
+            this.$store.dispatch("updateReadyToInvoiceSingle", item.id).then(resp=>{
+                if(!resp.is_success){
+                    this.errorMessage= resp.error
+                }
+                this.isLoading = false
+                this.showModal = true
+                this.loadOrders();  
+            })
+        },
+        createInvoiceSingle(item){
+            this.isLoading = true
+            this.$store.dispatch("createInvoiceSingle", item.id).then(resp=>{
+                if(!resp.is_success){
+                    this.errorMessage= resp.error
+                }
+                this.isLoading = false
+                this.showModal = true
+                this.loadOrders();  
+            })
+        },
+        updateDataFromB1(){
+            this.dialog = false
+            this.isLoading = true
+            this.errorMessage= null
+            this.$store.dispatch("updateDataFromB1AutomateOrder").then(resp=>{
+                if(!resp.is_success){
+                    this.errorMessage= resp.error
+                }
+                this.isLoading = false
+                this.showModal = true
+                this.loadOrders(); 
+        })},
+        checkAllOrders(){
+            this.dialog = false
+            this.isLoading = true
+            this.errorMessage= null
+            this.$store.dispatch("checkAllOrdersAutomateOrder").then(resp=>{
+                if(!resp.is_success){
+                    this.errorMessage= resp.error
+                }
+                this.isLoading = false
+                this.showModal = true
+                this.loadOrders(); 
+        })} ,
+        createInvoiceAll(){
+            this.dialog = false
+            this.isLoading = true
+            this.errorMessage= null
+            this.$store.dispatch("createInvoiceAllAutomateOrder").then(resp=>{
+                if(!resp.is_success){
+                    this.errorMessage= resp.error
+                }
+                this.isLoading = false
+                this.showModal = true
+                this.loadOrders(); 
+        })},
+        hasB1Errors(item){
+            return this.selectedFilter =="readyToInvoice" && item.need_invoice && !item.is_synced &&
+            item.b1_requests.length > 0 && item.b1_requests.some(request=>request.is_success == false)
+        },
+        showB1Erros(item){
+            this.b1ErrorsDialog = true
+            this.b1ErrorsDialogMessage= item.b1_requests
         }
+    },
+    filters:{
+        formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+        },
+                
+        formatDate(geoDate){
+                
+                var date = new Date(geoDate);
+                let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
+                return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
+            }
     },
     watch:{
         selectedFilter:{
@@ -296,22 +352,30 @@ export default{
                     case "needProcess":
                         this.options.isSynced = false
                         this.options.needInvoice = true
-                        this.options.readyToInvoice = false;
+                        this.options.readyToInvoice = false
+                        this.options.itemsPerPage= 10
+                        this.options.page= 1
                         break;
                     case "readyToInvoice":
                         this.options.isSynced = false
                         this.options.needInvoice = true
                         this.options.readyToInvoice = true;
+                        this.options.itemsPerPage= 10
+                        this.options.page= 1
                         break;
                     case "invoiced":
                         this.options.isSynced = true
                         this.options.needInvoice = ""
                         this.options.readyToInvoice = "";
+                        this.options.itemsPerPage= 10
+                        this.options.page= 1
                         break;
                     default:
                         this.options.isSynced = false
                         this.options.needInvoice = true
                         this.options.readyToInvoice = false;
+                        this.options.itemsPerPage= 10
+                        this.options.page= 1
                 }
                 
             }
