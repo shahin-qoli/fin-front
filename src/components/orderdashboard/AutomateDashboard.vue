@@ -73,6 +73,10 @@
                 <template v-slot:[`item.document_total`]="{ item }">
                 <p>{{ item.document_total | formatAmount }}</p>
                 </template>
+                <template v-slot:[`item.delivery_total`]="{ item }">
+                <p v-if="item.delivery_total >0">{{ item.delivery_total | formatAmount }}</p>
+                <p v-else>{{ item.delivery_total }}</p>
+                </template>
                 <template v-slot:[`item.docdate`]="{item}">
                     <p>{{ item.docdate | formatDate }}</p>
                 </template>
