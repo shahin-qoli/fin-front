@@ -76,6 +76,9 @@
                 <template v-slot:[`item.docdate`]="{item}">
                     <p>{{ item.docdate | formatDate }}</p>
                 </template>
+                <template v-slot:[`item.first_del_date`]="{item}">
+                    <p v-if="item.first_del_date != null">{{ item.first_del_date | formatDate }}</p>
+                </template>
                 <template v-slot:[`item.more`]="props">
                     <v-row>
                         <v-col cols="6" v-if="isNeedToUpdate(props.item)">
@@ -170,7 +173,12 @@ export default{
                     value: "docnum",
                 },
                 {
-                    text: "تاریخ",
+                    text: "تاریخ Delivery",
+                    align: "center",
+                    value: "first_del_date",
+                },
+                {
+                    text: "تاریخ so",
                     align: "center",
                     value: "docdate",
                 },
@@ -183,11 +191,6 @@ export default{
                     text: "نام",
                     align: "center",
                     value: "card_name",
-                },
-                {
-                    text: "وضعیت",
-                    align: "center",
-                    value: "state",
                 },
                 {
                     text: "payduedate",
@@ -203,16 +206,16 @@ export default{
                     text: "روش پرداخت",
                     align: "center",
                     value: "settle_type",
-                },
+                },             
                 {
-                    text: "وضعیت سند",
-                    align: "center",
-                    value: "state",
-                },                
-                {
-                    text: "جمع",
+                    text: "جمع SO",
                     align: "center",
                     value: "document_total",
+                },
+                {
+                    text: "جمع Delivery",
+                    align: "center",
+                    value: "delivery_total",
                 },
                 {
                     text: "فاکتور شده",
