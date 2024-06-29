@@ -340,7 +340,7 @@ export default{
     },
     filters:{
         formatAmount(value){
-        const stringVlue = String(value)
+        const stringVlue =  Number.parseFloat(value).toFixed(0) 
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
         },
