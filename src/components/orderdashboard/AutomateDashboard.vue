@@ -111,13 +111,13 @@
                     <h3 class="success-text" v-if="errorMessage == null">
                         با موفقیت انجام شد
                     </h3>
-                    <h4  v-if="resultMessage != null">
+                    <h4  v-if="resultMessage != null && errorMessage == null ">
                         تعداد {{ resultMessage.success.length }} فاکتور در بی وان ثبت شد.
                         تعداد {{ resultMessage.failure.length }} فاکتور در بی وان ناموفق بود.
                         شماره سفارش های ناموفق: {{ resultMessage.failure }}
 
                     </h4>
-                    <h3 class="failure-text" v-else>
+                    <h3 class="failure-text" v-if="errorMessage != null">
                         خطا در عملیات:
                         {{ errorMessage }}
                     </h3>
