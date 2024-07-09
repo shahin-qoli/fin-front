@@ -255,6 +255,7 @@ export default{
     methods:{
         loadOrders(){
             this.isLoading = true
+            this.errorMessage= null
             this.$store.dispatch('fetchtAutomateOrders',this.options).then(resp=>{
                 if (!resp){
                     this.errorMessage= resp.error
@@ -283,6 +284,7 @@ export default{
             })
         },
         createInvoiceSingle(item){
+            this.errorMessage = null
             this.isLoading = true
             this.$store.dispatch("createInvoiceSingle", item.id).then(resp=>{
                 if(!resp.is_success){
