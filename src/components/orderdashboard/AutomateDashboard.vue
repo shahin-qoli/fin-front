@@ -105,12 +105,18 @@
                 </v-data-table>
             </v-card-text>
         </v-card>
-        <v-dialog v-model="showModal" max-width="500">
+        <v-dialog v-model="showModal" max-width="500"  @input="onDialogInput">
             <v-card>
                 <v-card-text>
                     <h3 class="success-text" v-if="errorMessage == null">
                         با موفقیت انجام شد
                     </h3>
+                    <h4  v-if="resultMessage != null">
+                        تعداد {{ resultMessage.success.length }} فاکتور در بی وان ثبت شد.
+                        تعداد {{ resultMessage.failure.length }} فاکتور در بی وان ناموفق بود.
+                        شماره سفارش های ناموفق: {{ resultMessage.failure }}
+
+                    </h4>
                     <h3 class="failure-text" v-else>
                         خطا در عملیات:
                         {{ errorMessage }}
@@ -165,6 +171,7 @@ export default{
         dialog: false,
         b1ErrorsDialog: false,
         b1ErrorsDialogMessage: null,
+        resultMessage: null
         }
         
     },
@@ -326,6 +333,8 @@ export default{
             this.$store.dispatch("createInvoiceAllAutomateOrder").then(resp=>{
                 if(!resp.is_success){
                     this.errorMessage= resp.error
+                }else{
+                    this.resultMessage = resp.result
                 }
                 this.isLoading = false
                 this.showModal = true
@@ -338,7 +347,13 @@ export default{
         showB1Erros(item){
             this.b1ErrorsDialog = true
             this.b1ErrorsDialogMessage= item.b1_requests
-        }
+        },
+        onDialogInput(isOpen) {
+      if (!isOpen) {
+        this.errorMessage = null;
+        this.resultMessage = null;
+      }
+    }
     },
     filters:{
         formatAmount(value){
