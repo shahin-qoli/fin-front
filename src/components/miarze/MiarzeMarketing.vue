@@ -5,7 +5,15 @@
                 به روز رسانی سفارشات
             </v-card-title>
             <v-card-text>
-                <v-btn :loading="isLoading" @click="updateMiarzeOrders" color="primary">به روز رسانی</v-btn>
+              <v-row>
+                <v-col cols="3">
+                  <v-btn :loading="isLoading" @click="updateMiarzeOrders" color="primary">به روز رسانی</v-btn>
+                </v-col>
+                <v-col cols="3">
+                  <date-picker label="تاریخ ایجاد" v-model="updateOrderStartDate"></date-picker>
+                </v-col>
+              </v-row>
+                
             </v-card-text>
         </v-card>
         <v-card>
@@ -40,8 +48,8 @@
                 <v-data-table
                 fixed-header
                 dense
-      :expanded.sync="expanded"
-      show-expand
+                :expanded.sync="expanded"
+                show-expand
                 :headers="headers"
                 :items="MiarzeOrders"
                 item-key="id"
@@ -116,6 +124,7 @@ export default {
 
     data(){
         return {
+          updateOrderStartDate: null,
           expanded:null,
           isLoading: false,
           showModal: false,
@@ -166,7 +175,7 @@ export default {
     },
     updateMiarzeOrders(){
       this.isLoading = true
-      this.$store.dispatch('updateMiarzeOrders').then((response) => {
+      this.$store.dispatch('updateMiarzeOrders',this.updateOrderStartDate).then((response) => {
         this.showModal= true
         this.updateResult = response
         this.isLoading = false
