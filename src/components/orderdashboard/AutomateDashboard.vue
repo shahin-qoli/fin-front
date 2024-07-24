@@ -287,19 +287,19 @@ export default{
                 }
                 this.isLoading = false
                 this.showModal = true
-                this.loadOrders();  
             })
         },
         createInvoiceSingle(item){
             this.errorMessage = null
             this.isLoading = true
             this.$store.dispatch("createInvoiceSingle", item.id).then(resp=>{
+                console.log(resp.error)
+                console.log(resp)
                 if(!resp.is_success){
                     this.errorMessage= resp.error
                 }
                 this.isLoading = false
                 this.showModal = true
-                this.loadOrders();  
             })
         },
         updateDataFromB1(){
@@ -312,7 +312,6 @@ export default{
                 }
                 this.isLoading = false
                 this.showModal = true
-                this.loadOrders(); 
         })},
         checkAllOrders(){
             this.dialog = false
@@ -324,7 +323,6 @@ export default{
                 }
                 this.isLoading = false
                 this.showModal = true
-                this.loadOrders(); 
         })} ,
         createInvoiceAll(){
             this.dialog = false
@@ -338,7 +336,6 @@ export default{
                 }
                 this.isLoading = false
                 this.showModal = true
-                this.loadOrders(); 
         })},
         hasB1Errors(item){
             return this.selectedFilter =="readyToInvoice" && item.need_invoice && !item.is_synced &&
@@ -352,6 +349,7 @@ export default{
       if (!isOpen) {
         this.errorMessage = null;
         this.resultMessage = null;
+        this.loadOrders()
       }
     }
     },
