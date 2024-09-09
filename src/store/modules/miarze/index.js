@@ -136,10 +136,10 @@ export default {
             );
             throw error;
         }},
-        async updateMiarzeOrders(){
+        async updateMiarzeOrders(context,payload){
             try{
-
-                const {data: responseData} = await finAgent.get(`/front/miarze_orders/update_orders`);
+                console.log(payload)
+                const {data: responseData} = await finAgent.get(`/front/miarze_orders/update_orders?start_date=${payload}`);
                 if (responseData)
                     return responseData
             }catch(err){
