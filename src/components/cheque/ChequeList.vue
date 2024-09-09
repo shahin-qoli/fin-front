@@ -168,6 +168,42 @@
                                          </v-col>
                                     </v-row>
                                 </v-col>
+                                <v-col v-if="isNeedCardCode" cols="12">
+                                    <v-row>
+                                        <v-col cols="6">
+                                            <v-text-field          
+                                            v-model="cardCode"
+                                            label="کد مشتری"
+                                            single-line
+                                            required
+                                            hide-details></v-text-field>
+                                        </v-col>
+                                        <v-col cols="6">
+                                            <v-btn :disabled="cardCode.length < 5" @click="validateCardCode">بررسی مشتری</v-btn>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row v-if="isCardCodeChecked">
+                                        <v-col cols="6">
+                                            <v-text-field          
+                                            v-model="cardCodeData.cardCode"
+                                            label="کد مشتری"
+                                            single-line
+                                            required
+                                            disabled
+                                            hide-details></v-text-field>
+                                        </v-col>  
+                                        <v-col cols="6">
+                                            <v-text-field          
+                                            v-model="cardCodeData.cardName"
+                                            label="نام مشتری"
+                                            single-line
+                                            required
+                                            disabled
+                                            hide-details></v-text-field>
+                                        </v-col>  
+   
+                                    </v-row>
+                                </v-col>
                                 <v-col cols="3">
                                     <v-btn :disabled="isSelectedAction" color="green" type="submit">به روزرسانی</v-btn>
                                 </v-col>
@@ -227,11 +263,18 @@ export default {
         return {
             chequeHistory: null,
             searchLoaded: '',
+            cardCode: "",
+            isCardCodeChecked: false,
+            cardCodeData:{
+                cardCode:"",
+                cardName:""
+            },
             search: {
                 startDate: '',
                 endDate: '',
                 CheckState: []
-            },
+                },
+
             chequeStates: [
                 {
                     text: "نزد مشتری",
@@ -272,7 +315,8 @@ export default {
                 {
                     text: "واگذار به بانک",
                     value: 300
-                },                {
+                },              
+                  {
                     text: "وصول شده",
                     value: 310
                 },
@@ -354,8 +398,7 @@ export default {
                 {
                     text: "چک صادره وصول نشده عودت شده",
                     value: 670
-                },
-            ],
+                }, ],
             regStates: [
                 {
                     text: 'ثبت نشده توسط مشتری',
@@ -406,7 +449,8 @@ export default {
                 depositedAccount: "",
                 reference: "",
                 depositDate:"",
-            }, expanded: [],
+            }, 
+            expanded: [],
             showModal: false,
             reportResult: {
                 "sucess_results" : [],
@@ -525,6 +569,13 @@ export default {
             }
             let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
             return selected.isNeedDeposit
+        },    
+        isNeedCardCode(){
+            if (this.selectedState == ''){
+                return false;
+            }
+            let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+            return selected.isNeedCardCode
         },
         isSelectedCheque(){
             return this.selectedItems.length > 0
@@ -614,49 +665,69 @@ export default {
         loadCheques() {
             this.isLoading = true
         this.$store.dispatch('loadCheques', this.search).then(()=>this.isLoading=false)
-      },
-      submitSearch(){
-        this.loadCheques()
-      },
-      submitAction(){
-        console.log("start")
-        const selectedCheques = this.selectedItems.map(item => item.checkKey)
-        let payload = {check_keys: selectedCheques,
-                     next_state: this.selectedState,
-                     reg_state: this.selectedReg,
-                    deposite_details: this.depositeDetails}
-        this.isLoading = true;            
-        this.$store.dispatch('updateCheques', payload).then((response) => {
-        this.loadCheques(); 
-        this.isLoading = false;
-        this.showModal=true;
-        this.reportResult = response;
-        })
-        this.$store.dispatch('nillError')            
-        this.selectedState = ''
-        this.selectedItems =[]
-        this.selectedReg= ''
-        this.possibleNextStates =''
-        this.depositeDetails = {
-                bankAccount: "",
-                payer: "",
-                bank: "",
-                branch: "",
-                depositedAccount: "",
-                reference: "",
-                depositDate:"",
-            }
-      },
-      formatState(state, chequeStates){
-            let index = chequeStates.findIndex(stat => stat.value == state )
-          console.log("stt")
-          console.log(index)
-            if (index >= 0)
-                return chequeStates[index].text
-            else
-                return "تعریف نشده"
         },
-    },watch:{
+        submitSearch(){
+            this.loadCheques()
+        },
+        submitAction(){
+            console.log("start")
+            const selectedCheques = this.selectedItems.map(item => item.checkKey)
+            let payload = {check_keys: selectedCheques,
+                        next_state: this.selectedState,
+                        reg_state: this.selectedReg,
+                        deposite_details: this.depositeDetails,
+                        card_code: this.cardCode}
+            this.isLoading = true;            
+            this.$store.dispatch('updateCheques', payload).then((response) => {
+            this.loadCheques(); 
+            this.isLoading = false;
+            this.showModal=true;
+            this.reportResult = response;
+            })
+            this.$store.dispatch('nillError')            
+            this.selectedState = ''
+            this.selectedItems =[]
+            this.selectedReg= ''
+            this.cardCode = ''
+            this.isCardCodeChecked= false,
+            this.possibleNextStates =''
+            this.depositeDetails = {
+                    bankAccount: "",
+                    payer: "",
+                    bank: "",
+                    branch: "",
+                    depositedAccount: "",
+                    reference: "",
+                    depositDate:"",
+                }
+        },
+        formatState(state, chequeStates){
+                let index = chequeStates.findIndex(stat => stat.value == state )
+            console.log("stt")
+            console.log(index)
+                if (index >= 0)
+                    return chequeStates[index].text
+                else
+                    return "تعریف نشده"
+        },
+        validateCardCode(){
+            this.cardCodeData ={
+                cardCode:"",
+                cardName: ""
+            }
+            this.isCardCodeChecked = false
+            let payload = {cardcode: this.cardCode}
+            this.isLoading = true;            
+            this.$store.dispatch('validateCardCode', payload).then((response)=>{
+                if (!response.error){
+                    this.isCardCodeChecked = true
+                    this.cardCodeData = response
+                }
+                this.isLoading = false;  
+            })
+        }
+    },
+    watch:{
         expanded(newExpanded, oldExpanded) {
             if (newExpanded !== oldExpanded && newExpanded.length != 0 ) {              
                 this.$store.dispatch('loadChequeHistory', newExpanded).then((response) => {
@@ -688,10 +759,6 @@ export default {
             let jdate = jalaali.toJalaali(date.getFullYear(), date.getMonth()+1, date.getDate())
             return `${jdate.jy}/${jdate.jm}/${jdate.jd}`
         }
-    },
-    created(){
-        // this.search.startDate= this.initialStartDate()
-        // this.loadCheques()
     }
 }
 </script>

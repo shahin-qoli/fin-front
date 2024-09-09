@@ -71,8 +71,15 @@ export default{
             }catch (err){
                 context.commit('setError', err)
             }
-            
-  
+        },
+        async validateCardCode(context, payload){
+            context.commit('setError', null)
+            try {
+                const {data:resp} = await finAgent.post(`/front/cheques/validate_cardcode`, payload)
+                return resp
+            }catch (err){
+                context.commit('setError', err)
+            }
         },
         async updateChequeStates(context, payload){
             context.commit('setError', null)
