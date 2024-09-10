@@ -172,12 +172,15 @@
                                     <v-row>
                                         <v-col cols="6">
                                             <v-text-field          
-                                            v-model="cardCode"
+                                            v-model="payTo.cardCode"
                                             label="کد مشتری"
                                             single-line
                                             required
                                             hide-details></v-text-field>
                                         </v-col>
+                                        <v-col cols="6">
+                                            <date-picker v-model="payTo.date" label="تاریخ عملیات"></date-picker>
+                                         </v-col>
                                         <v-col cols="6">
                                             <v-btn :disabled="cardCode.length < 5" @click="validateCardCode">بررسی مشتری</v-btn>
                                         </v-col>
@@ -263,7 +266,10 @@ export default {
         return {
             chequeHistory: null,
             searchLoaded: '',
-            cardCode: "",
+            payTo:{
+                cardCode: "",
+                date:""
+            },          
             isCardCodeChecked: false,
             cardCodeData:{
                 cardCode:"",
@@ -676,7 +682,8 @@ export default {
                         next_state: this.selectedState,
                         reg_state: this.selectedReg,
                         deposite_details: this.depositeDetails,
-                        card_code: this.cardCode}
+                        pay_to: this.payTo,
+                    }
             this.isLoading = true;            
             this.$store.dispatch('updateCheques', payload).then((response) => {
             this.loadCheques(); 
