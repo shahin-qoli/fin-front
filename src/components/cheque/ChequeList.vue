@@ -182,7 +182,7 @@
                                             <date-picker v-model="payTo.date" label="تاریخ عملیات"></date-picker>
                                          </v-col>
                                         <v-col cols="6">
-                                            <v-btn :disabled="cardCode.length < 5" @click="validateCardCode">بررسی مشتری</v-btn>
+                                            <v-btn :disabled="payTo.cardCode.length < 5" @click="validateCardCode">بررسی مشتری</v-btn>
                                         </v-col>
                                     </v-row>
                                     <v-row v-if="isCardCodeChecked">
@@ -283,98 +283,102 @@ export default {
 
             chequeStates: [
                 {
-                    text: "نزد مشتری",
+                    text: "100 نزد مشتری",
                     value: 100
                 },
                 {
-                    text: "نزد ویزیتور",
+                    text: "نزد ویزیتور 110",
                     value: 110
                 },
                 {
-                    text: "نزد راننده",
+                    text: "نزد راننده 120",
                     value: 120
                 },
                 {
-                    text: "نزد توزیع",
+                    text: "نزد توزیع 130",
                     value: 130
                 },
                 {
-                    text: "نزد واحد فروش",
+                    text: "نزد واحد فروش 140",
                     value: 140
                 },
                 {
-                    text: "نزد ثبت چک",
+                    text: "نزد ثبت چک 200",
                     value: 200
                 },
                 {
-                    text: "نزد گاوصندوق",
+                    text: "نزد گاوصندوق 210",
                     value: 210
                 },
                 {
-                    text: "نزد تحصیل دار",
+                    text: "نزد تحصیل دار 220",
                     value: 220
                 },               
                 {
-                    text: "مسترد شده به مشتری",
+                    text: "230 درخواست استرداد به مشتری",
                     value: 230
+                },                
+                {
+                    text: "240 تسویه و پذیرش استرداد به مشتری",
+                    value: 240
                 },
                 {
-                    text: "واگذار به بانک",
+                    text: "واگذار به بانک 300",
                     value: 300
                 },              
                   {
-                    text: "وصول شده",
+                    text: "وصول شده 310",
                     value: 310
                 },
                 {
-                    text: "برگشت شده نزد بانک",
+                    text: "برگشت شده نزد بانک 320",
                     value: 320
                 },
                 {
-                    text: "واگذار مجدد نزد بانک",
+                    text: "واگذار مجدد نزد بانک 330",
                     value: 330
                 },
                 {
-                    text: "وصول شده بعد از واگذار مجدد",
+                    text: "وصول شده بعد از واگذار مجدد 340",
                     value: 340
                 },                {
-                    text: "برگشت شده بعد از واگذار مجدد",
+                    text: "برگشت شده بعد از واگذار مجدد 350",
                     value: 350
                 },
                 {
-                    text: "برگشت شده نزد شرکت",
+                    text: "برگشت شده نزد شرکت 400",
                     value: 400
                 },
                 {
-                    text: "برگشت شده بعد از واگذار مجدد نزد شرکت",
+                    text: "410 برگشت شده بعد از واگذار مجدد نزد شرکت",
                     value: 410
                 },
                 {
-                    text: "تسویه شده بعد از برگشتی نزد شرکت",
+                    text: "تسویه شده بعد از برگشتی نزد شرکت 420",
                     value: 420
                 },
                 {
-                    text: "مسترد شده بعد از تسویه به مشتری",
+                    text: "مسترد شده بعد از تسویه به مشتری 430",
                     value: 430
                 },
                 {
-                    text: "مشکوک الوصول",
+                    text: "مشکوک الوصول 500",
                     value: 500
                 },
                 {
-                    text: "سوخت شده",
+                    text: "سوخت شده 410",
                     value: 510
                 },
                 {
-                    text: "اقدام حقوقی",
+                    text: "اقدام حقوقی 520",
                     value: 520
                 },
                 {
-                    text: "سوختی کسر شده از واحد فروش",
+                    text: "سوختی کسر شده از واحد فروش 530",
                     value: 530
                 },
                 {
-                    text: "چک صادر شده نزد شرکت",
+                    text: "چک صادر شده نزد شرکت 600",
                     value: 600
                 },
                 {
@@ -404,42 +408,66 @@ export default {
                 {
                     text: "چک صادره وصول نشده عودت شده",
                     value: 670
-                }, ],
+                },                {
+                    text: "700 واگذار به تامین کننده",
+                    value: 700
+                },                {
+                    text: "710 وصول شده نزد تامین کننده",
+                    value: 710
+                },                {
+                    text: "720 برگشت شده نزد تامین کننده",
+                    value: 720
+                },                {
+                    text: "730 واگذار مجدد نزد تامین کننده",
+                    value: 730
+                },                {
+                    text: "740 وصول شده بعد از واگذار مجدد به تامین کننده",
+                    value: 740
+                },
+                {
+                    text: "750 برگشت شده مجدد نزد تامین کننده",
+                    value: 750
+                },
+                {
+                    text:  "760 تسویه با تامین کننده",
+                    value: 760
+                },
+            ],
             regStates: [
                 {
-                    text: 'ثبت نشده توسط مشتری',
+                    text: 'ثبت نشده توسط مشتری 10',
                     value: 10
                 },
                 {
-                    text: 'ثبت شده توسط مشتری و تایید نشده توسط شرکت',
+                    text: 'ثبت شده توسط مشتری و تایید نشده توسط شرکت 20',
                     value: 20
                 },
                 {
-                    text: 'ثبت شده توسط مشتری و تایید شده توسط شرکت',
+                    text: 'ثبت شده توسط مشتری و تایید شده توسط شرکت 30',
                     value: 30
                 },
                 {
-                    text: 'انتقال شده به مشتری پس از استرداد',
+                    text: 'انتقال شده به مشتری پس از استرداد 40',
                     value: 40
                 },
                 {
-                    text: 'قفل شده در بانک',
+                    text: 'قفل شده در بانک 50',
                     value: 50
                 },
                 {
-                    text: 'صادره شده توسط شرکت',
+                    text: 'صادره شده توسط شرکت 60',
                     value: 60
                 },
                 {
-                    text: 'ثبت شده در سامانه',
+                    text: 'ثبت شده در سامانه 70',
                     value: 70
                 },
                 {
-                    text: 'تاییدی شده توسط تامین کننده',
+                    text: 'تاییدی شده توسط تامین کننده 80',
                     value: 80
                 },
                 {
-                    text: 'انتقال داده شده از تامین کننده',
+                    text: 'انتقال داده شده از تامین کننده 90',
                     value: 90
                 }
             ],
@@ -581,6 +609,7 @@ export default {
                 return false;
             }
             let selected = this.possibleNextStates.find(opt => opt.state == this.selectedState)
+          
             return selected.isNeedCardCode
         },
         isSelectedCheque(){
@@ -676,7 +705,7 @@ export default {
             this.loadCheques()
         },
         submitAction(){
-            console.log("start")
+          
             const selectedCheques = this.selectedItems.map(item => item.checkKey)
             let payload = {check_keys: selectedCheques,
                         next_state: this.selectedState,
@@ -695,7 +724,14 @@ export default {
             this.selectedState = ''
             this.selectedItems =[]
             this.selectedReg= ''
-            this.cardCode = ''
+            this.payTo={
+                cardCode: "",
+                date:""
+            },          
+            this.cardCodeData={
+                cardCode:"",
+                cardName:""
+            },
             this.isCardCodeChecked= false,
             this.possibleNextStates =''
             this.depositeDetails = {
@@ -710,25 +746,27 @@ export default {
         },
         formatState(state, chequeStates){
                 let index = chequeStates.findIndex(stat => stat.value == state )
-            console.log("stt")
-            console.log(index)
+
                 if (index >= 0)
                     return chequeStates[index].text
                 else
                     return "تعریف نشده"
         },
         validateCardCode(){
+            this.$store.dispatch(`nillError`) 
             this.cardCodeData ={
                 cardCode:"",
                 cardName: ""
             }
             this.isCardCodeChecked = false
-            let payload = {cardcode: this.cardCode}
+            let payload = {cardcode: this.payTo.cardCode}
             this.isLoading = true;            
             this.$store.dispatch('validateCardCode', payload).then((response)=>{
-                if (!response.error){
+                
+                if (!this.$store.getters.getError){
                     this.isCardCodeChecked = true
-                    this.cardCodeData = response
+                  
+                    this.cardCodeData = response.data
                 }
                 this.isLoading = false;  
             })
@@ -748,8 +786,7 @@ export default {
     filters:{
         formatRegState(state, regStates){
             let index = regStates.findIndex(stat => stat.value == state )
-            console.log("reg")
-            console.log(index)
+
             if (index >= 0)
             return regStates[index].text            
             else

@@ -18,12 +18,8 @@ export default{
             state.errorResponse = err
         },
         nillError(state){
-            console.log("NILLLL")
             state.errorResponse = null
         }
-        // updateCheques(state, checkKeys){
-            
-        // }
     },
     getters:{
         getCheques(state){
@@ -55,7 +51,6 @@ export default{
                 context.commit('setCheques',cheques)
             }
             catch(err){
-                //console.log(err.response);
                 const error = new Error(
                     err.response.data.error || 'Failed to fetch'
                 );
@@ -64,7 +59,6 @@ export default{
         },
         async updateCheques(context, payload){
             context.commit('setError', null)
-            console.log(payload)
             try {
                 const {data:resp} = await finAgent.post(`/front/cheques/update_check`, payload)
                 return resp
@@ -75,7 +69,9 @@ export default{
         async validateCardCode(context, payload){
             context.commit('setError', null)
             try {
-                const {data:resp} = await finAgent.post(`/front/cheques/validate_cardcode`, payload)
+              
+                const resp = await finAgent.post(`/front/cheques/validate_cardcode`, payload)
+              
                 return resp
             }catch (err){
                 context.commit('setError', err)
@@ -83,7 +79,7 @@ export default{
         },
         async updateChequeStates(context, payload){
             context.commit('setError', null)
-            console.log(payload)
+       
             try {
                 const {data:resp} = await finAgent.post(`/front/cheques/update_check_state`, payload)
                 context.commit('setFoundCheques',[])
@@ -121,10 +117,7 @@ export default{
         async loadChequeHistory(context, payload){
             context.commit('setError', null)
             try {
-                console.log("LOOOOOOOOOOOOG")
-                console.log(payload)
                 const {data: historyData} = await finAgent.get(`/front/cheques/get_check_history?check_key=${payload[0].checkKey}`);
-                console.log(historyData)
                 return historyData
             } catch (err) {
                 context.commit('setError', err)
