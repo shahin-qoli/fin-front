@@ -154,7 +154,10 @@
                     </v-col>
                     <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/createinventorytransfer'><h5>ساخت انتقال بین انبار</h5></router-link>              
-                  </v-col>          
+                  </v-col>         
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/creategrpo'><h5>ساخت GRPO</h5></router-link>              
+                  </v-col>  
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>

@@ -45,6 +45,7 @@ import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
 import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
 import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
 import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
+import CreateGrpo from '@/views/TheGrpoView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -144,9 +145,15 @@ function guardMyrouteLoggedIn(to, from, next){
 }
 const routes = [ 
   {
+    path: '/creategrpo',
+    name: 'CreateGrpo',
+    beforeEnter : guardMyrouteSpree,
+    component: CreateGrpo
+  }, 
+  {
     path: '/createinventorytransfer',
     name: 'createinventorytransfer',
-    beforeEnter : guardMyrouteAdmin,
+    beforeEnter : guardMyrouteSpree,
     component: CreateInventoryTransfer
   }, 
   {

@@ -7,7 +7,8 @@ export default {
             itemCount: null,
             itemCountMessageTemplate: null,
             miarzeMessageTemplates:[],
-            miarzeOrderMessageTemplates:[]
+            miarzeOrderMessageTemplates:[],
+            filteredProducts: [],
         }
     },
     mutations:{
@@ -25,6 +26,9 @@ export default {
         },
         setMiarzeOrderMessageTemplates(state,payload){
             state.miarzeOrderMessageTemplates= payload
+        },
+        setFilteredProducts(state,payload){
+            state.filteredProducts = payload
         }
     },
     actions:{
@@ -178,7 +182,18 @@ export default {
             }catch(err){
                 return{success: false, error: err}
             }
-        }
+        },
+        async fetchFilteredProducts(context,payload){
+            try{
+                context.commit('setIsLoading',true);
+                const {data: responseData} = await finAgent.get(`/front/b1_items_data?q[item_code_cont]=${payload}`);
+                let products = responseData.data
+                context.commit('setFilteredProducts',products);
+                context.commit('setIsLoading',false);
+            }catch(err){
+                console.log(err)
+            }
+        },
     },
     getters:{
         getMiarzeOrders(state){
@@ -195,6 +210,9 @@ export default {
         },
         getMiarzeOrderMessageTemplates(state){
             return state.miarzeOrderMessageTemplates;
-        }
+        },
+        getFilteredProducts: state => {
+            return state.filteredProducts;
+        },
     }
 }
