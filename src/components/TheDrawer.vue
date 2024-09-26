@@ -158,6 +158,9 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/creategrpo'><h5>ساخت GRPO</h5></router-link>              
                   </v-col>  
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/grpolist'><h5>لیست GRPO</h5></router-link>              
+                  </v-col> 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>

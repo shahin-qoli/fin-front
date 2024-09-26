@@ -8,78 +8,130 @@
             </v-card-title>
             <v-card-text>
                 <v-row>
-                    <v-col cols="12" lg="8" sm="8" md="8">
+                    <v-col cols="12" lg="3" sm="3" md="3">
                         <v-text-field
-                        v-model="selectedToAdd.itemName"
-                        abel="نام"
+                        v-model="searchCardCode"
+                        label="کد"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-text-field
-                    v-model="selectedToAdd.price"
-                    label="قیمت">
-                    </v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-text-field
-                    v-model="selectedToAdd.quantity"
-                    label="تعداد">
-                    </v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-btn color="green" :disabled="selectedToAdd.quantity<1"  @click="addToOrder">افزودن</v-btn>
+                        <v-btn :disabled="searchCardCode < 5" @click="validateCardCode">بررسی تامین کننده</v-btn>
                     </v-col>    
+                </v-row>
+                <v-row v-if="isCardCodeChecked">
+                    <v-col cols="6">
+                        <v-text-field          
+                        v-model="cardCodeData.cardCode"
+                        label="کد مشتری"
+                        single-line
+                        required
+                        disabled
+                        hide-details></v-text-field>
+                    </v-col>  
+                    <v-col cols="6">
+                        <v-text-field          
+                        v-model="cardCodeData.cardName"
+                        label="نام مشتری"
+                        single-line
+                        required
+                        disabled
+                        hide-details></v-text-field>
+                    </v-col>  
                 </v-row>
             </v-card-text>
         </v-card>
-        <v-card>
-            <v-card-title>
-                <v-row>
-                    <v-col cols="12" class="center-text text-title"><p>انتخاب کالا</p></v-col>
-                </v-row>
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12" lg="4" sm="4" md="4">
-                    <v-autocomplete
-                    v-model="selectedToAdd.itemCode"
-                    :items="items"
-                    placeholder="کد کالا"
-                    solo
-                    filled
-                    dense
-                    item-text="item_code"
-                    item-value="item_code"
-                    :search-input.sync="searchProduct"
-                    @input="updateSelectedToAdd"
-                >
-                </v-autocomplete>
-                    </v-col>
-                    <v-col cols="12" lg="8" sm="8" md="8">
-                        <v-text-field
-                        v-model="selectedToAdd.itemName"
-                        abel="نام"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-text-field
-                    v-model="selectedToAdd.price"
-                    label="قیمت">
-                    </v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-text-field
-                    v-model="selectedToAdd.quantity"
-                    label="تعداد">
-                    </v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                    <v-btn color="green" :disabled="selectedToAdd.quantity<1"  @click="addToOrder">افزودن</v-btn>
-                    </v-col>    
-                </v-row>
-            </v-card-text>
-        </v-card>
-        <v-row>
+        <v-row v-if="isCardCodeChecked">
+            <v-col cols="6">
+                <v-card >
+                    <v-card-title>
+                        <v-row>
+                            <v-col cols="12" class="center-text text-title"><p>انتخاب کالا</p></v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12" lg="4" sm="4" md="4">
+                            <v-autocomplete
+                            v-model="selectedToAdd.itemCode"
+                            :items="items"
+                            placeholder="کد کالا"
+                            solo
+                            filled
+                            dense
+                            item-text="item_code"
+                            item-value="item_code"
+                            :search-input.sync="searchProduct"
+                            @input="updateSelectedToAdd"
+                        >
+                        </v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" lg="8" sm="8" md="8">
+                                <v-text-field
+                                v-model="selectedToAdd.itemName"
+                                abel="نام"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                            <v-text-field
+                            v-model="selectedToAdd.price"
+                            label="قیمت">
+                            </v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                            <v-text-field
+                            v-model="selectedToAdd.quantity"
+                            label="تعداد">
+                            </v-text-field>
+                            <v-text-field
+                            v-model="selectedToAdd.comment"
+                            label="تعداد">
+                            </v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                            <v-btn color="green" :disabled="selectedToAdd.quantity<1"  @click="addToOrder">افزودن</v-btn>
+                            </v-col>    
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col cols="6">
+                <v-card>
+                    <v-card-title>
+                        <v-row>
+                            <v-col cols="12" class="center-text text-title"><p>تنظیمات سند</p></v-col>
+                        </v-row>                       
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12" lg="4" sm="4" md="6">
+                                <v-text-field
+                                label="کد انبار"
+                                v-model="purchase.fromWhsCode">
+                                </v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="4" sm="4" md="6">
+                                <v-select
+                                label="کد مالیات"
+                                v-model="purchase.vatGroup"
+                                :items="taxCodeItems"
+                                item-text="text"
+                                item-value="value">
+                                </v-select>
+                            </v-col>
+                            <v-col cols="12" lg="4" sm="4" md="6">
+                                <v-text-field
+                                label="توضیحات سند"
+                                v-model="purchase.comment">
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+
+        <v-row v-if="isCardCodeChecked">
             <v-col cols="12">
                 <v-card>
                     <v-card-title>
@@ -93,7 +145,7 @@
                     hide-default-footer
                     dense
                     :headers="headers"
-                    :items="purchaseItems">
+                    :items="purchase.items">
                     <template v-slot:[`item.delete`]="props">
                                     <v-btn class="mx-2" small  @click="deleteItem(props.item)">
                                         <v-icon>mdi-delete</v-icon>
@@ -115,7 +167,7 @@
                         <v-divider></v-divider>
                     </template>
                     </v-data-table>
-                    <div style="margin-top: 15px;" v-if="purchaseItems.length > 0" >
+                    <div style="margin-top: 15px;" v-if="purchase.items.length > 0" >
                         <v-row justify="end" >
                         <v-col cols="12" lg="2" sm="4" md="4">
                             <p class="total-text">جمع کل:</p>
@@ -140,22 +192,46 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row  v-if="isCardCodeChecked">
+            <v-btn :disabled="purchase.totalPaid < 1" color="green" @click="createGrpo">ثبت سند</v-btn>
+        </v-row>
+        <v-overlay :value="isLoading">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <p>در حال عملیات</p>
+        </v-overlay>
     </v-container>
 </template>
 <script>
 export default {
     data(){
         return{
-            searchProduct:'',
+            purchase:{
+                items:[],
+                date:"",
+                vendor_code:"",
+                totalPaid: 0,
+                fromWhsCode:"",
+                vatGroup:"",
+                comment:""
+            },
             selectedToAdd: {
                 itemCode: '',
                 quantity: '',
                 price: "",
                 itemName: '',
+                comment:""
             },
-            purchaseItems:[],
+            cardCodeData:{
+                cardCode:"",
+                cardName:""
+            },
+            
             debounceTimeout: null,
-            totalPaid: 0,
+            
+            searchProduct:'',
+            isCardCodeChecked: false,
+            isLoading: false,
+            searchCardCode:"",
         }
     },
     methods:{
@@ -169,33 +245,34 @@ export default {
                         return item.item_code === this.selectedToAdd.itemCode
                     })
             console.log(itemToAdd)        
-            let foundIndex = this.purchaseItems.findIndex(item => {
+            let foundIndex = this.purchase.items.findIndex(item => {
                 return item.ItemCode === this.selectedToAdd.itemCode;
             });
 
             if (foundIndex !== -1)  {
-                this.purchaseItems[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
-                this.purchaseItems[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
-                this.purchaseItems[foundIndex].LineTotal = this.purchaseItems[foundIndex].ItemQty * this.purchaseItems[foundIndex].Price
+                this.purchase.items[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
+                this.purchase.items[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
+                this.purchase.items[foundIndex].LineTotal = this.purchase.items[foundIndex].ItemQty * this.purchase.items[foundIndex].Price
             }else{    
 
-            this.purchaseItems.push({
+            this.purchase.items.push({
                 ItemCode: itemToAdd[0].item_code,
                 ItemQty: Number.parseInt(this.selectedToAdd.quantity),
                 ItemName: itemToAdd[0]?.item_name,
                 Price: Number.parseInt(this.selectedToAdd.price),
-                Quantity:  Number.parseInt(this.selectedToAdd.quantity),
                 LineTotal: Number.parseInt(this.selectedToAdd.price) * Number.parseInt(this.selectedToAdd.quantity),
-
+                FreeText: itemToAdd[0]?.comment,
             })}
             this.selectedToAdd= {
                 itemCode: '',
                 quantity: '',
-                price: ''            }
+                price: '' ,
+                comment:"",
+                }
             
         },
         deleteItem(item){
-            this.purchaseItems = this.purchaseItems.filter(i => i !== item)
+            this.purchase.items = this.purchase.items.filter(i => i !== item)
         },
         debounce(func, delay) {
             clearTimeout(this.debounceTimeout);
@@ -207,9 +284,36 @@ export default {
             })[0]?.item_name
         },
         updateAmount(){
-            this.totalPaid = event.target.value
+            this.purchase.totalPaid = event.target.value
+        },
+        validateCardCode(){
+            this.$store.dispatch(`nillError`) 
+            this.cardCodeData ={
+                cardCode:"",
+                cardName: ""
+            }
+            this.isCardCodeChecked = false
+            let payload = {cardcode: this.searchCardCode}
+            this.isLoading = true;            
+            this.$store.dispatch('validateCardCode', payload).then((response)=>{
+                
+                if (!this.$store.getters.getError){
+                    this.isCardCodeChecked = true
+                  
+                    this.cardCodeData = response.data
+                    this.purchase.vendor_code = this.cardCodeData.cardCode
+                }
+                this.isLoading = false;  
+            })
+        },
+        createGrpo(){
+            this.$store.dispatch(`nillError`) 
+            
+            this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
+                if (!this.$store.getters.getError){}
+                this.isLoading = false;
+            })
         }
-
     },
     computed:{
         headers(){
@@ -245,6 +349,12 @@ export default {
                 value: "LineTotal",
                 }, 
                 {
+                text: "توضیحات",
+                align: "center",
+                sortable: false,
+                value: "FreeText",
+                }, 
+                {
                 text: "",
                 align: "center",
                 sortable: false,
@@ -256,14 +366,26 @@ export default {
             return this.$store.getters.getFilteredProducts
         },
         totalLineTotal() {
-            let total = this.purchaseItems.reduce((total, item) => total + item.LineTotal, 0);
-            this.totalPaid = total;
+            let total = this.purchase.items.reduce((total, item) => total + item.LineTotal, 0);
+            this.purchase.totalPaid = total;
             return total;
         },
         formatAmountMethod() {
-            const stringVlue = String(this.totalPaid)
+            const stringVlue = String(this.purchase.totalPaid)
             const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return formattedIntegerPart
+        },
+        taxCodeItems(){
+            return [
+                {
+                    text:"GST-E1",
+                    value: "GST-E1"
+                },
+                {
+                    text:"tax1",
+                    value: "tax1"
+                }
+            ]
         },
     },
     watch: {

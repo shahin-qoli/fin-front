@@ -1,4 +1,5 @@
 import { finAgent, spreeAgent } from "@/services/agent";
+import { set } from "core-js/core/dict";
 
 export default {
     state(){
@@ -9,6 +10,8 @@ export default {
             miarzeMessageTemplates:[],
             miarzeOrderMessageTemplates:[],
             filteredProducts: [],
+            createdGrpo:[],
+            itemCountCreatedGrpo: null,
         }
     },
     mutations:{
@@ -29,6 +32,12 @@ export default {
         },
         setFilteredProducts(state,payload){
             state.filteredProducts = payload
+        },
+        setCreatedGrpo(state,payload){
+            state.createdGrpo = payload
+        },
+        setItemCountCreatedGrpo(state,payload){
+            state.itemCountCreatedGrpo = payload
         }
     },
     actions:{
@@ -194,6 +203,34 @@ export default {
                 console.log(err)
             }
         },
+        async createGrpo(context,payload){
+            let data =  {grpo: payload}
+            try{
+                const {data: responseData} = await finAgent.post(`/front/grpo`,data);
+                return responseData
+            }catch(err){
+                return{success: false, error: err}
+            }
+        },
+        async loadCreatedGrpo(context,payload){
+            try{
+                const {data: responseData} = await finAgent.get(`/front/created_grpos`);
+                var miarzeOrderData = responseData.data;
+                const miarzeOrders = []
+                var itemCount = responseData.options.count;
+                for (const item of miarzeOrderData) {
+                    const miarzeOrder= {
+                        ...item
+                    }
+                    miarzeOrders.push(miarzeOrder); 
+                }
+
+                context.commit('setCreatedGrpo', miarzeOrders)
+                context.commit('setItemCountCreatedGrpo', itemCount);  
+            }catch(err){
+                console.log(err)
+            }
+        }
     },
     getters:{
         getMiarzeOrders(state){
@@ -214,5 +251,11 @@ export default {
         getFilteredProducts: state => {
             return state.filteredProducts;
         },
+        getCreatedGrpo: state => {
+            return state.createdGrpo;
+        },
+        getItemCountCreatedGrpo(state){
+            return state.itemCountCreatedGrpo;
+        }
     }
 }
