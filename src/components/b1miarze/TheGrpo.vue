@@ -1,45 +1,49 @@
 <template>
     <v-container>
-        <v-card>
-            <v-card-title>
-                <v-row>
-                    <v-col cols="12" class="center-text text-title"><p>انتخاب تامین کننده</p></v-col>
-                </v-row>
-            </v-card-title>
-            <v-card-text>
-                <v-row>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                        <v-text-field
-                        v-model="searchCardCode"
-                        label="کد"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="3" md="3">
-                        <v-btn :disabled="searchCardCode < 5" @click="validateCardCode">بررسی تامین کننده</v-btn>
-                    </v-col>    
-                </v-row>
-                <v-row v-if="isCardCodeChecked">
-                    <v-col cols="6">
-                        <v-text-field          
-                        v-model="cardCodeData.cardCode"
-                        label="کد مشتری"
-                        single-line
-                        required
-                        disabled
-                        hide-details></v-text-field>
-                    </v-col>  
-                    <v-col cols="6">
-                        <v-text-field          
-                        v-model="cardCodeData.cardName"
-                        label="نام مشتری"
-                        single-line
-                        required
-                        disabled
-                        hide-details></v-text-field>
-                    </v-col>  
-                </v-row>
-            </v-card-text>
-        </v-card>
+        <v-row>
+            <v-col cols="12">
+                <v-card>
+                    <v-card-title>
+                        <v-row>
+                            <v-col cols="12" class="center-text text-title"><p>انتخاب تامین کننده</p></v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                                <v-text-field
+                                v-model="searchCardCode"
+                                label="کد"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                                <v-btn :disabled="searchCardCode < 5" @click="validateCardCode">بررسی تامین کننده</v-btn>
+                            </v-col>    
+                        </v-row>
+                        <v-row v-if="isCardCodeChecked">
+                            <v-col cols="6">
+                                <v-text-field          
+                                v-model="cardCodeData.cardCode"
+                                label="کد مشتری"
+                                single-line
+                                required
+                                disabled
+                                hide-details></v-text-field>
+                            </v-col>  
+                            <v-col cols="6">
+                                <v-text-field          
+                                v-model="cardCodeData.cardName"
+                                label="نام مشتری"
+                                single-line
+                                required
+                                disabled
+                                hide-details></v-text-field>
+                            </v-col>  
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-row v-if="isCardCodeChecked">
             <v-col cols="6">
                 <v-card >
@@ -51,19 +55,19 @@
                     <v-card-text>
                         <v-row>
                             <v-col cols="12" lg="4" sm="4" md="4">
-                            <v-autocomplete
-                            v-model="selectedToAdd.itemCode"
-                            :items="items"
-                            placeholder="کد کالا"
-                            solo
-                            filled
-                            dense
-                            item-text="item_code"
-                            item-value="item_code"
-                            :search-input.sync="searchProduct"
-                            @input="updateSelectedToAdd"
-                        >
-                        </v-autocomplete>
+                                <v-autocomplete
+                                v-model="selectedToAdd.itemCode"
+                                :items="items"
+                                placeholder="کد کالا"
+                                solo
+                                filled
+                                dense
+                                item-text="item_code"
+                                item-value="item_code"
+                                :search-input.sync="searchProduct"
+                                @input="updateSelectedToAdd"
+                                >
+                                </v-autocomplete>
                             </v-col>
                             <v-col cols="12" lg="8" sm="8" md="8">
                                 <v-text-field
@@ -71,21 +75,23 @@
                                 abel="نام"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" lg="3" sm="3" md="3">
-                            <v-text-field
-                            v-model="selectedToAdd.price"
-                            label="قیمت">
-                            </v-text-field>
+                            <v-col cols="12" lg="8" sm="8" md="8">
+                                <v-text-field
+                                v-model="selectedToAdd.price"
+                                label="قیمت">
+                                </v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="4" sm="4" md="4">
+                                <v-text-field
+                                v-model="selectedToAdd.quantity"
+                                label="تعداد">
+                                </v-text-field>
                             </v-col>
                             <v-col cols="12" lg="3" sm="3" md="3">
-                            <v-text-field
-                            v-model="selectedToAdd.quantity"
-                            label="تعداد">
-                            </v-text-field>
-                            <v-text-field
-                            v-model="selectedToAdd.comment"
-                            label="تعداد">
-                            </v-text-field>
+                                <v-text-field
+                                v-model="selectedToAdd.comment"
+                                label="شماره سفارش">
+                                </v-text-field>
                             </v-col>
                             <v-col cols="12" lg="3" sm="3" md="3">
                             <v-btn color="green" :disabled="selectedToAdd.quantity<1"  @click="addToOrder">افزودن</v-btn>
@@ -124,6 +130,9 @@
                                 v-model="purchase.comment">
                                 </v-text-field>
                             </v-col>
+                            <v-col cols="12" lg="4" sm="4" md="6">
+                            <date-picker label="تاریخ سند" v-model="purchase.docdate"></date-picker>
+                        </v-col>
                         </v-row>
 
                     </v-card-text>
@@ -195,6 +204,9 @@
         <v-row  v-if="isCardCodeChecked">
             <v-btn :disabled="purchase.totalPaid < 1" color="green" @click="createGrpo">ثبت سند</v-btn>
         </v-row>
+        <v-dialog v-model="showModal" max-width="500">
+
+        </v-dialog>
         <v-overlay :value="isLoading">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
             <p>در حال عملیات</p>
@@ -202,12 +214,15 @@
     </v-container>
 </template>
 <script>
+import DatePicker from '../DatePicker.vue'
+
 export default {
+    components:{ DatePicker},
     data(){
         return{
             purchase:{
                 items:[],
-                date:"",
+                docdate:"",
                 vendor_code:"",
                 totalPaid: 0,
                 fromWhsCode:"",
@@ -232,6 +247,7 @@ export default {
             isCardCodeChecked: false,
             isLoading: false,
             searchCardCode:"",
+            showModal:false,
         }
     },
     methods:{
@@ -308,11 +324,33 @@ export default {
         },
         createGrpo(){
             this.$store.dispatch(`nillError`) 
-            
+            this.isLoading = true; 
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
-                if (!this.$store.getters.getError){}
+                if (response.status == 200 && (response.error == "" || response.error == null)){
+                    this.$toasted.show("با موفقیت انجام شد", {
+                        position: 'bottom-center',
+                        type: 'success',
+                        duration: 5000
+                    })
+                    this.purchase = {
+                        items:[],
+                        docdate:"",
+                        vendor_code:"",
+                        totalPaid: 0,
+                        fromWhsCode:"",
+                        vatGroup:"",
+                        comment:""
+                    }
+                    this.showModal = false}
+                else{
+                        this.$toasted.show("خطا در ایجاد سند", {
+                        position: 'bottom-center',
+                        type: 'error',
+                        duration: 5000
+                    })
+                    }
                 this.isLoading = false;
-            })
+        })
         }
     },
     computed:{

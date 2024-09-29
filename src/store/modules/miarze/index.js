@@ -1,5 +1,4 @@
 import { finAgent, spreeAgent } from "@/services/agent";
-import { set } from "core-js/core/dict";
 
 export default {
     state(){
@@ -204,9 +203,10 @@ export default {
             }
         },
         async createGrpo(context,payload){
-            let data =  {grpo: payload}
+
+            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code, data: payload}}
             try{
-                const {data: responseData} = await finAgent.post(`/front/grpo`,data);
+                const {data: responseData} = await finAgent.post(`/front/create_grpos`,data);
                 return responseData
             }catch(err){
                 return{success: false, error: err}
@@ -214,7 +214,7 @@ export default {
         },
         async loadCreatedGrpo(context,payload){
             try{
-                const {data: responseData} = await finAgent.get(`/front/created_grpos`);
+                const {data: responseData} = await finAgent.get(`/front/create_grpos`);
                 var miarzeOrderData = responseData.data;
                 const miarzeOrders = []
                 var itemCount = responseData.options.count;
