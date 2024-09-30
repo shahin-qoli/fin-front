@@ -327,10 +327,10 @@ export default {
             this.isLoading = true; 
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
                 if (response.is_success){
-                    this.$toasted.show(`موفقیت! شماره سند: ${response.result[0].docEntry}`, {
+                    this.$toasted.show(`موفقیت! شماره سند: ${response.result}`, {
                         position: 'bottom-center',
                         type: 'success',
-                        duration: 5000
+                        duration: 15000
                     }),
                     this.purchase = {
                         items:[],
