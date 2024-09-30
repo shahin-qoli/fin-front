@@ -327,6 +327,8 @@ export default {
             this.isLoading = true; 
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
                 if (response.is_success){
+                    console.log(response.result[0])
+                    console.log(response.result)
                     this.$toasted.show(`موفقیت! شماره سند: ${response.result}`, {
                         position: 'bottom-center',
                         type: 'success',
