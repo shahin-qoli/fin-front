@@ -209,7 +209,7 @@ export default {
                 const {data: responseData} = await finAgent.post(`/front/create_grpos`,data);
                 return responseData
             }catch(err){
-                return{success: false, error: err}
+                return{is_success: false, error: err}
             }
         },
         async loadCreatedGrpo(context,payload){

@@ -326,12 +326,12 @@ export default {
             this.$store.dispatch(`nillError`) 
             this.isLoading = true; 
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
-                if (response.status == 200 && (response.error == "" || response.error == null)){
-                    this.$toasted.show("با موفقیت انجام شد", {
+                if (response.is_success){
+                    this.$toasted.show(`موفقیت! شماره سند: ${response.result[0].docEntry}`, {
                         position: 'bottom-center',
                         type: 'success',
                         duration: 5000
-                    })
+                    }),
                     this.purchase = {
                         items:[],
                         docdate:"",
@@ -340,8 +340,20 @@ export default {
                         fromWhsCode:"",
                         vatGroup:"",
                         comment:""
-                    }
-                    this.showModal = false}
+                    },
+                    this.cardCodeData={
+                        cardCode:"",
+                        cardName:""
+                    },
+            
+                    this.debounceTimeout= null,
+                    
+                    this.searchProduct='',
+                    this.isCardCodeChecked = false,
+                    this.isLoading= false,
+                    this.searchCardCode="",
+                    this.showModal = false
+                }
                 else{
                         this.$toasted.show("خطا در ایجاد سند", {
                         position: 'bottom-center',
