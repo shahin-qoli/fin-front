@@ -686,7 +686,7 @@ export default {
             // const month = today.getMonth();
             // today.setMonth(month - 1);
             // return today.toISOString().split('T')[0]
-            return '1402/09/01'
+            return '1403/06/01'
         },
         handleTableSelectionChange() {
             const commonNextStates = this.selectedItems[0].nextStates;

@@ -7,7 +7,10 @@ export default {
             itemCount: null,
             itemCountMessageTemplate: null,
             miarzeMessageTemplates:[],
-            miarzeOrderMessageTemplates:[]
+            miarzeOrderMessageTemplates:[],
+            filteredProducts: [],
+            createdGrpo:[],
+            itemCountCreatedGrpo: null,
         }
     },
     mutations:{
@@ -25,6 +28,15 @@ export default {
         },
         setMiarzeOrderMessageTemplates(state,payload){
             state.miarzeOrderMessageTemplates= payload
+        },
+        setFilteredProducts(state,payload){
+            state.filteredProducts = payload
+        },
+        setCreatedGrpo(state,payload){
+            state.createdGrpo = payload
+        },
+        setItemCountCreatedGrpo(state,payload){
+            state.itemCountCreatedGrpo = payload
         }
     },
     actions:{
@@ -178,6 +190,46 @@ export default {
             }catch(err){
                 return{success: false, error: err}
             }
+        },
+        async fetchFilteredProducts(context,payload){
+            try{
+                context.commit('setIsLoading',true);
+                const {data: responseData} = await finAgent.get(`/front/b1_items_data?q[item_code_cont]=${payload}`);
+                let products = responseData.data
+                context.commit('setFilteredProducts',products);
+                context.commit('setIsLoading',false);
+            }catch(err){
+                console.log(err)
+            }
+        },
+        async createGrpo(context,payload){
+
+            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code, data: payload}}
+            try{
+                const {data: responseData} = await finAgent.post(`/front/create_grpos`,data);
+                return responseData
+            }catch(err){
+                return{is_success: false, error: err}
+            }
+        },
+        async loadCreatedGrpo(context,payload){
+            try{
+                const {data: responseData} = await finAgent.get(`/front/create_grpos`);
+                var miarzeOrderData = responseData.data;
+                const miarzeOrders = []
+                var itemCount = responseData.options.count;
+                for (const item of miarzeOrderData) {
+                    const miarzeOrder= {
+                        ...item
+                    }
+                    miarzeOrders.push(miarzeOrder); 
+                }
+
+                context.commit('setCreatedGrpo', miarzeOrders)
+                context.commit('setItemCountCreatedGrpo', itemCount);  
+            }catch(err){
+                console.log(err)
+            }
         }
     },
     getters:{
@@ -195,6 +247,15 @@ export default {
         },
         getMiarzeOrderMessageTemplates(state){
             return state.miarzeOrderMessageTemplates;
+        },
+        getFilteredProducts: state => {
+            return state.filteredProducts;
+        },
+        getCreatedGrpo: state => {
+            return state.createdGrpo;
+        },
+        getItemCountCreatedGrpo(state){
+            return state.itemCountCreatedGrpo;
         }
     }
 }

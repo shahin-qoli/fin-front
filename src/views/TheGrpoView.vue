@@ -6,7 +6,7 @@
 
 
 <script>
-    import TheMain from '@/components/b1miarze/InventoryTransfer.vue';
+    import TheMain from '@/components/b1miarze/TheGrpo.vue';
     export default {
       components: {
         TheMain
