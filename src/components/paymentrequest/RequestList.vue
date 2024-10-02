@@ -85,7 +85,7 @@
                             <v-text-field
                             disabled
                             label="حساب مقصد"
-                            v-model="dialogItem.from_account"
+                            v-model="dialogItem.to_account"
                            ></v-text-field>
                         </v-col>
                         <v-col cols="4">
