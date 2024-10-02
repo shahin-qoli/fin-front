@@ -2,13 +2,15 @@
 // import cardtocardServ from '@/services/cardtocard/index.js'
 import  {finAgent} from '@/services/agent'
 export default {
+        //   {item: this.item, cardcode: this.data.customer.cardCode, documents: this.toPaidDocument,
+    //    checks: this.toPaidCheck, userid: this.user.id}
     async useCardtocard(contex, payload){
         try{
             let user = payload.userid
-            if (payload.cardcode !=null && payload.b1docnum == null){
+            if (payload.cardcode !=null && payload.documents.length < 1 && payload.checks.length < 1 ){
                 var data ={"used_for": payload.cardcode, "captured_by":user.id} }
-            else if (payload.b1docnum != null){
-                data ={"b1_docnum": payload.b1docnum, "captured_by":user.id,"used_for": payload.cardcode}
+            else if (payload.documents.length > 0 || payload.checks.length > 0){
+                data ={"documents": payload.documents,"checks":payload.checks, "captured_by":user.id,"used_for": payload.cardcode}
             }
             const {data:responseData} = await finAgent.post(`/front/card_to_card_raws/${payload.item.id}/use_payment`,data)
             console.log(responseData.result)

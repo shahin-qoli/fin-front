@@ -154,6 +154,7 @@
                     hide-default-footer
                     dense
                     :headers="headers"
+                    :items-per-page="-1"
                     :items="purchase.items">
                     <template v-slot:[`item.delete`]="props">
                                     <v-btn class="mx-2" small  @click="deleteItem(props.item)">
