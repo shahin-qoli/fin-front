@@ -94,7 +94,19 @@
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" lg="3" sm="3" md="3">
-                            <v-btn color="green" :disabled="selectedToAdd.quantity<1"  @click="addToOrder">افزودن</v-btn>
+                                <v-checkbox
+                                v-model="selectedToAdd.hasBatch"
+                                label="بچ دارد">
+                                </v-checkbox>
+                            </v-col>
+                            <v-col v-if="selectedToAdd.hasBatch" cols="12" lg="3" sm="3" md="3">
+                                <v-text-field
+                                v-model="selectedToAdd.batchNumber"
+                                label="بچ دارد">
+                                </v-text-field>
+                            </v-col>
+                            <v-col cols="12" lg="3" sm="3" md="3">
+                            <v-btn color="green" :disabled="(selectedToAdd.comment.length < 5 || this.selectedToAdd.quantity<1 )"  @click="addToOrder">افزودن</v-btn>
                             </v-col>    
                         </v-row>
                     </v-card-text>
@@ -235,7 +247,9 @@ export default {
                 quantity: '',
                 price: "",
                 itemName: '',
-                comment:""
+                comment:"",
+                hasBatch:false,
+                batchNumber:""
             },
             cardCodeData:{
                 cardCode:"",
@@ -252,6 +266,9 @@ export default {
         }
     },
     methods:{
+        verifiedItem(){
+            return this.selectedToAdd.quantity>1 && this.selectedToAdd.comment
+        },
         loadFilteredProducts(){
             if (this.selectedToAdd.itemCode) return; // Prevent search if an item is selected
             this.$store.dispatch('fetchFilteredProducts', this.searchProduct);
@@ -279,12 +296,16 @@ export default {
                 Price: Number.parseInt(this.selectedToAdd.price),
                 LineTotal: Number.parseInt(this.selectedToAdd.price) * Number.parseInt(this.selectedToAdd.quantity),
                 FreeText: itemToAdd[0]?.comment,
+                HaveBatch: itemToAdd[0]?.hasBatch,
+                BatchName: itemToAdd[0]?.batchNumber,
             })}
             this.selectedToAdd= {
                 itemCode: '',
                 quantity: '',
                 price: '' ,
                 comment:"",
+                hasBatch:false,
+                batchNumber:""
                 }
             
         },
