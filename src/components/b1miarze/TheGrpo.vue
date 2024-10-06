@@ -102,7 +102,7 @@
                             <v-col v-if="selectedToAdd.hasBatch" cols="12" lg="3" sm="3" md="3">
                                 <v-text-field
                                 v-model="selectedToAdd.batchNumber"
-                                label="بچ دارد">
+                                label="شماره بچ">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" lg="3" sm="3" md="3">
@@ -240,7 +240,8 @@ export default {
                 totalPaid: 0,
                 fromWhsCode:"",
                 vatGroup:"",
-                comment:""
+                comment:"",
+                
             },
             selectedToAdd: {
                 itemCode: '',
@@ -278,27 +279,28 @@ export default {
             let itemToAdd = this.items.filter(item => {
                         return item.item_code === this.selectedToAdd.itemCode
                     })
-            console.log(itemToAdd)        
-            let foundIndex = this.purchase.items.findIndex(item => {
-                return item.ItemCode === this.selectedToAdd.itemCode;
-            });
+            // console.log(itemToAdd)        
+            // let foundIndex = this.purchase.items.findIndex(item => {
+            //     return item.ItemCode === this.selectedToAdd.itemCode;
+            // });
 
-            if (foundIndex !== -1)  {
-                this.purchase.items[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
-                this.purchase.items[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
-                this.purchase.items[foundIndex].LineTotal = this.purchase.items[foundIndex].ItemQty * this.purchase.items[foundIndex].Price
-            }else{    
-
+            // if (foundIndex !== -1)  {
+            //     this.purchase.items[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
+            //     this.purchase.items[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
+            //     this.purchase.items[foundIndex].LineTotal = this.purchase.items[foundIndex].ItemQty * this.purchase.items[foundIndex].Price
+            // }else{    
+        // }
             this.purchase.items.push({
                 ItemCode: itemToAdd[0].item_code,
                 ItemQty: Number.parseInt(this.selectedToAdd.quantity),
                 ItemName: itemToAdd[0]?.item_name,
                 Price: Number.parseInt(this.selectedToAdd.price),
                 LineTotal: Number.parseInt(this.selectedToAdd.price) * Number.parseInt(this.selectedToAdd.quantity),
-                FreeText: itemToAdd[0]?.comment,
-                HaveBatch: itemToAdd[0]?.hasBatch,
-                BatchName: itemToAdd[0]?.batchNumber,
-            })}
+                FreeText: this.selectedToAdd.comment,
+                HaveBatch: this.selectedToAdd.hasBatch,
+                BatchName: this.selectedToAdd.batchNumber,
+            })
+
             this.selectedToAdd= {
                 itemCode: '',
                 quantity: '',
@@ -465,13 +467,19 @@ export default {
     watch: {
         searchProduct: {
             handler(newValue) {
-                if (newValue.trim() !== "") {
+                if (newValue && newValue.trim() !== "") {
                     this.debounce(this.loadFilteredProducts, 300); // 300 ms debounce
                 }
             },
             immediate: true,
         }
     },
-  
+    filters:{
+      formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+      },
+    }
 }
 </script>
