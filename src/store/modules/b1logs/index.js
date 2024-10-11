@@ -38,7 +38,6 @@ export default{
                 var logs= []
               
                 for(const item of logsData){
-                    console.log(item)
                     const log ={
                         ...item
                     }

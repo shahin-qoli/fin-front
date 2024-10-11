@@ -24,7 +24,7 @@
                             <v-col cols="6">
                                 <v-text-field          
                                 v-model="cardCodeData.cardCode"
-                                label="کد مشتری"
+                                label="کد تامین کننده"
                                 single-line
                                 required
                                 disabled
@@ -33,7 +33,7 @@
                             <v-col cols="6">
                                 <v-text-field          
                                 v-model="cardCodeData.cardName"
-                                label="نام مشتری"
+                                label="نام تامین کننده"
                                 single-line
                                 required
                                 disabled
@@ -241,7 +241,7 @@ export default {
                 fromWhsCode:"",
                 vatGroup:"",
                 comment:"",
-                
+                vendor_name:""
             },
             selectedToAdd: {
                 itemCode: '',
@@ -275,21 +275,9 @@ export default {
             this.$store.dispatch('fetchFilteredProducts', this.searchProduct);
         },
         addToOrder(){
-            console.log("STAAAAAAAAAAAAART")
             let itemToAdd = this.items.filter(item => {
                         return item.item_code === this.selectedToAdd.itemCode
                     })
-            // console.log(itemToAdd)        
-            // let foundIndex = this.purchase.items.findIndex(item => {
-            //     return item.ItemCode === this.selectedToAdd.itemCode;
-            // });
-
-            // if (foundIndex !== -1)  {
-            //     this.purchase.items[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
-            //     this.purchase.items[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
-            //     this.purchase.items[foundIndex].LineTotal = this.purchase.items[foundIndex].ItemQty * this.purchase.items[foundIndex].Price
-            // }else{    
-        // }
             this.purchase.items.push({
                 ItemCode: itemToAdd[0].item_code,
                 ItemQty: Number.parseInt(this.selectedToAdd.quantity),
@@ -342,6 +330,7 @@ export default {
                   
                     this.cardCodeData = response.data
                     this.purchase.vendor_code = this.cardCodeData.cardCode
+                    this.purchase.vendor_name = this.cardCodeData.cardName
                 }
                 this.isLoading = false;  
             })
