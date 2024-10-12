@@ -1,55 +1,61 @@
 <template>
     <v-card  class="dialogCard">
         <v-card-title>
-            <v-row>
-                <v-col cols="4">
-                    <v-text-field
-                    disabled
-                    label="کد تامین کننده"
-                    v-model="purchase.vendor_code"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="4">
-                    <v-text-field
-                    disabled
-                    label="نام تامین کننده"
-                    v-model="purchase.vendor_name"
-                ></v-text-field>
-                </v-col>
-                <v-col cols="4">
-                    <v-checkbox
-                    label="درخواست صدور سند"
-                    disabled
-                    v-model="purchase.is_requested"
-                    ></v-checkbox>
-                </v-col>
-                <v-col cols="4">
-                    <v-checkbox
-                    label="تکمیل شده"
-                    disabled
-                    v-model="purchase.is_synced"
-                    ></v-checkbox>
-                </v-col>
-                <v-col cols="4">
-                    <v-checkbox
-                    label="پیش نویس"
-                    disabled
-                    v-model="purchase.is_draft"
-                    ></v-checkbox>
-                </v-col>
-                <v-col cols="4">
-                    <v-switch
-                    :disabled="disableEditBtn"
-                    v-model="disableEdit"
-                    label="ویرایش"
-                    ></v-switch>
-                </v-col>
-            </v-row>
+
         </v-card-title>
         <v-card-text>
-            <v-expansion-panels v-model="openPanel" focusable>
+            <v-expansion-panels v-model="openPanel" focusable multiple>
                 <v-expansion-panel>
                     <v-expansion-panel-header>اطلاعات سفارش</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <v-col cols="4">
+                                <v-text-field
+                                disabled
+                                label="کد تامین کننده"
+                                v-model="purchase.vendor_code"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field
+                                disabled
+                                label="نام تامین کننده"
+                                v-model="purchase.vendor_name"
+                            ></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-checkbox
+                                label="درخواست صدور سند"
+                                disabled
+                                v-model="purchase.is_requested"
+                                ></v-checkbox>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-checkbox
+                                label="تکمیل شده"
+                                disabled
+                                v-model="purchase.is_synced"
+                                ></v-checkbox>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-checkbox
+                                label="پیش نویس"
+                                disabled
+                                v-model="purchase.is_draft"
+                                ></v-checkbox>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-switch
+                                :disabled="disableEditBtn"
+                                v-model="disableEdit"
+                                label="ویرایش"
+                                ></v-switch>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>تنظیمات سفارش</v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-row>
                             <v-col cols="12">                 
@@ -59,21 +65,21 @@
                                             <v-text-field
                                             :disabled="disableEdit"
                                             label="کد انبار"
-                                            v-model="purchase.fromWhsCode"
+                                            v-model="purchase.data.fromWhsCode"
                                         ></v-text-field>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-text-field
                                             :disabled="disableEdit"
                                             label="کد مالیات"
-                                            v-model="purchase.vatGroup"
+                                            v-model="purchase.data.vatGroup"
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-text-field
                                             :disabled="disableEdit"
                                             label="توضیحات سند"
-                                            v-model="purchase.comment"
+                                            v-model="purchase.data.comment"
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="4">
@@ -92,6 +98,7 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header>خطوط سفارش</v-expansion-panel-header>
                     <v-expansion-panel-content>
+                        <choose-product v-if="disableEdit" @delete="deleteItem" @push="addToOrder" ></choose-product>
                         <v-data-table
                         fixed-header
                         hide-default-footer
@@ -143,7 +150,7 @@
                         </div>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
-                <v-expansion-panel>
+                <v-expansion-panel >
                     <v-expansion-panel-header>درخواست های ثبت سند</v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-data-table
@@ -167,15 +174,16 @@
 <script>
 var jalaali = require('jalaali-js')
 import DatePicker from '../DatePicker.vue'
+import ChooseProduct from './_ChoosingProduct.vue'
 export default {
     props:{
         purchase:{}
     },
-    emits:['close'],
-    components:{ DatePicker},
+    emits:['close',],
+    components:{ DatePicker,ChooseProduct},
     data(){
         return {
-            openPanel:[0],
+            openPanel:[0,1,2],
             options: {
             itemsPerPage: 10,
             page: 1
@@ -274,7 +282,7 @@ export default {
             return this.$store.getters.getItemCountCreatedGrpo;
         },
         disableEditBtn(){
-            this.purchase.is_synced || !this.disableEdit
+            this.purchase.is_synced
         },
         totalLineTotal() {
             let total = this.purchase.data.items.reduce((total, item) => total + item.LineTotal, 0);
@@ -299,7 +307,14 @@ export default {
             ]
         },
     },
-    methods:{
+    methods:{  
+        deleteItem(item){
+            console.log(this.purchase)
+            this.purchase.items = this.purchase.data.items.filter(i => i !== item)
+        },
+        addToOrder(item){
+            this.purchase.data.items.push(item)
+        },
         close(){
             this.$emit('close')
         },
