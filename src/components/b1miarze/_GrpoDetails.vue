@@ -167,7 +167,9 @@
                     </v-expansion-panel>
                 </v-expansion-panels>
                 <v-col cols="6">
-                    <v-btn dark color="red" @click="close">بستن</v-btn>               
+                    <v-btn dark color="red" @click="close">بستن</v-btn>     
+                </v-col>
+                <v-col cols="6">          
                     <v-btn v-if="!purchase.is_synced" dark color="blue" @click="updateRetry" >ثبت مجدد</v-btn>                         
                 </v-col>
             </v-card-text>
