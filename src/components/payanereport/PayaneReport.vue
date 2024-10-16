@@ -147,7 +147,7 @@
                                         <v-checkbox v-model="isDifferentAccount" label="صدور روی صندوق موقت"></v-checkbox>    
                                     </v-col>    
                                     <v-col cols="4">
-                                        <v-btn color="green"  @click="usePoses(item)">صدور سند</v-btn>
+                                        <v-btn :disabled="item.is_used" color="green"  @click="usePoses(item)">صدور سند</v-btn>
                                     </v-col>
                             </v-row>
                         </v-container>
@@ -436,13 +436,13 @@ var jalaali = require('jalaali-js')
             payaneReports(){
                 return this.$store.getters.getPayaneReports
             },
-    salePersons(){
-      return this.$store.getters.getSalePersons
-    },
-    payaneCodes(){
-      return this.$store.getters.getBankPayanes
-    }
-    },
+            salePersons(){
+            return this.$store.getters.getSalePersons
+            },
+            payaneCodes(){
+            return this.$store.getters.getBankPayanes
+            },
+        },
     //     created(){
 
     //     this.loadBankPayanes();
