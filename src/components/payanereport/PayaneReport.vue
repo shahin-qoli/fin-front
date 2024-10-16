@@ -287,10 +287,8 @@ var jalaali = require('jalaali-js')
             },
             usePoses(item){
                 this.loading = true;
-            var itemData = {
-            ...item
-            }
-            var payload = {itemData, isDifferentAccount: this.isDifferentAccount, newDocDate: this.newDocDate}
+
+            var payload = {...item, isDifferentAccount: this.isDifferentAccount, newDocDate: this.newDocDate}
             this.$store.dispatch('usePayaneReport',payload)
             .finally(() => {
                 this.loading = false;
