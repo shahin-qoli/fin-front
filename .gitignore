@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 src/services/agent.js
+src/services/agent.js

@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                         <v-row>
                             <v-col cols="12" class="center-text text-title"><p>انتخاب تامین کننده</p></v-col>
@@ -49,7 +49,7 @@
                 <choose-product @delete="deleteItem" @push="addToOrder"></choose-product>
             </v-col>
             <v-col cols="6">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                         <v-row>
                             <v-col cols="12" class="center-text text-title"><p>تنظیمات سند</p></v-col>
@@ -90,7 +90,7 @@
 
         <v-row v-if="isCardCodeChecked">
             <v-col cols="12">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                     <v-row>
                         <v-col cols="12" class="center-text text-title"><p>اطلاعات فاکتور</p></v-col>
@@ -187,6 +187,7 @@ export default {
             isCardCodeChecked: false,
             isLoading: false,
             showModal:false,
+            searchCardCode:''
         }
     },
     methods:{
@@ -357,3 +358,11 @@ export default {
     }
 }
 </script>
+<style scoped>
+.card{
+    margin: 10px;
+    border: 2px;
+    border-style: solid;
+    padding: 5px;
+}
+</style>

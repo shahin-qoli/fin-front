@@ -147,8 +147,9 @@ export default{
 </script>
 <style scoped>
 .card{
-    margin: 1px;
+    margin: 10px;
     border: 2px;
     border-style: solid;
+    padding: 5px;
 }
 </style>

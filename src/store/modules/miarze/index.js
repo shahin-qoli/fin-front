@@ -211,6 +211,17 @@ export default {
             }catch(err){
                 return{is_success: false, error: err}
             }
+        },        
+        async updateRetryCreateGrpo(context,payload){
+            console.log("lllllllllll")   
+            console.log(payload)
+            let data =  {grpo: { data: payload.data}}
+            try{
+                const {data: responseData} = await finAgent.post(`/front/create_grpos/${payload.id}/retry_create`,data);
+                return responseData
+            }catch(err){
+                return{is_success: false, error: err}
+            }
         },
         async loadCreatedGrpo(context,payload){
             try{
