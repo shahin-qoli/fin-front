@@ -69,8 +69,16 @@ export default {
                 console.log(payload)
                 console.log(payload.docentry)
                 if(payload.isDifferentAccount){
-                    var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"",
-                        "is_different_account": true,"new_docdate": payload.newDocDate
+                    if(payload.docentry === null)
+                    {
+                        var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"",
+                            "is_different_account": true,"new_docdate": payload.newDocDate}
+                    }
+                    else
+                    {
+                        var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"",
+                            "is_different_account": true,"new_docdate": payload.newDocDate, "used_for_docentry": payload.docentry,
+                            "used_for_doctype": 17}
                     } 
                 }
                 else if (payload.docentry === null) {
