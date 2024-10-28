@@ -103,6 +103,8 @@
                             <choose-product v-if="enableEdit" @delete="deleteItem" @push="addToOrder" ></choose-product>
                             <v-data-table
                             fixed-header
+                            v-if="purchase.data.items.length"
+                            :key="purchase.data.items.length"
                             hide-default-footer
                             dense
                             :headers="itemHeaders"
@@ -282,11 +284,16 @@ export default {
             return this.$store.getters.getItemCountCreatedGrpo;
         },
         totalLineTotal() {
-            let total = this.purchase.data.items.reduce((total, item) => total + item.LineTotal, 0);
+            console.log("go to calculate total")
+           let total = this.purchase.data.items.reduce((total, item) => total + item.LineTotal, 0);
+            
             this.purchase.totalPaid = total;
-            return total;
+            // console.log(this.purchase)
+            // return total;
         },
         formatAmountMethod() {
+            console.log("go to formatAmount")
+            console.log(this.purchase)
             const stringVlue = String(this.purchase.totalPaid)
             const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return formattedIntegerPart
@@ -306,11 +313,12 @@ export default {
     },
     methods:{  
         deleteItem(item){
-            console.log(this.purchase)
             this.purchase.data.items = this.purchase.data.items.filter(i => i !== item)
+            this.purchase.data.items = [...this.purchase.data.items];
         },
         addToOrder(item){
             this.purchase.data.items.push(item)
+            this.purchase.data.items = [...this.purchase.data.items]
         },
         close(){
             this.$emit('close')
@@ -320,6 +328,9 @@ export default {
         },
         updateRetry(){
             this.isLoading = true
+            if (typeof this.purchase.totalPaid === 'string'){
+                this.purchase.totalPaid = parseInt(this.purchase.totalPaid.replace(/,/g, ''), 10);
+            }
             this.$store.dispatch('updateRetryCreateGrpo', this.purchase).then((response)=>{
                 this.isLoading = false;
                 if (response.is_success){
@@ -353,6 +364,15 @@ export default {
         const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return formattedIntegerPart
       },
+    },
+    watch: {
+    'purchase.data.items': {
+        handler() {
+            this.totalLineTotal;  // Trigger computed recalculation
+            this.formatAmountMethod;
+        },
+        deep: true
+        }   
     }
 //    ,
  //   created(){

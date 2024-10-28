@@ -224,6 +224,9 @@ export default {
         createGrpo(){
             this.$store.dispatch(`nillError`) 
             this.isLoading = true; 
+            if (typeof this.purchase.totalPaid === 'string'){
+                this.purchase.totalPaid = parseInt(this.purchase.totalPaid.replace(/,/g, ''), 10);
+            }
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
                 if (response.is_success){
                     console.log(response.result[0])
