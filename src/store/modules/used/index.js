@@ -41,7 +41,7 @@ export default {
     actions: {
         async retryJob(context, item){
             const itemId = item.id
-            const {data: retryData} = await finAgent.get(`/front/used_payments/${itemId}/retry`)    
+            const {data: retryData} = await finAgent.post(`/front/used_payments/${itemId}/retry`)    
             return retryData;       
         },
         async denyRequest(context, reqId){
