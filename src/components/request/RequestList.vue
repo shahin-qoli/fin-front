@@ -257,7 +257,7 @@ import {TheStatus} from '../../mixins/TheStatus.js'
     },
         methods:{
           needRetry(item){
-            return (item.state != "complete" || item.state != "requested")
+            return (item.state != "complete" && item.state != "requested")
           },
           retryJob(item){
             this.errorMessage = null
