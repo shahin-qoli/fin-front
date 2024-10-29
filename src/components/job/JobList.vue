@@ -19,11 +19,7 @@
                     :server-items-length="itemCount"
                     class="elevation-1"                   
                 >
-                <template v-slot:[`item.controls`]="props">
-                    <v-btn v-if="needRetry(props.item)" class="mx-2" small  @click="retryJob(props.item)">
-                        <v-icon>mdi-check-outline</v-icon>
-                    </v-btn>
-               </template>
+
                 </v-data-table>
             </v-card>
         </template>
@@ -96,13 +92,7 @@ export default{
         }
     },
     methods:{
-        needRetry(item){
-            return item.jobfull.state != "complete"
-        },
-        retryJob(item){
-          console.log(item)
-             this.$store.dispatch('retryJob', item);
-        },
+
             loadJobs(){
             this.$store.dispatch('loadJobs',this.options)
         }

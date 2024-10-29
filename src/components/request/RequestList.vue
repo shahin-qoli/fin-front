@@ -62,22 +62,39 @@
               <template v-slot:[`item.b1requests`]="props">
                 <v-btn v-if="props.item.job_results.length > 0" @click="showJobResults(props.item.job_results)">  <v-icon>mdi-eye</v-icon> </v-btn>
               </template>
+              <template v-slot:[`item.retry`]="props">
+                <v-btn v-if="needRetry(props.item)" class="mx-2" small  @click="retryJob(props.item)">
+                  <v-icon>mdi-check-outline</v-icon>
+                </v-btn>
+              </template>
             </v-data-table>
           </v-card> 
           <v-dialog v-model="showJobResultsDialog" max-width="1600px">
             <v-card>
               <v-card-text>
-                <v-data-table
-                  fixed-header
-                  hide-default-footer
-                  dense
-                  :headers="requestHeaders"
-                  :items-per-page="-1"
-                  :items="resultsToShow">
-                </v-data-table>
+                <v-row>
+                  <v-col v-if="errorMessage==null" cols="12">
+                    <v-data-table
+                      fixed-header
+                      hide-default-footer
+                      dense
+                      :headers="requestHeaders"
+                      :items-per-page="-1"
+                      :items="resultsToShow">
+                    </v-data-table>
+                  </v-col>
+                  <v-col v-esle cols="12">
+                    <p>{{errorMessage}}</p>
+                  </v-col>
+                </v-row>
+
               </v-card-text>
             </v-card>
           </v-dialog>
+          <v-overlay :value="isLoadingLocal">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <p>در حال عملیات</p>
+        </v-overlay>
     </v-container>
 </template>
 
@@ -88,6 +105,8 @@ import {TheStatus} from '../../mixins/TheStatus.js'
       mixins:[TheStatus],
         data(){
             return {
+              errorMessage: null,
+            isLoadingLocal: false,
             showJobResultsDialog: false,
             resultsToShow: [],
             options: {
@@ -147,6 +166,13 @@ import {TheStatus} from '../../mixins/TheStatus.js'
           value: "b1requests",
           sortable: false
         },
+        {
+          text: "درخواست مجدد",
+          align: "center",
+          value: "retry",
+          sortable: false,
+        },
+        
         {
           text: "اخذ شده توسط",
           value: "captured_by",
@@ -230,7 +256,29 @@ import {TheStatus} from '../../mixins/TheStatus.js'
         },
     },
         methods:{
+          needRetry(item){
+            return item.state != "complete"
+          },
+          retryJob(item){
+            this.errorMessage = null
+            this.resultsToShow =[],
+            this.isLoadingLocal = true
+             this.$store.dispatch('retryJob', item).then(res => {
+              this.isLoadingLocal = false
+              this.showJobResultsDialog = true;
+              this.resultsToShow = [...res];
+             }).catch((err)=>{
+              console.log(err)
+              this.showJobResultsDialog = true;
+              this.isLoadingLocal = false
+              this.errorMessage = err
+             }
+
+             )
+          },
           showJobResults(results){
+            this.errorMessage = null
+            this.resultsToShow =[],
             this.showJobResultsDialog = true;
             this.resultsToShow = [...results];
           },

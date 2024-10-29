@@ -27,7 +27,8 @@ export default {
             const toUpdateIndex=state.requests.findIndex(req => req.id === reqId )
             console.log(state.requests[toUpdateIndex].state.value)
             state.requests[toUpdateIndex].state = "verified"
-        }
+        },
+
     },
     getters: {
         getRequestItemCount(state){
@@ -38,6 +39,11 @@ export default {
         }
     },
     actions: {
+        async retryJob(context, item){
+            const itemId = item.id
+            const {data: retryData} = await finAgent.get(`/front/used_payments/${itemId}/retry`)    
+            return retryData;       
+        },
         async denyRequest(context, reqId){
             try{
                 const {data: requestsData} = await finAgent.get(`/front/used_payments/${reqId}/deny`);
