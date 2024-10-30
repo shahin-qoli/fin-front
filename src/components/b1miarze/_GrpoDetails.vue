@@ -289,7 +289,7 @@ export default {
             
             this.purchase.totalPaid = total;
             // console.log(this.purchase)
-            // return total;
+            return total;
         },
         formatAmountMethod() {
             console.log("go to formatAmount")
