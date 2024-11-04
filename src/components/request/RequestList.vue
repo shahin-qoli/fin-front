@@ -266,14 +266,16 @@ import {TheStatus} from '../../mixins/TheStatus.js'
              this.$store.dispatch('retryJob', item).then(res => {
               this.isLoadingLocal = false
               this.showJobResultsDialog = true;
-              this.resultsToShow = [res];
+
+              this.resultsToShow.push(res.job_result)
+              this.loadRequests();
              }).catch((err)=>{
               console.log(err)
               this.showJobResultsDialog = true;
               this.isLoadingLocal = false
               this.errorMessage = err
              }
-
+             
              )
           },
           showJobResults(results){
