@@ -56,7 +56,7 @@
         <v-card>
           <v-card-text style="height: 900px;">
             <v-data-table
-              :headers="headers"
+              :headers="resultHeader"
               :items="resultsOfUpload"
               fixed-header
               item-key="peygiri_number"
@@ -155,6 +155,11 @@
                     {{ transformTransactionTypes(props.item.transaction_type) }}
                   </v-chip>
                 </template>
+              <template  v-slot:[`item.submit_result`]="props">
+                  <v-chip small dark :color="getColorResult(props.item.submit_result)">
+                    {{ props.item.submit_result }}
+                  </v-chip>
+                </template>
               <template v-slot:[`item.actions`]="props">
                 <v-icon
                   small
@@ -165,24 +170,24 @@
                 </v-icon>
               </template>
             </v-data-table>
-          </v-card-text>
-          <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
+                        <v-btn
+            v-if="!finalized"
               color="blue darken-1"
-              text
-              @click="closeFinal"
-            >
-              لغو
-            </v-btn>
-            <v-btn
-              color="blue darken-1"
-              text
+              
               @click="saveFinal"
             >
               ذخیره
             </v-btn>
-          </v-card-actions>
+            <v-btn
+              color="red darken-1"
+              
+              @click="closeFinal"
+            >
+              بستن
+            </v-btn>
+
+          </v-card-text>
         </v-card>
 
       </v-dialog>
@@ -200,6 +205,7 @@
     mixins:[TransactionTypes],
     data() {
       return {
+        finalized: false,
         editedIndex: -1,
       editedItem: {
         transaction_type: '',
@@ -224,20 +230,35 @@
         uploadErrorMessage:"",
         resultsOfUpload: null,
         resultDialoge: false,
-        headers: [
-        { text: 'تاریخ', value: 'date' },
-        { text: 'مبلغ', value: 'amount' },
-        { text: 'نوع تراکنش', value: 'transaction_type' },
-        { text: 'کارت مبدا', value: 'card_from' },
-        { text: 'حساب مبدا', value: 'account_from' },
-        { text: 'شماره پیگیری', value: 'peygiri_number' },
-        { text: 'شرح تراکنش', value: 'description' },
-        { text: '', value: 'actions' }
-      ],
       
       };
     },
-    computed:{
+    computed: {
+      resultHeader() {
+        if (this.finalized) {
+          return [
+            { text: 'تاریخ', value: 'date' },
+            { text: 'مبلغ', value: 'amount' },
+            { text: 'نوع تراکنش', value: 'transaction_type' },
+            { text: 'کارت مبدا', value: 'card_from' },
+            { text: 'حساب مبدا', value: 'account_from' },
+            { text: 'شماره پیگیری', value: 'peygiri_number' },
+            { text: 'وضعیت ثبت', value: 'submit_result' },
+            { text: 'خطا', value: 'error' },
+          ]      
+        } else {
+          return [
+            { text: 'تاریخ', value: 'date' },
+            { text: 'مبلغ', value: 'amount' },
+            { text: 'نوع تراکنش', value: 'transaction_type' },
+            { text: 'کارت مبدا', value: 'card_from' },
+            { text: 'حساب مبدا', value: 'account_from' },
+            { text: 'شماره پیگیری', value: 'peygiri_number' },
+            { text: 'شرح تراکنش', value: 'description' },
+            { text: '', value: 'actions' }
+          ]
+        }
+      },
         banks(){
             return this.$store.getters.getBanks
         },
@@ -262,6 +283,13 @@
         }
     },
     methods: {
+      getColorResult(res) {
+        if (res) {
+          return "green"
+        } else {
+          return "red"
+        }
+      },
       openForImport(acc, bank) {
         this.importDialoge = true
         this.accountToImport = acc
@@ -335,6 +363,7 @@
         })
       },
       async saveFinal() {
+        this.finalized = false
         this.isLoading = true;
         if (this.resultsOfUpload.length > 0) {
           try {
@@ -345,14 +374,28 @@
             const { data: responseData } = await finAgent.post(`/front/bank_accounts/${this.accountToImport.id}/import_file_finalize`, payload);
             if(responseData.is_success) {
               this.isLoading = false;
-              this.created
-              this.closeFinal()
+              responseData.card_to_card.forEach(item => {
+                const existingItem = this.resultsOfUpload.find(result => (result.peygiri_number === item.peygiri_number) && (result.transaction_type === item.transaction_type) );
+                Object.assign(existingItem, {
+                  submit_result: item.result,
+                  error: item.error
+                })
+              })
+              responseData.account_to_account.forEach(item => {
+                const existingItem = this.resultsOfUpload.find(result => (result.peygiri_number === item.peygiri_number) && (result.transaction_type === item.transaction_type) );
+                Object.assign(existingItem, {
+                  submit_result: item.result,
+                  error: item.error
+                })
+              })
+              this.finalized = true
             }
           }
           catch (err) {
             console.log(err)
           }
         }
+        this.isLoading = false
       },
       closeImport(){
         this.importDialoge = false
