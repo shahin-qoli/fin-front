@@ -350,7 +350,7 @@
         if (this.editedIndex > -1) {
           Object.assign(this.resultsOfUpload[this.editedIndex], this.editedItem)
         } 
-        this.close()
+        this.closeEdit()
       },
       refreshAll() {
         this.finalized = false,
