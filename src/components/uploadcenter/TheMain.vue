@@ -397,8 +397,10 @@
               data: this.resultsOfUpload
             }
             const { data: responseData } = await finAgent.post(`/front/bank_accounts/${this.accountToImport.id}/import_file_finalize`, payload);
-            if(responseData.is_success) {
+            if (responseData.is_success) {
+              this.finalized = true
               this.isLoading = false;
+              
               responseData.card_to_card.forEach(item => {
                 const existingItem = this.resultsOfUpload.find(result => (result.peygiri_number === item.peygiri_number) && (result.transaction_type === item.transaction_type) );
                 Object.assign(existingItem, {
@@ -413,11 +415,24 @@
                   error: item.error
                 })
               })
-              this.finalized = true
+              
+            }                       
+            else {
+              this.isLoading = false;
+              this.$toasted.show(responseData.error+"مجدد تلاش کنید", {
+                type: 'error',
+                position: 'bottom-center',
+                duration: 5000
+              });
             }
           }
           catch (err) {
             console.log(err)
+            this.$toasted.show(err + "مجدد تلاش کنید", {
+                type: 'error',
+                position: 'bottom-center',
+                duration: 5000
+              });
           }
         }
         this.isLoading = false
