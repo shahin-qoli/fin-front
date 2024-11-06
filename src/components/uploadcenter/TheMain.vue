@@ -191,7 +191,7 @@
         </v-card>
 
       </v-dialog>
-      <v-overlay :value="isLoading">
+      <v-overlay :value="isLoading" style="z-index: 2000;">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
             <p>در حال عملیات</p>
         </v-overlay>
@@ -294,7 +294,6 @@
         this.importDialoge = true
         this.accountToImport = acc
         this.bankToImport = bank
-        console.log
       },
       async submitForm(){
             this.uploadError= false
@@ -353,9 +352,35 @@
         } 
         this.close()
       },
+      refreshAll() {
+        this.finalized = false,
+          this.editedIndex = -1,
+          this.editedItem = {
+            transaction_type: '',
+            card_from: "",
+            account_from: "",
+            peygiri_number: "",
+          };
+        this.defaultItem = {
+          transaction_type: '',
+          card_from: "",
+          account_from: "",
+          peygiri_number: "",
+        };
+        this.dialogEditItem = false;
+        this.importDialoge= false;
+        this.accountToImport= null;
+        this.bankToImport= null;
+        this.isLoading= false;
+        this.file= null;
+        this.fileKey=null;
+        this.uploadError= false;
+        this.uploadErrorMessage="";
+        this.resultsOfUpload= null;
+        this.resultDialoge= false;
+      },
       closeFinal () {
-        this.resultDialoge = false
-        this.resultsOfUpload= null
+        this.refreshAll()
         this.closeImport()
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
