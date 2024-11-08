@@ -199,6 +199,7 @@
   </template>
   
   <script>
+    import FileSaver from 'file-saver'
   import {TransactionTypes} from '../../mixins/TransactionTypes.js'
   import {finAgent} from '@/services/agent'
   export default {
@@ -389,9 +390,36 @@
       },
       async saveFinal() {
         this.finalized = false
-        this.isLoading = true;
+       
         if (this.resultsOfUpload.length > 0) {
+          var valid =this.resultsOfUpload.every(transaction => { 
+            if (transaction.transaction_type === "1") {
+              return (
+                  transaction.peygiri_number &&
+                  transaction.card_from &&
+                  transaction.amount &&
+                  transaction.date &&
+                  transaction.card_from.length === 16
+              );           
+            } else if (transaction.transaction_type === "2") {
+                return (
+                  transaction.peygiri_number &&
+                  transaction.amount &&
+                  transaction.date 
+              );  
+            }
+            return true;
+          })
+          if (!valid)
+          {
+              this.$toasted.show("اطلاعات لازم را تکمیل کنید*کارت به کارت: کارت مبدا، پیگیری*حساب به حساب: شماره پیگیری", {
+                type: 'error',
+                position: 'bottom-center',
+                duration: 10000
+              });
+         return }
           try {
+             this.isLoading = true;
             let payload = {
               file_key: this.fileKey,
               data: this.resultsOfUpload
@@ -415,7 +443,7 @@
                   error: item.error
                 })
               })
-              
+              this.downloadResult()
             }                       
             else {
               this.isLoading = false;
@@ -441,8 +469,29 @@
         this.importDialoge = false
         this.accountToImport = null
         this.bankToImport = null
+        this.file = null,
+        this.fileKey = null,
+        this.uploadError = false,
+        this.uploadErrorMessage = "",
+        this.resultsOfUpload = null,
+        this.resultDialoge = false
       },
-      
+      async downloadResult() {
+        try {
+          let payload ={file_key: this.fileKey}
+          const response= await finAgent.post(`/front/bank_accounts/download_file_finalize`, payload,{responseType: 'blob'} );
+          FileSaver.saveAs(response.data, this.fileKey)
+        } catch (err) { 
+              const error = new Error(
+                    
+                    err.response.data.error || 'Failed to fetch'
+                );
+                this.uploadError = true;
+                    this.file = null;
+                    this.isLoading = false;
+                throw error;
+        }
+      }
     },
     created(){
         this.$store.dispatch('loadBanks')
