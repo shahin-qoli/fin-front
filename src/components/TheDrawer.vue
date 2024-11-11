@@ -30,9 +30,9 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
                   </v-col>
-                  <v-col cols="12">
+                  <!-- <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/importtemplate'><h5>ورود اطلاعات با الگو</h5></router-link>              
-                  </v-col>           
+                  </v-col>            -->
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/bankimport'><h5>ورود اطلاعات</h5></router-link>              
                   </v-col>                        
