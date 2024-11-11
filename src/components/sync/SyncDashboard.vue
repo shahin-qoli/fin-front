@@ -312,10 +312,8 @@ export default{
             await this.$store.dispatch('getReadySources',docIds).then(response => {
                 this.isLoading = false;
                 this.showResultModal = true;
-                if (response.success_results)
-                    this.message.success = response.success_results;
-                else if (response.faild_in_update_src_results)
-                    this.message.failed = response.faild_in_update_src_results;
+                this.message.success = response.success_results;
+                this.message.failed = response.faild_in_update_src_results;
             })
             this.selectedDocs= []
             await this.loadSyncSourceDocs();
@@ -329,10 +327,8 @@ export default{
             await this.$store.dispatch('getSyncSources',docIds).then(response => {
                 this.isLoading = false;
                 this.showResultModal = true;
-                if (response.success_results)
-                  this.message.success = response.success_results;
-                else if (response.faild_in_update_src_results)
-                this.message.failed = response.faild_in_sync_results;
+                this.message.success = response.success_results;
+                this.message.failed = response.faild_in_update_src_results;
             })
             this.selectedDocs= []
             await this.loadSyncSourceDocs();
