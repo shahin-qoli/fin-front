@@ -328,7 +328,7 @@ export default{
                 this.isLoading = false;
                 this.showResultModal = true;
                 this.message.success = response.success_results;
-                this.message.failed = response.faild_in_update_src_results;
+                this.message.failed = response.faild_in_sync_results;
             })
             this.selectedDocs= []
             await this.loadSyncSourceDocs();
