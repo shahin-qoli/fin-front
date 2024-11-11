@@ -6,40 +6,21 @@
                     <v-card-text>
                         <v-row>
                             <v-col cols="4">
-                                <v-select
-                                v-model="options.selectedOption"
-                                :items="templates"
-                                item-text="title"
-                                item-value="id"
-                                label="لیست قالب ها"
-                                solo
-                                ></v-select>
+                                <v-select v-model="options.selectedOption" :items="templates" item-text="title"
+                                    item-value="id" label="لیست قالب ها" solo></v-select>
                             </v-col>
                             <v-col cols="3">
-                                <v-switch
-                                v-model="options.isSynced"
-                                label="همگام ها را نشان بده"
-                                ></v-switch>
+                                <v-switch v-model="options.isSynced" label="همگام ها را نشان بده"></v-switch>
                             </v-col>
                             <v-col cols="3">
-                                <v-switch
-                                v-model="options.equivalentCreated"
-                                label="آماده شده ها را نشان بده"
-                                ></v-switch>
+                                <v-switch v-model="options.equivalentCreated"
+                                    label="آماده شده ها را نشان بده"></v-switch>
                             </v-col>
                             <v-col v-if="isSelectedAnyOption" cols="3">
-                                <v-text-field
-                                :value="mainDocument"
-                                label="سند مادر"
-                                disabled
-                                ></v-text-field>
+                                <v-text-field :value="mainDocument" label="سند مادر" disabled></v-text-field>
                             </v-col>
                             <v-col v-if="isSelectedAnyOption" cols="3">
-                                <v-text-field
-                                :value="equivalentDocument"
-                                label="سند معادل"
-                                disabled
-                                ></v-text-field>
+                                <v-text-field :value="equivalentDocument" label="سند معادل" disabled></v-text-field>
                             </v-col>
                             <v-col cols="3">
                                 <date-picker v-model="options.docsStartDate" label="تاریخ شروع"></date-picker>
@@ -47,18 +28,18 @@
                             <v-col cols="3">
                                 <date-picker v-model="options.docsEndDate" label="تاریخ پایان"></date-picker>
                             </v-col>
-                        </v-row>                       
+                        </v-row>
                     </v-card-text>
                 </v-card>
-            </v-col>    
-        </v-row>            
+            </v-col>
+        </v-row>
         <v-row>
-            <v-col cols="12">              
+            <v-col cols="12">
                 <v-card outlined>
                     <v-card-text>
-                        <v-form  @submit.prevent="submitUpdate">
-                            <v-row >
-                                <v-col cols="3"  >
+                        <v-form @submit.prevent="submitUpdate">
+                            <v-row>
+                                <v-col cols="3">
                                     <date-picker v-model="updateStartDate" label="تاریخ شروع"></date-picker>
                                 </v-col>
                                 <v-col cols="3">
@@ -77,47 +58,30 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-text>
-                        <v-data-table
-                        fixed-header
-                        dense
-                        :headers="headers"
-                        :items="syncSourceDocs"
-                        item-key="id"
-                        show-select
-                        item-value="id"
-                        v-model="selectedDocs"
-                        @input="handleTableSelectionChange"
-                        :options.sync="options"
-                        :server-items-length="itemCountSyncSources"
-                        class="elevation-1"
-                        >
-                        <template v-slot:header="" >
-                            <thead>
-                            <tr>
-                                <th colspan="10" class="text-center custom-header">سند مادر</th>
-                                <th colspan="3" class="text-center custom-header">سند معادل</th>
-                            </tr>
-                            </thead>
-                        </template>
-                        <template v-slot:[`item.is_synced`]="{ item }">
-                            <v-simple-checkbox
-                            v-model="item.is_synced"
-                            disabled
-                            ></v-simple-checkbox>
-                        </template>
-                        <template v-slot:[`item.equivalent_created`]="{ item }">
-                            <v-simple-checkbox
-                            v-model="item.equivalent_created"
-                            disabled
-                            ></v-simple-checkbox>
-                        </template>
-                        <template v-slot:[`item.source_document_total`]="{ item }">
-                        <p>{{ item.source_document_total | formatAmount }}</p>
-                    </template>
-                    <template v-slot:[`item.source_document_date`]="{ item }">
-                        <p>{{ item.source_document_date | formatDate }}</p>
-                    </template>
-                        <!-- <template v-slot:[`item.controls`]="props">
+                        <v-data-table fixed-header dense :headers="headers" :items="syncSourceDocs" item-key="id"
+                            show-select item-value="id" v-model="selectedDocs" @input="handleTableSelectionChange"
+                            :options.sync="options" :server-items-length="itemCountSyncSources" class="elevation-1">
+                            <template v-slot:header="">
+                                <thead>
+                                    <tr>
+                                        <th colspan="10" class="text-center custom-header">سند مادر</th>
+                                        <th colspan="3" class="text-center custom-header">سند معادل</th>
+                                    </tr>
+                                </thead>
+                            </template>
+                            <template v-slot:[`item.is_synced`]="{ item }">
+                                <v-simple-checkbox v-model="item.is_synced" disabled></v-simple-checkbox>
+                            </template>
+                            <template v-slot:[`item.equivalent_created`]="{ item }">
+                                <v-simple-checkbox v-model="item.equivalent_created" disabled></v-simple-checkbox>
+                            </template>
+                            <template v-slot:[`item.source_document_total`]="{ item }">
+                                <p>{{ item.source_document_total | formatAmount }}</p>
+                            </template>
+                            <template v-slot:[`item.source_document_date`]="{ item }">
+                                <p>{{ item.source_document_date | formatDate }}</p>
+                            </template>
+                            <!-- <template v-slot:[`item.controls`]="props">
                          <v-btn  class="mx-2" small  @click="retryJob(props.item)">
                         <v-icon>mdi-check-outline</v-icon>
                         </v-btn>
@@ -136,7 +100,9 @@
         <v-row v-if="isSelectedDocs">
             <v-col cols="12">
                 <v-card>
-                    <v-card-title><p>عملیات</p></v-card-title>
+                    <v-card-title>
+                        <p>عملیات</p>
+                    </v-card-title>
                     <v-card-text>
                         <v-row>
                             <v-col v-if="isOkForReady" cols="6">
@@ -152,18 +118,31 @@
         </v-row>
         <!-- Loading Spinner -->
         <v-overlay :value="isLoading">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </v-overlay>
         <!-- Result Modal -->
         <v-dialog v-model="showResultModal" max-width="500">
-        <v-card>
-            <v-card-title><h2>نتیجه</h2></v-card-title>
-            <v-card-text v-if="message.success"><h3>نتایج موفق</h3>{{ message.success }}</v-card-text>
-            <v-card-text v-if="message.failed"><h3>نتایج ناموفق</h3>{{ message.failed }}</v-card-text>
-            <v-card-actions>
-            <v-btn color="primary" @click="showResultModal = false">OK</v-btn>
-            </v-card-actions>
-        </v-card>
+            <v-card>
+                <v-card-title>
+                    <h2>نتیجه</h2>
+                </v-card-title>
+                <v-card-text v-if="message.success">
+                    <h3>نتایج موفق</h3>
+                    تعداد سند های موفقیت آمیز: {{ message.success.length }}
+                </v-card-text>
+                <v-card-text v-if="message.failed">
+                    <h3>نتایج ناموفق</h3>
+                    تعداد سند های ناموفق: {{ message.failed.length }}
+                    <v-col v-for="(item,index) in message.failed" :key="index">
+                        <p> خطای سند ردیف {{ item.src.id }} برابر است با :
+                                {{ item.result }}
+                        </p>
+                    </v-col>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary" @click="showResultModal = false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
 
     </v-container>
@@ -188,8 +167,8 @@ export default{
             // selectedOption: null,
             updateStartDate: null,
             message: {
-                success: "salam",
-                failed: ""
+                success: [],
+                failed: []
             },   
             isLoading: false,
             showResultModal: false,
@@ -325,7 +304,9 @@ export default{
             this.isOkForReady = this.selectedDocs.every(item => !item.is_synced && !item.equivalent_created )
             this.isOkForSync = this.selectedDocs.every(item => !item.is_synced && item.equivalent_created)
         },
-        async getReady(){
+        async getReady() {
+            this.message.success = []
+            this.message.failed = []
             this.isLoading = true;
             let docIds = this.selectedDocs.map(item => item.id)
             await this.$store.dispatch('getReadySources',docIds).then(response => {
@@ -342,6 +323,8 @@ export default{
         },
         async getSync(){
             this.isLoading = true;
+            this.message.success = []
+            this.message.failed = []
             let docIds = this.selectedDocs.map(item => item.id)
             await this.$store.dispatch('getSyncSources',docIds).then(response => {
                 this.isLoading = false;
