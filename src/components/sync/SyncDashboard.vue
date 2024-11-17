@@ -5,16 +5,9 @@
                 <v-card outlined>
                     <v-card-text>
                         <v-row>
-                            <v-col cols="4">
+                            <v-col cols="12">
                                 <v-select v-model="options.selectedOption" :items="templates" item-text="title"
                                     item-value="id" label="لیست قالب ها" solo></v-select>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-switch v-model="options.isSynced" label="همگام ها را نشان بده"></v-switch>
-                            </v-col>
-                            <v-col cols="3">
-                                <v-switch v-model="options.equivalentCreated"
-                                    label="آماده شده ها را نشان بده"></v-switch>
                             </v-col>
                             <v-col v-if="isSelectedAnyOption" cols="3">
                                 <v-text-field :value="mainDocument" label="سند مادر" disabled></v-text-field>
@@ -22,6 +15,16 @@
                             <v-col v-if="isSelectedAnyOption" cols="3">
                                 <v-text-field :value="equivalentDocument" label="سند معادل" disabled></v-text-field>
                             </v-col>
+                            <v-col v-if="isSelectedAnyOption" cols="6">
+                                <v-text-field :value="equivalentDocumentDescription" label="توضیحات" disabled></v-text-field>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-switch v-model="options.isSynced" label="همگام ها را نشان بده"></v-switch>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-switch v-model="options.equivalentCreated"
+                                    label="آماده شده ها را نشان بده"></v-switch>
+                            </v-col>                            
                             <v-col cols="3">
                                 <date-picker v-model="options.docsStartDate" label="تاریخ شروع"></date-picker>
                             </v-col>
@@ -271,6 +274,10 @@ export default{
         equivalentDocument(){
             let selected = this.templates.find(item => item.id == this.options.selectedOption)
             return selected.equivalent_name
+        },
+        equivalentDocumentDescription(){
+            let selected = this.templates.find(item => item.id == this.options.selectedOption)
+            return selected.description
         },
         syncSourceDocs(){
             return this.$store.getters.getSyncSourceDocs;
