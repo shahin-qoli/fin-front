@@ -284,9 +284,7 @@ import DatePicker from '../DatePicker.vue'
       this.deactiveDialog=true
     },
     saveNew () {
-      this.$store.dispatch('createPayaneVisitor', this.newItem)
-      this.loadPayaneVisitors();
-      this.close()
+      this.$store.dispatch('createPayaneVisitor', this.newItem).then(()=> this.loadPayaneVisitors(),this.close())
     },
     loadPayaneVisitors() {
         // console.log(this)

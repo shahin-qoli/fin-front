@@ -108,19 +108,16 @@ export default {
             throw error;
          } 
         },
-        async createPayaneVisitor(context, payload,actions){
+        async createPayaneVisitor(context, payload){
             try{
                 var data = payload
          
-                const {data:responseData} = await finAgent.post('/front/payane_persons', data)
-                if (responseData){
+                await finAgent.post('/front/payane_persons', data)
 
-                    actions.dispatch('loadPayaneVisitors')
-                }
             } catch (err) {
                 //console.log(err.response);
                 const error = new Error(
-                    err.response.data.error || 'Failed to fetch'
+                    err || 'Failed to fetch'
                 );
                 throw error;
              }
