@@ -30,7 +30,7 @@
                             </v-col>
                             <v-col cols="3">
                                 <date-picker v-model="options.docsEndDate" label="تاریخ پایان"></date-picker>
-                            </v-col>
+                            </v-col>   
                         </v-row>
                     </v-card-text>
                 </v-card>
@@ -44,6 +44,17 @@
                             <v-row>
                                 <v-col cols="3">
                                     <date-picker v-model="updateStartDate" label="تاریخ شروع"></date-picker>
+                                </v-col>
+                                <v-col v-if="templateIsCheque" cols="3">
+                                    <v-select
+                                        :items="chequeStates"
+                                        name="chequeStates"
+                                        label="وضعیت چک"
+                                        item-text="text"
+                                        item-value="value"
+                                        v-model="checkStates"
+                                        multiple
+                                    ></v-select>                                
                                 </v-col>
                                 <v-col cols="3">
                                     <v-btn dark color="green" type="submit">به روزرسانی اسناد</v-btn>
@@ -159,14 +170,16 @@ export default{
     data() {
         return {
             options: {
-          itemsPerPage: 10,
-          page:1,
-          selectedOption: 1,
-          isSynced: false,
-          equivalentCreated: false,
-          docsStartDate: '',
-            docsEndDate: '',
-        },selectedDocs: [],
+                itemsPerPage: 10,
+                page:1,
+                selectedOption: 1,
+                isSynced: false,
+                equivalentCreated: false,
+                docsStartDate: '',
+                docsEndDate: '',
+                
+            }, selectedDocs: [],
+            checkStates:[],
             // selectedOption: null,
             updateStartDate: null,
             message: {
@@ -290,6 +303,22 @@ export default{
         },
         isSelectedDocs(){
             return this.selectedDocs.length > 0
+        },
+        templateIsCheque() {
+            return this.templates.find((item)=> item.id == this.options.selectedOption).is_cheque 
+        },
+        chequeStates() {
+            return [
+           
+                {
+                    text: "وصول شده 310",
+                    value: 310
+                },
+                {
+                    text: "وصول شده بعد از واگذار مجدد 340",
+                    value: 340
+                }
+            ]
         }
     },
     watch:{
@@ -343,10 +372,22 @@ export default{
         loadTemplates(){
             this.$store.dispatch('loadSyncTemplates')
         },
-        submitUpdate(){
+        submitUpdate() {
+            if (this.templateIsCheque && this.checkStates.length == 0) {
+                this.$toasted.show('لطفا وضعیت چک را انتخاب کنید', {
+                    type: "error",
+                    position: "bottom-center",
+                    duration: 4000,
+                })
+                
+                return
+            }
+
             this.isLoading = true;
-            let payload = {templateId: this.options.selectedOption, date: this.updateStartDate}
-            this.$store.dispatch('updateTemplate', payload).then(response =>{
+            let payload = {templateId: this.options.selectedOption, date: this.updateStartDate, checkStates: this.checkStates}
+
+            this.$store.dispatch('updateTemplate', payload).then(response => {
+                console.log(response)
                 this.isLoading = false;
                 this.showResultModal = true;
                 if (response.is_success){
@@ -355,6 +396,8 @@ export default{
                     this.message.failed= `ممکن است بخشی از عملیات کامل نشده باشد،تعداد ${response.created_or_updated_count} سند با موفقیت ایجاد شد یا به روز شد. در حال حاضر تغییرات جزییات سند بررسی نمی شود `
                 }
             })
+            this.updateStartDate = null
+            this.checkStates = []
         },
         loadSyncSourceDocs(){
             this.$store.dispatch('loadSyncSourceDocuments', this.options)
