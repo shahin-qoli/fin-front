@@ -11,9 +11,13 @@ export default {
             filteredProducts: [],
             createdGrpo:[],
             itemCountCreatedGrpo: null,
+            miarzePayments:[]
         }
     },
     mutations:{
+        setMiarzePayments(state, payload){
+            state.miarzePayments = payload
+        },
         setMiarzeOrders(state, payload){
             state.miarzeOrders = payload;
         },
@@ -82,6 +86,26 @@ export default {
                 err.response.data.error || 'Failed to fetch'
             );
             throw error;
+            }
+        },
+        async loadMiarzePayments(context, payload){
+            try{
+                const {data: responseData} = await spreeAgent.get(`/storefront/brx_express_checkouts`);
+                var miarzePaymentsData = responseData.data;
+                const miarzePayments = []
+                for (const item of miarzePaymentsData) {
+                    const miarzeMessageTemplate= {
+                        ...item
+                    }
+                    miarzePayments.push(miarzeMessageTemplate); 
+                }    
+                context.commit('setMiarzePayments', miarzePayments)
+
+            }catch(err){
+                    const error = new Error(
+                        err.response.data.error || 'Failed to fetch'
+                    );
+                    throw error;
             }
         },
         async loadMiarzeMessageTemplates(context){
@@ -230,9 +254,12 @@ export default {
             }catch(err){
                 console.log(err)
             }
-        }
+        },
     },
     getters:{
+        getMiarzePayments(state){
+            return state.miarzePayments;
+        },
         getMiarzeOrders(state){
             return state.miarzeOrders;
         },
