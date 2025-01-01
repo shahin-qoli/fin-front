@@ -47,7 +47,7 @@ import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
 import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 import CreateGrpo from '@/views/TheGrpoView.vue'
 import GrpoList from '@/views/GrpoListView.vue'
-
+import MiarzePayments from '@/views/MiarzePaymentsView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -157,7 +157,13 @@ const routes = [
     name: 'CreateGrpo',
     beforeEnter : guardMyrouteSpree,
     component: CreateGrpo
-  }, 
+  },
+  {
+    path: '/miarzepayments',
+    name: 'MiarzePayments',
+    beforeEnter : guardMyrouteSpree,
+    component: MiarzePayments
+  },  
   {
     path: '/createinventorytransfer',
     name: 'createinventorytransfer',

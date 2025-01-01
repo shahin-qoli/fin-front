@@ -5,6 +5,7 @@ export default {
         return {
             miarzeOrders:[],
             itemCount: null,
+            itemCountPayments: null,
             itemCountMessageTemplate: null,
             miarzeMessageTemplates:[],
             miarzeOrderMessageTemplates:[],
@@ -23,6 +24,9 @@ export default {
         },
         setItemCountMiarze(state, payload){
             state.itemCount = payload;
+        },
+        setItemCountPaymentMiarze(state, payload){
+            state.itemCountPayments = payload;
         },
         setMiarzeMessageTemplatesItemCount(state,payload){
             state.itemCountMessageTemplate = payload
@@ -90,9 +94,13 @@ export default {
         },
         async loadMiarzePayments(context, payload){
             try{
-                const {data: responseData} = await spreeAgent.get(`/storefront/brx_express_checkouts`);
+                const {data: responseData} = await spreeAgent.get(`/storefront/brx_express_checkouts?page=${payload.page}
+                    &per_page=${payload.itemsPerPage}&q[is_paied_eq]=${payload.isPaied}
+                    &q[is_used_eq]=${payload.isUsed}&q[created_at_gt]=${payload.transactionDate}
+                    &q[amount_cont]=${payload.amount}&q[order_number_cont]=${payload.orderNumber}`);
                 var miarzePaymentsData = responseData.data;
                 const miarzePayments = []
+                var itemCount = responseData.options.count;
                 for (const item of miarzePaymentsData) {
                     const miarzeMessageTemplate= {
                         ...item
@@ -100,6 +108,7 @@ export default {
                     miarzePayments.push(miarzeMessageTemplate); 
                 }    
                 context.commit('setMiarzePayments', miarzePayments)
+                context.commit('setItemCountPaymentMiarze', itemCount);
 
             }catch(err){
                     const error = new Error(
@@ -265,6 +274,9 @@ export default {
         },
         getMiarzeOrdersItemCount(state){
             return state.itemCount;
+        },
+        getMiarzePaymentsItemCount(state){
+            return state.itemCountPayments;
         },
         getMiarzeMessageTemplatesItemCount(state){
             return state.itemCountMessageTemplate;
