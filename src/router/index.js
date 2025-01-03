@@ -47,6 +47,8 @@ import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
 import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 import CreateGrpo from '@/views/TheGrpoView.vue'
 import GrpoList from '@/views/GrpoListView.vue'
+import MiarzePayments from '@/views/MiarzePaymentsView.vue'
+
 import ImportCenter from '@/views/BankImportView.vue'
 import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
 
@@ -171,7 +173,13 @@ const routes = [
     name: 'CreateGrpo',
     beforeEnter : guardMyrouteSpree,
     component: CreateGrpo
-  }, 
+  },
+  {
+    path: '/miarzepayments',
+    name: 'MiarzePayments',
+    beforeEnter : guardMyrouteSpree,
+    component: MiarzePayments
+  },  
   {
     path: '/createinventorytransfer',
     name: 'createinventorytransfer',
