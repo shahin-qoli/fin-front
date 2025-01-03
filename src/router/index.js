@@ -48,6 +48,10 @@ import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 import CreateGrpo from '@/views/TheGrpoView.vue'
 import GrpoList from '@/views/GrpoListView.vue'
 import MiarzePayments from '@/views/MiarzePaymentsView.vue'
+
+import ImportCenter from '@/views/BankImportView.vue'
+import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
+
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -145,7 +149,19 @@ function guardMyrouteLoggedIn(to, from, next){
     next('/login'); // go to '/login';
    }
 }
-const routes = [ 
+const routes = [  
+  {
+    path: '/usagedatalist',
+    name: 'UsageDataList',
+   beforeEnter : guardMyrouteAdmin,
+    component: ClubUsageDataList
+  },
+  {
+  path: '/bankimport',
+  name: 'BankImport',
+  beforeEnter : guardMyrouteAdmin,
+  component: ImportCenter
+  }, 
   {
     path: '/grpolist',
     name: 'GrpoList',

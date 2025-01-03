@@ -52,6 +52,8 @@
             </v-card-title>
             <v-data-table
             fixed-header
+            show-expand
+            :single-expand="singleExpand"
             dense
             :headers="headers"
             :items="payaneReports"
@@ -130,18 +132,40 @@
                             <v-icon>mdi-check-outline</v-icon>
                 </v-btn>
             </template>
+            <template v-slot:expanded-item="{ headers,item}">
+                <td :colspan="headers.length">
+                    <div>
+                        <v-container  fluid style="margin: 0px; padding: 0px; width: 100%">
+                            <v-row d-flex>
+                                <v-col cols="4">
+                                    <date-picker
+                                    label="تاریخ صدور سند"
+                                    v-model="newDocDate">
+                                    </date-picker>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-checkbox v-model="isDifferentAccount" label="صدور روی صندوق موقت"></v-checkbox>    
+                                    </v-col>    
+                                    <v-col cols="4">
+                                        <v-btn :disabled="item.is_used" color="green"  @click="usePoses(item)">صدور سند</v-btn>
+                                    </v-col>
+                            </v-row>
+                        </v-container>
+                    </div>
+                </td>
+            </template>
             </v-data-table>
             <v-btn
-        class="mx-2"
-        fab
-        dark
-        color="teal"
-        @click="exportData"
-        >
-        <v-icon dark>
-            mdi-format-list-bulleted-square
-        </v-icon>
-        </v-btn>
+            class="mx-2"
+            fab
+            dark
+            color="teal"
+            @click="exportData"
+            >
+            <v-icon dark>
+                mdi-format-list-bulleted-square
+            </v-icon>
+            </v-btn>
         </v-card>
        <v-dialog
        v-model="exportError"
@@ -174,6 +198,7 @@
 
 <script>
 import {finAgent} from '@/services/agent'
+
 import FileSaver from 'file-saver'
 import DatePicker from '../DatePicker.vue'
 var jalaali = require('jalaali-js')
@@ -183,6 +208,7 @@ var jalaali = require('jalaali-js')
     },
         data(){
         return{
+            singleExpand: true,
             exportError: false,
             dialog: false,
             isLoading:null,
@@ -200,7 +226,9 @@ var jalaali = require('jalaali-js')
               {type: 'sale_person', type_name: 'ویزیتور'},
               {type: 'driver', type_name: 'راننده'},
               {type: 'customer', type_name: 'مشتری'},  
-        ]          
+        ]   ,
+        newDocDate:'',
+        isDifferentAccount: false,       
         }
     },
         watch:{
@@ -259,12 +287,13 @@ var jalaali = require('jalaali-js')
             },
             usePoses(item){
                 this.loading = true;
-            var payload = {
-            ...item
-            }
+
+            var payload = {...item, isDifferentAccount: this.isDifferentAccount, newDocDate: this.newDocDate}
             this.$store.dispatch('usePayaneReport',payload)
             .finally(() => {
                 this.loading = false;
+                this.isDifferentAccount = false;
+                this.newDocDate = '';
               })
             },
             isUsed(isUsed){
@@ -407,13 +436,13 @@ var jalaali = require('jalaali-js')
             payaneReports(){
                 return this.$store.getters.getPayaneReports
             },
-    salePersons(){
-      return this.$store.getters.getSalePersons
-    },
-    payaneCodes(){
-      return this.$store.getters.getBankPayanes
-    }
-    },
+            salePersons(){
+            return this.$store.getters.getSalePersons
+            },
+            payaneCodes(){
+            return this.$store.getters.getBankPayanes
+            },
+        },
     //     created(){
 
     //     this.loadBankPayanes();

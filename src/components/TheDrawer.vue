@@ -30,9 +30,12 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
                   </v-col>
-                  <v-col cols="12">
+                  <!-- <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/importtemplate'><h5>ورود اطلاعات با الگو</h5></router-link>              
-                  </v-col>               
+                  </v-col>            -->
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/bankimport'><h5>ورود اطلاعات</h5></router-link>              
+                  </v-col>                        
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -51,6 +54,18 @@
                     <!-- <v-col cols="12" v-if="saleRole">
                         <router-link style="text-decoration: none;" to='/usetransaction'><h5>درخواست ثبت سند</h5></router-link>  
                     </v-col>  -->
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>باشگاه مشتریان</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/usagedatalist'><h5>درخواست ها</h5></router-link>
+                    </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>

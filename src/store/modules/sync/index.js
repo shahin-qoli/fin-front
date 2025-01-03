@@ -81,8 +81,16 @@ export default {
             }
         },
         async updateTemplate(context, payload){
-            try{
-                const {data:responseData} = await finAgent.get(`/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}`)
+            try {
+                let url = ""
+                if (payload.checkStates.length > 0) {
+                    url = `/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}&states=[${payload.checkStates}]`
+                }
+                else
+                {
+                    url = `/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}`
+                }
+                const {data:responseData} = await finAgent.get(url)
                 return responseData
             }catch(err){
                 const error = new Error(

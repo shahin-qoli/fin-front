@@ -237,9 +237,20 @@ export default {
         },
         async createGrpo(context,payload){
 
-            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code, data: payload}}
+            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code,vendor_name: payload.vendor_name, data: payload}}
             try{
                 const {data: responseData} = await finAgent.post(`/front/create_grpos`,data);
+                return responseData
+            }catch(err){
+                return{is_success: false, error: err}
+            }
+        },        
+        async updateRetryCreateGrpo(context,payload){
+            console.log("lllllllllll")   
+            console.log(payload)
+            let data =  {grpo: { data: payload.data}}
+            try{
+                const {data: responseData} = await finAgent.post(`/front/create_grpos/${payload.id}/retry_create`,data);
                 return responseData
             }catch(err){
                 return{is_success: false, error: err}
@@ -247,7 +258,7 @@ export default {
         },
         async loadCreatedGrpo(context,payload){
             try{
-                const {data: responseData} = await finAgent.get(`/front/create_grpos`);
+                const {data: responseData} = await finAgent.get(`/front/create_grpos?page=${payload.page}&per_page=${payload.itemsPerPage}`);
                 var miarzeOrderData = responseData.data;
                 const miarzeOrders = []
                 var itemCount = responseData.options.count;
