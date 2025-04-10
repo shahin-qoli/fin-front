@@ -37,9 +37,9 @@ export default {
                 // console.log(payload)
                 let url =''
                 if(payload.withoutSalePerson){
-                    url = `/front/pos_payane_reports/reports_without_person?page=${payload.page}&per_page=${payload.itemsPerPage}&report_date=${payload.selectedDate}`
+                    url = `/front/pos_payane_reports/reports_without_person?page=${payload.page}&per_page=${payload.itemsPerPage}&report_date=${payload.selectedDate}&amount=${payload.amount}`
                 }else{
-                    url = `/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`
+                    url = `/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}&amount=${payload.amount}`
                 }
                 const {data: responseData} = await finAgent.get(url)
                 var payaneReportData = responseData.data;

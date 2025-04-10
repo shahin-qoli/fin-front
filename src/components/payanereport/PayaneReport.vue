@@ -35,6 +35,13 @@
                                     item-value="type"
                                 ></v-select>
                             </v-col>
+                            <v-col col="3">
+                                <v-text-field
+                                v-model="options.amount" 
+                                hint="120000000" 
+                                label="مبلغ">
+                                </v-text-field>
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col>
@@ -220,6 +227,7 @@ var jalaali = require('jalaali-js')
             selectedDate:'',
             selectedType: '',
             withoutSalePerson: false,
+            amount:"",
             },
             searchPayaneCodes:"98",
             personTypes: [
