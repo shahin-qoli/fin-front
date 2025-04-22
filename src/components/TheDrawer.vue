@@ -60,6 +60,18 @@
               <v-col cols="12" v-if="transactionsAccess">
                 <v-expansion-panel class="grey lighten-5">
                   <v-expansion-panel-header class="grey lighten-5">
+                    <h3>سامانه تردد</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/hrm-attendance-request-list'><h5>درخواست ها</h5></router-link>
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
                     <h3>باشگاه مشتریان</h3>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">

@@ -39,7 +39,7 @@ import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
 import paymentrequestListView from '@/views/PaymentRequestListView.vue'
 import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
 import CampaignDashboardView from '@/views/CampaignDashboardView.vue'
-import HrmView from '@/views/HrmView.vue'
+import HrmAttendanceRequestListView from '@/views/HrmAttendanceRequestListView.vue'
 import CampaignListView from '@/views/CampaignListView.vue'
 import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
 import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
@@ -256,11 +256,10 @@ const routes = [
     
     component: UsingPromotions
   },{
-    path: '/hrm',
-    name: 'hrm',
-    // beforeEnter : guardMyrouteAdmin,
-    
-    component: HrmView
+    path: '/hrm-attendance-request-list',
+    name: 'hrmattendance',
+   beforeEnter : guardMyrouteAdmin,
+    component: HrmAttendanceRequestListView
   }
   ,  {
     path: '/club',
