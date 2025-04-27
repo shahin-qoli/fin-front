@@ -26,7 +26,7 @@ export default {
   }),
   computed:{
     isPublic(){
-      return( this.$route.path.includes('club') || this.$route.path.includes('hrm'))
+      return( this.$route.path.includes('club'))
     }
     },
   beforeMount() {
