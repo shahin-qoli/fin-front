@@ -50,6 +50,13 @@
                         hide-details></v-text-field>
                     </v-col>
                     <v-col cols="4">
+                    <v-file-input
+                                accept="jpg/*"
+                                label="بارگذاری عکس"
+                                v-model="data.image"
+                            />   
+                          </v-col>                 
+                    <v-col cols="4">
                       <v-checkbox
                       label="پرداخت روی سند"
                       v-model="onDcoument"></v-checkbox>
@@ -141,7 +148,8 @@ export default{
             cardName: ""
             },
             returnedChecks:[],
-            documents:[]
+            documents:[],
+            image: null,
         },
         isLoading: false,
     } 
@@ -236,7 +244,7 @@ export default{
         },
         submitForm() {
             const obj = {item: this.item, cardcode: this.data.customer.cardCode, documents: this.toPaidDocument,
-                        checks: this.toPaidCheck, userid: this.user.id}
+                        checks: this.toPaidCheck, userid: this.user.id, image: this.data.image}
             this.$emit('use-row', obj)
         },
         getCustomerData(){

@@ -12,15 +12,27 @@ export default {
             else if (payload.documents.length > 0 || payload.checks.length > 0){
                 data ={"documents": payload.documents,"checks":payload.checks, "captured_by":user.id,"used_for": payload.cardcode}
             }
+            if (payload.image){
+                data.image = payload.image
+            }
+
             const {data:responseData} = await finAgent.post(`/front/card_to_card_raws/${payload.item.id}/use_payment`,data)
-            console.log(responseData.result)
-            if(responseData.result == true){
-                console.log("going to")
-                data = {
-                    cardcode: payload.cardcode,
-                    itemId: payload.item.id
-                }
-                contex.commit('setUsedCardtocard', data)
+
+            if(responseData.result === true && payload.image){
+                let reqId = responseData.request_id
+                let formData = new FormData()
+                formData.append('file', payload.image,payload.image.name)
+                const imageData = await finAgent.post(`/front/used_payments/${reqId}/upload_image/`,formData );
+                if(imageData.data.result){
+                    data = {
+                        cardcode: payload.cardcode,
+                        itemId: payload.item.id
+                    }
+                    contex.commit('setUsedCardtocard', data)
+                }  
+                else {
+                    throw new Error('Image upload failed');
+                }              
             }
 
         }catch (err) {
