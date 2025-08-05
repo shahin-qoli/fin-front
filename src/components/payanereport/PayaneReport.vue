@@ -88,14 +88,7 @@
             <p>{{ item.active_payane_person?.sale_person_code }}</p>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-dialog
-                    v-model="dialog"
-                    fullscreen
-                    hide-overlay
-                    transition="dialog-bottom-transition"
-                    >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-icon
+                <v-icon
                         small
                         class="mr-2"
                         v-bind="attrs"
@@ -104,37 +97,7 @@
                         >
                         mdi-eye
                         </v-icon>
-                    </template>
-                    <v-card outlined>
-                        <v-card-title>
-                        <span class="text-h5">لیست واریزهای کارتخوان</span>
-                        </v-card-title>
-                        <v-data-table
-                    fixed-header
-                    dense
-                    :headers="detailHeaders"
-                    :items="posRawsDetails"
-                    item-key="id"
-                        >
-            <template v-slot:[`item.is_used`]="{ item }">
-                <v-simple-checkbox
-                v-model="item.is_used"
-                disabled
-                ></v-simple-checkbox>
-                </template>
-            </v-data-table>
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="green darken-1"
-                            text
-                            @click="dialog = false"
-                        >
-                            بستن
-                        </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+
                 <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
                             <v-icon>mdi-check-outline</v-icon>
                 </v-btn>
@@ -174,32 +137,47 @@
             </v-icon>
             </v-btn>
         </v-card>
-       <v-dialog
-       v-model="exportError"
-       > 
-       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
+        <v-dialog
+                    v-model="dialog"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+                    >
+                    <v-card outlined>
+                        <v-card-title>
+                            <v-row>
+                                <v-col cols="12" class="d-flex justify-center align-center">
+                                    <p>لیست واریزهای کارتخوان</p>
+                                </v-col>
+                            </v-row>
+                        </v-card-title>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-       </v-dialog>
+                        <v-data-table
+                    fixed-header
+                    dense
+                    :headers="detailHeaders"
+                    :items="posRawsDetails"
+                    item-key="id"
+                        >
+            <template v-slot:[`item.is_used`]="{ item }">
+                <v-simple-checkbox
+                v-model="item.is_used"
+                disabled
+                ></v-simple-checkbox>
+                </template>
+            </v-data-table>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="green darken-1"
+                            text
+                            @click="dialog = false"
+                        >
+                            بستن
+                        </v-btn>
+                        </v-card-actions>
+                    </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -284,6 +262,7 @@ var jalaali = require('jalaali-js')
             viewMore(item) {
                 // console.log(item)
                 this.posRawsDetails = item.pos_raws
+                this.dialog = true
             },
             loadPayaneReports() {
                 // console.log(this)
