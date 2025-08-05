@@ -65,36 +65,50 @@
                 >جدید</v-btn>
             </template>
             <v-card>
-                <v-card-title>
-                <span class="headline"><span class="text-h5">جدید</span></span>
-                </v-card-title>
+              <v-card-title>
+                            <v-row>
+                                <v-col cols="12" class="d-flex justify-center align-center">
+                                    <p>جدید</p>
+                                </v-col>
+                            </v-row>
+                        </v-card-title>
                 <v-card-text>
-                <v-container>
-                    <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-select
-                            :items="salePersons"
-                            name="salePerson"
-                            label="ویزیتور"
-                            solo
-                            item-text="name"
-                            item-value="b1_slpcode"
-                            v-model="newItem.b1_slpcode"
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-select
-                            :items="payaneCodes"
-                            name="payaneCode"
-                            label="پایانه"
-                            solo
-                            item-text="payane_code"
-                            item-value="payane_code"
-                            v-model="newItem.payane_code"
-                      ></v-select>
-                    </v-col>
-                    </v-row>
-                </v-container>
+                  <v-container>
+  <v-row>
+    <v-col cols="12" sm="6" md="4">
+      <v-autocomplete
+        :items="salePersons"
+        name="salePerson"
+        label="ویزیتور"
+        solo
+        item-text="name"
+        item-value="b1_slpcode"
+        v-model="newItem.b1_slpcode"
+        clearable
+        dense
+        hide-no-data
+        hide-selected
+      ></v-autocomplete>
+    </v-col>
+
+    <v-col cols="12" sm="6" md="4">
+      <v-autocomplete
+        :items="payaneCodes"
+        name="payaneCode"
+        label="پایانه"
+        solo
+        item-text="payane_code"
+        item-value="payane_code"
+        v-model="newItem.payane_code"
+        clearable
+        dense
+        hide-no-data
+        hide-selected
+      ></v-autocomplete>
+    </v-col>
+  </v-row>
+</v-container>
+
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
