@@ -51,7 +51,7 @@ import MiarzePayments from '@/views/MiarzePaymentsView.vue'
 
 import ImportCenter from '@/views/BankImportView.vue'
 import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
-
+import Reconciliation from '@/views/ReconciliationView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -161,6 +161,11 @@ const routes = [
   name: 'BankImport',
   beforeEnter : guardMyrouteAdmin,
   component: ImportCenter
+  },   {
+    path: '/reconciliation',
+    name: 'Reconciliation',
+    beforeEnter : guardMyrouteAdmin,
+    component: Reconciliation
   }, 
   {
     path: '/grpolist',
