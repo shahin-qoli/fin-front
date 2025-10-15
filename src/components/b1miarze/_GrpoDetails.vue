@@ -276,24 +276,20 @@ export default {
             ]
         },
         items(){
-            console.log("HERE")
-            console.log(this.$store.getters.getCreatedGrpo)
             return this.$store.getters.getCreatedGrpo;
         },
         itemCount(){
             return this.$store.getters.getItemCountCreatedGrpo;
         },
         totalLineTotal() {
-            console.log("go to calculate total")
+
            let total = this.purchase.data.items.reduce((total, item) => total + item.LineTotal, 0);
             
             this.purchase.totalPaid = total;
-            // console.log(this.purchase)
             return total;
         },
         formatAmountMethod() {
-            console.log("go to formatAmount")
-            console.log(this.purchase)
+
             const stringVlue = String(this.purchase.totalPaid)
             const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return formattedIntegerPart
@@ -334,8 +330,7 @@ export default {
             this.$store.dispatch('updateRetryCreateGrpo', this.purchase).then((response)=>{
                 this.isLoading = false;
                 if (response.is_success){
-                    console.log(response.result[0])
-                    console.log(response.result)
+
                     this.$toasted.show(`موفقیت! شماره سند: ${response.result}`, {
                         position: 'bottom-center',
                         type: 'success',

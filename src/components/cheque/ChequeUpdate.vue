@@ -481,7 +481,7 @@ export default {
         let payload =  this.checkNum
         this.$store.dispatch('searchCheques', payload).then((resp) =>{
             this.isLoading= false
-            console.log(parseInt(resp,10))
+     
             if (isNaN(parseInt(resp,10))) {
                 this.error = resp;
                 this.showModalError=true
@@ -492,7 +492,7 @@ export default {
             ).catch(error => {
                 this.isLoading = false
                 this.error = error;
-                console.log("hhhhhhhhhhhhhh")
+       
             })         
       },
       submitAction(){
@@ -503,8 +503,7 @@ export default {
                      reg_state: this.selectedReg}
         this.$store.dispatch('updateChequeStates', payload).then((response) => {
         this.showModal=true;
-        console.log("start")
-        console.log(response)
+
         this.reportResult = response;
         this.selectedState = ''
         this.selectedItems =[]

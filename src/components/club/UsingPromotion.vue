@@ -55,8 +55,7 @@ export default{
             try { 
                 let payload ={b1doc: this.b1doc, used_by: this.cardCode,code: this.PromoCode}
                 await finAgent.post(`/v2/promotion_code/use_coupon`,payload).then((response) => {
-                    console.log("data");
-                    console.log(response.data);
+
                     if (response.data.state > 0){
                         this.okModal = true;
                         this.errorMessage= "با موفقیت انجام شد."

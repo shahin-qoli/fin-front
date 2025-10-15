@@ -248,7 +248,7 @@ export default{
             this.$emit('use-row', obj)
         },
         getCustomerData(){
-          console.log("getCustomerData")
+
           this.data ={
           Customer : {
           CardCode:"",
@@ -269,7 +269,7 @@ export default{
                 this.isCardcodeChecked = true
               
                 this.data = {...response.result}
-                console.log(this.data)
+
                 this.searchCardCode = null
           }
           else

@@ -286,7 +286,7 @@ export default {
     },
     methods:{
         refreshData() {
-            console.log("Refreshing data...");
+    
             this.reportData = null;
             this.mobileNumber = '';
             this.cardCode = '';
@@ -296,7 +296,7 @@ export default {
             this.reportData = null
             this.$store.dispatch('findClubReportMobile', this.mobileNumber).then((response) => {
                 this.isLoading = false
-                console.log(response)
+          
                 if (response.success){
                     this.reportData = response.result
                 }

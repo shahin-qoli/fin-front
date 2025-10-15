@@ -174,6 +174,11 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
+                    <router-link style="text-decoration: none;" to='/vendorPanel'><h5>وندور پنل</h5></router-link> 
+                    </v-col>
+                  </v-expansion-panel-content>                  
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/spree'><h5>همگام سازی</h5></router-link> 
                     </v-col>
                   </v-expansion-panel-content>
@@ -334,7 +339,7 @@ export default {
       return this.adminRole || this.spreeRole
     },
     userLoged(){
-      console.log(this.$store.getters.getUser !={})
+
       return this.$store.getters.isLogged 
     },syncAccess(){
       return this.adminRole || this.creaditRole

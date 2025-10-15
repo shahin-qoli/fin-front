@@ -48,7 +48,7 @@ import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 import CreateGrpo from '@/views/TheGrpoView.vue'
 import GrpoList from '@/views/GrpoListView.vue'
 import MiarzePayments from '@/views/MiarzePaymentsView.vue'
-
+import MiarzeVendorPanel from'@/views/MiarzeVendorPanelView.vue'
 import ImportCenter from '@/views/BankImportView.vue'
 import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
 import Reconciliation from '@/views/ReconciliationView.vue'
@@ -166,6 +166,12 @@ const routes = [
     name: 'Reconciliation',
     beforeEnter : guardMyrouteAdmin,
     component: Reconciliation
+  }, 
+  {
+    path: '/vendorPanel',
+    name: 'VendorPanel',
+    beforeEnter : guardMyrouteAdmin,
+    component: MiarzeVendorPanel
   }, 
   {
     path: '/grpolist',

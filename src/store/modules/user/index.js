@@ -31,6 +31,7 @@ export default {
             localStorage.removeItem('userEmail')
             localStorage.removeItem('userRole')
             localStorage.removeItem('b1OperatorCode')
+            localStorage.removeItem('platformToken')
             context.commit('cleanUser')
         },
         async userLogin(context, payload){

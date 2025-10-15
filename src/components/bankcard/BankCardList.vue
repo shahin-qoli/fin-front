@@ -104,7 +104,7 @@ export default{
               })
         },
         loadBankCards() {
-        // console.log(this)
+
         this.$store.dispatch('loadBankCards')
       }
     },
