@@ -19,7 +19,7 @@ export default {
   data: () => ({}),
   computed: {
     isVendorPanel() {
-      return this.$route.path.includes('vendorPanel');
+      return (this.$route.path.includes('vendorPanel')||this.$route.path.includes('vendorpanel')||this.$route.path.includes('VendorPanel'));
     },
     isPublic() {
       return this.$route.path.includes('club');
