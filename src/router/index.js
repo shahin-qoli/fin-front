@@ -112,6 +112,17 @@ function guardMyrouteCheque(to, from, next){
     next('/login'); // go to '/login';
    }
 }
+function guardMyrouteVendor(to, from, next) {
+  const isAuthenticated = !!localStorage.getItem('token');
+
+  if (isAuthenticated) {
+    next(); // اجازه ورود به وندور پنل
+  } else {
+    // ذخیره مسیر فعلی برای بازگشت بعد از لاگین
+    localStorage.setItem('redirectAfterLogin', to.fullPath);
+    next('/login');
+  }
+}
 
 function guardMyrouteSpree(to, from, next){
   var isAuthenticated= false;
@@ -170,8 +181,9 @@ const routes = [
   {
     path: '/vendorPanel',
     name: 'VendorPanel',
-    beforeEnter : guardMyrouteAdmin,
-    component: MiarzeVendorPanel
+    beforeEnter : guardMyrouteVendor,
+    component: MiarzeVendorPanel,
+    meta:{title: "تامین می‌ارزه!"}
   }, 
   {
     path: '/grpolist',

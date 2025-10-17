@@ -1,9 +1,10 @@
 
 const baseUrl ="https://backfinancial.burux.ir" //"http://192.168.192.129:3400"  //"https://backfinancial.burux.ir" //process.env.VUE_APP_BACKEND_URL ""//
 const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
-const spreeUrl = "https://shopback.miarze.com/api/v2"
-const spreeUrlv3 = "https://shopback.miarze.com/api/v3"
-const spreeBrxUrl = "https://spree.burux.com/api/v2"
+const spreeUrl = "https://shopback.miarze.com/api/v2" //"https://shopback.miarze.com/api/v2"
+const spreeBrxUrl = "https://spree.burux.com/api/v2" //"https://spree.burux.com/api/v2"
+const spreeBbetaAuthUrl = "https://shopback.bbeta.ir"
+const spreeBbetaUrlV3 = "https://shopback.bbeta.ir/api/v3"
 const spreeAuthUrl = "https://shopback.miarze.com"//"https://shopback.miarze.com"
 // const spreeToken = "f13d8dc23f4e4d8b1798199b21b112d8f567c95248d8729bbaac96acefec6852"
 const axios = require('axios');
@@ -42,8 +43,11 @@ export const spreeBrxAgent = axios.create({
 export const spreeNoAuthAgent = axios.create({
   baseURL: spreeAuthUrl
 })
+export const spreeNoAuthAgentBbeta = axios.create({
+  baseURL: spreeBbetaAuthUrl
+})
 export const spreePAgent = axios.create({
-  baseURL: spreeUrlv3
+  baseURL: spreeBbetaUrlV3
 });
 // Interceptor to add the Authorization header
 spreeAgent.interceptors.request.use(
@@ -79,16 +83,18 @@ spreePAgent.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 // Function to retrieve a new token automatically
-async function fetchPlatformToken() {
+export async function fetchPlatformToken() {
   try {
-    console.log("STAAAAAAAAAART")
-    const response = await spreeNoAuthAgent.post('spree_oauth/token', {
-      client_id: "vtHOJfnqARHojkzTqJD_hzj1jhlpUpJ2HiOr9RX9x8I", // Replace with your client ID
-      client_secret: "F64OYF2ByO2Uiqndh0kiv5L1de17dVEkdebBWf41k4o", // Replace with your client secret"": 
+    const response = await spreeNoAuthAgentBbeta.post('spree_oauth/token', {
+      client_id: "uQ-WCFFhe-PM71mfL_x0el2BJMkUjcfNSnNcZ1j4ZVA", // Replace with your client ID
+      client_secret: "04LiRdaFSDDGJmnJqtCiHt2MFpbjDtk7FB6nTQuj_B0", // Replace with your client secret"": 
       grant_type: 'client_credentials',
       scope: "admin"
     });
-    //test
+    //test bbeta
+    // "uQ-WCFFhe-PM71mfL_x0el2BJMkUjcfNSnNcZ1j4ZVA"
+    // "04LiRdaFSDDGJmnJqtCiHt2MFpbjDtk7FB6nTQuj_B0"
+    //testlocal
 //			  "client_id": "vtHOJfnqARHojkzTqJD_hzj1jhlpUpJ2HiOr9RX9x8I",
 //"client_secret": "F64OYF2ByO2Uiqndh0kiv5L1de17dVEkdebBWf41k4o",
 //main

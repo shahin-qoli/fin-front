@@ -13,7 +13,7 @@
           dark
           class="d-flex justify-space-between align-center"
         >
-          <v-toolbar-title class="text-h6 font-weight-bold">
+          <v-toolbar-title >
             جزئیات سفارش شماره {{ order.number }}
           </v-toolbar-title>
   
@@ -38,10 +38,7 @@
             <v-icon left>mdi-package-variant</v-icon>
             حمل و نقل
           </v-tab>
-          <v-tab>
-            <v-icon left>mdi-cash</v-icon>
-            اسناد بیوان
-          </v-tab>
+
 <!-- 🔸 تب اول -->
 <v-tab-item>
 <VendingTab
@@ -60,15 +57,7 @@
             ></TransferTab>
           </v-tab-item>
           
-          <!-- 🔸 تب سوم -->
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <h3 class="text-h6 font-weight-bold mb-4">پرداخت و وضعیت</h3>
 
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
         </v-tabs>
       </v-card>
     </transition>
@@ -92,10 +81,15 @@
   :lineItems="reactiveLineItems"
   @create-transfer="handleCreateTransfer"
   @input="createTransferDialog = $event"/>
-<v-overlay :value="isLoading">
-            <v-progress-circular indeterminate color="primary"></v-progress-circular>
-            <p>در حال عملیات</p>
-        </v-overlay>
+  <TheLoader
+    :visible="isLoading"
+    ></TheLoader>
+    <OperationResult
+      :visible="operationResult.visible"
+      :type="operationResult.type"
+      :message="operationResult.message"
+      @close="closeOperationResult"
+    />
   </v-container>
   </template>
   
@@ -105,8 +99,11 @@ import DeliveryMeanDialog from './_assignDeliveryMeanDialog.vue';
 import CreateShipmentDialog from './_createShipmentDialog.vue';
 import VendingTab from './_vendingTab.vue'
 import TransferTab from './_transferTab.vue'
+import TheLoader from '@/components/TheLoader.vue';
+import OperationResult from '@/components/OperationResult.vue';
   export default {
-    components: {CreateShipmentDialog, AssignSupplierDialog,DeliveryMeanDialog,VendingTab,TransferTab },
+    components: {CreateShipmentDialog, AssignSupplierDialog,
+      DeliveryMeanDialog,VendingTab,TransferTab,TheLoader,OperationResult },
 
     props: {
       order: { type: Object, required: true },
@@ -118,7 +115,12 @@ import TransferTab from './_transferTab.vue'
         assignDialog: false,
         selectedItem: null,
         deliveryMeanDialog: false,
-        isLoading: false
+        isLoading: false,
+        operationResult:{
+          visible: false,
+          type:"",
+          message:""
+        }
       };
     },
     computed:{
@@ -137,8 +139,32 @@ import TransferTab from './_transferTab.vue'
       },
       
     methods: {
-      handleCreateTransfer(){
-        this.$store.dispatch('createVendorLineItemTransfer',mean);
+      closeOperationResult(){
+        this.operationResult = {
+          visible: false,
+          type:"",
+          message:""
+      }},
+      handleCreateTransfer(shipment){
+        this.isLoading = true
+        this.$store.dispatch('createVendorLineItemTransfer',shipment).then((resp)=> {
+          this.isLoading = false
+          if (resp[0]){
+            this.operationResult={
+          visible: true,
+          type:"success",
+          message:"حمل با موفقیت ایجاد شد"
+        }
+          }
+        else{
+          this.operationResult={
+          visible: true,
+          type:"error",
+          message:`خطا در ایجاد حمل:${resp1[1]}`
+        }
+        }
+
+        });
       },
       handleOpenCreateTransferDialog(){
         this.createTransferDialog = true
@@ -152,15 +178,52 @@ import TransferTab from './_transferTab.vue'
       this.assignDialog = true;
     },
     handleDeliveryMeanAssigned(mean){
-      this.$store.dispatch('assignDeliveryMean',mean);
-      console.log('✅ روش ارسال انتخاب شد:', mean);
+
+      this.isLoading = true
+        this.$store.dispatch('assignDeliveryMean',mean).then((resp)=> {
+          this.isLoading = false
+          console.log(resp)
+          if (resp[0]){
+            this.operationResult={
+          visible: true,
+          type:"success",
+          message:"حمل با موفقیت ایجاد شد"
+        }
+          }
+        else{
+          this.operationResult={
+          visible: true,
+          type:"error",
+          message:`خطا در ایجاد حمل:${resp1[1]}`
+        }
+        }
+
+        });
       // اینجا می‌تونی درخواست API یا آپدیت local بدی
       this.deliveryMeanDialog = false;      
     },
     handleSupplierAssigned(data) {
 
-      this.$store.dispatch('assignVendorLineItem',data);
-      console.log('✅ تامین‌کننده انتخاب شد:', data);
+      this.isLoading = true
+        this.$store.dispatch('assignVendorLineItem',data).then((resp)=> {
+          this.isLoading = false
+         
+          if (resp[0]){
+            this.operationResult={
+          visible: true,
+          type:"success",
+          message:"سفارش با موفقیت تخصیص داده شد"
+        }
+          }
+        else{
+          this.operationResult={
+          visible: true,
+          type:"error",
+          message:`خطا درتخصیص سفارش:${resp1[1]}`
+        }
+        }
+
+        });
       // اینجا می‌تونی درخواست API یا آپدیت local بدی
       this.assignDialog = false;
     },

@@ -13,5 +13,7 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
-
-
+router.afterEach((to) => {
+  const defaultTitle = "نرم‌افزار مالی بروکس";
+  document.title = to.meta.title || defaultTitle;
+});

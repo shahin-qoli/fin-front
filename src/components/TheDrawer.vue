@@ -172,11 +172,7 @@
                   <v-expansion-panel-header class="grey lighten-5">
                   <h3>می‌ارزه!</h3>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content class="grey lighten-5">
-                    <v-col cols="12">
-                    <router-link style="text-decoration: none;" to='/vendorPanel'><h5>وندور پنل</h5></router-link> 
-                    </v-col>
-                  </v-expansion-panel-content>                  
+               
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/spree'><h5>همگام سازی</h5></router-link> 

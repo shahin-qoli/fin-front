@@ -2,7 +2,7 @@
         <the-main/>
 </template>
 <script>
-    import TheMain from '../components/miarze/vendorPanel/mainPage.vue'
+    import TheMain from '../components/miarze/vendorPanel/VendorApp.vue'
     export default {
         components:{
             TheMain
