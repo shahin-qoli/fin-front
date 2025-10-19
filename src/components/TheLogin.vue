@@ -58,14 +58,13 @@ import { fetchPlatformToken } from '@/services/agent'
        var data = {"email": email, "password": password}
        const redirectPath = localStorage.getItem('redirectAfterLogin');
        try{
-         if (redirectPath){
-            localStorage.removeItem('platformToken');
-            fetchPlatformToken()
-         }
+
        await this.$store.dispatch('userLogin', data)
       if(localStorage.getItem('token')){
          
          if (redirectPath) {
+            localStorage.removeItem('platformToken');
+            fetchPlatformToken()
             localStorage.removeItem('redirectAfterLogin');
   localStorage.removeItem('redirectAfterLogin');
   this.$router.push(redirectPath);

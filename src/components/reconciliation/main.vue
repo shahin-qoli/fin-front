@@ -61,11 +61,9 @@
                 <v-card-actions class="justify-center">
                     <v-btn :loading="isLoading" :disabled="!isRequiredFieldsFilled" @click="submitUpload" dark color="green">ارسال</v-btn>
                 </v-card-actions> 
-                        <!-- <v-form @submit.prevent="submitForm" @input="isFormReady = isRequiredFieldsFilled">
-                            <p v-if="uploadError" class="text-center">فایل بارگذاری شده مشکل دارد.</p>
-                            
-                                           
-                    </v-form>   -->
+                <p color="red" v-if="reconciliationError && !reconciliationError.response?.data?.is_success">
+                {{ reconciliationError.response?.data?.error || 'عملیات با خطا مواجه شد.' }}
+                </p>
                 </v-card>    
             </v-col>
         </v-row>
@@ -199,6 +197,8 @@
     </v-container>   
 </template>
 <script>
+import reconciliation from '@/store/modules/reconciliation';
+
 var jalaali = require('jalaali-js');
 export default{
     data(){
@@ -218,6 +218,11 @@ export default{
                         text: "صادرات",
                         name: "saderat",
                         id: 1
+                    },
+                    {
+                        text: "سپه",
+                        name: "sepah",
+                        id: 2
                     }
                 ]
             },
@@ -258,6 +263,9 @@ export default{
                 }
 
                 return arr;
+            },
+            reconciliationError(){
+                return this.$store.getters.getReconciliationError;
             }
         },
         methods:{
