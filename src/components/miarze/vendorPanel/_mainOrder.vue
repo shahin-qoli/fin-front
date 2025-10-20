@@ -51,9 +51,9 @@
           <!-- 🔸 تب دوم -->
           <v-tab-item>
             <TransferTab
-            :lineItems="reactiveLineItems"
             :shipments="reactiveShipments"
             @open-create-transfer-dialog="handleOpenCreateTransferDialog"
+            @open-shipment-detail="handleOpenShipmentDetail"
             ></TransferTab>
           </v-tab-item>
           
@@ -61,7 +61,10 @@
         </v-tabs>
       </v-card>
     </transition>
-
+    <shipment-detail
+      v-model="shipmentDetailDialog"
+      :shipment="selectedShipment"
+    />
     <!-- 🔹 دیالوگ تخصیص تامین‌کننده -->
     <AssignSupplierDialog
   :value="assignDialog"
@@ -101,9 +104,10 @@ import VendingTab from './_vendingTab.vue'
 import TransferTab from './_transferTab.vue'
 import TheLoader from '@/components/TheLoader.vue';
 import OperationResult from '@/components/OperationResult.vue';
+import ShipmentDetail from './_shipmentDetail.vue';
   export default {
     components: {CreateShipmentDialog, AssignSupplierDialog,
-      DeliveryMeanDialog,VendingTab,TransferTab,TheLoader,OperationResult },
+      DeliveryMeanDialog,VendingTab,TransferTab,TheLoader,OperationResult,ShipmentDetail },
 
     props: {
       order: { type: Object, required: true },
@@ -112,8 +116,10 @@ import OperationResult from '@/components/OperationResult.vue';
       return {
         tab: 0,
         createTransferDialog: false,
+        shipmentDetailDialog: false,
         assignDialog: false,
         selectedItem: null,
+        selectedShipment:null,
         deliveryMeanDialog: false,
         isLoading: false,
         operationResult:{
@@ -227,7 +233,12 @@ import OperationResult from '@/components/OperationResult.vue';
       // اینجا می‌تونی درخواست API یا آپدیت local بدی
       this.assignDialog = false;
     },
- 
+    handleOpenShipmentDetail(data){
+      this.selectedShipment = data
+      console.log("OOOOOOOOOOO")
+      console.log(data)
+      this.shipmentDetailDialog = true
+    },
 
   getStatusIcon(status) {
     switch (status) {

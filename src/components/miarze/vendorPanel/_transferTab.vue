@@ -55,23 +55,28 @@
           color="white"
           text
           class="rounded-pill px-6"
-          @click="$emit('open-shipment-details', item)"
+          @click="openShipmentDetail(item)"
         >
           <v-icon left small>mdi-eye</v-icon>
           مشاهده جزئیات
         </v-btn>
       </v-card-actions>
     </v-card>
+
   </div>
 </template>
 
 <script>
 export default {
+
   props: {
-    lineItems: { type: Array, required: true },
     shipments: { type: Array, required: true },
   },
   methods: {
+    openShipmentDetail(item){
+      console.log(item)
+      this.$emit('open-shipment-detail', item)
+    },
     openCreateDialog() {
       this.$emit('open-create-transfer-dialog');
     },

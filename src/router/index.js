@@ -52,6 +52,7 @@ import MiarzeVendorPanel from'@/views/MiarzeVendorPanelView.vue'
 import ImportCenter from '@/views/BankImportView.vue'
 import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
 import Reconciliation from '@/views/ReconciliationView.vue'
+import MiarzeVendorPanelShipments from '@/views/MiarzeVendorPanelShipmentsView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -183,6 +184,13 @@ const routes = [
     name: 'VendorPanel',
     beforeEnter : guardMyrouteVendor,
     component: MiarzeVendorPanel,
+    meta:{title: "تامین می‌ارزه!"}
+  }, 
+  {
+    path: '/vendorPanel/shipments',
+    name: 'VendorPanelShipments',
+    beforeEnter : guardMyrouteVendor,
+    component: MiarzeVendorPanelShipments,
     meta:{title: "تامین می‌ارزه!"}
   }, 
   {
