@@ -7,7 +7,7 @@
       dark
       elevation="4"
     >
-      <v-toolbar-title class="font-bold ml-4">مدیریت تأمین می‌ارزه!</v-toolbar-title>
+      <v-toolbar-title class="font-bold ml-4">تامین می‌ارزه!</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
