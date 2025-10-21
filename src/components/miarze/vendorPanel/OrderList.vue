@@ -199,6 +199,7 @@ export default {
       this.showDetails = true;
     },
     backToList() {
+      this.loadOrders()
       this.showDetails = false;
     },
   },

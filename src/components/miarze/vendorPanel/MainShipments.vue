@@ -184,7 +184,7 @@
           this.operationResult={
           visible: true,
           type:"error",
-          message:`خطا در ایجاد حمل:${resp[1]}`
+          message:`خطا در ایجاد حمل:${resp1[1]}`
         }
         }
 
@@ -246,10 +246,21 @@
       },
     },
 
-  },    created(){
+  },   
+   created(){
         this.loadOrders();
-    }
-    }
+    },
+    activated() {
+  // وقتی با <keep-alive> برمی‌گرده
+  this.loadOrders();
+},
+
+beforeRouteEnter(to, from, next) {
+  next(vm => {
+    // وقتی وارد صفحه میشه (حتی از back)
+    vm.loadOrders();
+  });
+    }}
     </script>
     <style scoped>
     .filter-box {
