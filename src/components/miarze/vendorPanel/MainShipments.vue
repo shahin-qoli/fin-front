@@ -178,6 +178,7 @@
           type:"success",
           message:"حمل با موفقیت ایجاد شد"
         }
+        this.loadOrders()
           }
         else{
           this.operationResult={

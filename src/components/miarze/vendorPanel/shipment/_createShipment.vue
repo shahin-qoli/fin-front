@@ -357,7 +357,7 @@
           // نمونه فرضی: اینجا API واقعی بذار
           const deliveryState = this.possibleDeliveryState(this.selectedAction);
           const response = await this.$store.dispatch('fetchFilteredVendorLineItems', { deliveryState });
-          this.vendorLineItems = response || [];
+          this.vendorLineItems = response.data || [];
         } catch (err) {
           this.vendorLineItems = [];
         } finally {

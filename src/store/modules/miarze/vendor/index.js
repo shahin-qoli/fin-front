@@ -186,7 +186,7 @@ export default {
             .map(([key, value]) => `${key}=${value}`)
             .join("&");
          const { data: responseData } = await spreePAgent.get(apiUrl);
-          let vendors = responseData.data
+          let vendors = responseData
           return vendors;
       }catch(err){
           console.error(err);
