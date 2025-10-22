@@ -159,6 +159,9 @@
                     :items="posRawsDetails"
                     item-key="id"
                         >
+                        <template v-slot:[`item.amount`]="{ item }">
+      <p>{{ item.amount | formatAmount }}</p>
+    </template>
             <template v-slot:[`item.is_used`]="{ item }">
                 <v-simple-checkbox
                 v-model="item.is_used"
@@ -233,6 +236,11 @@ var jalaali = require('jalaali-js')
     },
     },
         methods:{
+            formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+      },
             async exportData(){
                 try{
                     const response = await finAgent.get(`/front/pos_payane_reports/export_filtered_table?payane_codes=${this.options.selectedPayaneCodes}&report_date=${this.options.selectedDate}&person_type=${this.options.selectedType}`, {responseType: 'blob'} );
