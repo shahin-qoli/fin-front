@@ -3,9 +3,10 @@ const baseUrl ="https://backfinancial.burux.ir" //"http://192.168.192.129:3400" 
 const cheqUrl = "https://b1api.burux.com/api/BRXIntLayer"
 const spreeUrl = "https://shopback.miarze.com/api/v2" //"https://shopback.miarze.com/api/v2"
 const spreeBrxUrl = "https://spree.burux.com/api/v2" //"https://spree.burux.com/api/v2"
-const spreeBbetaAuthUrl = "https://shopback.bbeta.ir"
-const spreeBbetaUrlV3 = "https://shopback.bbeta.ir/api/v3"
+const spreeBbetaAuthUrl ="http://192.168.192.129:4500" // "https://shopback.bbeta.ir"
+const spreeBbetaUrlV3 = "http://192.168.192.129:4500/api/v3" //"https://shopback.bbeta.ir/api/v3"
 const spreeAuthUrl = "https://shopback.miarze.com"//"https://shopback.miarze.com"
+const spreeUrlV3 = "https://shopback.miarze.com/api/v3"
 // const spreeToken = "f13d8dc23f4e4d8b1798199b21b112d8f567c95248d8729bbaac96acefec6852"
 const axios = require('axios');
 export const finAgent = axios.create({
@@ -44,10 +45,10 @@ export const spreeNoAuthAgent = axios.create({
   baseURL: spreeAuthUrl
 })
 export const spreeNoAuthAgentBbeta = axios.create({
-  baseURL: spreeBbetaAuthUrl
+  baseURL: spreeAuthUrl
 })
 export const spreePAgent = axios.create({
-  baseURL: spreeBbetaUrlV3
+  baseURL: spreeUrlV3
 });
 // Interceptor to add the Authorization header
 spreeAgent.interceptors.request.use(
@@ -86,8 +87,8 @@ spreePAgent.interceptors.request.use(
 export async function fetchPlatformToken() {
   try {
     const response = await spreeNoAuthAgentBbeta.post('spree_oauth/token', {
-      client_id: "uQ-WCFFhe-PM71mfL_x0el2BJMkUjcfNSnNcZ1j4ZVA", // Replace with your client ID
-      client_secret: "04LiRdaFSDDGJmnJqtCiHt2MFpbjDtk7FB6nTQuj_B0", // Replace with your client secret"": 
+      client_id: "47WfmNFqpNeabriIqr5bxni4WwTsA7ExoHHp54m1R5o", // Replace with your client ID
+      client_secret: "Oh8dVr4u-MHWK9Ay-fmUT0FwkNE9pGgsSURtNY-2p30", // Replace with your client secret"": 
       grant_type: 'client_credentials',
       scope: "admin"
     });
