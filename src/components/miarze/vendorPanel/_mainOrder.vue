@@ -166,7 +166,7 @@ import ShipmentDetail from './_shipmentDetail.vue';
           this.operationResult={
           visible: true,
           type:"error",
-          message:`خطا در ایجاد حمل:${resp1[1]}`
+          message:`خطا در ایجاد حمل:${resp[1]}`
         }
         }
 
@@ -200,7 +200,7 @@ import ShipmentDetail from './_shipmentDetail.vue';
           this.operationResult={
           visible: true,
           type:"error",
-          message:`خطا در ایجاد حمل:${resp1[1]}`
+          message:`خطا در ایجاد حمل:${resp[1]}`
         }
         }
 
@@ -225,7 +225,7 @@ import ShipmentDetail from './_shipmentDetail.vue';
           this.operationResult={
           visible: true,
           type:"error",
-          message:`خطا درتخصیص سفارش:${resp1[1]}`
+          message:`خطا درتخصیص سفارش:${resp[1]}`
         }
         }
 

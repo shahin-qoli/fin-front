@@ -127,7 +127,7 @@ export default {
       debounceTimer: null,
       options: {
         page: 1,
-        itemsPerPage: 8,
+        itemsPerPage: 9,
       },
       filters: {
         number: '',
