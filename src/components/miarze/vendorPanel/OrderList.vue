@@ -35,7 +35,15 @@
               clearable
             />
           </v-col>
-
+          <v-col cols="12" md="3" sm="6">
+            <v-btn
+                  color="cyan darken-1"
+                  class="text-white rounded-pill px-6 font-weight-bold"
+                  @click="loadOrders"
+                >
+                  جستجو
+                </v-btn>
+          </v-col>
 
         </v-row>
       </v-card>
@@ -152,13 +160,13 @@ export default {
   },
   watch: {
     // واکنش به فیلترها
-    filters: {
-      handler() {
-        this.options.page = 1; // هر بار فیلتر تغییر کرد برگرد صفحه اول
-        this.debounce(this.loadOrders, 500);
-      },
-      deep: true,
-    },
+    // filters: {
+    //   handler() {
+    //     this.options.page = 1; // هر بار فیلتر تغییر کرد برگرد صفحه اول
+    //     this.debounce(this.loadOrders, 500);
+    //   },
+    //   deep: true,
+    // },
 
     // واکنش به تغییر صفحه
     'options.page': {

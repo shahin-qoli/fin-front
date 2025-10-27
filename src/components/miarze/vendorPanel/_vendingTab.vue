@@ -61,6 +61,19 @@
     <v-row dense>
       <v-col cols="6">
         <v-btn
+          color="lime"
+          small
+          rounded
+          block
+          @click="openVendingTypeDialog(item)"
+        >
+          <v-icon left small>mdi-truck</v-icon>
+          تعیین روش تامین
+        </v-btn>
+      </v-col>      
+      <v-col cols="6">
+        <v-btn
+        v-if="!isVendingByB360(item)"
           color="primary"
           small
           rounded
@@ -74,6 +87,7 @@
 
       <v-col cols="6">
         <v-btn
+        v-if="hasValidVending(item)"
           color="secondary"
           small
           rounded
@@ -81,9 +95,10 @@
           @click="openDeliveryMeanDialog(item)"
         >
           <v-icon left small>mdi-truck</v-icon>
-          روش ارسال
+          تعیین روش ارسال
         </v-btn>
       </v-col>
+
     </v-row>
   </v-sheet>
 </div>
@@ -95,7 +110,7 @@
 </template>
 <script>
 export default {
-  emits: ['open-assign-dialog', 'open-delivery-mean-dialog'],
+  emits: ['open-assign-dialog', 'open-delivery-mean-dialog','open-vending-type-dialog'],
   props: {
     lineItems: { type: Array, required: true },
   },
@@ -113,13 +128,13 @@ export default {
     getChips(item) {
       return [
         {
-          label: `تأمین: ${this.formatStateText(item.vendor_line_item.vending_state).text}`,
-          color: this.getStatusColor(item.vendor_line_item.vending_state),
+          label: `روش تامین: ${this.formatStateText(item.vendor_line_item.vending_type).text}`,
+          color: this.getStatusColor(item.vendor_line_item.vending_type),
         },
-        {
-          label: `خرید: ${this.formatStateText(item.vendor_line_item.purchase_state).text}`,
-          color: this.getStatusColor(item.vendor_line_item.purchase_state),
-        },
+        // {
+        //   label: `خرید: ${this.formatStateText(item.vendor_line_item.purchase_state).text}`,
+        //   color: this.getStatusColor(item.vendor_line_item.purchase_state),
+        // },
         {
           label: `ارسال: ${this.formatStateText(item.vendor_line_item.delivery_state).text}`,
           color: this.getStatusColor(item.vendor_line_item.delivery_state),
@@ -135,7 +150,15 @@ export default {
       ];
     },
     formatStateText(text) {
+ 
       const states = {
+        unknown_vending: { color: 'red', text: 'نامشخص' },
+        burux_vending: { color: 'green', text: "تامین بروکس" },
+        "360_vending": { color: 'green', text: "تامین 360" },
+        sure_vendor_vending: { color: 'green', text: "تامین کننده خارجی قطعی" },
+        risky_vendor_vendong: { color: 'orange', text: "تامین کننده خارجی ریسکی" },
+        negotiable_vendor_vending: { color: 'yellow', text: "تامین کننده خارجی نیاز به مذاکره" },
+        unknown_vending: { color: 'red', text: 'نامشخص' },
         no_purchase: { color: 'grey', text: 'خرید نشده' },
         no_need_purchase: { color: 'green', text: 'عدم نیاز' },
         purchasing: { color: 'orange', text: 'در حال خرید' },
@@ -164,14 +187,26 @@ export default {
     },
     generateUrl(url) {
       if (!url) return '';
-      return `http://192.168.192.129:4500${url}`;
+      return `https://shopback.miarze.com${url}`;
     },
     getImageUrl(variant) {
       if (!variant?.images?.length) return '/logo.png';
       const image = variant.images[0].styles.find((s) => s.width === '128');
       return this.generateUrl(image?.url || variant.images[0].styles[0].url);
     },
-  },
+    openVendingTypeDialog(item){
+      this.$emit('open-vending-type-dialog', item);
+    },
+    isVendingByB360(item){
+      return (item.vendor_line_item.vending_type ==="burux_vending" || item.vendor_line_item.vending_type ==="360_vending" )
+    },
+    hasValidVending(item){
+      console.log(item)
+      return !(item.vendor_line_item.vending_type ==="unknown_vending" )
+    }
+  },computed:{
+
+  }
 };
 </script>
 <style scoped>

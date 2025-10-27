@@ -45,7 +45,7 @@
 :lineItems="reactiveLineItems"
   @open-assign-dialog="handleOpenAssignDialog"
   @open-delivery-mean-dialog="handleOpenDeliveryMeanDialog"
-
+  @open-vending-type-dialog="handleOpenVendingTypeDialog"
 ></VendingTab>
 </v-tab-item>
           <!-- 🔸 تب دوم -->
@@ -78,7 +78,12 @@
   @assigned="handleDeliveryMeanAssigned"
   @input="deliveryMeanDialog = $event"
 />
-
+<VendingTypeDialog
+  :value="vendingTypeDialog"
+  :item="selectedItem"
+  @assigned="handleVendingTypeAssigned"
+  @input="vendingTypeDialog = $event"
+/>
 <CreateShipmentDialog
 :value="createTransferDialog"
   :lineItems="reactiveLineItems"
@@ -105,9 +110,10 @@ import TransferTab from './_transferTab.vue'
 import TheLoader from '@/components/TheLoader.vue';
 import OperationResult from '@/components/OperationResult.vue';
 import ShipmentDetail from './_shipmentDetail.vue';
+import VendingTypeDialog from './_assignVendingTypeDialog.vue'
   export default {
     components: {CreateShipmentDialog, AssignSupplierDialog,
-      DeliveryMeanDialog,VendingTab,TransferTab,TheLoader,OperationResult,ShipmentDetail },
+      DeliveryMeanDialog,VendingTab,TransferTab,TheLoader,OperationResult,ShipmentDetail,VendingTypeDialog },
 
     props: {
       order: { type: Object, required: true },
@@ -115,6 +121,7 @@ import ShipmentDetail from './_shipmentDetail.vue';
     data() {
       return {
         tab: 0,
+        vendingTypeDialog: false,
         createTransferDialog: false,
         shipmentDetailDialog: false,
         assignDialog: false,
@@ -179,6 +186,10 @@ import ShipmentDetail from './_shipmentDetail.vue';
         this.selectedItem = item;
         this.deliveryMeanDialog = true;
       },
+      handleOpenVendingTypeDialog(item){
+        this.selectedItem = item;
+        this.vendingTypeDialog = true;
+      },
       handleOpenAssignDialog(item) {
       this.selectedItem = item;
       this.assignDialog = true;
@@ -193,14 +204,39 @@ import ShipmentDetail from './_shipmentDetail.vue';
             this.operationResult={
           visible: true,
           type:"success",
-          message:"حمل با موفقیت ایجاد شد"
+          message:"روش حمل با موفقیت ثبت شد"
         }
           }
         else{
           this.operationResult={
           visible: true,
           type:"error",
-          message:`خطا در ایجاد حمل:${resp[1]}`
+          message:`خطا در انتخاب روش حمل:${resp[1]}`
+        }
+        }
+
+        });
+      // اینجا می‌تونی درخواست API یا آپدیت local بدی
+      this.deliveryMeanDialog = false;      
+    },
+    handleVendingTypeAssigned(mean){
+
+      this.isLoading = true
+        this.$store.dispatch('assignVendingType',mean).then((resp)=> {
+          this.isLoading = false
+          console.log(resp)
+          if (resp[0]){
+            this.operationResult={
+          visible: true,
+          type:"success",
+          message:"روش تامین با موفقیت ثبت شد"
+        }
+          }
+        else{
+          this.operationResult={
+          visible: true,
+          type:"error",
+          message:`خطا در انتخاب روش تامین:${resp[1]}`
         }
         }
 

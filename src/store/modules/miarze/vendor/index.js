@@ -210,6 +210,22 @@ export default {
         catch(e){
           return [false, e]
         }     
+       },
+       async assignVendingType(context, payload){
+        try{
+          const apiUrl = "/platform/orders/assign_vending_type"
+          const { data: responseData } = await spreePAgent.post(apiUrl,payload);
+          if (responseData.result === true){
+            context.commit("updateAMVorder", responseData.order)
+            return [true, null]
+          } 
+          else{
+            return [false, responseData.error]
+          }           
+        }
+        catch(e){
+          return [false, e]
+        }     
        }
           
 
