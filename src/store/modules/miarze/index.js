@@ -227,7 +227,7 @@ export default {
         async fetchFilteredProducts(context,payload){
             try{
                 context.commit('setIsLoading',true);
-                const {data: responseData} = await finAgent.get(`/front/b1_items_data?q[item_code_cont]=${payload}`);
+                const {data: responseData} = await finAgent.get(`/front/b1_items_data?per_page=100&q[item_code_cont]=${payload}`);
                 let products = responseData.data
                 context.commit('setFilteredProducts',products);
                 context.commit('setIsLoading',false);
