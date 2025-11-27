@@ -2,13 +2,34 @@
     <v-container>
           <v-card outlined>
             <v-card-title>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="جستجو"
-                single-line
-                hide-details
-              ></v-text-field>
+              <v-col cols="6">
+                <v-select
+                          :items="states"
+                          v-model="options.transactionState"
+                          item-text="text"
+                          item-value="value"
+                          label="انتخاب وضعیت درخواست"
+                          ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                          :items="transactionTypes"
+                          v-model="options.transactionType"
+                          item-text="text"
+                          item-value="value"
+                          label="انتخاب نوع تراکنش"
+                          ></v-select>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field v-model="options.amount" hint="120000000" label="مبلغ"></v-text-field>
+              </v-col>
+              <v-col cols="3">                                      
+                  <v-text-field v-model="options.customer_code" hint="120000000" label="کد مشتری"></v-text-field>
+              </v-col>  
+              <v-col cols="3">
+                            <date-picker label="تاریخ" v-model="options.transactionDate"></date-picker>
+                        </v-col> 
+                                             
             </v-card-title>
             <v-data-table
               fixed-header
@@ -22,7 +43,7 @@
               :server-items-length="itemCount"
               class="elevation-1"
             >
-              <template v-slot:top>
+              <!-- <template v-slot:top>
               <v-radio-group inline v-model="options.state">
                 <v-row>
                   <v-col cols="12" class="text-right">
@@ -36,7 +57,7 @@
                   </v-col>
                 </v-row>
               </v-radio-group>
-              </template>
+              </template> -->
               <template  v-slot:[`item.transaction_date`]="props">
                 {{ props.item.payfull.transaction_date }}
               </template>
@@ -100,8 +121,10 @@
 
 <script>
 import {TheStatus} from '../../mixins/TheStatus.js'
+import DatePicker from '../DatePicker.vue'
     // import TheRequest from "./TheRequest.vue";
     export default {
+      components:{ DatePicker},
       mixins:[TheStatus],
         data(){
             return {
@@ -112,7 +135,11 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             options: {
             itemsPerPage: 10,
             page:1,
-            state: 'requested'
+            transactionState: '',
+            transactionType: '',
+            transactionDate: '',
+            amount: '',
+            customer_code:"",
             },
             search: '',
             }
@@ -130,10 +157,60 @@ import {TheStatus} from '../../mixins/TheStatus.js'
             },  deep: true
           }, 
         },
-        components: {
-            // TheRequest
-        },
         computed: {
+          transactionTypes(){
+            return [
+              {
+                text:"صندوق",
+                value:"posreport"
+              },
+              {
+                text:"حساب به حساب",
+                value:"accounttoaccount"
+              },
+              {
+                text:"کارت به کارت",
+                value:"cardtocard"
+              },
+              {
+                text:"همه",
+                value:""
+              },
+
+            ]
+          },
+          states(){
+            return [
+              {
+                text:"درخواست شده",
+                value:"requested"
+              },
+              {
+                text:"رد شده",
+                value:"denied"
+              },
+              {
+                text:"تکمیل شده",
+                value:"complete"
+              },
+              {
+                text:"همه",
+                value:""
+              },
+              {
+                text:"تلاش مجدد شده",
+                value:"retried"
+              },
+              {
+                text:"تایید شده",
+                value:"verified"
+              },
+              {
+                text:"خطا در همگام سازی",
+                value:"api_error"
+              },
+            ]
+          },
           itemCount(){
             return this.$store.getters.getRequestItemCount;
           },
