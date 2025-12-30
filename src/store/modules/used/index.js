@@ -88,7 +88,7 @@ export default {
                 const filters = {
                     "q[state_matches]": payload.transactionState,
                     'q[name_matches]': payload.transactionType,
-                    "q[transaction_date_matches]": payload.transactionDate,
+                    "q[transaction_date_eq]": payload.transactionDate,
                     "q[amount_eq]": payload.amount,
                     "q[used_for_matches]": payload.customer_code,
                   };
