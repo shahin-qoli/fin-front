@@ -87,7 +87,7 @@ export default {
             try {
                 context.commit('setIsLoading', true);
                 let data={request:{transaction_type: payload.transactionType, amount: payload.amount, to_account: payload.toAccount, from_account: payload.fromAccount, card_code: payload.cardCode,
-                    requested_by:payload.requestedBy,transaction_date: payload.transactionDate,request_extra_info: payload.requestExtraInfo}};
+                    card_name: payload.cardName,requested_by:payload.requestedBy,transaction_date: payload.transactionDate,request_extra_info: payload.requestExtraInfo}};
                 console.log(data)    
                 const response = await finAgent.post('/front/payment_register_requests', data);
                 if (response.status === 201){

@@ -77,6 +77,13 @@
                         <v-col cols="4">
                             <v-text-field
                             disabled
+                            label="نام مشتری"
+                            v-model="dialogItem.card_name"
+                            ></v-text-field>
+                        </v-col>                        
+                        <v-col cols="4">
+                            <v-text-field
+                            disabled
                             label="نوع تراکنش"
                             v-model="dialogItem.transactionType"
                            ></v-text-field>
