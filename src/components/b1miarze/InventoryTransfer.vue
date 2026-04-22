@@ -72,14 +72,12 @@ import {finAgent} from '@/services/agent'
             formData.append('file', this.file,this.file.name)
             try {
                 const response = await finAgent.post(`/front/b1_actions/create_inventory_transfer`,formData );
-                console.log(response.data)
                 if (response.data.error) {
                     this.uploadError = true;
                     this.file = null;
                     this.isLoading = false;
                     this.errorMessage= response.data.error
                 } else {
-                    console.log(response.data.result)
                     this.successResult = response.data.result
                     this.file = null;
                     this.isLoading = false;

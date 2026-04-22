@@ -42,7 +42,7 @@
  
  <script>
 
-
+import { fetchPlatformToken } from '@/services/agent' 
  export default {
    name: "TheLogin",
    data() {
@@ -56,10 +56,22 @@
       async login() {
        const { email, password } = this;
        var data = {"email": email, "password": password}
+       const redirectPath = localStorage.getItem('redirectAfterLogin');
        try{
+
        await this.$store.dispatch('userLogin', data)
       if(localStorage.getItem('token')){
-      this.$router.replace({name:'home'})
+         
+         if (redirectPath) {
+            localStorage.removeItem('platformToken');
+            fetchPlatformToken()
+            localStorage.removeItem('redirectAfterLogin');
+  localStorage.removeItem('redirectAfterLogin');
+  this.$router.push(redirectPath);
+} else {
+  this.$router.push('/'); // مسیر پیش‌فرض
+}
+      // this.$router.replace({name:'home'})
    }
      }catch (error) {
         this.loginError = "نام کاربری یا رمز عبور اشتباه است.";

@@ -30,9 +30,12 @@
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/accounttoaccountlist'><h5>حساب به حساب</h5></router-link>              
                   </v-col>
-                  <v-col cols="12">
+                  <!-- <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/importtemplate'><h5>ورود اطلاعات با الگو</h5></router-link>              
-                  </v-col>               
+                  </v-col>            -->
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/bankimport'><h5>ورود اطلاعات</h5></router-link>              
+                  </v-col>                        
                 </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -51,6 +54,42 @@
                     <!-- <v-col cols="12" v-if="saleRole">
                         <router-link style="text-decoration: none;" to='/usetransaction'><h5>درخواست ثبت سند</h5></router-link>  
                     </v-col>  -->
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>سامانه تردد</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/hrm-attendance-request-list'><h5>درخواست ها</h5></router-link>
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>تطبیق</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/reconciliation'><h5>صفحه اصلی</h5></router-link>
+                    </v-col>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-col>
+              <v-col cols="12" v-if="transactionsAccess">
+                <v-expansion-panel class="grey lighten-5">
+                  <v-expansion-panel-header class="grey lighten-5">
+                    <h3>باشگاه مشتریان</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="grey lighten-5">
+                    <v-col cols="12">
+                      <router-link style="text-decoration: none;" to='/usagedatalist'><h5>درخواست ها</h5></router-link>
+                    </v-col>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-col>
@@ -133,6 +172,7 @@
                   <v-expansion-panel-header class="grey lighten-5">
                   <h3>می‌ارزه!</h3>
                   </v-expansion-panel-header>
+               
                   <v-expansion-panel-content class="grey lighten-5">
                     <v-col cols="12">
                     <router-link style="text-decoration: none;" to='/spree'><h5>همگام سازی</h5></router-link> 
@@ -160,6 +200,9 @@
                   </v-col>  
                   <v-col cols="12">
                   <router-link style="text-decoration: none;" to='/grpolist'><h5>لیست GRPO</h5></router-link>              
+                  </v-col> 
+                  <v-col cols="12">
+                  <router-link style="text-decoration: none;" to='/miarzepayments'><h5>درگاه پرداخت</h5></router-link>              
                   </v-col> 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -292,7 +335,7 @@ export default {
       return this.adminRole || this.spreeRole
     },
     userLoged(){
-      console.log(this.$store.getters.getUser !={})
+
       return this.$store.getters.isLogged 
     },syncAccess(){
       return this.adminRole || this.creaditRole

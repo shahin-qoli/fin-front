@@ -789,7 +789,7 @@ export default{
             this.loadingTaxon = true
             this.$store.dispatch('fetchTaxonItems', this.row.taxon).then((data) => {
                 this.loadingTaxon = false
-                console.log(data)
+   
                 if (data.length > 0 ){
                     data.forEach( item => this.row.itemCodes.push(item))
                     this.$toasted.show("با موفقیت انجام شد", {

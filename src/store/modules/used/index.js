@@ -27,7 +27,8 @@ export default {
             const toUpdateIndex=state.requests.findIndex(req => req.id === reqId )
             console.log(state.requests[toUpdateIndex].state.value)
             state.requests[toUpdateIndex].state = "verified"
-        }
+        },
+
     },
     getters: {
         getRequestItemCount(state){
@@ -38,6 +39,11 @@ export default {
         }
     },
     actions: {
+        async retryJob(context, item){
+            const itemId = item.id
+            const {data: retryData} = await finAgent.post(`/front/used_payments/${itemId}/retry`)    
+            return retryData;       
+        },
         async denyRequest(context, reqId){
             try{
                 const {data: requestsData} = await finAgent.get(`/front/used_payments/${reqId}/deny`);
@@ -79,7 +85,24 @@ export default {
         async loadRequests(context, payload) {
             context.commit('setIsLoading', 'true')
             try {
-                const {data: responseData} = await finAgent.get(`/front/used_payments?page=${payload.page}&per_page=${payload.itemsPerPage}&q[state_matches]=${payload.state}`);
+                const filters = {
+                    "q[state_matches]": payload.transactionState,
+                    'q[name_matches]': payload.transactionType,
+                    "q[transaction_date_eq]": payload.transactionDate,
+                    "q[amount_eq]": payload.amount,
+                    "q[used_for_matches]": payload.customer_code,
+                  };
+              
+                  const params = {
+                    page: payload.page,
+                    per_page: payload.itemsPerPage,
+                    ...filters
+                  };
+                let apiUrl = "/front/used_payments?" +
+                Object.entries(params)
+                  .map(([key, value]) => `${key}=${value}`)
+                  .join("&");
+                const {data: responseData} = await finAgent.get(apiUrl);
                 const requests = []
                 var requestsData = responseData.data;
                 var itemCount = responseData.options.count;

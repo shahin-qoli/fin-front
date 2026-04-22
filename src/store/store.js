@@ -28,6 +28,8 @@ import financialdashboard from './modules/financialdashboard/index.js';
 import campaign from './modules/campaign/index.js';
 import hrm from './modules/hrm/index.js';
 import b1actions from './modules/b1actions/index.js';
+import reconciliation from './modules/reconciliation/index.js';
+import miarzeVendor from './modules/miarze/vendor/index.js'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -58,6 +60,8 @@ export default new Vuex.Store({
       campaign,
       hrm, 
       b1actions,
+      reconciliation,
+      miarzeVendor
     },
     state(){
       return{ 

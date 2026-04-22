@@ -16,13 +16,17 @@
                         </v-row>
                       </v-toolbar>
                         <v-divider/>
-                        <v-col col="3">
-                        <v-card-actions class="justify-center">
-
-                        <v-btn dark color="green" href="#">دانلود نمونه فایل</v-btn>
-
-                         </v-card-actions>
-                       </v-col>
+                        <v-col cols="12" >
+                                    <v-select
+                                    :items="bankAccounts"
+                                    name="bankAccount"
+                                    label="شماره حساب"
+                                    solo
+                                    item-text="text"
+                                    item-value="value"
+                                    v-model="bankId"
+                                    ></v-select>
+                        </v-col>
                        <v-divider/>
                         <v-form @submit.prevent="submitForm"> 
                             <v-col
@@ -105,6 +109,7 @@
                 loadingUpdate: false,
                 showModal: false,
                 reportResult: '',
+                bankId:1
             }
         },
         components: {
@@ -119,7 +124,8 @@
             formData.append('file', this.file,this.file.name)
             console.log('start')
             try {
-                const response = await finAgent.post('/front/pos_raws/import_file',formData, {responseType: 'blob'} );
+                let url = ''
+                const response = await finAgent.post(`/front/pos_raws/import_file?bank_id=${this.bankId}`,formData, {responseType: 'blob'} );
                 console.log('finish')
                 console.log(response.data.type)
                 if (response.data.type === 'application/json') {
@@ -177,7 +183,24 @@
             }
         }
           
-    }
+        },
+        computed:{
+            bankAccounts(){
+            return [
+                {
+                    text: "بانک صادرات",
+                    value:1
+                },
+                {
+                    text: "بانک ملت شهران-9533236910",
+                    value: 20
+                }
+            ]
+        }
+        },
+        created(){
+        this.loadBankAccounts();
+        }        
 }
   </script>
   

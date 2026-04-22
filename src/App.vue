@@ -1,12 +1,9 @@
 <template>
-  <v-app id="inspire">
-  
-    <!-- app bar start -->
-   
-    <the-drawer v-if="!isPublic" ></the-drawer>
+  <v-app id="app-root">
+    <!-- Sidebar -->
+    <the-drawer v-if="!isVendorPanel"></the-drawer>
 
-     <!-- app bar end -->
-
+    <!-- Main content -->
     <v-main>
       <router-view/>
     </v-main>
@@ -15,58 +12,51 @@
 
 <script>
 import TheDrawer from "./components/TheDrawer.vue";
+
 export default {
-  components:{
-    TheDrawer
-  },
   name: 'App',
-
-  data: () => ({
-
-  }),
-  computed:{
-    isPublic(){
-      return( this.$route.path.includes('club') || this.$route.path.includes('hrm'))
-    }
+  components: { TheDrawer },
+  data: () => ({}),
+  computed: {
+    isVendorPanel() {
+      return (this.$route.path.includes('vendorPanel')||this.$route.path.includes('vendorpanel')||this.$route.path.includes('VendorPanel'));
     },
-  beforeMount() {
-    window.addEventListener("beforeunload", this.onUnload);
-  },
-  beforeDestroy() {
-    window.removeEventListener("beforeunload", this.onUnload);
-  },
-  methods: {
-    onUnload() {
-      window.localStorage.removeItem('token')
-      window.localStorage.removeItem('userId')
-      window.localStorage.removeItem('userEmail')
-      window.localStorage.removeItem('userRole')
+    isPublic() {
+      return this.$route.path.includes('club');
     }
   },
-  created(){
-    this.$store.dispatch('initUser')
+  created() {
+    this.$store.dispatch('initUser');
   }
-
-  
-
 };
 </script>
 
-
-<style scoped>
+<style>
+/* 1️⃣ تعریف فونت Iranyekan */
 @font-face {
-    font-family: iranyekan;
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot');
-    src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot?#iefix') format('embedded-opentype'), /* IE6-8 */
-    url('./assets/fonts/iranyekan/woff2/iranyekanwebregular(fanum).woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/
-    url('./assets/fonts/iranyekan/ttf/iranyekanwebregular(fanum).ttf') format('truetype');
-}
-#inspire {
-  font-family: iranyekan;
+  font-family: 'iranyekan';
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot');
+  src: url('./assets/fonts/iranyekan/eot/iranyekanwebregular(fanum).eot?#iefix') format('embedded-opentype'),
+       url('./assets/fonts/iranyekan/woff2/iranyekanwebregular(fanum).woff2') format('woff2'),
+       url('./assets/fonts/iranyekan/ttf/iranyekanwebregular(fanum).ttf') format('truetype');
 }
 
+/* 2️⃣ اعمال فونت روی کل اپ */
+html, body, #app-root, .v-application, .v-application * {
+  font-family: 'iranyekan', sans-serif !important;
+}
 
+/* 3️⃣ تنظیمات پایه برای اپ */
+body {
+  margin: 0;
+  background-color: #f5f5f5;
+}
+
+/* 4️⃣ مطمئن شدن از وراثت فونت برای کامپوننت‌های Vuetify */
+.v-btn, .v-tab, .v-list-item, .v-card, .v-input, .v-select, .v-text-field {
+  font-family: 'iranyekan', sans-serif !important;
+}
 </style>

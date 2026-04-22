@@ -46,7 +46,7 @@
                         <p>{{ transactionTypeFromatted(item.item.transaction_type) }}</p>
                     </template>
                     <template v-slot:[`item.details`]="item">
-                        <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                        <v-btn @click="detailsDialog(item)">  دیدن </v-btn>
                     </template>
                     <template v-slot:[`item.state`]="item">
                         <v-chip small dark :color="getColorRequestStatus(item.item.state)">
@@ -56,7 +56,7 @@
                 </v-data-table>
             </v-card-text>
         </v-card>
-            <v-dialog
+        <v-dialog
             v-model="dialog"
             fullscreen
             hide-overlay
@@ -74,6 +74,13 @@
                             v-model="dialogItem.card_code"
                             ></v-text-field>
                         </v-col>
+                        <v-col cols="4">
+                            <v-text-field
+                            disabled
+                            label="نام مشتری"
+                            v-model="dialogItem.card_name"
+                            ></v-text-field>
+                        </v-col>                        
                         <v-col cols="4">
                             <v-text-field
                             disabled
@@ -148,9 +155,9 @@
         </v-card>
         </v-dialog>
         <v-overlay :value="isLoading">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-      <p>در حال عملیات</p>
-  </v-overlay>
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <p>در حال عملیات</p>
+        </v-overlay>
     </v-container>
 </template>
 <script>

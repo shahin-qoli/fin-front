@@ -36,6 +36,7 @@
 <script>
 import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 export default{
+    name: "DatePicker",
     // emits:['ret-date'],
     props:['value', 'label'],
     data(){

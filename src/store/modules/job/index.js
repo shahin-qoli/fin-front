@@ -10,10 +10,7 @@ export default{
     mutations:{
         setItemCount(state, payload){
             state.itemCount = payload;},
-        setRetry(state, itemId){
-            const toUpdateIndex=state.jobs.findIndex(job => job.id === itemId )
-            state.jobs[toUpdateIndex].is_retried = "true"
-        },
+
         setJobs(state, jobs){
             state.jobs = jobs;
         }
@@ -28,13 +25,7 @@ export default{
         }
     },
     actions:{
-        async retryJob(context, item){
-            const itemId = item.id
-            const {data: retryData} = await finAgent.get(`/front/job_results/${itemId}/retry`)    
-            if (retryData.result){
-                context.commit('setRetry',itemId)
-            }         
-        },
+
         async loadJobs(context,payload){
             context.commit('setIsLoading', 'true')
             let qstring = ''

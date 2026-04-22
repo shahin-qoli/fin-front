@@ -153,7 +153,7 @@ export default{
       this.close()
     },
       loadBankAccounts() {
-      // console.log(this)
+
       this.$store.dispatch('loadBankAccounts')
     }
   },

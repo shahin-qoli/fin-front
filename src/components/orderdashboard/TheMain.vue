@@ -71,7 +71,7 @@
                         {{ item.item.DocDate | formatDate  }}
                     </template>
                     <template v-slot:[`item.more`]="item">
-                            <v-btn @click="openMoreDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                            <v-btn @click="openMoreDialog(item)">  دیدن </v-btn>
                     </template>
             </v-data-table>
         </v-card-text>

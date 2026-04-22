@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                         <v-row>
                             <v-col cols="12" class="center-text text-title"><p>انتخاب تامین کننده</p></v-col>
@@ -24,7 +24,7 @@
                             <v-col cols="6">
                                 <v-text-field          
                                 v-model="cardCodeData.cardCode"
-                                label="کد مشتری"
+                                label="کد تامین کننده"
                                 single-line
                                 required
                                 disabled
@@ -33,7 +33,7 @@
                             <v-col cols="6">
                                 <v-text-field          
                                 v-model="cardCodeData.cardName"
-                                label="نام مشتری"
+                                label="نام تامین کننده"
                                 single-line
                                 required
                                 disabled
@@ -46,74 +46,10 @@
         </v-row>
         <v-row v-if="isCardCodeChecked">
             <v-col cols="6">
-                <v-card >
-                    <v-card-title>
-                        <v-row>
-                            <v-col cols="12" class="center-text text-title"><p>انتخاب کالا</p></v-col>
-                        </v-row>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-row>
-                            <v-col cols="12" lg="4" sm="4" md="4">
-                                <v-autocomplete
-                                v-model="selectedToAdd.itemCode"
-                                :items="items"
-                                placeholder="کد کالا"
-                                solo
-                                filled
-                                dense
-                                item-text="item_code"
-                                item-value="item_code"
-                                :search-input.sync="searchProduct"
-                                @input="updateSelectedToAdd"
-                                >
-                                </v-autocomplete>
-                            </v-col>
-                            <v-col cols="12" lg="8" sm="8" md="8">
-                                <v-text-field
-                                v-model="selectedToAdd.itemName"
-                                abel="نام"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" lg="8" sm="8" md="8">
-                                <v-text-field
-                                v-model="selectedToAdd.price"
-                                label="قیمت">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" lg="4" sm="4" md="4">
-                                <v-text-field
-                                v-model="selectedToAdd.quantity"
-                                label="تعداد">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" lg="3" sm="3" md="3">
-                                <v-text-field
-                                v-model="selectedToAdd.comment"
-                                label="شماره سفارش">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" lg="3" sm="3" md="3">
-                                <v-checkbox
-                                v-model="selectedToAdd.hasBatch"
-                                label="بچ دارد">
-                                </v-checkbox>
-                            </v-col>
-                            <v-col v-if="selectedToAdd.hasBatch" cols="12" lg="3" sm="3" md="3">
-                                <v-text-field
-                                v-model="selectedToAdd.batchNumber"
-                                label="شماره بچ">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" lg="3" sm="3" md="3">
-                            <v-btn color="green" :disabled="(selectedToAdd.comment.length < 5 || this.selectedToAdd.quantity<1 )"  @click="addToOrder">افزودن</v-btn>
-                            </v-col>    
-                        </v-row>
-                    </v-card-text>
-                </v-card>
+                <choose-product @delete="deleteItem" @push="addToOrder"></choose-product>
             </v-col>
             <v-col cols="6">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                         <v-row>
                             <v-col cols="12" class="center-text text-title"><p>تنظیمات سند</p></v-col>
@@ -154,7 +90,7 @@
 
         <v-row v-if="isCardCodeChecked">
             <v-col cols="12">
-                <v-card>
+                <v-card class="card">
                     <v-card-title>
                     <v-row>
                         <v-col cols="12" class="center-text text-title"><p>اطلاعات فاکتور</p></v-col>
@@ -170,7 +106,7 @@
                     :items="purchase.items">
                     <template v-slot:[`item.delete`]="props">
                                     <v-btn class="mx-2" small  @click="deleteItem(props.item)">
-                                        <v-icon>mdi-delete</v-icon>
+                                        حذف
                                     </v-btn>
                     </template>
                     <template v-slot:[`item.LineTotal`]="{ item }">
@@ -228,9 +164,9 @@
 </template>
 <script>
 import DatePicker from '../DatePicker.vue'
-
+import ChooseProduct from './_ChoosingProduct.vue'
 export default {
-    components:{ DatePicker},
+    components:{ DatePicker,ChooseProduct},
     data(){
         return{
             purchase:{
@@ -241,87 +177,25 @@ export default {
                 fromWhsCode:"",
                 vatGroup:"",
                 comment:"",
-                
-            },
-            selectedToAdd: {
-                itemCode: '',
-                quantity: '',
-                price: "",
-                itemName: '',
-                comment:"",
-                hasBatch:false,
-                batchNumber:""
+                vendor_name:""
             },
             cardCodeData:{
                 cardCode:"",
                 cardName:""
-            },
-            
-            debounceTimeout: null,
-            
-            searchProduct:'',
+            },           
+            debounceTimeout: null,           
             isCardCodeChecked: false,
             isLoading: false,
-            searchCardCode:"",
             showModal:false,
+            searchCardCode:''
         }
     },
     methods:{
-        verifiedItem(){
-            return this.selectedToAdd.quantity>1 && this.selectedToAdd.comment
-        },
-        loadFilteredProducts(){
-            if (this.selectedToAdd.itemCode) return; // Prevent search if an item is selected
-            this.$store.dispatch('fetchFilteredProducts', this.searchProduct);
-        },
-        addToOrder(){
-            console.log("STAAAAAAAAAAAAART")
-            let itemToAdd = this.items.filter(item => {
-                        return item.item_code === this.selectedToAdd.itemCode
-                    })
-            // console.log(itemToAdd)        
-            // let foundIndex = this.purchase.items.findIndex(item => {
-            //     return item.ItemCode === this.selectedToAdd.itemCode;
-            // });
-
-            // if (foundIndex !== -1)  {
-            //     this.purchase.items[foundIndex].ItemQty += Number.parseInt(this.selectedToAdd.quantity);
-            //     this.purchase.items[foundIndex].Price = Number.parseInt(this.selectedToAdd.price);
-            //     this.purchase.items[foundIndex].LineTotal = this.purchase.items[foundIndex].ItemQty * this.purchase.items[foundIndex].Price
-            // }else{    
-        // }
-            this.purchase.items.push({
-                ItemCode: itemToAdd[0].item_code,
-                ItemQty: Number.parseInt(this.selectedToAdd.quantity),
-                ItemName: itemToAdd[0]?.item_name,
-                Price: Number.parseInt(this.selectedToAdd.price),
-                LineTotal: Number.parseInt(this.selectedToAdd.price) * Number.parseInt(this.selectedToAdd.quantity),
-                FreeText: this.selectedToAdd.comment,
-                HaveBatch: this.selectedToAdd.hasBatch,
-                BatchName: this.selectedToAdd.batchNumber,
-            })
-
-            this.selectedToAdd= {
-                itemCode: '',
-                quantity: '',
-                price: '' ,
-                comment:"",
-                hasBatch:false,
-                batchNumber:""
-                }
-            
-        },
         deleteItem(item){
             this.purchase.items = this.purchase.items.filter(i => i !== item)
         },
-        debounce(func, delay) {
-            clearTimeout(this.debounceTimeout);
-            this.debounceTimeout = setTimeout(func, delay);
-        },
-        updateSelectedToAdd(){
-            this.selectedToAdd.itemName = this.items.filter(item => {
-                return item.item_code === this.selectedToAdd.itemCode
-            })[0]?.item_name
+        addToOrder(item){
+            this.purchase.items.push(item)
         },
         updateAmount(){
             this.purchase.totalPaid = event.target.value
@@ -342,6 +216,7 @@ export default {
                   
                     this.cardCodeData = response.data
                     this.purchase.vendor_code = this.cardCodeData.cardCode
+                    this.purchase.vendor_name = this.cardCodeData.cardName
                 }
                 this.isLoading = false;  
             })
@@ -349,10 +224,12 @@ export default {
         createGrpo(){
             this.$store.dispatch(`nillError`) 
             this.isLoading = true; 
+            if (typeof this.purchase.totalPaid === 'string'){
+                this.purchase.totalPaid = parseInt(this.purchase.totalPaid.replace(/,/g, ''), 10);
+            }
             this.$store.dispatch('createGrpo', this.purchase).then((response)=>{
                 if (response.is_success){
-                    console.log(response.result[0])
-                    console.log(response.result)
+
                     this.$toasted.show(`موفقیت! شماره سند: ${response.result}`, {
                         position: 'bottom-center',
                         type: 'success',
@@ -483,3 +360,11 @@ export default {
     }
 }
 </script>
+<style scoped>
+.card{
+    margin: 10px;
+    border: 2px;
+    border-style: solid;
+    padding: 5px;
+}
+</style>

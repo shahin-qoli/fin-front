@@ -120,7 +120,8 @@ export default {
                 peygiriNumber:null,
                 requestExtraInfo:null,
                 amount:'',
-                file:null
+                file:null,
+                cardName: '',
             },
             
             isLoading:false
@@ -193,7 +194,8 @@ export default {
                 requestExtraInfo:null,
                 requestedBy: null,
                 amount:'',
-                file: null
+                file: null,
+                cardName: '',
             }
         },
         loadFilteredCustomers(){
@@ -219,6 +221,10 @@ export default {
             }else{
                 this.isLoading= true
             this.request.requestedBy = this.user.id
+            console.log(this.selectedCustomerName)
+            this.request.cardName = this.selectedCustomerName
+            console.log("NEXT")
+            console.log(this.request.cardName)
             this.$store.dispatch('createPaymentRequest', this.request).then((response) =>{
                 this.isLoading= false
                 if (response == true){

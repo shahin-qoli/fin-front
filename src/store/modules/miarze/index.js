@@ -5,20 +5,28 @@ export default {
         return {
             miarzeOrders:[],
             itemCount: null,
+            itemCountPayments: null,
             itemCountMessageTemplate: null,
             miarzeMessageTemplates:[],
             miarzeOrderMessageTemplates:[],
             filteredProducts: [],
             createdGrpo:[],
             itemCountCreatedGrpo: null,
+            miarzePayments:[]
         }
     },
     mutations:{
+        setMiarzePayments(state, payload){
+            state.miarzePayments = payload
+        },
         setMiarzeOrders(state, payload){
             state.miarzeOrders = payload;
         },
         setItemCountMiarze(state, payload){
             state.itemCount = payload;
+        },
+        setItemCountPaymentMiarze(state, payload){
+            state.itemCountPayments = payload;
         },
         setMiarzeMessageTemplatesItemCount(state,payload){
             state.itemCountMessageTemplate = payload
@@ -82,6 +90,31 @@ export default {
                 err.response.data.error || 'Failed to fetch'
             );
             throw error;
+            }
+        },
+        async loadMiarzePayments(context, payload){
+            try{
+                const {data: responseData} = await spreeAgent.get(`/storefront/brx_express_checkouts?page=${payload.page}
+                    &per_page=${payload.itemsPerPage}&q[is_paied_eq]=${payload.isPaied}
+                    &q[is_used_eq]=${payload.isUsed}&q[created_at_gt]=${payload.transactionDate}
+                    &q[amount_cont]=${payload.amount}&q[order_number_cont]=${payload.orderNumber}`);
+                var miarzePaymentsData = responseData.data;
+                const miarzePayments = []
+                var itemCount = responseData.options.count;
+                for (const item of miarzePaymentsData) {
+                    const miarzeMessageTemplate= {
+                        ...item
+                    }
+                    miarzePayments.push(miarzeMessageTemplate); 
+                }    
+                context.commit('setMiarzePayments', miarzePayments)
+                context.commit('setItemCountPaymentMiarze', itemCount);
+
+            }catch(err){
+                    const error = new Error(
+                        err.response.data.error || 'Failed to fetch'
+                    );
+                    throw error;
             }
         },
         async loadMiarzeMessageTemplates(context){
@@ -194,7 +227,7 @@ export default {
         async fetchFilteredProducts(context,payload){
             try{
                 context.commit('setIsLoading',true);
-                const {data: responseData} = await finAgent.get(`/front/b1_items_data?q[item_code_cont]=${payload}`);
+                const {data: responseData} = await finAgent.get(`/front/b1_items_data?per_page=100&q[item_code_cont]=${payload}`);
                 let products = responseData.data
                 context.commit('setFilteredProducts',products);
                 context.commit('setIsLoading',false);
@@ -204,9 +237,20 @@ export default {
         },
         async createGrpo(context,payload){
 
-            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code, data: payload}}
+            let data =  {grpo: {docdate: payload.docdate, vendor_code: payload.vendor_code,vendor_name: payload.vendor_name, data: payload}}
             try{
                 const {data: responseData} = await finAgent.post(`/front/create_grpos`,data);
+                return responseData
+            }catch(err){
+                return{is_success: false, error: err}
+            }
+        },        
+        async updateRetryCreateGrpo(context,payload){
+            console.log("lllllllllll")   
+            console.log(payload)
+            let data =  {grpo: { data: payload.data}}
+            try{
+                const {data: responseData} = await finAgent.post(`/front/create_grpos/${payload.id}/retry_create`,data);
                 return responseData
             }catch(err){
                 return{is_success: false, error: err}
@@ -214,7 +258,7 @@ export default {
         },
         async loadCreatedGrpo(context,payload){
             try{
-                const {data: responseData} = await finAgent.get(`/front/create_grpos`);
+                const {data: responseData} = await finAgent.get(`/front/create_grpos?page=${payload.page}&per_page=${payload.itemsPerPage}`);
                 var miarzeOrderData = responseData.data;
                 const miarzeOrders = []
                 var itemCount = responseData.options.count;
@@ -230,14 +274,20 @@ export default {
             }catch(err){
                 console.log(err)
             }
-        }
+        },
     },
     getters:{
+        getMiarzePayments(state){
+            return state.miarzePayments;
+        },
         getMiarzeOrders(state){
             return state.miarzeOrders;
         },
         getMiarzeOrdersItemCount(state){
             return state.itemCount;
+        },
+        getMiarzePaymentsItemCount(state){
+            return state.itemCountPayments;
         },
         getMiarzeMessageTemplatesItemCount(state){
             return state.itemCountMessageTemplate;

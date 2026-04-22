@@ -90,10 +90,11 @@ export default {
                 throw error;
              } 
         },
+        // To Handle multi
         async loadFreeSalePersons(context){
             try{
                 context.commit('setIsLoading', 'true')
-                const {data: responseData} = await finAgent.get('/front/sale_persons?without_bank_payanes=true');
+                const {data: responseData} = await finAgent.get('/front/sale_persons');
                 var salePersonData = responseData.data;
                 const salePersons = []
                 for (const item of salePersonData) {

@@ -39,7 +39,7 @@ import paymentrequestPageView from '@/views/PaymentRequestPageView.vue'
 import paymentrequestListView from '@/views/PaymentRequestListView.vue'
 import FinancialDasboardView from '@/views/FinancialDashboardView.vue'
 import CampaignDashboardView from '@/views/CampaignDashboardView.vue'
-import HrmView from '@/views/HrmView.vue'
+import HrmAttendanceRequestListView from '@/views/HrmAttendanceRequestListView.vue'
 import CampaignListView from '@/views/CampaignListView.vue'
 import OrderMessageTemplateList from '@/views/OrderMessageTemplateListView.vue'
 import OrderDashboardMainView from '@/views/OrderDashboardMainView.vue'
@@ -47,7 +47,12 @@ import CreateInventoryTransfer from '@/views/InventoryTransferView.vue'
 import AutomateDashboardView from '@/views/AutomateSaleOrderDashboard.vue'
 import CreateGrpo from '@/views/TheGrpoView.vue'
 import GrpoList from '@/views/GrpoListView.vue'
-
+import MiarzePayments from '@/views/MiarzePaymentsView.vue'
+import MiarzeVendorPanel from'@/views/MiarzeVendorPanelView.vue'
+import ImportCenter from '@/views/BankImportView.vue'
+import ClubUsageDataList from '@/views/ClubUsageDataListView.vue'
+import Reconciliation from '@/views/ReconciliationView.vue'
+import MiarzeVendorPanelShipments from '@/views/MiarzeVendorPanelShipmentsView.vue'
 Vue.use(VueRouter)
 function guardMyrouteAdmin(to, from, next)
 {
@@ -108,6 +113,17 @@ function guardMyrouteCheque(to, from, next){
     next('/login'); // go to '/login';
    }
 }
+function guardMyrouteVendor(to, from, next) {
+  const isAuthenticated = !!localStorage.getItem('token');
+
+  if (isAuthenticated) {
+    next(); // اجازه ورود به وندور پنل
+  } else {
+    // ذخیره مسیر فعلی برای بازگشت بعد از لاگین
+    localStorage.setItem('redirectAfterLogin', to.fullPath);
+    next('/login');
+  }
+}
 
 function guardMyrouteSpree(to, from, next){
   var isAuthenticated= false;
@@ -145,7 +161,38 @@ function guardMyrouteLoggedIn(to, from, next){
     next('/login'); // go to '/login';
    }
 }
-const routes = [ 
+const routes = [  
+  {
+    path: '/usagedatalist',
+    name: 'UsageDataList',
+   beforeEnter : guardMyrouteAdmin,
+    component: ClubUsageDataList
+  },
+  {
+  path: '/bankimport',
+  name: 'BankImport',
+  beforeEnter : guardMyrouteAdmin,
+  component: ImportCenter
+  },   {
+    path: '/reconciliation',
+    name: 'Reconciliation',
+    beforeEnter : guardMyrouteAdmin,
+    component: Reconciliation
+  }, 
+  {
+    path: '/vendorPanel',
+    name: 'VendorPanel',
+    beforeEnter : guardMyrouteVendor,
+    component: MiarzeVendorPanel,
+    meta:{title: "تامین می‌ارزه!"}
+  }, 
+  {
+    path: '/vendorPanel/shipments',
+    name: 'VendorPanelShipments',
+    beforeEnter : guardMyrouteVendor,
+    component: MiarzeVendorPanelShipments,
+    meta:{title: "تامین می‌ارزه!"}
+  }, 
   {
     path: '/grpolist',
     name: 'GrpoList',
@@ -157,7 +204,13 @@ const routes = [
     name: 'CreateGrpo',
     beforeEnter : guardMyrouteSpree,
     component: CreateGrpo
-  }, 
+  },
+  {
+    path: '/miarzepayments',
+    name: 'MiarzePayments',
+    beforeEnter : guardMyrouteSpree,
+    component: MiarzePayments
+  },  
   {
     path: '/createinventorytransfer',
     name: 'createinventorytransfer',
@@ -234,11 +287,10 @@ const routes = [
     
     component: UsingPromotions
   },{
-    path: '/hrm',
-    name: 'hrm',
-    // beforeEnter : guardMyrouteAdmin,
-    
-    component: HrmView
+    path: '/hrm-attendance-request-list',
+    name: 'hrmattendance',
+   beforeEnter : guardMyrouteAdmin,
+    component: HrmAttendanceRequestListView
   }
   ,  {
     path: '/club',

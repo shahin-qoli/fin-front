@@ -37,9 +37,9 @@ export default {
                 // console.log(payload)
                 let url =''
                 if(payload.withoutSalePerson){
-                    url = `/front/pos_payane_reports/reports_without_person?page=${payload.page}&per_page=${payload.itemsPerPage}&report_date=${payload.selectedDate}`
+                    url = `/front/pos_payane_reports/reports_without_person?page=${payload.page}&per_page=${payload.itemsPerPage}&report_date=${payload.selectedDate}&amount=${payload.amount}`
                 }else{
-                    url = `/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}`
+                    url = `/front/pos_payane_reports?page=${payload.page}&per_page=${payload.itemsPerPage}&payane_codes=${payload.selectedPayaneCodes}&report_date=${payload.selectedDate}&person_type=${payload.selectedType}&is_used=${is_used}&amount=${payload.amount}`
                 }
                 const {data: responseData} = await finAgent.get(url)
                 var payaneReportData = responseData.data;
@@ -68,7 +68,20 @@ export default {
                 console.log("Using payane report...")
                 console.log(payload)
                 console.log(payload.docentry)
-                if (payload.docentry === null) {
+                if(payload.isDifferentAccount){
+                    if(payload.docentry === null)
+                    {
+                        var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"",
+                            "is_different_account": true,"new_docdate": payload.newDocDate}
+                    }
+                    else
+                    {
+                        var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"",
+                            "is_different_account": true,"new_docdate": payload.newDocDate, "used_for_docentry": payload.docentry,
+                            "used_for_doctype": 17}
+                    } 
+                }
+                else if (payload.docentry === null) {
                 var d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":""} 
                 }else{
                     d ={"used_for": payload.active_payane_person.sale_person_code, "captured_by":"", "used_for_docentry": payload.docentry,"used_for_doctype": 17}  

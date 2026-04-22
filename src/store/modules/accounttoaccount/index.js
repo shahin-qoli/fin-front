@@ -47,14 +47,21 @@ export default{
                     data ={"documents": payload.documents,"checks":payload.checks, "captured_by":user.id,"used_for": payload.cardcode}
                 }
                 const {data:responseData} = await finAgent.post(`/front/account_to_account_raws/${payload.item.id}/use_payment`,data)
-                console.log(responseData.result)
-                if(responseData.result == true){
-                    console.log("going to")
-                    data = {
-                        cardcode: payload.cardcode,
-                        itemId: payload.item.id
-                    }
-                    contex.commit('setUsedAccounttoaccount', data)
+                if(responseData.result === true && payload.image){
+                    let reqId = responseData.request_id
+                    let formData = new FormData()
+                    formData.append('file', payload.image,payload.image.name)
+                    const imageData = await finAgent.post(`/front/used_payments/${reqId}/upload_image/`,formData );
+                    if(imageData.data.result){
+                        data = {
+                            cardcode: payload.cardcode,
+                            itemId: payload.item.id
+                        }
+                        contex.commit('setUsedAccounttoaccount', data)
+                    }  
+                    else {
+                        throw new Error('Image upload failed');
+                    }              
                 }
     
             }catch (err) {

@@ -228,7 +228,6 @@ export default{
             })
         },
         viewMore(item){
-            console.log(item)
             this.selectedCampaignDetails= this.campaignDetails.filter(x=>x.CampaignID == item.Id)[0]
             this.selectedBundleRows = this.bundleRows.filter(x=>x.CamDetailID == this.selectedCampaignDetails.Id)
         }

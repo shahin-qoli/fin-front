@@ -35,6 +35,13 @@
                                     item-value="type"
                                 ></v-select>
                             </v-col>
+                            <v-col col="3">
+                                <v-text-field
+                                v-model="options.amount" 
+                                hint="120000000" 
+                                label="مبلغ">
+                                </v-text-field>
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col>
@@ -52,6 +59,8 @@
             </v-card-title>
             <v-data-table
             fixed-header
+            show-expand
+            :single-expand="singleExpand"
             dense
             :headers="headers"
             :items="payaneReports"
@@ -79,14 +88,7 @@
             <p>{{ item.active_payane_person?.sale_person_code }}</p>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-dialog
-                    v-model="dialog"
-                    fullscreen
-                    hide-overlay
-                    transition="dialog-bottom-transition"
-                    >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-icon
+                <v-icon
                         small
                         class="mr-2"
                         v-bind="attrs"
@@ -95,11 +97,61 @@
                         >
                         mdi-eye
                         </v-icon>
-                    </template>
+
+                <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
+                            <v-icon>mdi-check-outline</v-icon>
+                </v-btn>
+            </template>
+            <template v-slot:expanded-item="{ headers,item}">
+                <td :colspan="headers.length">
+                    <div>
+                        <v-container  fluid style="margin: 0px; padding: 0px; width: 100%">
+                            <v-row d-flex>
+                                <v-col cols="4">
+                                    <date-picker
+                                    label="تاریخ صدور سند"
+                                    v-model="newDocDate">
+                                    </date-picker>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-checkbox v-model="isDifferentAccount" label="صدور روی صندوق موقت"></v-checkbox>    
+                                    </v-col>    
+                                    <v-col cols="4">
+                                        <v-btn :disabled="item.is_used" color="green"  @click="usePoses(item)">صدور سند</v-btn>
+                                    </v-col>
+                            </v-row>
+                        </v-container>
+                    </div>
+                </td>
+            </template>
+            </v-data-table>
+            <v-btn
+            class="mx-2"
+            fab
+            dark
+            color="teal"
+            @click="exportData"
+            >
+            <v-icon dark>
+                mdi-format-list-bulleted-square
+            </v-icon>
+            </v-btn>
+        </v-card>
+        <v-dialog
+                    v-model="dialog"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+                    >
                     <v-card outlined>
                         <v-card-title>
-                        <span class="text-h5">لیست واریزهای کارتخوان</span>
+                            <v-row>
+                                <v-col cols="12" class="d-flex justify-center align-center">
+                                    <p>لیست واریزهای کارتخوان</p>
+                                </v-col>
+                            </v-row>
                         </v-card-title>
+
                         <v-data-table
                     fixed-header
                     dense
@@ -107,6 +159,9 @@
                     :items="posRawsDetails"
                     item-key="id"
                         >
+                        <template v-slot:[`item.amount`]="{ item }">
+      <p>{{ item.amount | formatAmount }}</p>
+    </template>
             <template v-slot:[`item.is_used`]="{ item }">
                 <v-simple-checkbox
                 v-model="item.is_used"
@@ -125,55 +180,13 @@
                         </v-btn>
                         </v-card-actions>
                     </v-card>
-                </v-dialog>
-                <v-btn v-if="isUsed(item.is_used)" :disabled="noSalePerson(item.active_payane_person)" class="mx-2" small  @click="usePoses(item)">
-                            <v-icon>mdi-check-outline</v-icon>
-                </v-btn>
-            </template>
-            </v-data-table>
-            <v-btn
-        class="mx-2"
-        fab
-        dark
-        color="teal"
-        @click="exportData"
-        >
-        <v-icon dark>
-            mdi-format-list-bulleted-square
-        </v-icon>
-        </v-btn>
-        </v-card>
-       <v-dialog
-       v-model="exportError"
-       > 
-       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-       </v-dialog>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
 import {finAgent} from '@/services/agent'
+
 import FileSaver from 'file-saver'
 import DatePicker from '../DatePicker.vue'
 var jalaali = require('jalaali-js')
@@ -183,6 +196,7 @@ var jalaali = require('jalaali-js')
     },
         data(){
         return{
+            singleExpand: true,
             exportError: false,
             dialog: false,
             isLoading:null,
@@ -194,13 +208,16 @@ var jalaali = require('jalaali-js')
             selectedDate:'',
             selectedType: '',
             withoutSalePerson: false,
+            amount:"",
             },
             searchPayaneCodes:"98",
             personTypes: [
               {type: 'sale_person', type_name: 'ویزیتور'},
               {type: 'driver', type_name: 'راننده'},
               {type: 'customer', type_name: 'مشتری'},  
-        ]          
+        ]   ,
+        newDocDate:'',
+        isDifferentAccount: false,       
         }
     },
         watch:{
@@ -219,6 +236,11 @@ var jalaali = require('jalaali-js')
     },
     },
         methods:{
+            formatAmount(value){
+        const stringVlue = String(value)
+        const formattedIntegerPart = stringVlue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return formattedIntegerPart
+      },
             async exportData(){
                 try{
                     const response = await finAgent.get(`/front/pos_payane_reports/export_filtered_table?payane_codes=${this.options.selectedPayaneCodes}&report_date=${this.options.selectedDate}&person_type=${this.options.selectedType}`, {responseType: 'blob'} );
@@ -248,6 +270,7 @@ var jalaali = require('jalaali-js')
             viewMore(item) {
                 // console.log(item)
                 this.posRawsDetails = item.pos_raws
+                this.dialog = true
             },
             loadPayaneReports() {
                 // console.log(this)
@@ -259,12 +282,13 @@ var jalaali = require('jalaali-js')
             },
             usePoses(item){
                 this.loading = true;
-            var payload = {
-            ...item
-            }
+
+            var payload = {...item, isDifferentAccount: this.isDifferentAccount, newDocDate: this.newDocDate}
             this.$store.dispatch('usePayaneReport',payload)
             .finally(() => {
                 this.loading = false;
+                this.isDifferentAccount = false;
+                this.newDocDate = '';
               })
             },
             isUsed(isUsed){
@@ -407,13 +431,13 @@ var jalaali = require('jalaali-js')
             payaneReports(){
                 return this.$store.getters.getPayaneReports
             },
-    salePersons(){
-      return this.$store.getters.getSalePersons
-    },
-    payaneCodes(){
-      return this.$store.getters.getBankPayanes
-    }
-    },
+            salePersons(){
+            return this.$store.getters.getSalePersons
+            },
+            payaneCodes(){
+            return this.$store.getters.getBankPayanes
+            },
+        },
     //     created(){
 
     //     this.loadBankPayanes();

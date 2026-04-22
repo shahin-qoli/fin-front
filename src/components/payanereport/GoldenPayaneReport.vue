@@ -29,6 +29,8 @@
             <v-card-text>
                 <v-data-table
                 fixed-header
+                
+                :single-expand="singleExpand"
                 dense
                 hide-default-footer
                 :headers="orderHeaders"
@@ -38,6 +40,7 @@
                 v-model="selectedOrder"
                 show-select
                 >
+
                 <template v-slot:[`item.total`]="{item}">
                 {{ orderTotal(item).toFixed(0) | formatAmount }}
                 </template>  
@@ -61,13 +64,27 @@
             <v-data-table
             fixed-header
             dense
-           
+            show-expand
+            :single-expand="singleExpand"
             :headers="posHeaders"
             :items="payaneReports"
             item-key="id"     
             :options.sync="options"
             :server-items-length="itemCount"
             >
+            <template v-slot:expanded-item="{ headers}">
+                <td :colspan="headers.length">
+                    <div>
+                        <v-container  fluid style="margin: 0px; padding: 0px; width: 100%">
+                            <v-row d-flex>
+                                <v-col cols="4">
+                                    <v-checkbox v-model="isDifferentAccount" label="صدور روی صندوق موقت"></v-checkbox>    
+                                </v-col>    
+                            </v-row>
+                        </v-container>
+                    </div>
+                </td>
+            </template>
             <template v-slot:[`item.transaction_date`]="{item}">
                 <p>{{ item.transaction_date | formatDate }}</p>
             </template>  
@@ -154,6 +171,7 @@ var jalaali = require('jalaali-js')
 export default {
     data(){
         return {
+            singleExpand: true,
             options: {
             itemsPerPage: 10,
             page:1, 
@@ -167,6 +185,7 @@ export default {
             posRawsDetails: [],
             isLoading: false,
             selectedOrder:[],
+            isDifferentAccount: false, 
         }
     },
     computed:{
@@ -361,11 +380,12 @@ export default {
          usePoses(item){
                 this.loading = true;
             var payload = {
-            ...item, docentry: this.selectedOrder[0].order.DocEntry
+            ...item, docentry: this.selectedOrder[0].order.DocEntry,isDifferentAccount: this.isDifferentAccount
             }
             this.$store.dispatch('usePayaneReport',payload)
             .finally(() => {
                 this.loading = false;
+                this.isDifferentAccount = false;
               })
             },
      },

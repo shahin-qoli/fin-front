@@ -60,8 +60,7 @@ export default {
         },
         async loadSyncSourceDocuments(context, payload){
             try{
-                const {data:responseData} = await finAgent.get(`/front/sync_source_documents?page=${payload.page}&per_page=${payload.itemsPerPage}&q[sync_template_id_eq]=${payload.selectedOption}
-                &q[is_synced_eq]=${payload.isSynced}&q[equivalent_created_eq]=${payload.equivalentCreated}&q[source_document_date_lt]=${payload.docsEndDate}&q[source_document_date_gt]=${payload.docsStartDate}`)
+                const {data:responseData} = await finAgent.get(`/front/sync_source_documents?page=${payload.page}&per_page=${payload.itemsPerPage}&q[sync_template_id_eq]=${payload.selectedOption}&q[is_synced_eq]=${payload.isSynced}&q[is_syncable_eq]=true&q[equivalent_created_eq]=${payload.equivalentCreated}&q[source_document_date_lt]=${payload.docsEndDate}&q[source_document_date_gt]=${payload.docsStartDate}`)
                 var syncSourceDocsData = responseData.data
                 var itemCount = responseData.options.count;
                 const syncSourceDocs =[]
@@ -81,8 +80,16 @@ export default {
             }
         },
         async updateTemplate(context, payload){
-            try{
-                const {data:responseData} = await finAgent.get(`/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}`)
+            try {
+                let url = ""
+                if (payload.checkStates.length > 0) {
+                    url = `/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}&states=[${payload.checkStates}]`
+                }
+                else
+                {
+                    url = `/front/sync_templates/${payload.templateId}/update_source_list?start_date=${payload.date}`
+                }
+                const {data:responseData} = await finAgent.get(url)
                 return responseData
             }catch(err){
                 const error = new Error(
