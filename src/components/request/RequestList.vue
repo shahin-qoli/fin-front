@@ -81,7 +81,7 @@
                 </v-btn>
               </template> 
               <template v-slot:[`item.b1requests`]="props">
-                <v-btn v-if="props.item.job_results.length > 0" @click="showJobResults(props.item.job_results)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                <v-btn v-if="props.item.job_results.length > 0" @click="showJobResults(props.item.job_results)">  دیدن </v-btn>
               </template>
               <template v-slot:[`item.retry`]="props">
                 <v-btn v-if="needRetry(props.item)" class="mx-2" small  @click="retryJob(props.item)">

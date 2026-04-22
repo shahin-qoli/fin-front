@@ -46,7 +46,7 @@
                         <p>{{ transactionTypeFromatted(item.item.transaction_type) }}</p>
                     </template>
                     <template v-slot:[`item.details`]="item">
-                        <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                        <v-btn @click="detailsDialog(item)">  دیدن </v-btn>
                     </template>
                     <template v-slot:[`item.state`]="item">
                         <v-chip small dark :color="getColorRequestStatus(item.item.state)">

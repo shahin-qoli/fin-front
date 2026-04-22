@@ -112,7 +112,7 @@
                             :items="purchase.data.items">
                             <template v-slot:[`item.delete`]="props">
                                 <v-btn :disabled="!enableEdit" class="mx-2" small  @click="deleteItem(props.item)">
-                                    <v-icon>mdi-delete</v-icon>
+                                    حذف
                                 </v-btn>
                             </template>
                             <template v-slot:[`item.LineTotal`]="{ item }">

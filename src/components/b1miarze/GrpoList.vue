@@ -58,7 +58,7 @@
                     ></v-simple-checkbox>
                 </template> 
                 <template v-slot:[`item.details`]="item">
-                    <v-btn @click="detailsDialog(item)">  <v-icon>mdi-eye</v-icon> </v-btn>
+                    <v-btn @click="detailsDialog(item)">  دیدن </v-btn>
                 </template>                                           
                 </v-data-table>
             </v-card-text>

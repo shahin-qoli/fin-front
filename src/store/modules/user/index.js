@@ -1,4 +1,4 @@
-import { finAgent } from "@/services/agent";
+import { finAgent, applyAuthFromResponse } from "@/services/agent";
 
 
 
@@ -32,6 +32,8 @@ export default {
             localStorage.removeItem('userRole')
             localStorage.removeItem('b1OperatorCode')
             localStorage.removeItem('platformToken')
+            localStorage.removeItem('tokenExpiresAt')
+            localStorage.removeItem('refreshToken')
             context.commit('cleanUser')
         },
         async userLogin(context, payload){
@@ -41,13 +43,9 @@ export default {
              console.log(data)
      
              const {data: requestsData} = await finAgent.post('/auth/login', data)
+             applyAuthFromResponse(requestsData)
              const user = requestsData.user
              console.log(user)
-             localStorage.setItem('token', requestsData.token)
-             localStorage.setItem('userEmail', user.email)
-             localStorage.setItem('userId', user.id)
-             localStorage.setItem('userRole', user.role)
-             localStorage.setItem('b1OperatorCode', user.b1_operator_code)
              context.commit('setUser', user)
 
      
@@ -60,11 +58,15 @@ export default {
               }
         },
         initUser(context){
-            if (localStorage.getItem('userId'))
-                var user = {'email': localStorage.getItem('userEmail'),
-                 'role': localStorage.getItem('userRole'), 'id':localStorage.getItem('userId'),'b1_operator_code': localStorage.getItem('b1OperatorCode') };
-                context.commit('setUser', user)
-  
+            const userId = localStorage.getItem('userId')
+            if (!userId) return
+            const user = {
+                email: localStorage.getItem('userEmail'),
+                role: localStorage.getItem('userRole'),
+                id: userId,
+                b1_operator_code: localStorage.getItem('b1OperatorCode')
+            }
+            context.commit('setUser', user)
         }
     }
 
