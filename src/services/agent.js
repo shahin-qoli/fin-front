@@ -155,7 +155,7 @@ export const spreeNoAuthAgentBbeta = axios.create({
   baseURL: spreeBbetaAuthUrl
 })
 export const spreePAgent = axios.create({
-  baseURL: spreeBbetaUrlV3
+  baseURL: spreeUrlV3
 });
 // Interceptor to add the Authorization header
 spreeAgent.interceptors.request.use(
@@ -194,8 +194,8 @@ spreePAgent.interceptors.request.use(
 export async function fetchPlatformToken() {
   try {
     const response = await spreeNoAuthAgentBbeta.post('spree_oauth/token', {
-      client_id: "vtHOJfnqARHojkzTqJD_hzj1jhlpUpJ2HiOr9RX9x8I", // Replace with your client ID
-      client_secret: "F64OYF2ByO2Uiqndh0kiv5L1de17dVEkdebBWf41k4o", // Replace with your client secret"": 
+      client_id: "47WfmNFqpNeabriIqr5bxni4WwTsA7ExoHHp54m1R5o", // Replace with your client ID
+      client_secret: "Oh8dVr4u-MHWK9Ay-fmUT0FwkNE9pGgsSURtNY-2p30", // Replace with your client secret"": 
       grant_type: 'client_credentials',
       scope: "admin"
     });
